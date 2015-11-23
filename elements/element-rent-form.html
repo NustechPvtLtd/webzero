@@ -1,0 +1,187 @@
+<div id="wrap">
+
+    <!-- ELEMENT RENT FORM -->
+    <section id="element-rent-form" class="intro-block bg-color3 cover-bg half-padding" style="background-image:url(/elements/images/bg17.jpg)" >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="item-list-left">
+                        <li>
+                            <i class="num-icon">1</i>
+                            <p>Your project looks great on any device. Content can be easily read and a user understands freely what you wanted to say him or her.</p>
+                        </li>
+                        <li>
+                            <i class="num-icon">2</i>
+                            <p>The set of ready made CSS files with different color schemes will help you in quick landing’s adaptation according to your benchmark style.</p>
+                        </li>
+                        <li>
+                            <i class="num-icon">3</i>
+                            <p>No fluff. Nothing should lead the visitor away from the main essence of website. There must be just important information.</p>
+                        </li>
+                        <li>
+                            <i class="num-icon">4</i>
+                            <p>The detailed documentation will help you in adjusting the project with little effort according to your requirements.</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-5 col-md-offset-1">
+                    <h3 class="title">Make a Reservation</h3>
+                    <form action="/elements/scripts/rent.php" role="form" id="rent_form">
+                        <div class="form-group select-group">
+                            <select class="form-control select-placeholder" id="rent-type" name="type">
+                                <option selected disabled>Type:</option>
+                                <option>Economy</option>
+                                <option>Compact</option>
+                                <option>Standard</option>
+                            </select>
+                        </div>
+                        <div class="form-group select-group">
+                            <select class="form-control" id="pickup-location" name="pickloc">
+                                <option value="" selected disabled>Pick-up Location:</option>
+                                <option>14 West Street</option>
+                                <option>81 East Street</option>
+                                <option>8 South Street</option>
+                                <option>144 North Street</option>
+                            </select>
+                        </div>
+                        <div class="form-group select-group">
+                            <select class="form-control" id="dropoff-location" name="droploc">
+                                <option selected disabled>Drop-off Location:</option>
+                                <option>14 West Street</option>
+                                <option>81 East Street</option>
+                                <option>8 South Street</option>
+                                <option>144 North Street</option>
+                            </select>
+                        </div>
+                        <div class="input-daterange" id="datepicker">
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <input type="text" placeholder="Pick-up Date" class="form-control" id="pickup-date" name="start" />
+                                </div>  
+                                <div class="col-xs-6">
+                                    <div class="form-group select-group">
+                                        <select class="form-control" id="pickup-time" name="start-time">
+                                            <option>00:00</option>
+                                            <option>00:30</option>
+                                            <option>01:00</option>
+                                            <option>01:30</option>
+                                            <option>02:00</option>
+                                            <option>02:30</option>
+                                            <option>03:00</option>
+                                            <option>03:30</option>
+                                            <option>04:00</option>
+                                            <option>04:30</option>
+                                            <option>05:00</option>
+                                            <option>05:30</option>
+                                            <option>06:00</option>
+                                            <option>06:30</option>
+                                            <option>07:00</option>
+                                            <option>07:30</option>
+                                            <option>08:00</option>
+                                            <option>08:30</option>
+                                            <option>09:00</option>
+                                            <option>09:30</option>
+                                            <option>10:00</option>
+                                            <option>10:30</option>
+                                            <option>11:00</option>
+                                            <option>11:30</option>
+                                            <option selected>12:00</option>
+                                            <option>12:30</option>
+                                            <option>13:00</option>
+                                            <option>13:30</option>
+                                            <option>14:00</option>
+                                            <option>14:30</option>
+                                            <option>15:00</option>
+                                            <option>15:30</option>
+                                            <option>16:00</option>
+                                            <option>16:30</option>
+                                            <option>17:00</option>
+                                            <option>17:30</option>
+                                            <option>18:00</option>
+                                            <option>18:30</option>
+                                            <option>19:00</option>
+                                            <option>19:30</option>
+                                            <option>20:00</option>
+                                            <option>20:30</option>
+                                            <option>21:00</option>
+                                            <option>21:30</option>
+                                            <option>22:00</option>
+                                            <option>22:30</option>
+                                            <option>23:00</option>
+                                            <option>23:30</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <input type="text" placeholder="Drop-off Date" class="form-control" name="end" id="dropoff-date" />
+                                </div>  
+                                <div class="col-xs-6">
+                                    <div class="form-group select-group">
+                                        <select class="form-control" id="dropoff-time" name="end-time">
+                                            <option>00:00</option>
+                                            <option>00:30</option>
+                                            <option>01:00</option>
+                                            <option>01:30</option>
+                                            <option>02:00</option>
+                                            <option>02:30</option>
+                                            <option>03:00</option>
+                                            <option>03:30</option>
+                                            <option>04:00</option>
+                                            <option>04:30</option>
+                                            <option>05:00</option>
+                                            <option>05:30</option>
+                                            <option>06:00</option>
+                                            <option>06:30</option>
+                                            <option>07:00</option>
+                                            <option>07:30</option>
+                                            <option>08:00</option>
+                                            <option>08:30</option>
+                                            <option>09:00</option>
+                                            <option>09:30</option>
+                                            <option>10:00</option>
+                                            <option>10:30</option>
+                                            <option>11:00</option>
+                                            <option>11:30</option>
+                                            <option>12:00</option>
+                                            <option selected>12:30</option>
+                                            <option>13:00</option>
+                                            <option>13:30</option>
+                                            <option>14:00</option>
+                                            <option>14:30</option>
+                                            <option>15:00</option>
+                                            <option>15:30</option>
+                                            <option>16:00</option>
+                                            <option>16:30</option>
+                                            <option>17:00</option>
+                                            <option>17:30</option>
+                                            <option>18:00</option>
+                                            <option>18:30</option>
+                                            <option>19:00</option>
+                                            <option>19:30</option>
+                                            <option>20:00</option>
+                                            <option>20:30</option>
+                                            <option>21:00</option>
+                                            <option>21:30</option>
+                                            <option>22:00</option>
+                                            <option>22:30</option>
+                                            <option>23:00</option>
+                                            <option>23:30</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group sep-half-bottom">
+                            <input type="email" class="form-control" id="rent_email" placeholder="Email Address" name="email">
+                        </div>
+
+                        <button type="submit" id="rent_submit" data-loading-text="&bull;&bull;&bull;" class="btn btn-lg btn-block btn-primary">Reserve</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div><!-- /#wrap -->
