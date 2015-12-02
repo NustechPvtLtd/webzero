@@ -2,11 +2,13 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title><?php if (isset($pageTitle)) {
-    echo $pageTitle;
-} else {
-    echo $this->lang->line('alternative_page_title');
-} ?></title>
+        <title><?php
+            if (isset($pageTitle)) {
+                echo $pageTitle;
+            } else {
+                echo $this->lang->line('alternative_page_title');
+            }
+            ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Loading Bootstrap -->
@@ -113,9 +115,9 @@
                 <img  class="img-responsive" src="<?php echo base_url(); ?>assets/img/logo.png" alt="Customer area" />            
             </a>
             <nav class="navbar navbar-static-top" role="navigation">
-                    <?php if ($this->router->fetch_class() == 'sites'): ?>
+                <?php if ($this->router->fetch_class() == 'sites'): ?>
                     <ul class="nav navbar-nav">
-    <?php if (isset($siteData) || ( isset($page) && $page == 'newPage' )): ?>
+                        <?php if (isset($siteData) || ( isset($page) && $page == 'newPage' )): ?>
 
                             <?php if (isset($siteData)): ?>
                                 <li class="active">
@@ -150,16 +152,16 @@
 
                                 <li><a href="<?php echo site_url('services') ?>" id="backButton"><span class="fui-arrow-left"></span> <?php echo 'Back to services'; /* $this->lang->line('nav_goback_sites') */ ?></a></li>
 
-        <?php endif; ?>
+                            <?php endif; ?>
 
                         <?php else: ?>
 
                             <li <?php if (isset($page) && $page == "sites"): ?>class="active"<?php endif; ?>><a href="<?php echo site_url('sites') ?>"><span class="fui-windows"></span> <?php echo $this->lang->line('nav_sites') ?></a></li>
                             <li <?php if (isset($page) && $page == "images"): ?>class="active"<?php endif; ?>><a href="<?php echo site_url('sites/assets/images') ?>"><span class="fui-image"></span> <?php echo $this->lang->line('nav_imagelibrary') ?></a></li>
 
-    <?php endif; ?>
+                        <?php endif; ?>
                     </ul>
-<?php endif; ?>
+                <?php endif; ?>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
@@ -171,7 +173,7 @@
                                 <li class="user-header bg-light-blue">
                                     <img src="<?php echo (userdata('avatar')) ? base_url('elements') . '/images/uploads/' . userdata('user_id') . '/' . userdata('avatar') . '?' . time() : base_url('assets') . '/sites/images/dude.png?' . time(); ?>" class="img-circle"/>
                                     <p>
-<?php echo ($fullName = ucwords(userdata('username'))) ? $fullName : 'Welcome'; ?>
+                                        <?php echo ($fullName = ucwords(userdata('username'))) ? $fullName : 'Welcome'; ?>
                                     </p>
                                 </li>
                                 <li class="user-footer">
@@ -227,7 +229,7 @@
 
             </header>
 
-<?php echo $body; ?>
+            <?php echo $body; ?>
             <!-- Builder Body -->
 
         </div><!-- /.container -->
@@ -306,7 +308,7 @@
                         <span>OR</span>
                     </p>
 
-                    <a href="#imageModal" data-toggle="modal" type="button" class="btn btn-default btn-embossed btn-block margin-bottom-20"><span class="fui-image"></span> Use Image Library</a>
+                    <a href="#imageModal" data-toggle="modal" type="button" class="btn btn-default btn-embossed btn-block margin-bottom-20"><span class="fui-image"></span> <?php echo $this->lang->line('modal_imagelibrary') ?></a>
 
                 </div><!-- /.tab-pane -->
 
@@ -634,10 +636,16 @@
                     <label>Vimeo video ID:</label>
 
                     <input type="text" class="form-control margin-bottom-20" id="vimeoID" placeholder="Enter a Vimeo video ID" value="">
+                    
+                    <p class="text-center or">
+                        <span>OR</span>
+                    </p>
+                    <input type="text" class="form-control" id="videoURL" placeholder="Enter an video URL" value="">
+                    <a href="#videoModal" data-toggle="modal" type="button" class="btn btn-default btn-embossed btn-block margin-bottom-20"><span class="fui-video"></span> <?php echo $this->lang->line('modal_videolibrary') ?></a>
 
                 </div><!-- /.tab-pane -->
-                
-                <div class="tab-pane videoTab" id="map_Tab">
+
+                <div class="tab-pane " id="map_Tab">
 
                     <label>Enter Address:</label>
 
@@ -671,7 +679,7 @@
         <!-- modals -->
 
         <!-- Site setting popup-->
-<?php $this->load->view("shared/modal_sitesettings.php"); ?> 
+        <?php $this->load->view("shared/modal_sitesettings.php"); ?> 
 
         <!-- export Project popup -->
         <div class="modal fade in" id="projModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -741,64 +749,6 @@
 
 
         </div>
-
-        <!-- export HTML popup -->
-        <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-hidden="true">
-
-            <!-- 
-            
-            NOTE: 
-            The export PHP files can be hosted on any server supporting PHP, so these files can be hosted on a different location as the BUILDER (this might be easier for your end customers, so they won't have to worry about hosting PHP files)
-            
-            -->
-
-            <form action="<?php echo base_url(); ?>save.php" target="_blank" id="markupForm" method="post" class="form-horizontal">
-
-                <input type="hidden" name="markup" value="" id="markupField">
-
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="myModalLabel"><span class="fui-export"></span> Export Your Markup</h4>
-                        </div>
-                        <div class="modal-body">
-
-                            <div class="form-group" style="margin-top:20px;">
-                                <label for="title" class="col-sm-12 control-label">Page Title</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="Title">
-                                </div>
-                                <label for="meta-description" class="col-sm-12 control-label">Page Meta Description</label>
-                                <div class="col-sm-12">
-                                    <textarea class="form-control" name="meta-description" id="meta-description" placeholder="meta-description"></textarea>
-                                </div>
-                                <label for="meta-keywords" class="col-sm-12 control-label">Page Meta Keywords</label>
-                                <div class="col-sm-12">
-                                    <textarea class="form-control" name="meta-keywords" id="meta-keywords" placeholder="meta-keywords"></textarea>
-                                </div>
-                                <label for="js-include" class="col-sm-12 control-label">Page js include</label>
-                                <div class="col-sm-12">
-                                    <textarea class="form-control" name="js-include" id="js-include" placeholder="js-include"></textarea>
-                                </div>
-                                <label for="switch-04" class="col-sm-2 control-label">Preloader</label>
-                                <div class="col-sm-10 checkbox-middle">
-                                    <input type="checkbox" checked data-toggle="switch" name="preloader" data-on-color="info" id="switch-04" />
-                                </div>
-                            </div>
-
-                        </div><!-- /.modal-body -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default " data-dismiss="modal" id="exportCancel">Cancel & Close</button>
-                            <button type="submit" class="btn btn-primary " id="exportSubmit">Export Now</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-
-            </form>
-
-        </div><!-- /.modal -->
-
 
         <!-- preview HTML popup -->
         <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1001,7 +951,7 @@
 
                         <div class="loader" style="display: none;">
                             <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-                        <?php echo $this->lang->line('modal_pagesettings_loadertext') ?>
+                            <?php echo $this->lang->line('modal_pagesettings_loadertext') ?>
                         </div>
 
                         <div class="modal-alerts"></div>
@@ -1049,7 +999,7 @@
 
                             <div class="alert alert-success">
                                 <h4><?php echo $this->lang->line('modalpublish_success_heading') ?></h4>
-<?php echo $this->lang->line('modalpublish_success_message') ?>
+                                <?php echo $this->lang->line('modalpublish_success_message') ?>
                             </div>
 
                             <div class="modal-alerts">
@@ -1059,7 +1009,7 @@
                             <div class="alert alert-info" style="display: none;" id="publishPendingChangesMessage">
                                 <h4><?php echo $this->lang->line('modalpublish_pendingchanges_heading') ?></h4>
                                 <p>
-<?php echo $this->lang->line('modalpublish_pendingchanges_message') ?>
+                                    <?php echo $this->lang->line('modalpublish_pendingchanges_message') ?>
                                 </p>
                                 <button type="button" class="btn btn-info btn-wide save"><?php echo $this->lang->line('modalpublish_pendingchanges_button_savechanges') ?></button>
                             </div>
@@ -1104,7 +1054,7 @@
         </div><!-- /.modal -->
 
         <!-- Image Gallery Modal -->
-        <div class="modal fade imageModal" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade " id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1115,7 +1065,7 @@
 
                         <div class="loader" style="display: none;">
                             <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-<?php echo $this->lang->line('modal_imagelibrary_loadertext') ?>
+                            <?php echo $this->lang->line('modal_imagelibrary_loadertext') ?>
                         </div>
 
                         <div class="modal-alerts">
@@ -1135,17 +1085,17 @@
 
                                     <?php if (isset($userImages)): ?>
 
-    <?php $this->load->view("partials/myimages.php", array('userImages' => $userImages)); ?>
+                                        <?php $this->load->view("partials/myimages.php", array('userImages' => $userImages)); ?>
 
-                                        <?php else: ?>
+                                    <?php else: ?>
 
                                         <!-- Alert Info -->
                                         <div class="alert alert-info">
                                             <button type="button" class="close fui-cross" data-dismiss="alert"></button>
-    <?php echo $this->lang->line('modal_imagelibrary_message_noimages'); ?>
+                                            <?php echo $this->lang->line('modal_imagelibrary_message_noimages'); ?>
                                         </div>
 
-<?php endif; ?>
+                                    <?php endif; ?>
 
                                 </div><!-- /.tab-pane -->
 
@@ -1157,11 +1107,11 @@
                                             <div id="fileinput-preview" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
                                             <div>
                                                 <span class="btn btn-primary btn-embossed btn-file">
-                                                    <span class="fileinput-new"><span class="fui-image"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_selectimage') ?></span>
-                                                    <span class="fileinput-exists"><span class="fui-gear"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_change') ?></span>
+                                                    <span class="fileinput-new new"><span class="fui-image"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_selectimage') ?></span>
+                                                    <span class="fileinput-exists exists"><span class="fui-gear"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_change') ?></span>
                                                     <input type="file" name="imageFile" id="imageFile" >
                                                 </span>
-                                                <a href="#" class="btn btn-primary btn-embossed fileinput-exists" data-dismiss="fileinput"><span class="fui-trash"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_remove') ?></a>
+                                                <a href="#" class="btn btn-primary btn-embossed fileinput-exists exists" data-dismiss="fileinput"><span class="fui-trash"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_remove') ?></a>
                                             </div>
                                         </div>
 
@@ -1170,6 +1120,91 @@
                                     <hr>
 
                                     <button type="button" class="btn btn-primary btn-embossed btn-wide upload btn-block disabled" id="uploadImageButton"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_imagelibrary_button_upload') ?></button>
+                                    <button type="button" class="btn btn-primary btn-embossed btn-wide upload btn-block disabled" id="uploadImageButtonDrop"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_imagelibrary_button_upload') ?></button>
+
+                                </div><!-- /.tab-pane -->
+
+                            </div> <!-- /tab-content -->
+
+                        </div>
+
+                    </div><!-- /.modal-body -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal"><?php echo $this->lang->line('modal_cancelclose') ?></button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+
+        </div><!-- /.modal -->
+        
+        <!-- Video Gallery Modal -->
+        <div class="modal fade imageModal" id="videoModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo $this->lang->line('modal_close') ?></span></button>
+                        <h4 class="modal-title" id="myModalLabel"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_videolibrary_heading') ?></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="loader" style="display: none;">
+                            <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
+                            <?php echo $this->lang->line('modal_videolibrary_loadertext') ?>
+                        </div>
+
+                        <div class="modal-alerts">
+
+                        </div>
+
+                        <div class="modal-body-content">
+
+                            <ul class="nav nav-tabs nav-append-content">
+                                <li class="active"><a href="#myVideosTab"><?php echo $this->lang->line('modal_videolibrary_tab_myvideos') ?></a></li>
+                                <li id="uploadTabLI"><a href="#uploadVideoTab"><?php echo $this->lang->line('modal_videolibrary_tab_uploadvideo') ?></a></li>
+                            </ul> <!-- /tabs -->
+
+                            <div class="tab-content">
+
+                                <div class="tab-pane active" id="myVideosTab">
+
+                                    <?php if (isset($userVideos)): ?>
+
+                                        <?php $this->load->view("partials/myvideos.php", array('userVideos' => $userVideos, 'bucket'=>$bucket)); ?>
+
+                                    <?php else: ?>
+
+                                        <!-- Alert Info -->
+                                        <div class="alert alert-info">
+                                            <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+                                            <?php echo $this->lang->line('modal_videolibrary_message_novideos'); ?>
+                                        </div>
+
+                                    <?php endif; ?>
+
+                                </div><!-- /.tab-pane -->
+
+                                <div class="tab-pane" id="uploadVideoTab">
+
+                                    <form id="videoUploadForm" action="<?php echo site_url('sites/amazon_services/videoUploadAjax/' . $siteData['site']->sites_id); ?>">
+
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div id="videoinput-preview" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                            <div>
+                                                <span class="btn btn-primary btn-embossed btn-file">
+                                                    <span class="fileinput-new new"><span class="fui-video"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_videolibrary_button_selectvideo') ?></span>
+                                                    <span class="fileinput-exists exists"><span class="fui-gear"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_videolibrary_button_change') ?></span>
+                                                    <input type="file" name="videoFile" id="videoFile" >
+                                                </span>
+                                                <a href="#" class="btn btn-primary btn-embossed fileinput-exists exists" data-dismiss="fileinput"><span class="fui-trash"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_videolibrary_button_remove') ?></a>
+                                            </div>
+                                        </div>
+
+                                    </form>
+
+                                    <hr>
+
+                                    <button type="button" class="btn btn-primary btn-embossed btn-wide upload btn-block disabled" id="uploadVideoButton"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_videolibrary_button_upload') ?></button>
+                                    <button type="button" class="btn btn-primary btn-embossed btn-wide upload btn-block disabled" id="uploadVideoButtonDrop"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_videolibrary_button_upload') ?></button>
 
                                 </div><!-- /.tab-pane -->
 
@@ -1221,10 +1256,11 @@
         <script src="<?php echo base_url('assets/sites'); ?>/js/scrollbar/jquery.nicescroll.min.js"></script>
         <script src="<?php echo base_url('assets/sites/js/bootstrap-switch.min.js'); ?>"></script>
         <script src="<?php echo base_url('assets/js/adminlte.js'); ?>"></script>
+        <script src="<?php echo base_url('elements/scripts/html5gallery.js'); ?>" type="text/javascript" ></script>
 
         <!-- Loading Elements JS -->
-<!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');  ?>"></script> 
-        <script src="<?php // echo base_url('elements/scripts/bootstrap.min.js');  ?>"></script> -->
+<!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');    ?>"></script> 
+        <script src="<?php // echo base_url('elements/scripts/bootstrap.min.js');    ?>"></script> -->
         <script src="<?php echo base_url('elements/scripts/jquery.validate.min.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/smoothscroll.js'); ?>"></script> 
         <script src="<?php echo base_url('elements/scripts/jquery.smooth-scroll.min.js'); ?>"></script> 
@@ -1272,11 +1308,9 @@
 
                     //make sortable
 
-    //                    $('#pageList > ul').each(function() {
-    //
-    //                        makeSortable($(this));
-    //
-    //                    });
+                    $('#pageList > ul').each(function() {
+                        makeSortable($(this));
+                    });
 
                     $('#pageList li > section').each(function() {
 
@@ -1284,12 +1318,9 @@
                         //add height to frames array
                         $(this).css('height', theHeight + "px");
 
-    //                        $(this).css('background', '#ffffff url(<?php // echo base_url('assets/sites/images/loading.gif'); ?>) 50% 50% no-repeat');
                         $(this).css('padding', '0px');
                         $(this).css('z-index', '0');
-    //                        $(this).load(function() {
                         heightAdjustment($(this).attr('id'), true);
-    //                        });
 
                         //add a delete button
                         delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> remove</button>');
@@ -1312,206 +1343,342 @@
 <?php endif; ?>
 
             });
-            
-(function() {
 
- // file drag hover
- function FileDragHover(e) {
-  e.stopPropagation();
-  e.preventDefault();
-  e.target.className = (e.type == "dragover" ? "hover fileinput-preview thumbnail" : "fileinput-preview thumbnail");
- }
+            (function() {
 
-
- // file selection
- function FileSelectHandler(e) {
-
-  $("#uploadImageButton").hide();
-  $("#uploadImageButtonDrop").css("display", "block");
-  $(".exists").css("display", "inline");
-  $(".new").css("display", "none");
-  
-  // cancel event and hover styling
-  FileDragHover(e);
-
-  // fetch FileList object
-  files = e.target.files || e.dataTransfer.files;
- 
-  // process all File objects
-  for (var i = 0, f; f = files[i]; i++) {
-   ParseFile(f);
-  }
-
- }
-
- $('button#uploadImageButtonDrop').click(function() {
- 
-  // START A LOADING SPINNER HERE
-
-  //remove old alerts
-  $('#imageModal .modal-alerts > *').remove();
-
-  //disable button
-  $('button#uploadImageButton').addClass('disable');
-
-  //show loader
-  $('#imageModal .loader').fadeIn(500);
-   
-  // Create a formdata object and add the files
-  
-  for (var i = 0; i < files.length; i++) 
-  {
-   var form = $('form#imageUploadForm');
-
-            var formdata = false;
-
-            if (window.FormData) {
-                fd = new FormData(form[0]);
-            }
-   
-   fd.append('imageFile', files[i]);
-
-   sendFileToServer(fd);
-
-  }
- });
-  
-  function sendFileToServer(formData)
-  {
-   var form = $('form#imageUploadForm');
-
-            var formAction = form.attr('action');
-   
-   var extraData ={}; //Extra Data.
-   $.ajax({
-    url: formAction,
-    type: "POST",
-    contentType:false,
-    processData: false,
-    cache: false,
-    dataType: "json",
-    data: formData ? formData : form.serialize(),
-   }).done(function(ret) {
-
-                //enable button
-                $('button#uploadImageButtonDrop').addClass('disable');
-
-                //hide loader
-                $('#imageModal .loader').fadeOut(500);
-
-                if (ret.responseCode == 0) {//error
-
-                    $('#imageModal .modal-alerts').append($(ret.responseHTML));
-
-                } else if (ret.responseCode == 1) {//success
-
-                    //append my images
-                    $('#myImagesTab > *').remove();
-                    $('#myImagesTab').append($(ret.myImages));
-
-                    $('#imageModal .modal-alerts').append($(ret.responseHTML));
-
-                    setTimeout(function() {
-                        $('#imageModal .modal-alerts > *').fadeOut(500);
-                    }, 3000);
-
-                    $('#uploadTab').find('a.fileinput-exists').click();
+                // file drag hover
+                function FileDragHover(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    e.target.className = (e.type == "dragover" ? "hover fileinput-preview thumbnail" : "fileinput-preview thumbnail");
                 }
 
-            });
- 
-   
-   $("#fileinput-preview").html(
-      '<img src="" />'
-     );
-   $("#uploadImageButton").show();
-   $("#uploadImageButtonDrop").css("display", "none");
-   $(".new").css("display", "inline");
-   $(".exists").css("display", "none");
-  }
- 
 
- // output file information
- function ParseFile(file) {
+                // file selection
+                function ImageSelectHandler(e) {
 
-  // display an image
-  if (file.type.indexOf("image") == 0) {
-   var reader = new FileReader();
-   reader.onload = function(e) {
-    $("#fileinput-preview").html(
-     '<img src="' + e.target.result + '" />'
-    );
-                //$('#imageFile').prop("files", e.originalEvent.dataTransfer.files);
-   };
-            
-            $('button#uploadImageButtonDrop').removeClass('disabled');
-   
-   reader.readAsDataURL(file);
-  }
- }
+                    $("#uploadImageButton").hide();
+                    $("#uploadImageButtonDrop").css("display", "block");
+                    $(".exists").css("display", "inline");
+                    $(".new").css("display", "none");
+
+                    // cancel event and hover styling
+                    FileDragHover(e);
+
+                    // fetch FileList object
+                    files = e.target.files || e.dataTransfer.files;
+
+                    // process all File objects
+                    for (var i = 0, f; f = files[i]; i++) {
+                        ParseFile(f);
+                    }
+
+                }
+                function VideoSelectHandler(e) {
+
+                    $("#uploadVideoButton").hide();
+                    $("#uploadVideoButtonDrop").css("display", "block");
+                    $(".exists").css("display", "inline");
+                    $(".new").css("display", "none");
+
+                    // cancel event and hover styling
+                    FileDragHover(e);
+
+                    // fetch FileList object
+                    files = e.target.files || e.dataTransfer.files;
+
+                    // process all File objects
+                    for (var i = 0, f; f = files[i]; i++) {
+                        ParseFile(f);
+                    }
+
+                }
+
+                $('button#uploadImageButtonDrop').click(function() {
+
+                    // START A LOADING SPINNER HERE
+
+                    //remove old alerts
+                    $('#imageModal .modal-alerts > *').remove();
+
+                    //disable button
+                    $('button#uploadImageButton').addClass('disable');
+
+                    //show loader
+                    $('#imageModal .loader').fadeIn(500);
+
+                    // Create a formdata object and add the files
+
+                    for (var i = 0; i < files.length; i++)
+                    {
+                        var form = $('form#imageUploadForm');
+
+                        var formdata = false;
+
+                        if (window.FormData) {
+                            fd = new FormData(form[0]);
+                        }
+
+                        fd.append('imageFile', files[i]);
+
+                        sendFileToServer(fd);
+
+                    }
+                });
+                
+                $('button#uploadVideoButtonDrop').click(function() {
+
+                    // START A LOADING SPINNER HERE
+
+                    //remove old alerts
+                    $('#videoModal .modal-alerts > *').remove();
+
+                    //disable button
+                    $('button#uploadVideoButton').addClass('disable');
+
+                    //show loader
+                    $('#videoModal .loader').fadeIn(500);
+
+                    // Create a formdata object and add the files
+
+                    for (var i = 0; i < files.length; i++)
+                    {
+                        var form = $('form#videoUploadForm');
+
+                        var formdata = false;
+
+                        if (window.FormData) {
+                            fd = new FormData(form[0]);
+                        }
+
+                        fd.append('videoFile', files[i]);
+
+                        sendVideoToServer(fd);
+
+                    }
+                });
+
+                function sendFileToServer(formData)
+                {
+                    var form = $('form#imageUploadForm');
+
+                    var formAction = form.attr('action');
+
+                    var extraData = {}; //Extra Data.
+                    $.ajax({
+                        url: formAction,
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        dataType: "json",
+                        data: formData ? formData : form.serialize(),
+                    }).done(function(ret) {
+
+                        //enable button
+                        $('button#uploadImageButtonDrop').addClass('disable');
+
+                        //hide loader
+                        $('#imageModal .loader').fadeOut(500);
+
+                        if (ret.responseCode == 0) {//error
+
+                            $('#imageModal .modal-alerts').append($(ret.responseHTML));
+
+                        } else if (ret.responseCode == 1) {//success
+
+                            //append my images
+                            $('#myImagesTab > *').remove();
+                            $('#myImagesTab').append($(ret.myImages));
+
+                            $('#imageModal .modal-alerts').append($(ret.responseHTML));
+
+                            setTimeout(function() {
+                                $('#imageModal .modal-alerts > *').fadeOut(500);
+                            }, 3000);
+
+                            $('#uploadTab').find('a.fileinput-exists').click();
+                        }
+
+                    });
 
 
- // initialize
- function Init() {
+                    $("#fileinput-preview").html(
+                            '<img src="" />'
+                            );
+                    $("#uploadImageButton").show();
+                    $("#uploadImageButtonDrop").css("display", "none");
+                    $(".new").css("display", "inline");
+                    $(".exists").css("display", "none");
+                }
 
-  var fileselect = document.getElementById("imageFile");
-  var filedrag = document.getElementById("fileinput-preview");
+                function sendVideoToServer(formData)
+                {
+                    var form = $('form#videoUploadForm');
 
-  // file select
+                    var formAction = form.attr('action');
+
+                    $.ajax({
+                        url: formAction,
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        dataType: "json",
+                        data: formData ? formData : form.serialize(),
+                    }).done(function(ret) {
+
+                        //enable button
+                        $('button#uploadVideoButtonDrop').addClass('disable');
+
+                        //hide loader
+                        $('#videoModal .loader').fadeOut(500);
+
+                        if (ret.responseCode == 0) {//error
+
+                            $('#videoModal .modal-alerts').append($(ret.responseHTML));
+
+                        } else if (ret.responseCode == 1) {//success
+
+                            //append my images
+                            $('#myVideosTab > *').remove();
+                            $('#myVideosTab').append($(ret.myVideos));
+
+                            $('#videoModal .modal-alerts').append($(ret.responseHTML));
+
+                            setTimeout(function() {
+                                $('#videoModal .modal-alerts > *').fadeOut(500);
+                            }, 3000);
+
+                            $('#uploadVideoTab').find('a.fileinput-exists').click();
+                        }
+
+                    });
+
+
+                    $("#fileinput-preview").html(
+                            ''
+                            );
+                    $("#uploadVideoButton").show();
+                    $("#uploadVideoButtonDrop").css("display", "none");
+                    $(".new").css("display", "inline");
+                    $(".exists").css("display", "none");
+                }
+
+
+                // output file information
+                function ParseFile(file) {
+
+                    // display an image
+                    if (file.type.indexOf("image") == 0) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $("#fileinput-preview").html(
+                                    '<img src="' + e.target.result + '" />'
+                                    );
+                            //$('#imageFile').prop("files", e.originalEvent.dataTransfer.files);
+                        };
+
+                        $('button#uploadImageButtonDrop').removeClass('disabled');
+
+                        reader.readAsDataURL(file);
+                    }
+                    if (file.type.indexOf("video") == 0) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $("#videoinput-preview").html(
+                                    '<div class="videoGallery" data-responsive="true" responsivefullscreen="true" data-html5player="true" data-src="' + e.target.result + '" data-showtitle="false" style="display:none;"></div>'
+                            );
+                        };
+                        $(".videoGallery").html5gallery();
+                        $('button#uploadVideoButtonDrop').removeClass('disabled');
+
+                        reader.readAsDataURL(file);
+                    }
+                }
+
+
+                // initialize
+                function Init() {
+
+//                    var imageselect = document.getElementById("imageFile");
+                    var imagedrag = document.getElementById("fileinput-preview");
+                    var videodrag = document.getElementById("videoinput-preview");
+
+                    // file select
 //  fileselect.addEventListener("change", FileSelectHandler, true);
 
-  // is XHR2 available?
-  var xhr = new XMLHttpRequest();
-  if (xhr.upload) {
+                    // is XHR2 available?
+                    var xhr = new XMLHttpRequest();
+                    if (xhr.upload) {
 
-   // file drop
-   filedrag.addEventListener("dragover", FileDragHover, false);
-   filedrag.addEventListener("dragleave", FileDragHover, false);
-   filedrag.addEventListener("drop", FileSelectHandler, false);
-   //filedrag.style.display = "block";
-   
-  }
+                        // file drop
+                        imagedrag.addEventListener("dragover", FileDragHover, false);
+                        imagedrag.addEventListener("dragleave", FileDragHover, false);
+                        imagedrag.addEventListener("drop", ImageSelectHandler, false);
+                        
+                        videodrag.addEventListener("dragover", FileDragHover, false);
+                        videodrag.addEventListener("dragleave", FileDragHover, false);
+                        videodrag.addEventListener("drop", VideoSelectHandler, false);
+                        //filedrag.style.display = "block";
 
- }
+                    }
 
- // call initialization file
- if (window.File && window.FileList && window.FileReader) {
-  Init();
- }
+                }
+
+                // call initialization file
+                if (window.File && window.FileList && window.FileReader) {
+                    Init();
+                }
 
 
-})();
- 
- $(".exists").click(function(){
-  $(".new").css("display", "inline");
-  $(".exists").css("display", "none");
-  $("#uploadImageButtonDrop").css("display", "none");
-  $("#uploadImageButton").show();
- });
- 
- $("#imageFile").click(function(){
-  $('input#imageFile').change(function() {
+            })();
 
-   if ($(this).val() != '') {
-    $(".new").css("display", "none");
-    $(".exists").css("display", "inline");
-    $("#uploadImageButtonDrop").css("display", "none");
-    $("#uploadImageButton").show();
-   }
-  });
- });
- 
+            $(".exists").click(function() {
+                $(".new").css("display", "inline");
+                $(".exists").css("display", "none");
+                $("#uploadImageButtonDrop").css("display", "none");
+                $("#uploadImageButton").show();
+                $("#uploadVideoButtonDrop").css("display", "none");
+                $("#uploadVideoButton").show();
+            });
+
+            $("#imageFile").click(function() {
+                $('input#imageFile').change(function() {
+
+                    if ($(this).val() != '') {
+                        $(".new").css("display", "none");
+                        $(".exists").css("display", "inline");
+                        $("#uploadImageButtonDrop").css("display", "none");
+                        $("#uploadImageButton").show();
+                    }
+                });
+            });
+            
+            $("#videoFile").click(function() {
+                $('input#videoFile').change(function() {
+
+                    if ($(this).val() != '') {
+                        $(".new").css("display", "none");
+                        $(".exists").css("display", "inline");
+                        $("#uploadVideoButtonDrop").css("display", "none");
+                        $("#uploadVideoButton").show();
+                    }
+                });
+            });
+
         </script>
-        <script>
-<?php $this->load->view("shared/js_sitesettings.php"); ?>
-        </script>
-  
-  <style>
-   button#uploadImageButtonDrop{
-    position: relative;
-    display: none;
-   }
-  </style>
+
+        <style>
+            button#uploadImageButtonDrop{
+                position: relative;
+                display: none;
+            }
+            button#uploadVideoButtonDrop{
+                position: relative;
+                display: none;
+            }
+        </style>
         <script>
 <?php $this->load->view("shared/js_sitesettings.php"); ?>
         </script>

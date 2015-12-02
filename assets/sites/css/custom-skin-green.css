@@ -262,3 +262,10 @@ div#pageList ul > li.element.ui-draggable.ui-draggable-handle{
 header .modes {
     margin-left: 232px;
 }
+
+.useImage, .deleteImage, .useVideo, .deleteVideo {
+    display: inline-block;
+    width: 48%;
+    margin-top: 2px;
+    padding: 5px;
+}
