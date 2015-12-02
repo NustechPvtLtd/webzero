@@ -167,7 +167,7 @@ body .btn-file > input[type="file"] {
 	left: -300px;
 	/*top: 0px;*/
 	height: 100%;
-	width: 300px;
+	width: 260px;
 	background: #f9f9f9;
 	z-index: 1000;
 	box-shadow: 6px 0px 1px rgba(0,0,0,0.1);

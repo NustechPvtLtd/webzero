@@ -156,9 +156,14 @@ class Sitemodel extends CI_Model {
 
         $newSiteID = $this->db->insert_id();
 
-
+        $Pagedata = [
+            'sites_id' => $newSiteID,
+            'pages_name' => 'index',
+            'pages_timestamp' => time()
+        ];
         //create empty index page
-
+        $this->db->insert('pages', $Pagedata);
+        
         return $newSiteID;
     }
 
