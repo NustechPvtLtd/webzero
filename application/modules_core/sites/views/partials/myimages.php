@@ -16,6 +16,7 @@
 		?>
 	
 		<button type="button" class="btn btn-info btn-embossed btn-block btn-sm useImage" data-url="<?php echo $dataUrl;?>/<?php echo userdata('user_id');?>/<?php echo $img;?>"><span class="fui-export"></span> <?php echo $this->lang->line('modal_imagelibrary_button_insertimage')?></button>
+		<button type="button" class="btn btn-danger btn-embossed btn-block btn-sm deleteImage" data-url="<?php echo $dataUrl;?>/<?php echo userdata('user_id');?>/<?php echo $img;?>"><span class="fui-cross"></span> <?php echo $this->lang->line('modal_imagelibrary_button_deleteimage')?></button>
 	</div>
 	
 </div><!-- /.image -->

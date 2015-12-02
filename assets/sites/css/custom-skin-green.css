@@ -259,6 +259,7 @@ div#pageList ul > li.element.ui-draggable.ui-draggable-handle{
  padding:6px;
 }
 
+<<<<<<< HEAD
 header .modes{
     margin-left: 247px;
 }
@@ -274,4 +275,15 @@ header .modes{
 
 .col-md-5.text-right {
     left: -50px;
+=======
+header .modes {
+    margin-left: 232px;
+}
+
+.useImage, .deleteImage, .useVideo, .deleteVideo {
+    display: inline-block;
+    width: 48%;
+    margin-top: 2px;
+    padding: 5px;
+>>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
 }

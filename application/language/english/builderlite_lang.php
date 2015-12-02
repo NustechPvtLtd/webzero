@@ -231,6 +231,7 @@ $lang['modal_pendingchanges_button_leave'] = "Leave the page";
 
 $lang['modal_editcontent_updatecontent'] = "Update Content";
 
+$lang['modal_imagelibrary'] = "Use Image Library";
 $lang['modal_imagelibrary_heading'] = "Image Library";
 $lang['modal_imagelibrary_loadertext'] = "Uploading image...";
 $lang['modal_imagelibrary_tab_myimages'] = "My Images";
@@ -243,7 +244,24 @@ $lang['modal_imagelibrary_button_remove'] = "Remove";
 $lang['modal_imagelibrary_button_upload'] = "Upload Image";
 $lang['modal_imagelibrary_ribbon_admin'] = "Admin";
 $lang['modal_imagelibrary_button_insert'] = "Insert Image";
-$lang['modal_imagelibrary_button_insertimage'] = "Insert Image";
+$lang['modal_imagelibrary_button_insertimage'] = "Insert";
+$lang['modal_imagelibrary_button_deleteimage'] = "Delete";
+
+$lang['modal_videolibrary'] = "Use Video Library";
+$lang['modal_videolibrary_heading'] = "Video Library";
+$lang['modal_videolibrary_loadertext'] = "Uploading video...";
+$lang['modal_videolibrary_tab_myvideos'] = "My Videos";
+$lang['modal_videolibrary_tab_uploadvideo'] = "Upload Video";
+$lang['modal_videolibrary_tab_othervideos'] = "Other Videos";
+$lang['modal_videolibrary_message_novideos'] = "You currently have no videos uploaded. To upload videos, please use the upload panel on your left.";
+$lang['modal_videolibrary_button_selectvideo'] = "Select Video";
+$lang['modal_videolibrary_button_change'] = "Change";
+$lang['modal_videolibrary_button_remove'] = "Remove";
+$lang['modal_videolibrary_button_upload'] = "Upload Video";
+$lang['modal_videolibrary_ribbon_admin'] = "Admin";
+$lang['modal_videolibrary_button_insert'] = "Insert Video";
+$lang['modal_videolibrary_button_insertvideo'] = "Insert";
+$lang['modal_videolibrary_button_deletevideo'] = "Delete";
 
 $lang['modal_documentlibrary_heading'] = "Document Library";
 $lang['modal_documentlibrary_loadertext'] = "Uploading Document...";
@@ -361,6 +379,14 @@ $lang['assets_imageUploadAjax_error1_message'] = "Something went wrong when tryi
 
 $lang['assets_imageUploadAjax_success_heading'] = "All set!";
 $lang['assets_imageUploadAjax_success_message'] = "Your image was uploaded successfully and can now be found under the 'My Images' tab.";
+
+
+// controllers/amazon_services.php -> videoUploadAjax()
+$lang['assets_videoUploadAjax_error1_heading'] = "Ouch! Something went wrong:";
+$lang['assets_videoUploadAjax_error1_message'] = "Something went wrong when trying to upload your video, please see the details below:<br>";
+
+$lang['assets_videoUploadAjax_success_heading'] = "All set!";
+$lang['assets_videoUploadAjax_success_message'] = "Your video was uploaded successfully and can now be found under the 'My Videos' tab.";
 
 
 // controllers/configuration.php -> connect()

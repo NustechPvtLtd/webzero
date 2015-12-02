@@ -38,6 +38,11 @@
 	<![endif]-->
 	
 	<?php if(isset($css)) echo implode("\n", $css) . "\n";?>
+    <style>
+        header {
+            padding: 0;
+        }
+    </style>
 </head>
 <body class="skin-green">
     <header class="header">
@@ -201,6 +206,7 @@
 	    <script src="<?php echo base_url();?>assets/sites/js/jquery.zoomer.js" type="text/javascript" defer="defer"></script>
 	    <script src="<?php echo base_url();?>assets/sites/js/application.js" type="text/javascript" defer="defer"></script>
         <script src="<?php echo base_url();?>assets/js/adminlte.js" type="text/javascript" defer="defer"></script>
+        <script src="<?php echo base_url();?>assets/html5gallery/html5gallery.js" type="text/javascript" ></script>
         <?php if(isset($js)) echo implode("\n", $js) . "\n";?>
         <script>
                 var baseUrl = "<?php echo base_url();?>";

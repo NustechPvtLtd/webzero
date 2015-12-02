@@ -20,6 +20,8 @@ class Sites extends MY_Controller {
         $this->load->model('sites/pagemodel');
         $this->load->model('domain/domainmodel');
         $this->load->model('domain/users_domains_model');
+        $this->load->model('sites/media_storage_model');
+        $this->load->library('s3');	
 
         $this->data['pageTitle'] = "JadooWeb Builder";
         $this->data['title'] = $this->router->fetch_method();
@@ -223,12 +225,28 @@ class Sites extends MY_Controller {
             $userID = userdata('user_id');
 
             $userImages = $this->usermodel->getUserImages($userID);
+            $bucket = $this->media_storage_model->getBucketByType($userID, 'video');
+            if(!$bucket){
+                $bucket = 'mumbaistreet';
+            } else {
+                $bucket = $bucket->bucket_name;
+            }
+            $uri = $this->media_storage_model->getUriByType($userID, 'video');
+            if($uri){
+                $uri = $uri->uri;
+                $userVideos = $this->s3->getBucket($bucket,$uri);
+                if ($userVideos) {
+                    $this->data['userVideos'] = $userVideos;
+                }
+            } 
+            
             
             if ($userImages) {
                 $this->data['userImages'] = $userImages;
             }
-
-
+            
+            $this->data['bucket'] = $bucket;
+            
             $adminImages = $this->sitemodel->adminImages();
 
             if ($adminImages) {
