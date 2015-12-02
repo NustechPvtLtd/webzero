@@ -47,6 +47,10 @@ editableItems['.carousel-control .arrow'] = ['border-radius', 'border-color', 'b
 editableItems['.num-icon'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.countdown'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.border-block'] = ['font-size', 'font-family', 'color', 'background-color', 'border-color', 'border-width', 'border-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
+editableItems['.tableWrapper'] = [];
+editableItems['.data-list'] = [];
+editableItems['.drag'] = [];
+editableItems['.data-list-alt'] = [];
 
 var editableItemOptions = new Array();
 
@@ -74,7 +78,7 @@ editableItemOptions['.container-half : background-size'] = ['cover', 'contain', 
 editableItemOptions['.container-half : background-attachment'] = ['fixed', 'scroll'];
 editableItemOptions['.container-half : background-position'] = ['top', 'right', 'bottom', 'left', 'left top', 'right top', 'right bottom', 'left bottom'];
 
-var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.download-btn', '.footer a:not(.icon)', '.tableWrapper', '.item-list-left li', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p'];
+var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.download-btn', '.footer a:not(.icon)', '.tableWrapper', '.item-list-left li', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p', 'a:not(.icon)', 'a:not(.image)'];
 
 var editContForAnim = ['section', '.icon', 'img', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a.btn, a.download-btn, button.btn, a.goto', '.num-icon', '.countdown', '.item-list-right li, .item-list-left li, .item-list-center li', '#testimonials-grid .quote, .pricing-table, .pricing-table .stamp, .post, .panel, .panel-heading, .form-container, .post-content .price-circle', '.step-left-block li, .step-center-block li, .step-path-block li', '.diagram .column span', '.diagram-horizontal .column span', '.item-list-border li', '.border-block'];
 
@@ -98,7 +102,7 @@ for (var i = 0; i < editContForAnim.length; i++) {
     ];
 }
 
-$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+
 
 /* FLAT UI PRO INITS */
 
@@ -430,12 +434,12 @@ function makeSortable(el) {
                             url: ui.item.find('section:first').attr('data-originalurl'),
                             beforeSend: function() {
                                 ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                                $.blockUI();
+
                             },
                             success: function(data) {
                                 ui.item.find('section:first').css('background-image', 'none');
                                 ui.item.find('section:first').html(data);
-                                $.unblockUI();
+
                             }
                         });
                     } else {
@@ -446,12 +450,12 @@ function makeSortable(el) {
                             url: ui.item.find('section:first').attr('data-originalurl'),
                             beforeSend: function() {
                                 ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                                $.blockUI();
+
                             },
                             success: function(data) {
                                 ui.item.find('section:first').css('background-image', 'none');
                                 ui.item.find('section:first').html(data);
-                                $.unblockUI();
+
                             }
                         });
                     }
@@ -490,12 +494,12 @@ function makeSortable(el) {
                             url: ui.item.find('section:first').attr('data-originalurl'),
                             beforeSend: function() {
                                 ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                                $.blockUI();
+
                             },
                             success: function(data) {
                                 ui.item.find('section:first').css('background-image', 'none');
                                 ui.item.find('section:first').html(data);
-                                $.unblockUI();
+
                             }
                         });
                     } else {
@@ -506,12 +510,11 @@ function makeSortable(el) {
                             url: ui.item.find('section:first').attr('data-originalurl'),
                             beforeSend: function() {
                                 ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                                $.blockUI();
+
                             },
                             success: function(data) {
                                 ui.item.find('section:first').css('background-image', 'none');
                                 ui.item.find('section:first').html(data);
-                                $.unblockUI();
                             }
                         });
                     }
@@ -554,7 +557,9 @@ function makeSortable(el) {
                 });
 
             }
-
+			setTimeout(function(){
+				$(".videoGallery").html5gallery();
+			}, 1000);
             setPendingChanges(true);
 
         },
@@ -598,12 +603,12 @@ $('#second #elements').on('click', 'li', function() {
         url: el.find('section').attr('data-originalurl'),
         beforeSend: function() {
             el.find('section').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-//            $.blockUI();
+
         },
         success: function(data) {
             el.find('section').css('background-image', 'none');
             el.find('section').html(data);
-//            $.unblockUI();
+
         }
     }).done(function() {
         el.find('section:first').uniqueId();
@@ -639,7 +644,7 @@ $('#second #elements').on('click', 'li', function() {
         $('#pageList > ul:visible li').each(function() {
             $(this).find('.zoomer-cover > a').remove();
         });
-
+		$(".videoGallery").html5gallery();
         pageEmpty();
         allEmpty();
         $('#start').hide();
@@ -1028,9 +1033,9 @@ function styleClick(el) {
 
         //inject current video ID,check if we're dealing with Youtube or Vimeo
 
-        if ($(el).prev().attr('src').indexOf("vimeo.com") > -1) {//vimeo
+        if ($(el).prev().attr('data-src').indexOf("vimeo.com") > -1) {//vimeo
 
-            match = $(el).prev().attr('src').match(/player\.vimeo\.com\/video\/([0-9]*)/);
+            match = $(el).prev().attr('data-src').match(/player\.vimeo\.com\/video\/([0-9]*)/);
 
             //console.log(match);
 
@@ -1040,7 +1045,7 @@ function styleClick(el) {
         } else {//youtube
 
             var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-            var match = $(el).prev().attr('src').match(regExp);
+            var match = $(el).prev().attr('data-src').match(regExp);
 
             $('#video_Tab input#youtubeID').val(match[1]);
             $('#video_Tab input#vimeoID').val('');
@@ -1125,6 +1130,7 @@ function styleClick(el) {
 
             //update live image
             $(el).attr('src', $(this).attr('data-url'));
+			$(el).parents("a").attr('href', $(this).attr('data-url'));
 
             //update image URL field
             $('input#imageURL').val($(this).attr('data-url'));
@@ -1294,11 +1300,9 @@ function styleClick(el) {
                 processData: false,
                 dataType: "json",
                 type: 'POST',
-                beforeSend: function() {
-                    $.blockUI();
-                }
+                
             }).done(function(response) {
-                $.unblockUI();
+               
                 if (response.code == 1) {//success
 
                     $('input#imageURL').val(response.response);
@@ -1709,8 +1713,8 @@ function activeStyling() {
                 e.stopPropagation();
                 if ($(this).closest('div#wrap').width() != $(this).width()) {
                     $(this).css({'outline': '3px dotted red', 'cursor': 'pointer'});
-                    if (!$('div.container ul li').is(".ui-resizable")) {
-                        $('div.container ul li').resizable();
+                    if (!$('div.container>ul>li').is(".ui-resizable")) {
+                        $('div.container>ul>li').resizable();
                     }
                     if ($(this).prop('tagName') == 'IMG') {
                         if (!$(this).is(".ui-resizable")) {
@@ -2079,7 +2083,10 @@ $(function() {
                     });
                 }
             });
-
+			
+			// spcl for portfolio templates
+			$(".portfolio-list span").css("display", "block");
+			
             //deactivate designmode
             $('#pageList ul li section').each(function() {
 
@@ -2092,7 +2099,7 @@ $(function() {
                 this.designMode = "off";
 
             });
-
+			
             $('#pageList ul li section').each(function() {
 
                 //remove old click events
@@ -2214,6 +2221,7 @@ $(function() {
             });
 
         } else if ($(this).val() == 'styling') {
+		
 
             //hide all section covers and activate designMode
 
@@ -2232,6 +2240,9 @@ $(function() {
             });
             //active styling mode
             activeStyling();
+			
+			// spcl for portfolio templates
+			$(".portfolio-list span").css("display", "none");
 
         }
     });
@@ -2448,12 +2459,12 @@ $(function() {
                 beforeSend: function() {
                     frameToReset.html('');
                     frameToReset.css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                    $.blockUI();
+                   
                 },
                 success: function(data) {
                     frameToReset.css('background-image', 'none');
                     frameToReset.html(data);
-                    $.unblockUI();
+                 
                 }
             });
             setPendingChanges(true);
@@ -2638,12 +2649,7 @@ $(function() {
             type: "POST",
             dataType: "json",
             data: theData,
-            beforeSend: function() {
-                $.blockUI();
-            },
-            complete: function() {
-                $.unblockUI();
-            }
+            
         }).done(function(res) {
 
             //enable button
@@ -2715,11 +2721,11 @@ $(function() {
 
                 }
 
-                //remove .frameCovers
+                /*remove .frameCovers
 
                 theContents.find('.frameCover').each(function() {
                     $(this).remove();
-                });
+                }); */
 
                 //remove inline styling leftovers
 
@@ -3313,12 +3319,7 @@ $(function() {
                 type: "POST",
                 dataType: "json",
                 data: 'site_id=' + siteId + '&page_name=' + pageName,
-                beforeSend: function() {
-                    $.blockUI();
-                },
-                complete: function() {
-                    $.unblockUI();
-                }
+                
             }).done(function() {
                 $('#pageList ul:visible').remove();
 
@@ -3477,12 +3478,7 @@ $(function() {
             type: "POST",
             dataType: "json",
             data: {pageData: thePages, siteName: $('#siteTitle').text(), siteID: siteID},
-            beforeSend: function() {
-                $.blockUI();
-            },
-            complete: function() {
-                $.unblockUI();
-            }
+            
         }).done(function(res) {
 
             $('#publishModal .loader').fadeOut(500, function() {
@@ -3775,12 +3771,7 @@ function publishAsset() {
             type: 'post',
             data: theData,
             dataType: 'json',
-            beforeSend: function() {
-                $.blockUI();
-            },
-            complete: function() {
-                $.unblockUI();
-            }
+          
         }).done(function(ret) {
 
             if (ret.responseCode == 0) {//fatal error, publishing will stop

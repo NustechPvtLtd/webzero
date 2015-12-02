@@ -1125,7 +1125,7 @@
                         <div class="modal-body-content">
 
                             <ul class="nav nav-tabs nav-append-content">
-                                <li class="active"><a href="#myImagesTab"><?php echo $this->lang->line('modal_imagelibrary_tab_myimages') ?></a></li>
+                                <li id="myImagesTabLI" class="active"><a href="#myImagesTab"><?php echo $this->lang->line('modal_imagelibrary_tab_myimages') ?></a></li>
                                 <li id="uploadTabLI"><a href="#uploadTab"><?php echo $this->lang->line('modal_imagelibrary_tab_uploadimage') ?></a></li>
                             </ul> <!-- /tabs -->
 
@@ -1221,6 +1221,7 @@
         <script src="<?php echo base_url('assets/sites'); ?>/js/scrollbar/jquery.nicescroll.min.js"></script>
         <script src="<?php echo base_url('assets/sites/js/bootstrap-switch.min.js'); ?>"></script>
         <script src="<?php echo base_url('assets/js/adminlte.js'); ?>"></script>
+		<script src="<?php echo base_url('elements/scripts/html5gallery.js'); ?>" type="text/javascript" ></script>
 
         <!-- Loading Elements JS -->
 <!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');  ?>"></script> 
