@@ -98,7 +98,7 @@ for (var i = 0; i < editContForAnim.length; i++) {
     ];
 }
 
-$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+
 
 /* FLAT UI PRO INITS */
 
@@ -430,12 +430,12 @@ function makeSortable(el) {
                             url: ui.item.find('section:first').attr('data-originalurl'),
                             beforeSend: function() {
                                 ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                                $.blockUI();
+                              
                             },
                             success: function(data) {
                                 ui.item.find('section:first').css('background-image', 'none');
                                 ui.item.find('section:first').html(data);
-                                $.unblockUI();
+                               
                             }
                         });
                     } else {
@@ -446,12 +446,12 @@ function makeSortable(el) {
                             url: ui.item.find('section:first').attr('data-originalurl'),
                             beforeSend: function() {
                                 ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                                $.blockUI();
+                               
                             },
                             success: function(data) {
                                 ui.item.find('section:first').css('background-image', 'none');
                                 ui.item.find('section:first').html(data);
-                                $.unblockUI();
+                              
                             }
                         });
                     }
@@ -490,12 +490,12 @@ function makeSortable(el) {
                             url: ui.item.find('section:first').attr('data-originalurl'),
                             beforeSend: function() {
                                 ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                                $.blockUI();
+                              
                             },
                             success: function(data) {
                                 ui.item.find('section:first').css('background-image', 'none');
                                 ui.item.find('section:first').html(data);
-                                $.unblockUI();
+                               
                             }
                         });
                     } else {
@@ -506,12 +506,12 @@ function makeSortable(el) {
                             url: ui.item.find('section:first').attr('data-originalurl'),
                             beforeSend: function() {
                                 ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                                $.blockUI();
+                              
                             },
                             success: function(data) {
                                 ui.item.find('section:first').css('background-image', 'none');
                                 ui.item.find('section:first').html(data);
-                                $.unblockUI();
+                              
                             }
                         });
                     }
@@ -598,12 +598,12 @@ $('#second #elements').on('click', 'li', function() {
         url: el.find('section').attr('data-originalurl'),
         beforeSend: function() {
             el.find('section').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-//            $.blockUI();
+
         },
         success: function(data) {
             el.find('section').css('background-image', 'none');
             el.find('section').html(data);
-//            $.unblockUI();
+
         }
     }).done(function() {
         el.find('section:first').uniqueId();
@@ -1294,11 +1294,9 @@ function styleClick(el) {
                 processData: false,
                 dataType: "json",
                 type: 'POST',
-                beforeSend: function() {
-                    $.blockUI();
-                }
+                
             }).done(function(response) {
-                $.unblockUI();
+              
                 if (response.code == 1) {//success
 
                     $('input#imageURL').val(response.response);
@@ -2448,12 +2446,12 @@ $(function() {
                 beforeSend: function() {
                     frameToReset.html('');
                     frameToReset.css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-                    $.blockUI();
+                 
                 },
                 success: function(data) {
                     frameToReset.css('background-image', 'none');
                     frameToReset.html(data);
-                    $.unblockUI();
+                   
                 }
             });
             setPendingChanges(true);
@@ -2638,12 +2636,7 @@ $(function() {
             type: "POST",
             dataType: "json",
             data: theData,
-            beforeSend: function() {
-                $.blockUI();
-            },
-            complete: function() {
-                $.unblockUI();
-            }
+           
         }).done(function(res) {
 
             //enable button
@@ -3313,12 +3306,7 @@ $(function() {
                 type: "POST",
                 dataType: "json",
                 data: 'site_id=' + siteId + '&page_name=' + pageName,
-                beforeSend: function() {
-                    $.blockUI();
-                },
-                complete: function() {
-                    $.unblockUI();
-                }
+               
             }).done(function() {
                 $('#pageList ul:visible').remove();
 
@@ -3477,12 +3465,7 @@ $(function() {
             type: "POST",
             dataType: "json",
             data: {pageData: thePages, siteName: $('#siteTitle').text(), siteID: siteID},
-            beforeSend: function() {
-                $.blockUI();
-            },
-            complete: function() {
-                $.unblockUI();
-            }
+            
         }).done(function(res) {
 
             $('#publishModal .loader').fadeOut(500, function() {
@@ -3775,12 +3758,7 @@ function publishAsset() {
             type: 'post',
             data: theData,
             dataType: 'json',
-            beforeSend: function() {
-                $.blockUI();
-            },
-            complete: function() {
-                $.unblockUI();
-            }
+           
         }).done(function(ret) {
 
             if (ret.responseCode == 0) {//fatal error, publishing will stop

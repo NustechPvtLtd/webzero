@@ -97,7 +97,7 @@ div.header.skin-green nav.navbar.navbar-static-top div.navbar-right ul.nav.navba
 div.container > header{
     padding: 15px;
     overflow: visible;
-    width: 97%;
+    width: 102%;
 }
 div.container > header{
     padding: 1px;
@@ -217,7 +217,7 @@ div#pageList ul > li.element.ui-draggable.ui-draggable-handle{
     width: auto;
 }
 .btn.btn-default {
-    padding: 5px;
+    padding: 7px;
     border: none;
 }
 
@@ -259,6 +259,19 @@ div#pageList ul > li.element.ui-draggable.ui-draggable-handle{
  padding:6px;
 }
 
-header .modes {
-    margin-left: 232px;
+header .modes{
+    margin-left: 247px;
+}
+
+.btn.btn-default {
+  color: #666;
+  border-color: #ddd;
+}
+
+.text-right{
+	text-align:left;
+}
+
+.col-md-5.text-right {
+    left: -50px;
 }
