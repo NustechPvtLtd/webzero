@@ -47,10 +47,6 @@ editableItems['.carousel-control .arrow'] = ['border-radius', 'border-color', 'b
 editableItems['.num-icon'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.countdown'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.border-block'] = ['font-size', 'font-family', 'color', 'background-color', 'border-color', 'border-width', 'border-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
-editableItems['.tableWrapper'] = [];
-editableItems['.data-list'] = [];
-editableItems['.drag'] = [];
-editableItems['.data-list-alt'] = [];
 
 var editableItemOptions = new Array();
 
@@ -78,7 +74,7 @@ editableItemOptions['.container-half : background-size'] = ['cover', 'contain', 
 editableItemOptions['.container-half : background-attachment'] = ['fixed', 'scroll'];
 editableItemOptions['.container-half : background-position'] = ['top', 'right', 'bottom', 'left', 'left top', 'right top', 'right bottom', 'left bottom'];
 
-var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.download-btn', '.footer a:not(.icon)', '.tableWrapper', '.item-list-left li', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p', 'a:not(.icon)', 'a:not(.image)'];
+var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.download-btn', '.footer a:not(.icon)', '.tableWrapper', '.item-list-left li', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p'];
 
 var editContForAnim = ['section', '.icon', 'img', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a.btn, a.download-btn, button.btn, a.goto', '.num-icon', '.countdown', '.item-list-right li, .item-list-left li, .item-list-center li', '#testimonials-grid .quote, .pricing-table, .pricing-table .stamp, .post, .panel, .panel-heading, .form-container, .post-content .price-circle', '.step-left-block li, .step-center-block li, .step-path-block li', '.diagram .column span', '.diagram-horizontal .column span', '.item-list-border li', '.border-block'];
 
@@ -102,14 +98,6 @@ for (var i = 0; i < editContForAnim.length; i++) {
     ];
 }
 
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
 
 /* FLAT UI PRO INITS */
 
@@ -142,9 +130,7 @@ if (typeof (Storage) !== "undefined") {
 $(window).load(function() {
 
     $('#loader').fadeOut(function() {
-
-//        $('#menu').animate({'left': '-190px'}, 1000);
-
+        $(".videoGallery").html5gallery();
     });
 
 
@@ -423,58 +409,7 @@ function makeSortable(el) {
                             ui.item.find('section:first').css('background-image', 'none');
                             ui.item.find('section:first').html(data);
                         }
-<<<<<<< HEAD
-
-                        ui.item.html('<section src="' + ui.item.find('section:first').attr('src') + '" scrolling="no" frameborder="0" data-originalurl="' + ui.item.find('section:first').attr('src') + '" data-sandbox="' + theID + '" ' + loaderFunction_ + '><section>');
-                        $.ajax({
-                            type: "POST",
-                            url: ui.item.find('section:first').attr('data-originalurl'),
-                            beforeSend: function() {
-                                ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-<<<<<<< HEAD
-                              
-=======
-
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
-                            },
-                            success: function(data) {
-                                ui.item.find('section:first').css('background-image', 'none');
-                                ui.item.find('section:first').html(data);
-<<<<<<< HEAD
-                               
-=======
-
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
-                            }
-                        });
-                    } else {
-
-                        ui.item.html('<section src="' + ui.item.find('section:first').attr('src') + '" scrolling="no" data-originalurl="' + ui.item.find('section:first').attr('src') + '" frameborder="0"><section>');
-                        $.ajax({
-                            type: "POST",
-                            url: ui.item.find('section:first').attr('data-originalurl'),
-                            beforeSend: function() {
-                                ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-<<<<<<< HEAD
-                               
-=======
-
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
-                            },
-                            success: function(data) {
-                                ui.item.find('section:first').css('background-image', 'none');
-                                ui.item.find('section:first').html(data);
-<<<<<<< HEAD
-                              
-=======
-
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
-                            }
-                        });
-                    }
-=======
                     });
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
 
                     ui.item.find('section:first').uniqueId();
                     ui.item.find('section:first').css('height', theHeight + "px");
@@ -496,58 +431,7 @@ function makeSortable(el) {
                             ui.item.find('section:first').css('background-image', 'none');
                             ui.item.find('section:first').html(data);
                         }
-<<<<<<< HEAD
-
-                        ui.item.html('<section src="' + ui.item.find('img').attr('data-srcc') + '" scrolling="no" frameborder="0" data-originalurl="' + ui.item.find('img').attr('data-srcc') + '" data-sandbox="' + theID + '" ' + loaderFunction_ + '><section>');
-                        $.ajax({
-                            type: "POST",
-                            url: ui.item.find('section:first').attr('data-originalurl'),
-                            beforeSend: function() {
-                                ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-<<<<<<< HEAD
-                              
-=======
-
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
-                            },
-                            success: function(data) {
-                                ui.item.find('section:first').css('background-image', 'none');
-                                ui.item.find('section:first').html(data);
-<<<<<<< HEAD
-                               
-=======
-
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
-                            }
-                        });
-                    } else {
-
-                        ui.item.html('<section src="' + ui.item.find('img').attr('data-srcc') + '" scrolling="no"  data-originalurl="' + ui.item.find('img').attr('data-srcc') + '" frameborder="0"><section>');
-                        $.ajax({
-                            type: "POST",
-                            url: ui.item.find('section:first').attr('data-originalurl'),
-                            beforeSend: function() {
-                                ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-<<<<<<< HEAD
-                              
-=======
-
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
-                            },
-                            success: function(data) {
-                                ui.item.find('section:first').css('background-image', 'none');
-                                ui.item.find('section:first').html(data);
-<<<<<<< HEAD
-                              
-=======
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
-                            }
-                        });
-                    }
-
-=======
                     });
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
                     ui.item.find('section:first').uniqueId();
                     ui.item.find('section:first').css('height', theHeight + "px");
                     ui.item.find('section:first').css('padding', '0px');
@@ -577,16 +461,10 @@ function makeSortable(el) {
                     $(this).find(pageContainer).html(frameContents);
                 });
             }
-<<<<<<< HEAD
-			setTimeout(function(){
-				$(".videoGallery").html5gallery();
-			}, 1000);
-=======
             setTimeout(function() {
                 console.log('Video');
                 $(".videoGallery").html5gallery();
             }, 1000);
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
             setPendingChanges(true);
 
         },
@@ -622,26 +500,10 @@ $('#second #elements').on('click', 'li', function() {
         url: el.find('section').attr('data-originalurl'),
         beforeSend: function() {
             el.find('section').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
         },
         success: function(data) {
             el.find('section').css('background-image', 'none');
             el.find('section').html(data);
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
         }
     }).done(function() {
         el.find('section:first').uniqueId();
@@ -672,11 +534,7 @@ $('#second #elements').on('click', 'li', function() {
         $('#pageList > ul:visible li').each(function() {
             $(this).find('.zoomer-cover > a').remove();
         });
-<<<<<<< HEAD
-		$(".videoGallery").html5gallery();
-=======
         $(".videoGallery").html5gallery();
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
         pageEmpty();
         allEmpty();
         $('#start').hide();
@@ -1050,11 +908,6 @@ function styleClick(el) {
         $('input#videoURL').val($(el).prev().attr('data-src'));
         if ($(el).prev().attr('data-src').indexOf("vimeo.com") > -1) {//vimeo
 
-<<<<<<< HEAD
-        if ($(el).prev().attr('data-src').indexOf("vimeo.com") > -1) {//vimeo
-
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
             match = $(el).prev().attr('data-src').match(/player\.vimeo\.com\/video\/([0-9]*)/);
 
             //console.log(match);
@@ -1150,7 +1003,6 @@ function styleClick(el) {
 
             //update live image
             $(el).attr('src', $(this).attr('data-url'));
-			$(el).parents("a").attr('href', $(this).attr('data-url'));
 
             //update image URL field
             $('input#imageURL').val($(this).attr('data-url'));
@@ -1267,70 +1119,7 @@ function styleClick(el) {
 
 
         //do we need to upload an image?
-<<<<<<< HEAD
-        if ($('a#img_Link').css('display') == 'block' && $('input#imageFileField').val() != '') {
-
-            var form = $('form#imageUploadForm');
-
-            var formdata = false;
-
-            if (window.FormData) {
-                formdata = new FormData(form[0]);
-            }
-
-            var formAction = form.attr('action');
-
-            $.ajax({
-                url: formAction,
-                data: formdata ? formdata : form.serialize(),
-                cache: false,
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                type: 'POST',
-                
-            }).done(function(response) {
-<<<<<<< HEAD
-              
-=======
-               
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
-                if (response.code == 1) {//success
-
-                    $('input#imageURL').val(response.response);
-
-                    $(el).attr('src', response.response);
-
-                    //reset the file upload
-                    $('#uploadTab').find('a.fileinput-exists').click();
-
-                    /* SANDBOX */
-
-                    sandboxID = hasSandbox($(el))
-
-                    if (sandboxID) {
-
-                        elementID = $(el).attr('id');
-
-                        $('#' + sandboxID).contents().find('#' + elementID).attr('src', response.response);
-
-                    }
-
-                    /* END SANDBOX */
-
-                } else if (response.code == 0) {//error
-
-                    alert('Something went wrong: ' + response.response);
-
-                }
-
-            });
-
-
-        } else if ($('a#img_Link').css('display') == 'block') {
-=======
         if ($('a#img_Link').css('display') == 'block') {
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
 
             //no image to upload, just a SRC change
             if ($('input#imageURL').val() != '' && $('input#imageURL').val() != $(el).attr('src')) {
@@ -1669,13 +1458,8 @@ function activeStyling() {
                 e.stopPropagation();
                 if ($(this).closest('div#wrap').width() != $(this).width()) {
                     $(this).css({'outline': '3px dotted red', 'cursor': 'pointer'});
-<<<<<<< HEAD
-                    if (!$('div.container>ul>li').is(".ui-resizable")) {
-                        $('div.container>ul>li').resizable();
-=======
                     if (!$('div.container > ul > li').is(".ui-resizable")) {
                         $('div.container > ul > li').resizable();
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
                     }
                     if ($(this).prop('tagName') == 'IMG') {
                         if (!$(this).is(".ui-resizable")) {
@@ -2024,10 +1808,7 @@ $(function() {
                     });
                 }
             });
-			
-			// spcl for portfolio templates
-			$(".portfolio-list span").css("display", "block");
-			
+
             //deactivate designmode
             $('#pageList ul li section').each(function() {
 
@@ -2040,7 +1821,7 @@ $(function() {
                 this.designMode = "off";
 
             });
-			
+
             $('#pageList ul li section').each(function() {
 
                 //remove old click events
@@ -2162,7 +1943,6 @@ $(function() {
             });
 
         } else if ($(this).val() == 'styling') {
-		
 
             //hide all section covers and activate designMode
 
@@ -2181,9 +1961,6 @@ $(function() {
             });
             //active styling mode
             activeStyling();
-			
-			// spcl for portfolio templates
-			$(".portfolio-list span").css("display", "none");
 
         }
     });
@@ -2372,27 +2149,11 @@ $(function() {
                 beforeSend: function() {
                     frameToReset.html('');
                     frameToReset.css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
-<<<<<<< HEAD
-                 
-=======
-<<<<<<< HEAD
-                   
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
                 },
                 success: function(data) {
                     frameToReset.css('background-image', 'none');
                     frameToReset.html('');
                     frameToReset.html(data);
-<<<<<<< HEAD
-                   
-=======
-<<<<<<< HEAD
-                 
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
                 }
             });
             setPendingChanges(true);
@@ -2532,14 +2293,6 @@ $(function() {
             type: "POST",
             dataType: "json",
             data: theData,
-<<<<<<< HEAD
-           
-=======
-<<<<<<< HEAD
-            
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
         }).done(function(res) {
 
             //enable button
@@ -2599,11 +2352,11 @@ $(function() {
 
                 theContents = $(this).find(pageContainer);
 
-                /*remove .frameCovers
+                //remove .frameCovers
 
                 theContents.find('.frameCover').each(function() {
                     $(this).remove();
-                }); */
+                });
 
                 //remove inline styling leftovers
 
@@ -3036,14 +2789,6 @@ $(function() {
                 type: "POST",
                 dataType: "json",
                 data: 'site_id=' + siteId + '&page_name=' + pageName,
-<<<<<<< HEAD
-               
-=======
-<<<<<<< HEAD
-                
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
             }).done(function() {
                 $('#pageList ul:visible').remove();
 
@@ -3202,14 +2947,6 @@ $(function() {
             type: "POST",
             dataType: "json",
             data: {pageData: thePages, siteName: $('#siteTitle').text(), siteID: siteID},
-<<<<<<< HEAD
-            
-=======
-<<<<<<< HEAD
-            
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
         }).done(function(res) {
 
             $('#publishModal .loader').fadeOut(500, function() {
@@ -3638,14 +3375,6 @@ function publishAsset() {
             type: 'post',
             data: theData,
             dataType: 'json',
-<<<<<<< HEAD
-           
-=======
-<<<<<<< HEAD
-          
-=======
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
->>>>>>> d4cd6e7f20ba701f92173a3fd0455c70c220ee54
         }).done(function(ret) {
 
             if (ret.responseCode == 0) {//fatal error, publishing will stop

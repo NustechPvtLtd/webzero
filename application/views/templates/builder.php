@@ -636,7 +636,7 @@
                     <label>Vimeo video ID:</label>
 
                     <input type="text" class="form-control margin-bottom-20" id="vimeoID" placeholder="Enter a Vimeo video ID" value="">
-                    
+
                     <p class="text-center or">
                         <span>OR</span>
                     </p>
@@ -1075,7 +1075,7 @@
                         <div class="modal-body-content">
 
                             <ul class="nav nav-tabs nav-append-content">
-                                <li id="myImagesTabLI" class="active"><a href="#myImagesTab"><?php echo $this->lang->line('modal_imagelibrary_tab_myimages') ?></a></li>
+                                <li class="active"><a href="#myImagesTab"><?php echo $this->lang->line('modal_imagelibrary_tab_myimages') ?></a></li>
                                 <li id="uploadTabLI"><a href="#uploadTab"><?php echo $this->lang->line('modal_imagelibrary_tab_uploadimage') ?></a></li>
                             </ul> <!-- /tabs -->
 
@@ -1136,7 +1136,7 @@
             </div><!-- /.modal-dialog -->
 
         </div><!-- /.modal -->
-        
+
         <!-- Video Gallery Modal -->
         <div class="modal fade imageModal" id="videoModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
@@ -1169,7 +1169,7 @@
 
                                     <?php if (isset($userVideos)): ?>
 
-                                        <?php $this->load->view("partials/myvideos.php", array('userVideos' => $userVideos, 'bucket'=>$bucket)); ?>
+                                        <?php $this->load->view("partials/myvideos.php", array('userVideos' => $userVideos, 'bucket' => $bucket)); ?>
 
                                     <?php else: ?>
 
@@ -1256,15 +1256,11 @@
         <script src="<?php echo base_url('assets/sites'); ?>/js/scrollbar/jquery.nicescroll.min.js"></script>
         <script src="<?php echo base_url('assets/sites/js/bootstrap-switch.min.js'); ?>"></script>
         <script src="<?php echo base_url('assets/js/adminlte.js'); ?>"></script>
-<<<<<<< HEAD
-		<script src="<?php echo base_url('elements/scripts/html5gallery.js'); ?>" type="text/javascript" ></script>
-=======
         <script src="<?php echo base_url('elements/scripts/html5gallery.js'); ?>" type="text/javascript" ></script>
->>>>>>> ec8bee2b971cee371497ff15616ef4daf85c3f5d
 
         <!-- Loading Elements JS -->
-<!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');    ?>"></script> 
-        <script src="<?php // echo base_url('elements/scripts/bootstrap.min.js');    ?>"></script> -->
+<!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');     ?>"></script> 
+        <script src="<?php // echo base_url('elements/scripts/bootstrap.min.js');     ?>"></script> -->
         <script src="<?php echo base_url('elements/scripts/jquery.validate.min.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/smoothscroll.js'); ?>"></script> 
         <script src="<?php echo base_url('elements/scripts/jquery.smooth-scroll.min.js'); ?>"></script> 
@@ -1429,7 +1425,7 @@
 
                     }
                 });
-                
+
                 $('button#uploadVideoButtonDrop').click(function() {
 
                     // START A LOADING SPINNER HERE
@@ -1592,7 +1588,7 @@
                         reader.onload = function(e) {
                             $("#videoinput-preview").html(
                                     '<div class="videoGallery" data-responsive="true" responsivefullscreen="true" data-html5player="true" data-src="' + e.target.result + '" data-showtitle="false" style="display:none;"></div>'
-                            );
+                                    );
                         };
                         $(".videoGallery").html5gallery();
                         $('button#uploadVideoButtonDrop').removeClass('disabled');
@@ -1620,7 +1616,7 @@
                         imagedrag.addEventListener("dragover", FileDragHover, false);
                         imagedrag.addEventListener("dragleave", FileDragHover, false);
                         imagedrag.addEventListener("drop", ImageSelectHandler, false);
-                        
+
                         videodrag.addEventListener("dragover", FileDragHover, false);
                         videodrag.addEventListener("dragleave", FileDragHover, false);
                         videodrag.addEventListener("drop", VideoSelectHandler, false);
@@ -1658,7 +1654,7 @@
                     }
                 });
             });
-            
+
             $("#videoFile").click(function() {
                 $('input#videoFile').change(function() {
 
