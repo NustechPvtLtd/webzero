@@ -555,13 +555,5 @@ FROM `users` JOIN `sites` ON `sites`.`users_id` = `users`.`id` WHERE `sites`.`si
         }
         
     }
-    
-    public function authenticate_api_user($username, $password)
-    {
-        if($this->ion_auth_model->login($username, $password)){
-            $md5 = md5("$username:REST API:$password");
-            return $md5;
-        }
-    }
 
 }

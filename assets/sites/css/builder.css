@@ -504,7 +504,7 @@ body .sp-input {
 	display: inline;
 }
 
-.menu .main ul#pages li.active.edit > span .fileDel, .menu .main ul#pages li.active.edit > span .fileEdit {
+.menu .main ul#pages li.active.edit > span .fileDel, .menu .main ul#pages li.active.edit > span .fileEdit, .menu .main ul#pages li.active.edit > span .fileCopy{
 	display: none;
 }
 
@@ -514,6 +514,10 @@ body .sp-input {
 
 .menu .main ul#pages li > span a:hover.fileEdit {
 	color: #2ECC71;
+}
+
+.menu .main ul#pages li > span a:hover.fileCopy {
+	color: #1E90FF;
 }
 
 /* end side */

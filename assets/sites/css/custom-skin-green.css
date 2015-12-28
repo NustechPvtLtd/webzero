@@ -171,9 +171,9 @@ div.form-group > div > button.dropdown-toggle{
 .carousel-control.left {
     left: 0;
 }
-.carousel {
+/*.carousel {
     position: relative !important;
-}
+}*/
 div#pageList ul > li.element.ui-draggable.ui-draggable-handle{
     /*border: 2px solid red;*/
 }
@@ -206,6 +206,9 @@ div#pageList ul > li.element.ui-draggable.ui-draggable-handle{
 }
 .modal .modal-body {
     padding: 15px !important;
+}
+.modal .modal-content {
+    border-radius: 4px 4px 0 0;
 }
 .modal .form-group .btn {
     padding: 2px !important;
@@ -268,4 +271,8 @@ header .modes {
     width: 48%;
     margin-top: 2px;
     padding: 5px;
+}
+
+#domain-name .form-group input:focus{
+    width: auto;
 }

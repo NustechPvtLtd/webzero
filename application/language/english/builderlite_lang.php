@@ -243,7 +243,7 @@ $lang['modal_imagelibrary_button_change'] = "Change";
 $lang['modal_imagelibrary_button_remove'] = "Remove";
 $lang['modal_imagelibrary_button_upload'] = "Upload Image";
 $lang['modal_imagelibrary_ribbon_admin'] = "Admin";
-$lang['modal_imagelibrary_button_insert'] = "Insert Image";
+$lang['modal_imagelibrary_button_insert'] = "Insert";
 $lang['modal_imagelibrary_button_insertimage'] = "Insert";
 $lang['modal_imagelibrary_button_deleteimage'] = "Delete";
 

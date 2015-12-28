@@ -545,7 +545,7 @@ if($('.video-bg')[0]) {
         return false; 
     });    
     
-    
+    $('.videoGallery').html5gallery();
 
 });
 

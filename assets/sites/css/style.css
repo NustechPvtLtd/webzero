@@ -91,7 +91,7 @@ body .btn-file > input[type="file"] {
 /* header */
 
 header {
-    padding: 15px;
+    /*padding: 15px;*/
     /*padding-bottom: 15px;*/
     margin-left: auto;
     margin-right: auto;
@@ -931,6 +931,7 @@ li.element {
 	border: 2px dashed #ddd;
 	padding: 30px 20px;
 	margin-bottom: 15px;
+        overflow: auto;
 }
 
 .optionPane.export {
@@ -1158,7 +1159,7 @@ li.element {
 	margin-bottom: 15px;
 }
 
-.imageWrap img {
+/*.imageWrap img {
     height: 160px;
-}
+}*/
 /* end masonry */

@@ -8,7 +8,7 @@ class login extends MX_Controller
     {
         parent::__construct();
         $this->load->database();
-        $this->load->library(array('ion_auth', 'form_validation', 'template', 'visitor_count', 'facebook', 'google'));
+        $this->load->library(array('ion_auth', 'form_validation', 'template', 'visitor_count', 'facebook', 'google', 'twilio'));
         //$this->form_validation->CI =& $this;
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -428,8 +428,9 @@ class login extends MX_Controller
         $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
         if ($this->form_validation->run() == true) {
-            $username = strtolower($this->input->post('first_name')) . ' ' . strtolower($this->input->post('last_name'));
             $email    = strtolower($this->input->post('email'));
+            $username = explode('@', $email);
+            $username = $username[0].'_'.$username[1];
             $password = $this->input->post('password');
             
             $additional_data = array(
@@ -755,8 +756,9 @@ class login extends MX_Controller
 //	    $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
         if ($this->form_validation->run() == true) {
-            $username = strtolower($this->input->post('first_name'));
             $email    = strtolower($this->input->post('email'));
+            $username = explode('@', $email);
+            $username = $username[0].'_'.$username[1];
             $password = $this->input->post('password');
         
             $additional_data = array(
@@ -842,8 +844,9 @@ class login extends MX_Controller
             $google = array('gl_token' => $this->session->userdata('gl_token'));
             $userInfo = $this->google->getUser();
             if (!$this->ion_auth->email_check($userInfo->email)) {
-                $username = strtolower($userInfo->name);
                 $email    = strtolower($userInfo->email);
+                $username = explode('@', $email);
+                $username = $username[0].'_'.$username[1];
                 $password = 'google2015';
 
                 $additional_data = array(
@@ -903,23 +906,6 @@ class login extends MX_Controller
             return $view_html;
         }
     }
-    
-//    function site_contact($id)
-//    {
-//        header('Access-Control-Allow-Origin: *');
-//        $site_id = $this->encrypt->decode($id);
-//
-//        if(!empty($_REQUEST['email']) ){
-//            $result = $this->ion_auth->contact_webpage_owner($_REQUEST['email'], $_REQUEST['name'], $_REQUEST['message'], $site_id);
-//            if($result){
-//                return TRUE;
-//            }  else {
-//                return FALSE;
-//            }
-//        } /*else {
-//            return FALSE;
-//        }*/
-//    }
 
     public function site_contact($id)
     {
@@ -1019,5 +1005,58 @@ class login extends MX_Controller
             return json_encode($social_account);
         }
         return false;
+    }
+    
+    public function registerWithPhone()
+    {
+//        require(APPPATH.'Services/Twilio.php'); 
+        if(!empty($_POST['phone'])){
+            $to = preg_replace('/\s+/', '', $_POST['phone']);
+        }  else {
+            $to = "+17783213322";
+        }
+        /*$account_sid = 'ACaf922dfdc3dcc0496fc5f2fce51aa2f0'; 
+        $auth_token = '0cfe1742fcd90129900329c85344ac23';
+//            $auth_token = '7eeaa503f26780236cc8d0760946f57e';
+//            $_http = new Services_Twilio_TinyHttp(
+//                "https://api.twilio.com",
+//                array("curlopts" => array(
+//                    CURLOPT_SSL_VERIFYPEER => 0,
+//                    CURLOPT_SSL_VERIFYHOST => 0,
+//                ))
+//            );
+
+        $client = new Services_Twilio($account_sid, $auth_token); */
+        $otp = mt_rand(100000, 999999);
+        /*$response = $client->account->messages->create(array( 
+            'To' => $to, 
+            'From' => "+12048171782", 
+            'Body' => $otp." is your signup OTP.\n Treat this as confidential. Sharing int with anyone gives them full access to your JadooWeb Account.",   
+        ));
+        echo '<pre>';
+        print_r($response);
+        echo '</pre>';
+        */
+        $newdata = array(
+                   'phone_no'  => $to,
+                   'otp'     => $otp
+               );
+
+        $this->session->set_userdata($newdata);
+    }
+    
+    public function verifyPhone()
+    {
+        if(!empty($_POST['otp'])){
+            $otp = preg_replace('/\s+/', '', $_POST['otp']);
+            if($this->session->userdata('otp')==$otp){
+                
+            }
+        }  else {
+            echo json_encode(array(
+                'status' => 'error',
+                'message' => 'Please provide correct OTP'
+            ));
+        }
     }
 }

@@ -27,12 +27,12 @@
 			</div>
 		</div>
 		
-		<div class="form-group">
+<!--		<div class="form-group">
 			<label for="name" class="col-sm-3 control-label"><?php echo $this->lang->line('modal_pagesettings_pageheaderincludes')?>:</label>
 			<div class="col-sm-9">
 				<textarea class="form-control" id="pageData_headerIncludes" name="pageData_headerIncludes" rows="7" placeholder="Additional code you'd like to include in the <head> section"><?php if( isset($pagesData['index']) ){ echo $pagesData['index']->pages_header_includes; }?></textarea>
 			</div>
-		</div>
+		</div>-->
 		
 	</div><!-- /.optionPane -->
 	

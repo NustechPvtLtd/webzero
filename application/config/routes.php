@@ -47,7 +47,8 @@ $route['create-user'] = 'login/create_user';
 $route['create-group'] = 'login/create_group';
 $route['logout'] = 'login/logout';
 $route['ajaxLogin'] = 'login/ajaxLogin';
-$route['assets/images'] = "sites/assets/images";
+//$route['assets/images'] = "sites/assets/images";
+$route['assets/(:any)'] = "sites/assets/$1";
 $route['account/upgrades'] = "account/account/account_upgrade_list";
 $route['account/plans'] = 'account/account/plans';
 $route['plans'] = 'account/plans';
@@ -55,6 +56,7 @@ $route['plans/update/(:any)'] = 'account/plans/editPlans/$1';
 $route['plans/delete/(:any)'] = 'account/plans/deletePlans/$1';
 $route['plans/create'] = 'account/plans/editPlans';
 $route['plans/(:any)'] = 'account/plans/$1';
+$route['api/login'] = 'api/generate_key/index';
 //$route['plans/recommends/(:any)/(:any)'] = 'account/plans/recommends/$1/$2';
 //$route['plans/status/(:any)/(:any)'] = 'account/plans/status/$1/$2';
 /* End of file routes.php */

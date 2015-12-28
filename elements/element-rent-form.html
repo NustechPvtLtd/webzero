@@ -4,27 +4,27 @@
     <section id="element-rent-form" class="intro-block bg-color3 cover-bg half-padding" style="background-image:url(/elements/images/bg17.jpg)" >
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 drag">
                     <ul class="item-list-left">
-                        <li>
-                            <i class="num-icon">1</i>
+                        <li class="drag">
+                            <i class="num-icon editContent">1</i>
                             <p>Your project looks great on any device. Content can be easily read and a user understands freely what you wanted to say him or her.</p>
                         </li>
-                        <li>
-                            <i class="num-icon">2</i>
+                        <li class="drag">
+                            <i class="num-icon editContent">2</i>
                             <p>The set of ready made CSS files with different color schemes will help you in quick landing’s adaptation according to your benchmark style.</p>
                         </li>
-                        <li>
-                            <i class="num-icon">3</i>
+                        <li class="drag">
+                            <i class="num-icon editContent">3</i>
                             <p>No fluff. Nothing should lead the visitor away from the main essence of website. There must be just important information.</p>
                         </li>
-                        <li>
-                            <i class="num-icon">4</i>
+                        <li class="drag">
+                            <i class="num-icon editContent">4</i>
                             <p>The detailed documentation will help you in adjusting the project with little effort according to your requirements.</p>
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-5 col-md-offset-1">
+                <div class="col-md-5 col-md-offset-1 drag">
                     <h3 class="title">Make a Reservation</h3>
                     <form action="/elements/scripts/rent.php" role="form" id="rent_form">
                         <div class="form-group select-group">
@@ -35,28 +35,30 @@
                                 <option>Standard</option>
                             </select>
                         </div>
-                        <div class="form-group select-group">
-                            <select class="form-control" id="pickup-location" name="pickloc">
+                        <div class="form-group">
+							<input type="text" placeholder="Pick-up Location" class="form-control" id="pickup-location" name="pickloc" />
+                            <!--select class="form-control" id="pickup-location" name="pickloc">
                                 <option value="" selected disabled>Pick-up Location:</option>
                                 <option>14 West Street</option>
                                 <option>81 East Street</option>
                                 <option>8 South Street</option>
                                 <option>144 North Street</option>
-                            </select>
+                            </select-->
                         </div>
-                        <div class="form-group select-group">
-                            <select class="form-control" id="dropoff-location" name="droploc">
+                        <div class="form-group">
+							<input type="text" placeholder="Drop-off Location" class="form-control" id="dropoff-location" name="droploc" />
+                            <!--select class="form-control" id="dropoff-location" name="droploc">
                                 <option selected disabled>Drop-off Location:</option>
                                 <option>14 West Street</option>
                                 <option>81 East Street</option>
                                 <option>8 South Street</option>
                                 <option>144 North Street</option>
-                            </select>
+                            </select-->
                         </div>
                         <div class="input-daterange" id="datepicker">
                             <div class="row">
                                 <div class="form-group col-xs-6">
-                                    <input type="text" placeholder="Pick-up Date" class="form-control" id="pickup-date" name="start" />
+                                    <input type="date" placeholder="Pick-up Date" class="form-control" id="pickup-date" name="start" />
                                 </div>  
                                 <div class="col-xs-6">
                                     <div class="form-group select-group">
@@ -115,7 +117,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-xs-6">
-                                    <input type="text" placeholder="Drop-off Date" class="form-control" name="end" id="dropoff-date" />
+                                    <input type="date" placeholder="Drop-off Date" class="form-control" name="end" id="dropoff-date" />
                                 </div>  
                                 <div class="col-xs-6">
                                     <div class="form-group select-group">

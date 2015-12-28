@@ -987,10 +987,10 @@ class Ion_auth_model extends CI_Model
 		}
 
 		$this->trigger_events('extra_where');
-
+        $check_column = valid_email($identity) ? $this->identity_column : 'username'; 
 		$query = $this->db->select($this->identity_column . ', first_name, last_name, email, id, password, active, avatar, social_account, last_login, visitor_count, eccommerce, premium_domain, expiration_type, expiration, plan_id')
                           ->join('price_plan', 'price_plan.plan_id = users.price_plan_id','left')
-		                  ->where($this->identity_column, $identity)
+		                  ->where($check_column, $this->db->escape_str($identity))
 		                  ->limit(1)
 		    			  ->order_by('id', 'desc')
 		                  ->get($this->tables['users']);
@@ -1067,9 +1067,9 @@ class Ion_auth_model extends CI_Model
 			$this->set_error('login_unsuccessful');
 			return FALSE;
 		}
-
+        $check_column = valid_email($identity) ? $this->identity_column : 'username'; 
 		$query = $this->db->select($this->identity_column . ', email, id, password, active')
-		                  ->where($this->identity_column, $identity)
+		                  ->where($check_column, $this->db->escape_str($identity))
 		                  ->limit(1)
 		    			  ->order_by('id', 'desc')
 		                  ->get($this->tables['users']);
@@ -1107,7 +1107,7 @@ class Ion_auth_model extends CI_Model
 			$this->set_error('login_unsuccessful');
 			return FALSE;
 		}
-
+        
 		$this->trigger_events('extra_where');
         
         $query = $this->db->select('first_name, last_name, email, id, password, active, avatar, social_account, last_login, visitor_count, eccommerce, premium_domain, expiration_type, expiration, plan_id')
@@ -1967,11 +1967,11 @@ class Ion_auth_model extends CI_Model
 			$this->trigger_events(array('post_login_remembered_user', 'post_login_remembered_user_unsuccessful'));
 			return FALSE;
 		}
-
+        $check_column = valid_email($identity) ? $this->identity_column : 'username'; 
 		//get the user
 		$this->trigger_events('extra_where');
 		$query = $this->db->select($this->identity_column.', id, username, email, avatar, social_account, last_login')
-		                  ->where($this->identity_column, get_cookie($this->config->item('identity_cookie_name', 'ion_auth')))
+		                  ->where($check_column, get_cookie($this->config->item('identity_cookie_name', 'ion_auth')))
 		                  ->where('remember_code', get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
 		                  ->limit(1)
 		    			  ->order_by('id', 'desc')

@@ -1,3 +1,40 @@
+<style>
+.social_btn_group{
+    padding: 30px 20px 0;
+}
+.social_btn_group .col-sm-6{
+    margin-bottom: 30px;
+}
+.social_btn_group .btn.btn-primary {
+    width: 100%;
+}
+.social_btn_group .facebook_btn {
+    background-color: #507cbd;
+    border: 1px solid #245782;
+}
+.social_btn_group .facebook_btn:hover {
+    background-color: #4169a4;
+    border: 1px solid #4169a4;
+}
+.social_btn_group .twitter_btn {
+    background-color: #64ccf1;
+    border: 1px solid #5abbdd;
+}
+.social_btn_group .twitter_btn:hover {
+    background-color: #48a8ca;
+    border: 1px solid #48a8ca;
+}
+.optionPane.social_btn_group .fa {
+    padding: 9px;
+}
+.social_btn_group a span {
+    border-right: 1px solid whitesmoke;
+    float: left;
+    height: 30px;
+    margin: -5px 0;
+    width: 33px;
+}
+</style>
 <div class="info_content">
     <?php echo $message;?>
 </div>
@@ -35,27 +72,26 @@
                 </div>
             </div>
 
-            <div class="form-group">
+<!--            <div class="form-group">
                 <label for="name" class="col-sm-3"><?php echo $this->lang->line('modal_pagesettings_pageheaderincludes')?>:</label>
                 <div class="col-sm-9">
                     <textarea class="form-control" id="pageData_headerIncludes" name="pageData_headerIncludes" rows="7" placeholder="Additional code you'd like to include in the <head> section"><?php if( isset($pagesData['index']) ){ echo $pagesData['index']->pages_header_includes; }?></textarea>
                 </div>
-            </div>
+            </div>-->
         </div>
-        <div class="optionPane social_btn_group">
-            <div class="form-group col-sm-6" style="margin-left:0; margin-right:0;">
+        <div class="optionPane social_btn_group col-sm-12">
+            <div class="col-sm-6">
                 <?php if(!$this->session->userdata('fb_token')):?>
                 <a class="btn btn-primary facebook_btn" href="<?php echo $this->facebook->login_url();?>"><span><i class="fa fa-facebook"></i></span>Connect with Facebook</a>
                 <?php else:?>
                 <a class="btn btn-primary facebook_btn" href="javascript:post_to_facebook();"><span><i class="fa fa-facebook"></i></span>Share with Facebook</a>
                 <?php endif;?>
             </div>
-                <div class="clearfix"></div>
 <!--            <div class="form-group col-sm-6" style="margin-left:0; margin-right:0;">
                 <a class="btn btn-primary google_btn"><span><i class="fa fa-google-plus"></i></span>Share with Google+</a>
             </div>-->
 
-            <div class="form-group col-sm-6" style="margin-left:0; margin-right:0;">
+            <div class="col-sm-6">
                 <?php if(!$this->session->userdata('tw_access_token') || !$this->session->userdata('tw_access_key')):?>
                 <a class="btn btn-primary twitter_btn" href="<?php echo site_url('social/register_twitter?register=TRUE')?>"><span><i class="fa fa-twitter"></i></span>Connect with Twitter</a>
                 <?php else:?>

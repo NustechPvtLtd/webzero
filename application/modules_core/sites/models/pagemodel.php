@@ -89,8 +89,8 @@ class Pagemodel extends CI_Model {
     		$data = array(
 				'pages_title' => $pageData['pageData_title'],
 				'pages_meta_keywords' => $pageData['pageData_metaKeywords'],
-				'pages_meta_description' => $pageData['pageData_metaDescription'],
-				'pages_header_includes' => $pageData['pageData_headerIncludes'] 
+				'pages_meta_description' => $pageData['pageData_metaDescription']
+//				'pages_header_includes' => $pageData['pageData_headerIncludes'] 
    			);
     	
     		$this->db->where('pages_id', $pageData['pageID']);
@@ -108,7 +108,7 @@ class Pagemodel extends CI_Model {
     		   'pages_title' => $pageData['pageData_title'],
     		   'pages_meta_keywords' => $pageData['pageData_metaKeywords'],
     		   'pages_meta_description' => $pageData['pageData_metaDescription'],
-    		   'pages_header_includes' => $pageData['pageData_headerIncludes'] 
+//    		   'pages_header_includes' => $pageData['pageData_headerIncludes'] 
     		);
     		
     		$this->db->insert('pages', $data); 

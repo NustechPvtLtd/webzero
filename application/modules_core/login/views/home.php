@@ -215,66 +215,88 @@
     <div class="container">
         <div class="row">
             <div class="section_heading wp5">
-                <h2>Create Your Website <span class=
-                                              "white_colored_text">Do Yourself</span></h2>
+                <h2>Create Your Website <span class="white_colored_text">Do Yourself</span></h2>
             </div>
         </div>
 
         <div class="row delay-1s" id="get_started">
             <div class="col-md-12">
-                <div class="register_form hide_form wp1">
-                    <?php echo form_open('register', array('class' => "form-horizontal  register_form_group")); ?>
+			
+				<div class="register_form hide_form wp1" style="width: 75%; margin: 0px auto; padding:30px; border: 1px solid #a2fbe9;">
+					<div class="col-md-6" style="border-right: 1px solid #a2fbe9; padding-right:50px">
+					
+						<?php echo form_open('register', array('class' => "form-horizontal  register_form_group")); ?>
+					
+					
+						<div class="form-group">
 
-                    <div class="form-group">
 
+							<div class="col-sm-12">
+								<input class="form-control" id=
+									   "first_name" placeholder="First Name"
+									   type="text" name="first_name">
 
-                        <div class="col-sm-4">
-                            <input class="form-control" id=
-                                   "first_name" placeholder="First Name"
-                                   type="text" name="first_name">
+	<!--										<input class="form-control" id=
+	"inputname3" placeholder="Last Name"
+	type="text">-->
+							</div>
 
-<!--										<input class="form-control" id=
-"inputname3" placeholder="Last Name"
-type="text">-->
-                        </div>
+							<div class="col-sm-12">
+	<!--                                        <input class="form-control" id=
+								"inputEmail3" placeholder="Company Name" type=
+								"email">-->
+								<input class="form-control" id=
+									   "email" placeholder="Email" type=
+									   "email" name="email">
+							</div>
 
-                        <div class="col-sm-4">
-<!--                                        <input class="form-control" id=
-                            "inputEmail3" placeholder="Company Name" type=
-                            "email">-->
-                            <input class="form-control" id=
-                                   "email" placeholder="Email" type=
-                                   "email" name="email">
-                        </div>
-
-                        <div class="col-sm-4">
-                            <input class="form-control" id=
-                                   "password" placeholder="Password" type=
-                                   "password" name="password">
-<!--										<input class="form-control" id=
-                                   "inputpsw" placeholder="Confirm Password" type=
-                                   "password">-->
-                        </div>
-                    </div>
-
-                    <div class="form-group wp5 delay-05s">
-                        <div class=" col-sm-6">
-                            <a class=
-                               "btn btn-lg btn-success light_theame_btn pull-right"
-                               data-toggle="modal" id=
-                               "back_toLogin">Back to Login</a>
-                        </div>
-
-                        <div class=" col-sm-6">
-                            <button class=
-                                    "btn btn-lg btn-success light_theame_btn pull-left"
-                                    data-toggle="modal" id="" type="submit">Get
-                                Started</button>
-                        </div>
-                    </div>
-                    <?php echo form_close(); ?> 
-                </div>
-
+							<div class="col-sm-12">
+								<input class="form-control" id=
+									   "password" placeholder="Password" type=
+									   "password" name="password">
+	<!--										<input class="form-control" id=
+									   "inputpsw" placeholder="Confirm Password" type=
+									   "password">-->
+							</div>
+						</div>
+					
+						<div class="form-group wp5 delay-05s">
+							<div class=" col-sm-12">
+								<button class=
+										"btn btn-lg btn-success light_theame_btn"
+										data-toggle="modal" id="" type="submit" style="width:100%">Get
+									Started</button>
+							</div>
+						</div>
+						<?php echo form_close(); ?> 
+					</div>
+					<p style="color: ##a2fbe9; z-index: 9; background: #1abc9c; position: absolute; top: 33%; left: 49%; display: block; height: 36px; padding-top: 8px">OR</p>
+					<div class="col-md-6" style="margin: 14.5% 0; padding-left: 50px">
+					
+						<div class="form-group">
+                            <div class="input-group" id="get_no">
+								<input class="form-control" id="phone_no" placeholder="Mobile Number" type="text" name="phone_no" style="margin-bottom: 0px">
+                                <span class="input-group-btn" style="width: 18%;">
+									<button class="btn btn-lg btn-success light_theame_btn"data-toggle="modal" id="registerNo" type="submit" style="width: 100%; border: 1px solid #a2fbe9; line-height: 1.3">Go!</button>
+								</span>
+							</div>
+                            <div class="input-group" id="get_otp" style="display: none">
+								<input class="form-control" id="otp" placeholder="Enter OTP" type="text" name="otp" style="margin-bottom: 0px">
+                                <span class="input-group-btn" style="width: 18%;">
+									<button class="btn btn-lg btn-success light_theame_btn"data-toggle="modal" id="verifyNo" type="submit" style="width: 100%; border: 1px solid #a2fbe9; line-height: 1.3">Verify!</button>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group wp5 delay-05s col-md-12" style="padding-top:30px">
+						<div style="width: 50%; margin: auto">
+							<a class="btn btn-lg btn-success light_theame_btn" data-toggle="modal" id="back_toLogin" style="width:100%">Back to Login</a>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				
+				</div>
+					
                 <div class="login_form_container wp1 delay-1s">
                     <div class="col-md-6 social_btn_group">
                         <div class="form-group">
@@ -356,6 +378,9 @@ $(document).on('hide.bs.modal','#video_play', function () {
 </script>
 <script>
     $(document).ready(function(){
+        $.mask.definitions['9'] = '';
+        $.mask.definitions['d'] = '[0-9]';
+        $('#phone_no').mask("+91 ddd ddd dddd");
         $(".register_form_group").validate({
             // Specify the validation rules
             rules: {
@@ -409,6 +434,22 @@ $(document).on('hide.bs.modal','#video_play', function () {
 
             submitHandler: function(form) {
                 form.submit();
+            }
+        });
+        
+        $("#registerNo").click(function(){
+            var phone_no = $("#phone_no").val();
+            alert(phone_no);
+            if(phone_no){
+                $.ajax({
+                    url:'<?php echo site_url('login/registerWithPhone');?>',
+                    type:'POST',
+                    data:{phone:phone_no},
+                    success:function(){
+                        $("#get_no").fadeOut('slow');
+                        $("#get_otp").fadeIn();
+                    }
+                });
             }
         });
     });

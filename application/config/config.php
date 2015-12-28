@@ -372,9 +372,10 @@ $config['images_dir'] = 'elements/images';
 $config['images_uploadDir'] = 'elements/images/uploads';
 
 $config['upload_allowed_types'] = "gif|jpg|png";
-$config['upload_max_size'] = "1000";
-$config['upload_max_width'] = "1024";
-$config['upload_max_height'] = "768";
+$config['upload_allowed_types_video'] = "mov|mp4|flv|avi|wmv";
+$config['upload_max_size'] = "0";
+$config['upload_max_width'] = "0";
+$config['upload_max_height'] = "0";
 
 $config['images_allowedExtensions'] = 'jpg|png|gif|svg';//these are used when reading the image folder, not for uploading
 

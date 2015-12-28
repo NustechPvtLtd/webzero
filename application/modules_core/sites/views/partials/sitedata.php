@@ -248,7 +248,7 @@
                             $('#saveSiteSettingsButton').removeClass('disabled');
 
                         });
-
+                        domain_ok = "0";
                     } else if (ret.responseCode == 1) {//all is well
 
                         $('#siteSettings .loader').fadeOut(500, function() {
@@ -272,15 +272,15 @@
                                 $('#publishPage').removeAttr('data-toggle');
                                 $('#publishPage span.text-danger').hide();
 
-                                $('#publishPage').tooltip('destroy')
-
+                                $('#publishPage').tooltip('destroy');
+                                domain_ok = "1";
                             } else {//nope, can't use FTP
 
                                 $('#publishPage').attr('data-toggle', 'tooltip');
                                 $('#publishPage span.text-danger').show();
 
-                                $('#publishPage').tooltip('show')
-
+                                $('#publishPage').tooltip('show');
+                                domain_ok = "0";
                             }
 
                             if ($("input:radio[name='domain']").is(':checked')) {
@@ -295,7 +295,7 @@
                                 });
                             }
                         });
-
+                        
                     }
 
                 });

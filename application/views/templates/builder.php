@@ -84,16 +84,38 @@
                         <span class="pageButtons">
                             <a href="" class="fileEdit"><span class="fui-new"></span></a>
                             <a href="" class="fileDel"><span class="fui-cross"></span></a>
+                            <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
                             <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
                         </span>
                     </li>
-                    <li class="active">
-                        <a href="#page1">index</a>
-                        <span class="pageButtons">
-                            <a href="" class="fileEdit"><span class="fui-new"></span></a>
-                            <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
-                        </span>
-                    </li>
+
+                    <?php if (count($siteData['pages']) == 0): ?>
+                        <li class="active">
+                            <a href="#page1">index</a>
+                            <span class="pageButtons">
+                                <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
+                            </span>
+                        </li>
+                    <?php else: ?>
+
+                        <?php $counter = 1; ?>
+
+                        <?php foreach ($siteData['pages'] as $page => $frames): ?>
+                            <li <?php if ($counter == 1): ?>class="active"<?php endif; ?>>
+                                <a href="#page<?php echo $counter; ?>"><?php echo $page; ?></a>
+                                <span class="pageButtons">
+                                    <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
+                                    <?php if ($page != 'index'): ?>
+                                    <a href="" class="fileEdit"><span class="fui-new"></span></a>
+                                    <a href="" class="fileDel"><span class="fui-cross"></span></a>
+                                    <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
+                                    <?php endif; ?>
+                                </span>
+                            </li>
+                            <?php $counter++; ?>
+                        <?php endforeach; ?>
+
+                    <?php endif; ?>
                 </ul>
 
                 <div class="sideButtons clearfix">
@@ -279,6 +301,15 @@
                     <select id="internalLinksDropdown">
                         <option value="#">Choose a page</option>
                         <option value="index.html">index</option>
+                        <?php
+                        if (isset($siteData['pages'])) {
+                            foreach ($siteData['pages'] as $page => $frames) {
+                                if ($page != 'index') {
+                                    echo '<option value="' . $page . '.html">' . $page . '</option>';
+                                }
+                            }
+                        }
+                        ?>
                     </select>
 
                     <p class="text-center or">
@@ -316,310 +347,7 @@
                 <div class="tab-pane iconTab" id="icon_Tab">
 
                     <label>Choose an icon below: </label>
-
-                    <select id="icons" data-placeholder="Your Favorite Types of Bear">
-                        <option value="icon-user-female">&#xe106; icon-user-female</option>
-                        <option value="icon-user-follow">&#xe064; icon-user-follow</option>
-                        <option value="icon-user-following">&#xe065; icon-user-following</option>
-                        <option value="icon-user-unfollow">&#xe066; icon-user-unfollow</option>	
-                        <option value="icon-trophy">&#xe067; icon-trophy</option>	
-                        <option value="icon-screen-smartphone">&#xe068; icon-screen-smartphone</option>	
-                        <option value="icon-screen-desktop">&#xe069; icon-screen-desktop</option>
-                        <option value="icon-plane">&#xe06a; icon-plane</option>	
-                        <option value="icon-notebook">&#xe06b; icon-notebook</option>
-                        <option value="icon-moustache">&#xe06c; icon-moustache</option>	
-                        <option value="icon-mouse">&#xe06d; icon-mouse</option>	
-                        <option value="icon-magnet">&#xe06e; icon-magnet</option>
-                        <option value="icon-energy">&#xe06f; icon-energy</option>
-                        <option value="icon-emoticon-smile">&#xe070; icon-emoticon-smile</option>
-                        <option value="icon-disc">&#xe071; icon-disc</option>
-                        <option value="icon-cursor-move">&#xe072; icon-cursor-move</option>
-                        <option value="icon-crop">&#xe073; icon-crop</option>
-                        <option value="icon-credit-card">&#xe074; icon-credit-card</option>
-                        <option value="icon-chemistry">&#xe075; icon-chemistry</option>
-                        <option value="icon-user">&#xe076; icon-user</option>	
-                        <option value="icon-speedometer">&#xe077; icon-speedometer</option>	
-                        <option value="icon-social-youtube">&#xe078; icon-social-youtube</option>
-                        <option value="icon-social-twitter">&#xe079; icon-social-twitter</option>
-                        <option value="icon-social-tumblr">&#xe07a; icon-social-tumblr</option>	
-                        <option value="icon-social-facebook">&#xe07b; icon-social-facebook</option>	
-                        <option value="icon-social-dropbox">&#xe07c; icon-social-dropbox</option>
-                        <option value="icon-social-dribbble">&#xe07d; icon-social-dribbble</option>	
-                        <option value="icon-shield">&#xe07e; icon-shield</option>	
-                        <option value="icon-screen-tablet">&#xe07f; icon-screen-tablet</option>	
-                        <option value="icon-magic-wand">&#xe080; icon-magic-wand</option>
-                        <option value="icon-hourglass">&#xe081; icon-hourglass</option>
-                        <option value="icon-graduation">&#xe082; icon-graduation</option>
-                        <option value="icon-ghost">&#xe083; icon-ghost</option>
-                        <option value="icon-game-controller">&#xe084; icon-game-controller</option>
-                        <option value="icon-fire">&#xe085; icon-fire</option>	
-                        <option value="icon-eyeglasses">&#xe086; icon-eyeglasses</option>	
-                        <option value="icon-envelope-open">&#xe087; icon-envelope-open</option>	
-                        <option value="icon-envelope-letter">&#xe088; icon-envelope-letter</option>
-                        <option value="icon-bell">&#xe089; icon-bell</option>
-                        <option value="icon-badge">&#xe08a; icon-badge</option>	
-                        <option value="icon-anchor">&#xe08b; icon-anchor</option>
-                        <option value="icon-wallet">&#xe08c; icon-wallet</option>
-                        <option value="icon-vector">&#xe08d; icon-vector</option>	
-                        <option value="icon-speech">&#xe08e; icon-speech</option>
-                        <option value="icon-puzzle">&#xe08f; icon-puzzle</option>
-                        <option value="icon-printer">&#xe090; icon-printer</option>	
-                        <option value="icon-present">&#xe091; icon-present</option>	
-                        <option value="icon-playlist">&#xe092; icon-playlist</option>
-                        <option value="icon-pin">&#xe093; icon-pin</option>
-                        <option value="icon-picture">&#xe094; icon-picture</option>
-                        <option value="icon-map">&#xe095; icon-map</option>
-                        <option value="icon-layers">&#xe096; icon-layers</option>	
-                        <option value="icon-handbag">&#xe097; icon-handbag</option>
-                        <option value="icon-globe-alt">&#xe098; icon-globe-alt</option>	
-                        <option value="icon-globe">&#xe099; icon-globe</option>
-                        <option value="icon-frame">&#xe09a; icon-frame</option>	
-                        <option value="icon-folder-alt">&#xe09b; icon-folder-alt</option>
-                        <option value="icon-film">&#xe09c; icon-film</option>	
-                        <option value="icon-feed">&#xe09d; icon-feed</option>	
-                        <option value="icon-earphones-alt">&#xe09e; icon-earphones-alt</option>
-                        <option value="icon-earphones">&#xe09f; icon-earphones</option>
-                        <option value="icon-drop">&#xe0a0; icon-drop</option>	
-                        <option value="icon-drawer">&#xe0a1; icon-drawer</option>
-                        <option value="icon-docs">&#xe0a2; icon-docs</option>	
-                        <option value="icon-directions">&#xe0a3; icon-directions</option>
-                        <option value="icon-direction">&#xe0a4; icon-direction</option>	
-                        <option value="icon-diamond">&#xe0a5; icon-diamond</option>	
-                        <option value="icon-cup">&#xe0a6; icon-cup</option>	
-                        <option value="icon-compass">&#xe0a7; icon-compass</option>
-                        <option value="icon-call-out">&#xe0a8; icon-call-out</option>
-                        <option value="icon-call-in">&#xe0a9; icon-call-in</option>
-                        <option value="icon-call-end">&#xe0aa; icon-call-end</option>
-                        <option value="icon-calculator">&#xe0ab; icon-calculator</option>
-                        <option value="icon-bubbles">&#xe0ac; icon-bubbles</option>
-                        <option value="icon-briefcase">&#xe0ad; icon-briefcase</option>
-                        <option value="icon-book-open">&#xe0ae; icon-book-open</option>
-                        <option value="icon-basket-loaded">&#xe0af; icon-basket-loaded</option>
-                        <option value="icon-basket">&#xe0b0; icon-basket</option>
-                        <option value="icon-bag">&#xe0b1; icon-bag</option>
-                        <option value="icon-action-undo">&#xe0b2; icon-action-undo</option>
-                        <option value="icon-action-redo">&#xe0b3; icon-action-redo</option>
-                        <option value="icon-wrench">&#xe0b4; icon-wrench</option>
-                        <option value="icon-umbrella">&#xe0b5; icon-umbrella</option>
-                        <option value="icon-trash">&#xe0b6; icon-trash</option>
-                        <option value="icon-tag">&#xe0b7; icon-tag</option>
-                        <option value="icon-support">&#xe0b8; icon-support</option>
-                        <option value="icon-size-fullscreen">&#xe0b9; icon-size-fullscreen</option>
-                        <option value="icon-size-actual">&#xe0ba; icon-size-actual</option>
-                        <option value="icon-shuffle">&#xe0bb; icon-shuffle</option>
-                        <option value="icon-share-alt">&#xe0bc; icon-share-alt</option>
-                        <option value="icon-share">&#xe0bd; icon-share</option>
-                        <option value="icon-rocket">&#xe0be; icon-rocket</option>
-                        <option value="icon-question">&#xe0bf; icon-question</option>
-                        <option value="icon-pie-chart">&#xe0c0; icon-pie-chart</option>
-                        <option value="icon-pencil">&#xe0c1; icon-pencil</option>
-                        <option value="icon-note">&#xe0c2; icon-note</option>
-                        <option value="icon-music-tone-alt">&#xe0c3; icon-music-tone-alt</option>
-                        <option value="icon-music-tone">&#xe0c4; icon-music-tone</option>
-                        <option value="icon-microphone">&#xe0c5; icon-microphone</option>
-                        <option value="icon-loop">&#xe0c6; icon-loop</option>
-                        <option value="icon-logout">&#xe0c7; icon-logout</option>
-                        <option value="icon-login">&#xe0c8; icon-login</option>
-                        <option value="icon-list">&#xe0c9; icon-list</option>
-                        <option value="icon-like">&#xe0ca; icon-like</option>
-                        <option value="icon-home">&#xe0cb; icon-home</option>
-                        <option value="icon-grid">&#xe0cc; icon-grid</option>
-                        <option value="icon-graph">&#xe0cd; icon-graph</option>
-                        <option value="icon-equalizer">&#xe0ce; icon-equalizer</option>
-                        <option value="icon-dislike">&#xe0cf; icon-dislike</option>
-                        <option value="icon-cursor">&#xe0d0; icon-cursor</option>
-                        <option value="icon-control-start">&#xe0d1; icon-control-start</option>
-                        <option value="icon-control-rewind">&#xe0d2; icon-control-rewind</option>
-                        <option value="icon-control-play">&#xe0d3; icon-control-play</option>
-                        <option value="icon-control-pause">&#xe0d4; icon-control-pause</option>
-                        <option value="icon-control-forward">&#xe0d5; icon-control-forward</option>
-                        <option value="icon-control-end">&#xe0d6; icon-control-end</option>
-                        <option value="icon-calendar">&#xe0d7; icon-calendar</option>
-                        <option value="icon-bulb">&#xe0d8; icon-bulb</option>
-                        <option value="icon-bar-chart">&#xe0d9; icon-bar-chart</option>
-                        <option value="icon-arrow-up">&#xe0da; icon-arrow-up</option>
-                        <option value="icon-arrow-right">&#xe0db; icon-arrow-right</option>
-                        <option value="icon-arrow-left">&#xe0dc; icon-arrow-left</option>
-                        <option value="icon-arrow-down">&#xe0dd; icon-arrow-down</option>
-                        <option value="icon-ban">&#xe0de; icon-ban</option>
-                        <option value="icon-bubble">&#xe0df; icon-bubble</option>
-                        <option value="icon-camcorder">&#xe0e0; icon-camcorder</option>
-                        <option value="icon-camera">&#xe0e1; icon-camera</option>
-                        <option value="icon-check">&#xe0e2; icon-check</option>
-                        <option value="icon-clock">&#xe0e3; icon-clock</option>
-                        <option value="icon-close">&#xe0e4; icon-close</option>
-                        <option value="icon-cloud-download">&#xe0e5; icon-cloud-download</option>
-                        <option value="icon-cloud-upload">&#xe0e6; icon-cloud-upload</option>
-                        <option value="icon-doc">&#xe0e7; icon-doc</option>
-                        <option value="icon-envelope">&#xe0e8; icon-envelope</option>
-                        <option value="icon-eye">&#xe0e9; icon-eye</option>
-                        <option value="icon-flag">&#xe0ea; icon-flag</option>
-                        <option value="icon-folder">&#xe0eb; icon-folder</option>
-                        <option value="icon-heart">&#xe0ec; icon-heart</option>
-                        <option value="icon-info">&#xe0ed; icon-info</option>
-                        <option value="icon-key">&#xe0ee; icon-key</option>
-                        <option value="icon-link">&#xe0ef; icon-link</option>
-                        <option value="icon-lock">&#xe0f0; icon-lock</option>
-                        <option value="icon-lock-open">&#xe0f1; icon-lock-open</option>
-                        <option value="icon-magnifier">&#xe0f2; icon-magnifier</option>
-                        <option value="icon-magnifier-add">&#xe0f3; icon-magnifier-add</option>
-                        <option value="icon-magnifier-remove">&#xe0f4; icon-magnifier-remove</option>
-                        <option value="icon-paper-clip">&#xe0f5; icon-paper-clip</option>
-                        <option value="icon-paper-plane">&#xe0f6; icon-paper-plane</option>
-                        <option value="icon-plus">&#xe0f7; icon-plus</option>
-                        <option value="icon-pointer">&#xe0f8; icon-pointer</option>
-                        <option value="icon-power">&#xe0f9; icon-power</option>
-                        <option value="icon-refresh">&#xe0fa; icon-refresh</option>
-                        <option value="icon-reload">&#xe0fb; icon-reload</option>
-                        <option value="icon-settings">&#xe0fc; icon-settings</option>
-                        <option value="icon-star">&#xe0fd; icon-star</option>
-                        <option value="icon-symbol-female">&#xe0fe; icon-symbol-female</option>
-                        <option value="icon-symbol-male">&#xe0ff; icon-symbol-male</option>
-                        <option value="icon-target">&#xe100; icon-target</option>
-                        <option value="icon-volume-1">&#xe101; icon-volume-1</option>
-                        <option value="icon-volume-2">&#xe102; icon-volume-2</option>
-                        <option value="icon-volume-off">&#xe103; icon-volume-off</option>
-                        <option value="icon-users">&#xe104; icon-users</option>
-                        <option value="icon-mobile">&#xe000; icon-mobile</option>
-                        <option value="icon-laptop">&#xe001; icon-laptop</option>
-                        <option value="icon-desktop">&#xe002; icon-desktop</option>
-                        <option value="icon-tablet">&#xe003; icon-tablet</option>
-                        <option value="icon-phone">&#xe004; icon-phone</option>
-                        <option value="icon-document">&#xe005; icon-document</option>
-                        <option value="icon-documents">&#xe006; icon-documents</option>
-                        <option value="icon-search">&#xe007; icon-search</option>
-                        <option value="icon-clipboard">&#xe008; icon-clipboard</option>
-                        <option value="icon-newspaper">&#xe009; icon-newspaper</option>
-                        <option value="icon-notebook2">&#xe00a; icon-notebook2</option>
-                        <option value="icon-book-open2">&#xe00b; icon-book-open2</option>
-                        <option value="icon-browser">&#xe00c; icon-browser</option>
-                        <option value="icon-calendar2">&#xe00d; icon-calendar2</option>
-                        <option value="icon-presentation">&#xe00e; icon-presentation</option>
-                        <option value="icon-picture2">&#xe00f; icon-picture2</option>
-                        <option value="icon-pictures">&#xe010; icon-pictures</option>
-                        <option value="icon-video">&#xe011; icon-video</option>
-                        <option value="icon-camera2">&#xe012; icon-camera2</option>
-                        <option value="icon-printer2">&#xe013; icon-printer2</option>
-                        <option value="icon-toolbox">&#xe014; icon-toolbox</option>
-                        <option value="icon-briefcase2">&#xe015; icon-briefcase2</option>
-                        <option value="icon-wallet2">&#xe016; icon-wallet2</option>
-                        <option value="icon-gift">&#xe017; icon-gift</option>
-                        <option value="icon-bargraph">&#xe018; icon-bargraph</option>
-                        <option value="icon-grid2">&#xe019; icon-grid2</option>
-                        <option value="icon-expand">&#xe01a; icon-expand</option>
-                        <option value="icon-focus">&#xe01b; icon-focus</option>
-                        <option value="icon-edit">&#xe01c; icon-edit</option>
-                        <option value="icon-adjustments">&#xe01d; icon-adjustments</option>
-                        <option value="icon-ribbon">&#xe01e; icon-ribbon</option>
-                        <option value="icon-hourglass2">&#xe01f; icon-hourglass2</option>
-                        <option value="icon-lock2">&#xe020; icon-lock2</option>
-                        <option value="icon-megaphone">&#xe021; icon-megaphone</option>
-                        <option value="icon-shield2">&#xe022; icon-shield2</option>
-                        <option value="icon-trophy2">&#xe023; icon-trophy2</option>
-                        <option value="icon-flag2">&#xe024; icon-flag2</option>
-                        <option value="icon-map2">&#xe025; icon-map2</option>
-                        <option value="icon-puzzle2">&#xe026; icon-puzzle2</option>
-                        <option value="icon-basket2">&#xe027; icon-basket2</option>
-                        <option value="icon-envelope2">&#xe028; icon-envelope2</option>
-                        <option value="icon-streetsign">&#xe029; icon-streetsign</option>
-                        <option value="icon-telescope">&#xe02a; icon-telescope</option>
-                        <option value="icon-gears">&#xe02b; icon-gears</option>
-                        <option value="icon-key2">&#xe02c; icon-key2</option>
-                        <option value="icon-paperclip">&#xe02d; icon-paperclip</option>
-                        <option value="icon-attachment">&#xe02e; icon-attachment</option>
-                        <option value="icon-pricetags">&#xe02f; icon-pricetags</option>
-                        <option value="icon-lightbulb">&#xe030; icon-lightbulb</option>
-                        <option value="icon-layers2">&#xe031; icon-layers2</option>
-                        <option value="icon-pencil2">&#xe032; icon-pencil2</option>
-                        <option value="icon-tools">&#xe033; icon-tools</option>
-                        <option value="icon-tools-2">&#xe034; icon-tools-2</option>
-                        <option value="icon-scissors">&#xe035; icon-scissors</option>
-                        <option value="icon-paintbrush">&#xe036; icon-paintbrush</option>
-                        <option value="icon-magnifying-glass">&#xe037; icon-magnifying-glass</option>
-                        <option value="icon-circle-compass">&#xe038; icon-circle-compass</option>
-                        <option value="icon-linegraph">&#xe039; icon-linegraph</option>
-                        <option value="icon-mic">&#xe03a; icon-mic</option>
-                        <option value="icon-strategy">&#xe03b; icon-strategy</option>
-                        <option value="icon-beaker">&#xe03c; icon-beaker</option>
-                        <option value="icon-caution">&#xe03d; icon-caution</option>
-                        <option value="icon-recycle">&#xe03e; icon-recycle</option>
-                        <option value="icon-anchor2">&#xe03f; icon-anchor2</option>
-                        <option value="icon-profile-male">&#xe040; icon-profile-male</option>
-                        <option value="icon-profile-female">&#xe041; icon-profile-female</option>
-                        <option value="icon-bike">&#xe042; icon-bike</option>
-                        <option value="icon-wine">&#xe043; icon-wine</option>
-                        <option value="icon-hotairballoon">&#xe044; icon-hotairballoon</option>
-                        <option value="icon-globe2">&#xe045; icon-globe2</option>
-                        <option value="icon-genius">&#xe046; icon-genius</option>
-                        <option value="icon-map-pin">&#xe047; icon-map-pin</option>
-                        <option value="icon-dial">&#xe048; icon-dial</option>
-                        <option value="icon-chat">&#xe049; icon-chat</option>
-                        <option value="icon-heart2">&#xe04a; icon-heart2</option>
-                        <option value="icon-cloud">&#xe04b; icon-cloud</option>
-                        <option value="icon-upload">&#xe04c; icon-upload</option>
-                        <option value="icon-download">&#xe04d; icon-download</option>
-                        <option value="icon-target2">&#xe04e; icon-target2</option>
-                        <option value="icon-hazardous">&#xe04f; icon-hazardous</option>
-                        <option value="icon-piechart">&#xe050; icon-piechart</option>
-                        <option value="icon-speedometer2">&#xe051; icon-speedometer2</option>
-                        <option value="icon-global">&#xe052; icon-global</option>
-                        <option value="icon-compass2">&#xe053; icon-compass2</option>
-                        <option value="icon-lifesaver">&#xe054; icon-lifesaver</option>
-                        <option value="icon-clock2">&#xe055; icon-clock2</option>
-                        <option value="icon-aperture">&#xe056; icon-aperture</option>
-                        <option value="icon-quote">&#xe057; icon-quote</option>
-                        <option value="icon-scope">&#xe058; icon-scope</option>
-                        <option value="icon-alarmclock">&#xe059; icon-alarmclock</option>
-                        <option value="icon-refresh2">&#xe05a; icon-refresh2</option>
-                        <option value="icon-happy">&#xe05b; icon-happy</option>
-                        <option value="icon-sad">&#xe05c; icon-sad</option>
-                        <option value="icon-facebook">&#xe05d; icon-facebook</option>
-                        <option value="icon-twitter">&#xe05e; icon-twitter</option>
-                        <option value="icon-googleplus">&#xe05f; icon-googleplus</option>
-                        <option value="icon-rss">&#xe060; icon-rss</option>
-                        <option value="icon-tumblr">&#xe061; icon-tumblr</option>
-                        <option value="icon-linkedin">&#xe062; icon-linkedin</option>
-                        <option value="icon-dribbble">&#xe063; icon-dribbble</option>
-                        <option value="icon-linkedin2">&#xf0e1; icon-linkedin2</option>
-                        <option value="icon-vk">&#xf189; icon-vk</option>
-                        <option value="icon-behance">&#xf1b4; icon-behance</option>
-                        <option value="icon-googleplus2">&#xe600; icon-googleplus2</option>
-                        <option value="icon-google-drive">&#xe601; icon-google-drive</option>
-                        <option value="icon-facebook2">&#xe602; icon-facebook2</option>
-                        <option value="icon-instagram">&#xe603; icon-instagram</option>
-                        <option value="icon-twitter2">&#xe604; icon-twitter2</option>
-                        <option value="icon-feed2">&#xe605; icon-feed2</option>
-                        <option value="icon-youtube">&#xe606; icon-youtube</option>
-                        <option value="icon-vimeo">&#xe607; icon-vimeo</option>
-                        <option value="icon-flickr">&#xe608; icon-flickr</option>
-                        <option value="icon-picassa">&#xe609; icon-picassa</option>
-                        <option value="icon-dribbble2">&#xe60a; icon-dribbble2</option>
-                        <option value="icon-forrst">&#xe60b; icon-forrst</option>
-                        <option value="icon-deviantart">&#xe60c; icon-deviantart</option>
-                        <option value="icon-steam">&#xe60d; icon-steam</option>
-                        <option value="icon-github">&#xe60e; icon-github</option>
-                        <option value="icon-wordpress">&#xe60f; icon-wordpress</option>
-                        <option value="icon-joomla">&#xe610; icon-joomla</option>
-                        <option value="icon-blogger">&#xe611; icon-blogger</option>
-                        <option value="icon-tumblr2">&#xe612; icon-tumblr2</option>
-                        <option value="icon-yahoo">&#xe613; icon-yahoo</option>
-                        <option value="icon-apple">&#xe614; icon-apple</option>
-                        <option value="icon-android">&#xe615; icon-android</option>
-                        <option value="icon-windows8">&#xe616; icon-windows8</option>
-                        <option value="icon-soundcloud">&#xe617; icon-soundcloud</option>
-                        <option value="icon-skype">&#xe618; icon-skype</option>
-                        <option value="icon-reddit">&#xe619; icon-reddit</option>
-                        <option value="icon-lastfm">&#xe61a; icon-lastfm</option>
-                        <option value="icon-stumbleupon">&#xe61b; icon-stumbleupon</option>
-                        <option value="icon-stackoverflow">&#xe61c; icon-stackoverflow</option>
-                        <option value="icon-pinterest">&#xe61d; icon-pinterest</option>
-                        <option value="icon-xing">&#xe61e; icon-xing</option>
-                        <option value="icon-foursquare">&#xe61f; icon-foursquare</option>
-                        <option value="icon-paypal">&#xe620; icon-paypal</option>
-                        <option value="icon-html5">&#xe621; icon-html5</option>
-                        <option value="icon-css3">&#xe622; icon-css3</option>				
-                    </select>
-
+                    <?php $this->load->view("partials/icon_dropdown.php"); ?>
                 </div><!-- /.tab-pane -->
 
                 <!-- /tabs -->
@@ -640,7 +368,7 @@
                     <p class="text-center or">
                         <span>OR</span>
                     </p>
-                    <input type="text" class="form-control" id="videoURL" placeholder="Enter an video URL" value="">
+                    <input type="hidden" class="form-control" id="videoURL" placeholder="Enter an video URL" value="">
                     <a href="#videoModal" data-toggle="modal" type="button" class="btn btn-default btn-embossed btn-block margin-bottom-20"><span class="fui-video"></span> <?php echo $this->lang->line('modal_videolibrary') ?></a>
 
                 </div><!-- /.tab-pane -->
@@ -681,75 +409,6 @@
         <!-- Site setting popup-->
         <?php $this->load->view("shared/modal_sitesettings.php"); ?> 
 
-        <!-- export Project popup -->
-        <div class="modal fade in" id="projModal" tabindex="-1" role="dialog" aria-hidden="true">
-
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="ModalLabel">Export/Import project</h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="row text-center">
-                            <div class="col-sm-6" style="padding:70px 0" >
-
-                                <form action="<?php echo base_url(); ?>expImp.php" target="_blank" id="markFormExp" class="form-horizontal" method="post">
-
-                                    <p><strong>Export Project</strong></p>
-                                    <div>
-                                        <a href="#" id="saveprojPage" class="btn btn-primary btn-lg disabled">
-                                            <span class="fa fa-download"></span>
-                                            <span class="bLabel">&nbsp;Save</span>
-                                        </a>
-                                    </div>
-                                    <input id="dataProject" type="hidden" name="JSONProject" value=""/>
-                                    <input id="statusExp" type="hidden" name="status" value="exp"/>
-                                </form>
-
-                            </div>
-                            <div class="col-sm-6" style="padding:70px 0; border-left:1px solid #eee;">
-
-                                <form action="<?php echo base_url(); ?>expImp.php" id="markFormImp" class="form-horizontal" method="post" enctype="multipart/form-data">
-                                    <p><strong>Import Project</strong></p>
-                                    <div>
-
-                                        <!-- <label for="fileinput" class="fileinput"></label>
-                                         <div class="hidden-input">
-                                             <input type="file" id="fileinput" name="projectImp">
-                                         </div>
-                                        
-                                         <a href="#deleteAllPages" id="loadprojPage" class="btn btn-primary" data-toggle="modal" data-dismiss="modal">
-                                             <span class="fa fa-upload"></span>
-                                             <span class="bLabel">Import</span>
-                                         </a>-->
-
-
-
-                                        <span class="file-input btn btn-primary btn-file btn-lg">
-                                            <span class="fa fa-upload"></span> &nbsp;Browse&hellip; <input type="file" id="fileinput" name="projectImp" multiple>
-                                        </span>
-
-
-
-                                    </div>
-                                    <input id="statusImp" type="hidden" name="status" value="imp"/>
-                                </form>
-
-                            </div>
-                        </div>
-
-                    </div><!-- /.modal-body -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" id="exportCancel">Cancel &amp; Close</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-
-
-        </div>
-
         <!-- preview HTML popup -->
         <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -781,7 +440,6 @@
 
         </div><!-- /.modal -->
 
-
         <!-- delete single block popup -->
         <div class="modal fade small-modal" id="deleteBlock" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -800,7 +458,6 @@
             </div><!-- /.modal-dialog -->
 
         </div><!-- /.modal -->
-
 
         <!-- reset block popup -->
         <div class="modal fade small-modal" id="resetBlock" tabindex="-1" role="dialog" aria-hidden="true">
@@ -903,7 +560,7 @@
         </div><!-- /.modal -->
 
         <!-- edit content popup -->
-        <div class="modal fade" id="editContentModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="editContentModal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -1053,92 +710,10 @@
 
         </div><!-- /.modal -->
 
-        <!-- Image Gallery Modal -->
-        <div class="modal fade " id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo $this->lang->line('modal_close') ?></span></button>
-                        <h4 class="modal-title" id="myModalLabel"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_imagelibrary_heading') ?></h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="loader" style="display: none;">
-                            <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-                            <?php echo $this->lang->line('modal_imagelibrary_loadertext') ?>
-                        </div>
-
-                        <div class="modal-alerts">
-
-                        </div>
-
-                        <div class="modal-body-content">
-
-                            <ul class="nav nav-tabs nav-append-content">
-                                <li class="active"><a href="#myImagesTab"><?php echo $this->lang->line('modal_imagelibrary_tab_myimages') ?></a></li>
-                                <li id="uploadTabLI"><a href="#uploadTab"><?php echo $this->lang->line('modal_imagelibrary_tab_uploadimage') ?></a></li>
-                            </ul> <!-- /tabs -->
-
-                            <div class="tab-content">
-
-                                <div class="tab-pane active" id="myImagesTab">
-
-                                    <?php if (isset($userImages)): ?>
-
-                                        <?php $this->load->view("partials/myimages.php", array('userImages' => $userImages)); ?>
-
-                                    <?php else: ?>
-
-                                        <!-- Alert Info -->
-                                        <div class="alert alert-info">
-                                            <button type="button" class="close fui-cross" data-dismiss="alert"></button>
-                                            <?php echo $this->lang->line('modal_imagelibrary_message_noimages'); ?>
-                                        </div>
-
-                                    <?php endif; ?>
-
-                                </div><!-- /.tab-pane -->
-
-                                <div class="tab-pane" id="uploadTab">
-
-                                    <form id="imageUploadForm" action="<?php echo site_url('sites/assets/imageUploadAjax/' . $siteData['site']->sites_id); ?>">
-
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div id="fileinput-preview" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
-                                            <div>
-                                                <span class="btn btn-primary btn-embossed btn-file">
-                                                    <span class="fileinput-new new"><span class="fui-image"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_selectimage') ?></span>
-                                                    <span class="fileinput-exists exists"><span class="fui-gear"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_change') ?></span>
-                                                    <input type="file" name="imageFile" id="imageFile" >
-                                                </span>
-                                                <a href="#" class="btn btn-primary btn-embossed fileinput-exists exists" data-dismiss="fileinput"><span class="fui-trash"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_remove') ?></a>
-                                            </div>
-                                        </div>
-
-                                    </form>
-
-                                    <hr>
-
-                                    <button type="button" class="btn btn-primary btn-embossed btn-wide upload btn-block disabled" id="uploadImageButton"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_imagelibrary_button_upload') ?></button>
-                                    <button type="button" class="btn btn-primary btn-embossed btn-wide upload btn-block disabled" id="uploadImageButtonDrop"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_imagelibrary_button_upload') ?></button>
-
-                                </div><!-- /.tab-pane -->
-
-                            </div> <!-- /tab-content -->
-
-                        </div>
-
-                    </div><!-- /.modal-body -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal"><?php echo $this->lang->line('modal_cancelclose') ?></button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-
-        </div><!-- /.modal -->
+        <?php $this->load->view("shared/modal_imagegallery.php", array('site' => $siteData['site'])); ?>
 
         <!-- Video Gallery Modal -->
-        <div class="modal fade imageModal" id="videoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade " id="videoModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1246,10 +821,11 @@
         <script src="<?php echo base_url('assets/sites'); ?>/js/sites.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/spectrum.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/chosen.jquery.min.js"></script>
-        <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/redactor.min.js"></script>
+        <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/redactor.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/table.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/bufferButtons.js"></script>
-        <script src="<?php echo base_url('assets/sites'); ?>/js/src-min-noconflict/ace.js"></script>
+        <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/video.js"></script>
+        <!--<script src="<?php echo base_url('assets/sites'); ?>/js/src-min-noconflict/ace.js"></script>-->
         <script src="<?php echo base_url(); ?>elements.json"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/builder.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/jquery.form.min.js"></script>
@@ -1259,8 +835,8 @@
         <script src="<?php echo base_url('elements/scripts/html5gallery.js'); ?>" type="text/javascript" ></script>
 
         <!-- Loading Elements JS -->
-<!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');     ?>"></script> 
-        <script src="<?php // echo base_url('elements/scripts/bootstrap.min.js');     ?>"></script> -->
+<!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');         ?>"></script> 
+        <script src="<?php // echo base_url('elements/scripts/bootstrap.min.js');         ?>"></script> -->
         <script src="<?php echo base_url('elements/scripts/jquery.validate.min.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/smoothscroll.js'); ?>"></script> 
         <script src="<?php echo base_url('elements/scripts/jquery.smooth-scroll.min.js'); ?>"></script> 
@@ -1278,7 +854,7 @@
         <script>
             var baseUrl = "<?php echo base_url(); ?>";
             var siteUrl = "<?php echo site_url('/'); ?>";
-
+            var domain_ok = "<?php echo ($siteData['site']->domain_ok == 1) ? 1 : 0; ?>";
 <?php if (isset($siteData)): ?>
                 var siteID = <?php echo $siteData['site']->sites_id; ?>;
 <?php else: ?>
@@ -1286,9 +862,9 @@
 <?php endif; ?>
 
 <?php if (isset($pagesData)): ?>
-                var pagesData = <?php echo json_encode($pagesData); ?>
+                var pagesData = <?php echo json_encode($pagesData); ?>;
 <?php endif; ?>
-
+            var userImageLoaded = false;
             $(function() {
 
                 var ua = window.navigator.userAgent;
@@ -1344,8 +920,24 @@
 
             });
 
-            (function() {
+        </script>
 
+        <style>
+            button#uploadImageButtonDrop{
+                position: relative;
+                display: none;
+            }
+            button#uploadVideoButtonDrop{
+                position: relative;
+                display: none;
+            }
+        </style>
+        <script>
+<?php $this->load->view("shared/js_sitesettings.php"); ?>
+<?php $this->load->view("shared/js_imagegallery.php"); ?>
+        </script>
+        <script defer="defer">
+            (function() {
                 // file drag hover
                 function FileDragHover(e) {
                     e.stopPropagation();
@@ -1353,31 +945,11 @@
                     e.target.className = (e.type == "dragover" ? "hover fileinput-preview thumbnail" : "fileinput-preview thumbnail");
                 }
 
-
                 // file selection
                 function ImageSelectHandler(e) {
 
                     $("#uploadImageButton").hide();
                     $("#uploadImageButtonDrop").css("display", "block");
-                    $(".exists").css("display", "inline");
-                    $(".new").css("display", "none");
-
-                    // cancel event and hover styling
-                    FileDragHover(e);
-
-                    // fetch FileList object
-                    files = e.target.files || e.dataTransfer.files;
-
-                    // process all File objects
-                    for (var i = 0, f; f = files[i]; i++) {
-                        ParseFile(f);
-                    }
-
-                }
-                function VideoSelectHandler(e) {
-
-                    $("#uploadVideoButton").hide();
-                    $("#uploadVideoButtonDrop").css("display", "block");
                     $(".exists").css("display", "inline");
                     $(".new").css("display", "none");
 
@@ -1426,38 +998,6 @@
                     }
                 });
 
-                $('button#uploadVideoButtonDrop').click(function() {
-
-                    // START A LOADING SPINNER HERE
-
-                    //remove old alerts
-                    $('#videoModal .modal-alerts > *').remove();
-
-                    //disable button
-                    $('button#uploadVideoButton').addClass('disable');
-
-                    //show loader
-                    $('#videoModal .loader').fadeIn(500);
-
-                    // Create a formdata object and add the files
-
-                    for (var i = 0; i < files.length; i++)
-                    {
-                        var form = $('form#videoUploadForm');
-
-                        var formdata = false;
-
-                        if (window.FormData) {
-                            fd = new FormData(form[0]);
-                        }
-
-                        fd.append('videoFile', files[i]);
-
-                        sendVideoToServer(fd);
-
-                    }
-                });
-
                 function sendFileToServer(formData)
                 {
                     var form = $('form#imageUploadForm');
@@ -1488,7 +1028,7 @@
                         } else if (ret.responseCode == 1) {//success
 
                             //append my images
-                            $('#myImagesTab > *').remove();
+                            $('#myImagesTab > #myImages').remove();
                             $('#myImagesTab').append($(ret.myImages));
 
                             $('#imageModal .modal-alerts').append($(ret.responseHTML));
@@ -1512,60 +1052,6 @@
                     $(".exists").css("display", "none");
                 }
 
-                function sendVideoToServer(formData)
-                {
-                    var form = $('form#videoUploadForm');
-
-                    var formAction = form.attr('action');
-
-                    $.ajax({
-                        url: formAction,
-                        type: "POST",
-                        contentType: false,
-                        processData: false,
-                        cache: false,
-                        dataType: "json",
-                        data: formData ? formData : form.serialize(),
-                    }).done(function(ret) {
-
-                        //enable button
-                        $('button#uploadVideoButtonDrop').addClass('disable');
-
-                        //hide loader
-                        $('#videoModal .loader').fadeOut(500);
-
-                        if (ret.responseCode == 0) {//error
-
-                            $('#videoModal .modal-alerts').append($(ret.responseHTML));
-
-                        } else if (ret.responseCode == 1) {//success
-
-                            //append my images
-                            $('#myVideosTab > *').remove();
-                            $('#myVideosTab').append($(ret.myVideos));
-
-                            $('#videoModal .modal-alerts').append($(ret.responseHTML));
-
-                            setTimeout(function() {
-                                $('#videoModal .modal-alerts > *').fadeOut(500);
-                            }, 3000);
-
-                            $('#uploadVideoTab').find('a.fileinput-exists').click();
-                        }
-
-                    });
-
-
-                    $("#fileinput-preview").html(
-                            ''
-                            );
-                    $("#uploadVideoButton").show();
-                    $("#uploadVideoButtonDrop").css("display", "none");
-                    $(".new").css("display", "inline");
-                    $(".exists").css("display", "none");
-                }
-
-
                 // output file information
                 function ParseFile(file) {
 
@@ -1576,22 +1062,9 @@
                             $("#fileinput-preview").html(
                                     '<img src="' + e.target.result + '" />'
                                     );
-                            //$('#imageFile').prop("files", e.originalEvent.dataTransfer.files);
                         };
 
                         $('button#uploadImageButtonDrop').removeClass('disabled');
-
-                        reader.readAsDataURL(file);
-                    }
-                    if (file.type.indexOf("video") == 0) {
-                        var reader = new FileReader();
-                        reader.onload = function(e) {
-                            $("#videoinput-preview").html(
-                                    '<div class="videoGallery" data-responsive="true" responsivefullscreen="true" data-html5player="true" data-src="' + e.target.result + '" data-showtitle="false" style="display:none;"></div>'
-                                    );
-                        };
-                        $(".videoGallery").html5gallery();
-                        $('button#uploadVideoButtonDrop').removeClass('disabled');
 
                         reader.readAsDataURL(file);
                     }
@@ -1600,37 +1073,23 @@
 
                 // initialize
                 function Init() {
-
-//                    var imageselect = document.getElementById("imageFile");
                     var imagedrag = document.getElementById("fileinput-preview");
-                    var videodrag = document.getElementById("videoinput-preview");
-
-                    // file select
-//  fileselect.addEventListener("change", FileSelectHandler, true);
 
                     // is XHR2 available?
                     var xhr = new XMLHttpRequest();
                     if (xhr.upload) {
-
                         // file drop
                         imagedrag.addEventListener("dragover", FileDragHover, false);
                         imagedrag.addEventListener("dragleave", FileDragHover, false);
                         imagedrag.addEventListener("drop", ImageSelectHandler, false);
-
-                        videodrag.addEventListener("dragover", FileDragHover, false);
-                        videodrag.addEventListener("dragleave", FileDragHover, false);
-                        videodrag.addEventListener("drop", VideoSelectHandler, false);
                         //filedrag.style.display = "block";
-
                     }
-
                 }
 
                 // call initialization file
                 if (window.File && window.FileList && window.FileReader) {
                     Init();
                 }
-
 
             })();
 
@@ -1639,13 +1098,10 @@
                 $(".exists").css("display", "none");
                 $("#uploadImageButtonDrop").css("display", "none");
                 $("#uploadImageButton").show();
-                $("#uploadVideoButtonDrop").css("display", "none");
-                $("#uploadVideoButton").show();
             });
 
             $("#imageFile").click(function() {
                 $('input#imageFile').change(function() {
-
                     if ($(this).val() != '') {
                         $(".new").css("display", "none");
                         $(".exists").css("display", "inline");
@@ -1654,33 +1110,17 @@
                     }
                 });
             });
-
-            $("#videoFile").click(function() {
-                $('input#videoFile').change(function() {
-
-                    if ($(this).val() != '') {
-                        $(".new").css("display", "none");
-                        $(".exists").css("display", "inline");
-                        $("#uploadVideoButtonDrop").css("display", "none");
-                        $("#uploadVideoButton").show();
-                    }
-                });
-            });
-
         </script>
-
-        <style>
-            button#uploadImageButtonDrop{
-                position: relative;
-                display: none;
-            }
-            button#uploadVideoButtonDrop{
-                position: relative;
-                display: none;
-            }
-        </style>
         <script>
-<?php $this->load->view("shared/js_sitesettings.php"); ?>
-        </script>
+            function init() {
+                var imgDefer = document.getElementsByTagName('img');
+                for (var i = 0; i < imgDefer.length; i++) {
+                    if (imgDefer[i].getAttribute('data-src')) {
+                        imgDefer[i].setAttribute('src', imgDefer[i].getAttribute('data-src'));
+                    }
+                }
+            }
+            window.onload = init;
+        </script> 
     </body>
 </html>

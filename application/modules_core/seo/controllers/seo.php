@@ -45,7 +45,7 @@ class Seo extends MY_Controller {
 
             $this->data['css'] = array(
                 '<link href="'.base_url().'assets/sites/css/style.css" rel="stylesheet">',
-                '<link href="'.base_url().'assets/home/css/style.css" rel="stylesheet">',
+//                '<link href="'.base_url().'assets/home/css/style.css" rel="stylesheet">',
                 '<style>header{padding:0;}</style>'
             );
             $this->data['js'] = array(

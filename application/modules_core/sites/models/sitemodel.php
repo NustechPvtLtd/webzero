@@ -474,7 +474,7 @@ class Sitemodel extends CI_Model {
                     $temp = explode("|", $this->config->item('images_allowedExtensions'));
 
 
-                    if (in_array($tmp[1], $temp)) {
+                    if (in_array(strtolower($tmp[1]), $temp)) {
 
                         array_push($adminImages, $item);
                     }

@@ -9,7 +9,7 @@ class Usermodel extends CI_Model {
         $this->load->database();
         $this->load->library('session');
         $this->load->library('ion_auth');
-        
+        $this->load->helper('directory');
     }
     
     
@@ -66,7 +66,7 @@ class Usermodel extends CI_Model {
     				
     					$temp = explode("|", $this->config->item('images_allowedExtensions'));
     				
-    					if( in_array($tmp[1], $temp) ) {
+    					if( in_array(strtolower($tmp[1]), $temp) ) {
     				
     						array_push($userImages, $item);
     				

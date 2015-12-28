@@ -14,6 +14,7 @@ class Generate_key extends MX_Controller{
         $this->load->library(array('ion_auth','form_validation', 'template'));
         $this->load->config('rest');
         $this->load->model('api/api_key_model');
+        $this->load->model('sites/media_storage_model');
         $this->load->model('login/ion_auth_model');
     }
 
@@ -37,14 +38,47 @@ class Generate_key extends MX_Controller{
             // If no key level provided, give them a rubbish one
             $level = 5;
             $ignore_limits = 3;
+            
+            $bucket = $this->media_storage_model->getBucket($responce);
+            if(!$bucket){
+                $bucket = 'mumbaistreet';
+            } else {
+                $bucket = $bucket->bucket_name;
+            }
+            $uri = $this->media_storage_model->getUri($responce);
+            if($uri){
+                $uri = $uri->uri;
+            } else {
+                $uri = $this->media_storage_model->genrate_unique_name();
+                $data = array(
+                    'bucket_name' => $bucket,
+                    'uri' => $uri,
+                    'user_id' => $responce,
+                );
+                if(!$this->media_storage_model->insertUri($data)){
+                    $return = array(
+                        'status' => 'error',
+                        'item' => array(
+                            'user_id' => $responce
+                        ),
+                        'message' => 'There is some problem to authenticate user, Please, try again latter.'
+                    );
+
+                    echo json_encode($return);
+                    exit();
+                }
+            }
+            
             // Insert the new key
             if (self::_insert_key($key, array('level' => $level, 'ignore_limits' => $ignore_limits, 'user_id'=>$responce)))
             {
                 $return = array(
                     'status' => 'success',
                     'item' => array(
-                        $this->config->item('rest_key_name', 'rest') => $key,
-                        'user_id' => $responce
+                        $this->config->item('rest_key_name') => $key,
+                        'user_id' => $responce,
+                        'bucket_name' => $bucket,
+                        'folder_name' => $uri
                     ),
                     'message' => 'User is successfuly logged-in, Your api key-value pair is generated. Please note it down for further communication.'
                 );
@@ -83,7 +117,7 @@ class Generate_key extends MX_Controller{
 		do
 		{
 			$salt = do_hash(time().mt_rand());
-			$new_key = substr($salt, 0, $this->config->item('rest_key_length', 'rest'));
+			$new_key = substr($salt, 0, $this->config->item('rest_key_length'));
 		}while ($this->_key_exists($new_key));
 
 		return $new_key;
@@ -108,7 +142,7 @@ class Generate_key extends MX_Controller{
 	private function _insert_key($key, $data)
 	{
 		
-		$data[$this->config->item('rest_key_column', 'rest')] = $key;
+		$data[$this->config->item('rest_key_column')] = $key;
 		$data['date_created'] = function_exists('now') ? now() : time();
 
 		return $this->api_key_model->insert_key($data);

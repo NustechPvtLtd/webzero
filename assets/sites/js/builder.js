@@ -30,7 +30,7 @@ editableItems['h4'] = ['color', 'font-size', 'background-color', 'font-family', 
 editableItems['h5'] = ['color', 'font-size', 'background-color', 'font-family', 'margin-bottom', 'margin-top', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['p'] = ['color', 'font-size', 'background-color', 'font-family', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['a.btn, a.download-btn, button.btn, a.goto'] = ['color', 'border-color', 'border-width', 'border-radius', 'font-size', 'background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
-editableItems['img'] = ['width', 'height', 'border-top-left-radius', 'border-top-right-radius', 'border-bottom-left-radius', 'border-bottom-right-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
+editableItems['img'] = ['border-top-left-radius', 'border-top-right-radius', 'border-bottom-left-radius', 'border-bottom-right-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['form'] = ['animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.portfolio-list img'] = ['border-top-left-radius', 'border-top-right-radius', 'border-bottom-left-radius', 'border-bottom-right-radius', 'border-color', 'border-style', 'border-width'];
 editableItems['.footer a'] = ['color'];
@@ -47,6 +47,14 @@ editableItems['.carousel-control .arrow'] = ['border-radius', 'border-color', 'b
 editableItems['.num-icon'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.countdown'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.border-block'] = ['font-size', 'font-family', 'color', 'background-color', 'border-color', 'border-width', 'border-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
+editableItems['.editContent'] = ['color', 'font-size', 'background-color', 'font-family', ];
+editableItems['#team-circle .col-sm-4'] = [];
+editableItems['#team-full .col-sm-4'] = [];
+editableItems['#price-3col .benefits-list'] = [];
+editableItems['#diagram-full li'] = [];
+editableItems['#border'] = [];
+//editableItems['#intro-video-form .propClone'] = [];
+//editableItems['.propClone'] = [];
 
 var editableItemOptions = new Array();
 
@@ -73,8 +81,11 @@ editableItemOptions['.pricing-table span : background-size'] = ['cover', 'auto']
 editableItemOptions['.container-half : background-size'] = ['cover', 'contain', 'auto'];
 editableItemOptions['.container-half : background-attachment'] = ['fixed', 'scroll'];
 editableItemOptions['.container-half : background-position'] = ['top', 'right', 'bottom', 'left', 'left top', 'right top', 'right bottom', 'left bottom'];
+editableItemOptions['.editBg : background-repeat'] = ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'];
+editableItemOptions['.editBg : background-size'] = ['cover', 'auto'];
+editableItemOptions['.editBg : background-attachment'] = ['fixed', 'scroll'];
 
-var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.download-btn', '.footer a:not(.icon)', '.tableWrapper', '.item-list-left li', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p'];
+var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.download-btn', '.footer a:not(.icon)', '.tableWrapper', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p'];
 
 var editContForAnim = ['section', '.icon', 'img', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a.btn, a.download-btn, button.btn, a.goto', '.num-icon', '.countdown', '.item-list-right li, .item-list-left li, .item-list-center li', '#testimonials-grid .quote, .pricing-table, .pricing-table .stamp, .post, .panel, .panel-heading, .form-container, .post-content .price-circle', '.step-left-block li, .step-center-block li, .step-path-block li', '.diagram .column span', '.diagram-horizontal .column span', '.item-list-border li', '.border-block'];
 
@@ -430,6 +441,7 @@ function makeSortable(el) {
                         success: function(data) {
                             ui.item.find('section:first').css('background-image', 'none');
                             ui.item.find('section:first').html(data);
+                            ui.item.find('section').find('.videoGallery').html5gallery();
                         }
                     });
                     ui.item.find('section:first').uniqueId();
@@ -461,10 +473,6 @@ function makeSortable(el) {
                     $(this).find(pageContainer).html(frameContents);
                 });
             }
-            setTimeout(function() {
-                console.log('Video');
-                $(".videoGallery").html5gallery();
-            }, 1000);
             setPendingChanges(true);
 
         },
@@ -484,7 +492,7 @@ function makeSortable(el) {
             $('#start').hide();
         }
     });
-
+    $('input:radio[name=mode]#modeBlock').trigger('click');
 }
 
 $('#second #elements').on('click', 'li', function() {
@@ -538,6 +546,8 @@ $('#second #elements').on('click', 'li', function() {
         pageEmpty();
         allEmpty();
         $('#start').hide();
+
+        $('input:radio[name=mode]#modeBlock').trigger('click');
     });
 
 });
@@ -692,11 +702,19 @@ function buildeStyleElements(el, theSelector) {
                     ]
                 });
 
+            } else if (editableItems[theSelector][x] == 'width') {
+
+                CssElement = Math.round(parseInt(CssElement) / 9.8);
+                newStyleEl.find('input').val(CssElement + '%').attr('name', editableItems[theSelector][x]);
+
+            } else if (editableItems[theSelector][x] == 'height') {
+
+                CssElement = Math.round(parseInt(CssElement) / 4);
+                newStyleEl.find('input').val(CssElement + '%').attr('name', editableItems[theSelector][x]);
+
             }
 
         }
-
-
 
         newStyleEl.css('display', 'block');
 
@@ -1003,6 +1021,7 @@ function styleClick(el) {
 
             //update live image
             $(el).attr('src', $(this).attr('data-url'));
+            $(el).parents("a").attr('href', $(this).attr('data-url'));
 
             //update image URL field
             $('input#imageURL').val($(this).attr('data-url'));
@@ -1040,7 +1059,6 @@ function styleClick(el) {
             setPendingChanges(true);
 
             $(this).unbind('click');
-            $(".videoGallery").html5gallery();
         });
 
     });
@@ -1055,6 +1073,12 @@ function styleClick(el) {
             if (disabled != 'disabled') {
                 if (nameAttrEl == 'data-wow-duration' || nameAttrEl == 'data-wow-delay') {
                     $(el).attr(nameAttrEl, valAttr);
+                } else if (nameAttrEl == 'height') {
+                    valAttr = Math.floor(valAttr * 4);
+                    $(el).css(nameAttrEl, valAttr);
+                } else if (nameAttrEl == 'width') {
+                    valAttr = Math.floor(valAttr * 9.8);
+                    $(el).css(nameAttrEl, valAttr);
                 } else {
                     $(el).css(nameAttrEl, valAttr);
                 }
@@ -1134,10 +1158,9 @@ function styleClick(el) {
 
             //no video to upload, just a SRC change
             if ($('input#videoURL').val() != '' && $('input#videoURL').val() != $(el).attr('data-src')) {
-
-                $(el).attr('data-src', $('input#videoURL').val());
-                $(el).load();
-
+                $(el).prev(".videoGallery").remove();
+                $('<div class="videoGallery" data-responsive="true" responsivefullscreen="true" data-html5player="true" data-src="' + $('input#videoURL').val() + '" data-showtitle="false" style="display:none;"></div>').insertBefore($(el));
+                $(el).prev(".videoGallery").html5gallery();
             }
         }
 
@@ -1176,17 +1199,17 @@ function styleClick(el) {
         if ($(el).attr('data-type') == 'video') {
 
             if ($('input#youtubeID').val() != '') {
-
-                $(el).prev().attr('data-src', "//www.youtube.com/embed/" + $('#video_Tab input#youtubeID').val());
-
+                $(el).prev(".videoGallery").remove();
+                $('<div class="videoGallery" data-responsive="true" responsivefullscreen="true" data-html5player="true" data-src="https://www.youtube.com/embed/' + $('#video_Tab input#youtubeID').val() + '" data-showtitle="false" style="display:none;"></div>').insertBefore($(el));
             } else if ($('input#vimeoID').val() != '') {
-
-                $(el).prev().attr('data-src', "//player.vimeo.com/video/" + $('#video_Tab input#vimeoID').val() + "?title=0&amp;byline=0&amp;portrait=0");
-
+                $(el).prev(".videoGallery").remove();
+                $('<div class="videoGallery" data-responsive="true" responsivefullscreen="true" data-html5player="true" data-src="https://player.vimeo.com/video/' + $('#video_Tab input#vimeoID').val() + '?title=0&amp;byline=0&amp;portrait=0" data-showtitle="false" style="display:none;"></div>').insertBefore($(el));
             } else {
-                $(el).prev().attr('data-src', $('#video_Tab input#videoURL').val());
+                $(el).prev(".videoGallery").remove();
+                $('<div class="videoGallery" data-responsive="true" responsivefullscreen="true" data-html5player="true" data-src="' + $('#video_Tab input#videoURL').val() + '" data-showtitle="false" style="display:none;"></div>').insertBefore($(el));
             }
-
+            $('#videoURL').val($(el).prev(".videoGallery").attr('data-src'));
+            $(el).prev(".videoGallery").html5gallery();
         }
 
         //Map Address
@@ -1217,8 +1240,12 @@ function styleClick(el) {
 
     //delete button
     $('button#removeElementButton').unbind('click').bind('click', function() {
+//console.log($(el).parents().hasClass('propClone'));
+        if ($(el).parents().hasClass('propClone')) {//clone the A
 
-        if ($(el).prop('tagName') == 'A') {//ancor
+            toDel = $(el).parents('.propClone:first');
+
+        } else if ($(el).prop('tagName') == 'A') {//ancor
 
             if ($(el).parent().prop('tagName') == 'LI') {//clone the LI
 
@@ -1276,21 +1303,54 @@ function styleClick(el) {
 
     //clone button
     $('button#cloneElementButton').unbind('click').bind('click', function() {
+        //console.log(($(el).parents.hasClass('.propClone'));
+        if (($(el).prop('tagName') == 'IMG') && ($(el).parents().hasClass('.propClone'))) {
 
-        if ($(el).parent().hasClass('propClone')) {//clone the parent element
 
-            theClone = $(el).parent().clone();
+
+            if ($(el).hasClass('ui-resizable')) {
+                $(el).resizable('destroy');
+            }
+
+            theClone = $(el).parents('.propClone:first').clone();
             theClone.find($(el).prop('tagName')).attr('style', '');
 
-            theOne = theClone.find($(el).prop('tagName'));
             cloned = $(el).parent();
+
+        } else if ($(el).parents().hasClass('propClone')) {//clone the parent element
+
+            $(el).parent().find('img').each(function() {
+                if ($(this).hasClass('ui-resizable')) {
+                    $(this).resizable('destroy');
+                }
+            });
+
+            theClone = $(el).parents('.propClone:first').clone();
+            //theClone.find($(el).prop('tagName')).attr('style', '');
+
+            theOne = theClone.find($(el).prop('tagName'));
+            cloned = $(el).parents('.propClone');
 
             cloneParent = $(el).parent().parent();
 
-        } else {//clone the element itself
+        } else if ($(el).prop('tagName') == 'IMG') {
 
+            if ($(el).hasClass('ui-resizable')) {
+                $(el).resizable('destroy');
+            }
+            theClone = $(el).clone();
+            theClone.find($(el).prop('tagName')).attr('style', '');
+
+            cloned = $(el).parent();
+        } else {//clone the element itself
+            $(el).find('img').each(function() {
+                if ($(this).hasClass('ui-resizable')) {
+                    $(this).resizable('destroy');
+                }
+            });
             theClone = $(el).clone();
             theClone.attr('style', '');
+            theClone.css({'position': 'relative'});
 
             theOne = theClone;
             cloned = $(el);
@@ -1301,63 +1361,30 @@ function styleClick(el) {
         if (theClone.hasClass('ui-draggable ui-draggable-handle')) {
             theClone.removeClass('ui-draggable ui-draggable-handle');
         }
-        cloned.after(theClone);
-
-        //theClone.insertAfter( cloned );
-        $('input:radio[name=mode]#modeBlock').trigger("click");
-
-        for (var key in editableItems) {
-
-            $(el).closest('div#wrap').find(pageContainer + ' ' + key).each(function() {
-
-                if ($(this)[0] === $(theOne)[0]) {
-
-                    theOne.hover(function() {
-
-                        if ($(this).closest('div#wrap').width() != $(this).width()) {
-
-                            $(this).css({'outline': '3px dotted red', 'cursor': 'pointer'});
-
-                        } else {
-
-                            $(this).css({'outline': '3px dotted red', 'outline-offset': '-3px', 'cursor': 'pointer'});
-
-                        }
-
-                    }, function() {
-
-                        if ($(this).closest('div#wrap').width() != ($(this).width() + 6)) {
-
-                            $(this).css({'outline': '', 'cursor': ''});
-
-                        } else {
-
-                            $(this).css({'outline': '', 'cursor': '', 'outline-offset': ''});
-
-                        }
-
-                    }).click(function(e) {
-
-                        e.preventDefault();
-
-                        e.stopPropagation();
-
-                        styleClick(this);
-
-
-                    }).each(function() {
-
-                        $(this).attr('data-selector', key);
-
-                    });
-
-                }
-            });
-
+        if (theClone.hasClass('drag')) {
+            theClone.draggable({cancel: false, start: function(event, ui) {
+                    setPendingChanges(true);
+                }});
         }
+        theClone.find('.drag').each(function() {
 
+            if ($(this).hasClass('ui-draggable ui-draggable-handle')) {
+                $(this).removeClass('ui-draggable ui-draggable-handle');
+            }
+            $(this).draggable({cancel: false, start: function(event, ui) {
+                    setPendingChanges(true);
+                }});
+        });
+
+//        theClone.find('img').each(function(){
+//            $(this).resizable({alsoResize: $(this).parent()});
+//        });
+
+        cloned.after(theClone);
+        setPendingChanges(true);
+
+        activeStyling();
         //possible height adjustments
-
         heightAdjustment(el);
 
     });
@@ -1458,21 +1485,31 @@ function activeStyling() {
                 e.stopPropagation();
                 if ($(this).closest('div#wrap').width() != $(this).width()) {
                     $(this).css({'outline': '3px dotted red', 'cursor': 'pointer'});
-                    if (!$('div.container > ul > li').is(".ui-resizable")) {
-                        $('div.container > ul > li').resizable();
-                    }
-                    if ($(this).prop('tagName') == 'IMG') {
+
+                    if (($(this).prop('tagName') == 'IMG') && ($(this).hasClass('pf'))) {
                         if (!$(this).is(".ui-resizable")) {
-                            $(this).resizable({alsoResize: $(this).parent()});
+                            $(this).resizable({alsoResize: $(this).parents("li.drag"), start: function(event, ui) {
+                                    setPendingChanges(true);
+                                }});
                         }
-                        // Not draggable then make it draggable
-                        if (!$(this).parent('div').is(".ui-draggable") && !$(this).hasClass('frameCover')) {
-                            $(this).parent('div').draggable();
+                    } else if (($(this).prop('tagName') == 'IMG') && ($(this).hasClass('pm'))) {
+                        if (!$(this).is(".ui-resizable")) {
+                            $(this).resizable({alsoResize: $(this).parents("div.pm"), start: function(event, ui) {
+                                    setPendingChanges(true);
+                                }});
                         }
-                    } else {
-                        if (!$(this).is(".ui-draggable") && !$(this).hasClass('frameCover')) {
-                            $(this).draggable();
+                    } else if ($(this).prop('tagName') == 'IMG') {
+                        if (!$(this).is(".ui-resizable")) {
+                            $(this).resizable({alsoResize: $(this).parent(), start: function(event, ui) {
+                                    setPendingChanges(true);
+                                }});
                         }
+
+                    }// else {
+                    if (!$(".drag").is(".ui-draggable")) {
+                        $(".drag").draggable({cancel: false, start: function(event, ui) {
+                                setPendingChanges(true);
+                            }});
                     }
                 } else {
                     $(this).css({'outline': '3px dotted red', 'outline-offset': '-3px', 'cursor': 'pointer'});
@@ -1656,7 +1693,7 @@ $(function() {
 
             } else {//we've got a thumbnail
 
-                newItem = $('<li class="element ' + niceKey + '"><img src="' + baseUrl + _Elements.elements[key][x].thumbnail + '" data-srcc="' + baseUrl + _Elements.elements[key][x].url + '" data-height="' + _Elements.elements[key][x].height + '"></li>');
+                newItem = $('<li class="element ' + niceKey + '"><img src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="' + baseUrl + _Elements.elements[key][x].thumbnail + '" data-srcc="' + baseUrl + _Elements.elements[key][x].url + '" data-height="' + _Elements.elements[key][x].height + '"></li>');
 
             }
 
@@ -1782,9 +1819,7 @@ $(function() {
             //hide all section covers and activate designMode
 
             $('#pageList ul .frameCover').each(function() {
-
                 $(this).hide();
-
             });
 
             $('.frameWrapper img').each(function() {
@@ -1792,30 +1827,23 @@ $(function() {
                     $(this).resizable("destroy");
                 }
             });
-            $('div.container > ul > li').each(function() {
-                if ($(this).hasClass('ui-resizable')) {
-                    $(this).resizable("destroy");
+
+
+            $(".drag").each(function() {
+                if ($(this).hasClass('ui-draggable')) {
+                    $(this).draggable("destroy");
                 }
             });
-            $('#pageList ul li section').each(function() {
 
-                for (i = 0; i < editableContent.length; ++i) {
-
-                    $(this).find(editableContent[i]).each(function(e) {
-                        if ($(this).is(".ui-draggable")) {
-                            $(this).draggable("destroy");
-                        }
-                    });
-                }
-            });
+            // spcl for portfolio templates
+            $(".portfolio-list span").css("display", "block");
+            //$(".pf").css({"width": "100%", "height": "auto"});
 
             //deactivate designmode
             $('#pageList ul li section').each(function() {
 
                 for (var key in editableItems) {
-
                     $(this).find(key).unbind('mouseenter mouseleave');
-
                 }
 
                 this.designMode = "off";
@@ -1863,38 +1891,48 @@ $(function() {
                         $('#editContentModal').modal('show');
 
                         //for the elements below, we'll use a simplyfied editor, only direct text can be done through this one
-                        if (this.tagName == 'SMALL' || this.tagName == 'A' || this.tagName == 'LI' || this.tagName == 'SPAN' || this.tagName == 'B' || this.tagName == 'I' || this.tagName == 'TT' || this.tageName == 'CODE' || this.tagName == 'EM' || this.tagName == 'STRONG' || this.tagName == 'SUB' || this.tagName == 'BUTTON' || this.tagName == 'LABEL' || this.tagName == 'P' || this.tagName == 'H1' || this.tagName == 'H2' || this.tagName == 'H2' || this.tagName == 'H3' || this.tagName == 'H4' || this.tagName == 'H5' || this.tagName == 'H6') {
+                        $('#editContentModal #contentToEdit').redactor({
+                            imageUpload: siteUrl + 'assets/imageUploadEditor/' + siteID,
+                            clipboardUploadUrl: siteUrl + 'assets/imageUploadEditor/' + siteID,
+                            focus: true,
+                            plugins: ['table', 'bufferbuttons', 'video'],
+                            buttonSource: true,
+                            paragraphize: false,
+                            linebreaks: false
+                        });
 
-                            $('#editContentModal #contentToEdit').redactor({
-                                buttons: ['html', 'bold', 'italic', 'deleted', 'link', 'rtl'],
-                                focus: true,
-                                plugins: ['bufferbuttons'],
-                                buttonSource: true,
-                                paragraphize: false,
-                                linebreaks: true
-                            });
-
-                        } else if (this.tagName == 'DIV' && $(this).hasClass('tableWrapper')) {
-
-                            $('#editContentModal #contentToEdit').redactor({
-                                buttons: ['html', 'formatting', 'bold', 'italic', 'deleted', 'table', 'image', 'link', 'alignment', 'rtl'],
-                                focus: true,
-                                plugins: ['table', 'bufferbuttons'],
-                                buttonSource: true,
-                                paragraphize: false,
-                                linebreaks: false
-                            });
-
-                        } else {
-
-                            $('#editContentModal #contentToEdit').redactor({
-                                buttons: ['html', 'formatting', 'bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'outdent', 'indent', 'image', 'file', 'link', 'alignment', 'horizontalrule', 'rtl'],
-                                focus: true,
-                                buttonSource: true,
-                                paragraphize: false,
-                                linebreaks: false
-                            });
-                        }
+                        /*if (this.tagName == 'SMALL' || this.tagName == 'A' || this.tagName == 'LI' || this.tagName == 'SPAN' || this.tagName == 'B' || this.tagName == 'I' || this.tagName == 'TT' || this.tageName == 'CODE' || this.tagName == 'EM' || this.tagName == 'STRONG' || this.tagName == 'SUB' || this.tagName == 'BUTTON' || this.tagName == 'LABEL' || this.tagName == 'P' || this.tagName == 'H1' || this.tagName == 'H2' || this.tagName == 'H2' || this.tagName == 'H3' || this.tagName == 'H4' || this.tagName == 'H5' || this.tagName == 'H6') {
+                         console.log('1');
+                         $('#editContentModal #contentToEdit').redactor({
+                         buttons: ['html', 'bold', 'italic', 'deleted', 'link', 'rtl'],
+                         focus: true,
+                         plugins: ['bufferbuttons'],
+                         buttonSource: true,
+                         paragraphize: false,
+                         linebreaks: true
+                         });
+                         
+                         } else if (this.tagName == 'DIV' && $(this).hasClass('tableWrapper')) {
+                         console.log('2');
+                         $('#editContentModal #contentToEdit').redactor({
+                         buttons: ['html', 'formatting', 'bold', 'italic', 'deleted', 'table', 'image', 'link', 'alignment', 'rtl'],
+                         focus: true,
+                         plugins: ['table', 'bufferbuttons'],
+                         buttonSource: true,
+                         paragraphize: false,
+                         linebreaks: false
+                         });
+                         
+                         } else {
+                         console.log('3');
+                         $('#editContentModal #contentToEdit').redactor({
+                         buttons: ['html', 'formatting', 'bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'outdent', 'indent', 'image', 'file', 'link', 'alignment', 'horizontalrule', 'rtl'],
+                         focus: true,
+                         buttonSource: true,
+                         paragraphize: false,
+                         linebreaks: false
+                         });
+                         }*/
 
 
                     }).each(function() {
@@ -1927,16 +1965,20 @@ $(function() {
                 }
             });
 
+            $(".drag").each(function() {
+                if ($(this).hasClass('ui-draggable')) {
+                    $(this).draggable("destroy");
+                }
+            });
+
             //deactivate designmode
             $('#pageList ul li section').each(function() {
-
 
                 for (var key in editableItems) {
 
                     $(this).find(key).unbind('mouseenter mouseleave');
 
                 }
-
 
                 this.designMode = "off";
 
@@ -1961,6 +2003,9 @@ $(function() {
             });
             //active styling mode
             activeStyling();
+
+            // spcl for portfolio templates
+            $(".portfolio-list span").css("display", "none");
 
         }
     });
@@ -2113,7 +2158,6 @@ $(function() {
 
         $('#deleteBlock').off('click', '#deleteBlockConfirm').on('click', '#deleteBlockConfirm', function() {
 
-
             $('#deleteBlock').modal('hide');
 
             blockToDelete.fadeOut(500, function() {
@@ -2154,6 +2198,7 @@ $(function() {
                     frameToReset.css('background-image', 'none');
                     frameToReset.html('');
                     frameToReset.html(data);
+                    frameToReset.find('.videoGallery').html5gallery();
                 }
             });
             setPendingChanges(true);
@@ -2265,6 +2310,8 @@ $(function() {
     //save page
     $('#savePage').click(function(e) {
 
+        $('input:radio[name=mode]#modeBlock').trigger('click');
+
 //        savePage(e);
         closeStyleEditor();
         //disable button
@@ -2355,7 +2402,7 @@ $(function() {
                 //remove .frameCovers
 
                 theContents.find('.frameCover').each(function() {
-                    $(this).remove();
+                    $(this).hide();
                 });
 
                 //remove inline styling leftovers
@@ -2549,6 +2596,8 @@ $(function() {
         }
         setPendingChanges(true);
 
+        closeStyleEditor();
+        $('input:radio[name=mode]#modeBlock').trigger('click');
     });
 
 
@@ -2601,7 +2650,11 @@ $(function() {
     $('#addPage').click(function(e) {
 
         e.preventDefault();
-
+        if (domain_ok != 1) {
+            alert("Please, first set your URL settings from settings tab!");
+            e.stopImmediatePropagation();
+            return;
+        }
         //turn inputs into links
         $('#pages li.active').each(function() {
 
@@ -2818,6 +2871,24 @@ $(function() {
 
     });
 
+//copy page button
+    $('#pages').on('click', 'li.active .fileCopy', function() {
+
+        theLI = $(this).closest('li');
+
+        newInput = $('<input type="text" id="copy" value="' + theLI.find('a:first').text() + '.html' + '" name="page">');
+        theLI.find('a:first').remove();
+        theLI.prepend(newInput);
+        document.getElementById('copy').select();
+        document.execCommand('copy');
+        str = document.getElementById('copy').value;
+        str1 = str.slice(0, -5);
+        $('#copy:text').val(str1);
+        theLI.addClass('edit');
+
+        alert("URL Copied !");
+    });
+
     //content modal, destroy redactor when modal closes
     $('#editContentModal').on('hidden.bs.modal', function(e) {
 
@@ -2836,6 +2907,7 @@ $(function() {
     $('#publishPage').click(function(e) {
 
         e.preventDefault();
+        $('input:radio[name=mode]#modeBlock').trigger('click');
 
         if (publishActive == 0) {//check if we're currently publishing anything
 
@@ -3187,7 +3259,7 @@ $(function() {
                 } else if (ret.responseCode == 1) {//success
 
                     //append my images
-                    $('#myImagesTab > *').remove();
+                    $('#myImagesTab > #myImages').remove();
                     $('#myImagesTab').append($(ret.myImages));
 
                     $('#imageModal .modal-alerts').append($(ret.responseHTML));

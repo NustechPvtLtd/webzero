@@ -9,7 +9,7 @@ class Sites extends MY_Controller {
     public $pages = array();
     private $_hostName = 'www.webzero.in';
     private $_userName = 'webzero';
-    private $_password = 'kharadi123!@#';
+    private $_password = '124essdfd';
 
     function __construct()
     {
@@ -223,9 +223,8 @@ class Sites extends MY_Controller {
             //collect data for the image library
 
             $userID = userdata('user_id');
-
-            $userImages = $this->usermodel->getUserImages($userID);
-            $bucket = $this->media_storage_model->getBucketByType($userID, 'video');
+            
+            $bucket = $this->media_storage_model->getBucket($userID);
             if(!$bucket){
                 $bucket = 'mumbaistreet';
             } else {
@@ -233,27 +232,19 @@ class Sites extends MY_Controller {
             }
             $uri = $this->media_storage_model->getUriByType($userID, 'video');
             if($uri){
-                $uri = $uri->uri;
-                $userVideos = $this->s3->getBucket($bucket,$uri);
-                if ($userVideos) {
+                $uri = $uri->uri.'/'.'Videos';
+                try{
+                    $userVideos = $this->s3->getBucket($bucket,$uri);
+                }  catch (ErrorException $e){
+                    throw $e;
+                }
+                if (isset($userVideos)) {
                     $this->data['userVideos'] = $userVideos;
                 }
             } 
             
-            
-            if ($userImages) {
-                $this->data['userImages'] = $userImages;
-            }
-            
             $this->data['bucket'] = $bucket;
             
-            $adminImages = $this->sitemodel->adminImages();
-
-            if ($adminImages) {
-                $this->data['adminImages'] = $adminImages;
-            }
-
-
             $this->data['builder'] = true;
             $this->data['page'] = "site";
             $this->data['js'] = array(
@@ -533,23 +524,22 @@ class Sites extends MY_Controller {
 
         if (!empty($pageMeta->pages_title)) {
             //insert title, meta keywords and meta description
-            $meta = '<title>' . $siteDetails['site']->sites_name . '</title>' . "\r\n";
-            $meta .= '<meta name="description" content="' . $pageMeta->pages_meta_description . '">' . "\r\n";
-            $meta .= '<meta name="keywords" content="' . $pageMeta->pages_meta_keywords . '">';
-//            $header_includes = '<script src="https://maps.googleapis.com/maps/api/js?signed_in=false&callback=initMap" async defer></script>';
+            $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
+            $meta_description = '<meta name="description" content="' . $pageMeta->pages_meta_description . '">' ;
+            $meta_keyword = '<meta name="keywords" content="' . $pageMeta->pages_meta_keywords . '">';
             $header_includes = $pageMeta->pages_header_includes;
 
-            $pageContent = str_replace('<!--pageMeta-->', $meta, $content);
+            $pageContent = str_replace('<!--pageTitle-->', $title, $content);
+            $pageContent = str_replace('<!--META-DESCRIPTION-->', $meta_description, $pageContent);
+            $pageContent = str_replace('<!--META-KEYWORDS-->', $meta_keyword, $pageContent);
 
             //insert header includes;
             $pageContent = str_replace("<!--headerIncludes-->", $header_includes, $pageContent);
         } else {
             //insert title
-            $meta = '<title>' . $siteDetails['site']->sites_name . '</title>';
-//            $header_includes = '<script src="https://maps.googleapis.com/maps/api/js?signed_in=false&callback=initMap" async defer></script>';
+            $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
 
-            $pageContent = str_replace('<!--pageMeta-->', $meta, $content);
-//            $pageContent = str_replace("<!--headerIncludes-->", $header_includes, $pageContent);
+            $pageContent = str_replace('<!--pageTitle-->', $title, $content);
         }
 
         //remove video cover
@@ -644,9 +634,27 @@ class Sites extends MY_Controller {
         $filename = "temp/preview_".  $this->generateRandomString(20).".html";
         $previewFile = fopen($filename, "w");
         
-        $pageTitle = '<title>' . $siteDetails['site']->sites_name . '</title>' . "\r\n";
+        $pageMeta = $this->pagemodel->getSinglePage($_POST['siteID'], 'index');
 
-        $pageContent = str_replace('<!--pageTitle-->', $pageTitle, $_POST['page']);
+        if (!empty($pageMeta->pages_title)) {
+            //insert title, meta keywords and meta description
+            $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
+            $meta_description = '<meta name="description" content="' . $pageMeta->pages_meta_description . '">' ;
+            $meta_keyword = '<meta name="keywords" content="' . $pageMeta->pages_meta_keywords . '">';
+            $header_includes = $pageMeta->pages_header_includes;
+
+            $pageContent = str_replace('<!--pageTitle-->', $title, $_POST['page']);
+            $pageContent = str_replace('<!--META-DESCRIPTION-->', $meta_description, $pageContent);
+            $pageContent = str_replace('<!--META-KEYWORDS-->', $meta_keyword, $pageContent);
+
+            //insert header includes;
+            $pageContent = str_replace("<!--headerIncludes-->", $header_includes, $pageContent);
+        } else {
+            //insert title
+            $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
+
+            $pageContent = str_replace('<!--pageTitle-->', $title, $_POST['page']);
+        }
 
         if (stristr($pageContent, 'href="css' )) {
             $pageContent = str_replace('href="css', 'href="' . base_url('elements') . '/css', $pageContent);
@@ -841,7 +849,37 @@ class Sites extends MY_Controller {
 	    }
 	    return $randomString;
 	}
+    
+    public function getUserImage($site_id)
+    {
+        $userID = userdata('user_id');
+        $type = 'image';
+        $bucket = $this->media_storage_model->getBucket($userID);
+        if(!$bucket){
+            $bucket = 'mumbaistreet';
+        } else {
+            $bucket = $bucket->bucket_name;
+        }
+        $uri = $this->media_storage_model->getUri($userID);
+        if($uri){
+            $uri = $uri->uri;
+        } else {
+            $uri = $this->media_storage_model->genrate_unique_name();
+        }
+        
+        $userImages = $this->s3->getBucket($bucket, $uri.'/Images');
 
+        $return['responseHTML'] = $this->load->view('partials/myimagetab', array('userImages' => $userImages, 'bucket'=>$bucket), true);
+        echo json_encode($return);
+    }
+    
+    public function getAdminImage($site_id)
+    {
+        $adminImages = $this->sitemodel->adminImages();
+        
+        $return['responseHTML'] = $this->load->view('partials/adminimagetab', array('adminImages' => $adminImages), true);
+        echo json_encode($return);
+    }
 }
 
 /* End of file sites.php */

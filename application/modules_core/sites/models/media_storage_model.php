@@ -5,20 +5,29 @@ class Media_storage_model extends CI_Model {
     function __construct()
     {
         parent::__construct();
-        
+
         $this->load->database();
-        
     }
-    
+
     public function insertMedia($data)
     {
-        if($this->db->insert('amazon_media_storage', $data)){
+        if ($this->db->insert('amazon_media_storage', $data)) {
+            (!empty($data['type']))?$this->deleteEmptyRow($data['user_id'], $data['type']):$this->deleteEmptyRow($data['user_id']);
             return $newSiteID = $this->db->insert_id();
-        }else{
+        } else {
             return FALSE;
         }
     }
     
+    public function insertUri($data)
+    {
+        if ($this->db->insert('amazon_media_storage', $data)) {
+            return $newSiteID = $this->db->insert_id();
+        } else {
+            return FALSE;
+        }
+    }
+
     public function getMediaByUser($user_id)
     {
         $this->db->from('amazon_media_storage');
@@ -29,10 +38,10 @@ class Media_storage_model extends CI_Model {
         }
 
         $res = $query->result();
-        
+
         return $res;
     }
-    
+
     public function getUserMediaByType($user_id, $type)
     {
         $this->db->from('amazon_media_storage');
@@ -44,17 +53,17 @@ class Media_storage_model extends CI_Model {
         }
 
         $res = $query->result();
-        
+
         return $res;
     }
-    
-    public function getBucketByType($user_id, $type)
+
+    public function getBucket($user_id, $type = 'video')
     {
         $this->db->select('bucket_name');
         $this->db->from('amazon_media_storage');
         $this->db->where('user_id', $user_id);
         $this->db->where('type', $type);
-        $this->db->group_by('bucket_name'); 
+        $this->db->group_by('bucket_name');
         $query = $this->db->get();
         if ($query->num_rows() == 0) {
             return false;
@@ -63,17 +72,17 @@ class Media_storage_model extends CI_Model {
         $res = $query->result();
 
         $bucket = $res[0];
-        
+
         return $bucket;
     }
-    
+
     public function getUriByType($user_id, $type)
     {
         $this->db->select('uri');
         $this->db->from('amazon_media_storage');
         $this->db->where('user_id', $user_id);
         $this->db->where('type', $type);
-        $this->db->group_by('uri'); 
+        $this->db->group_by('uri');
         $query = $this->db->get();
         if ($query->num_rows() == 0) {
             return false;
@@ -82,7 +91,50 @@ class Media_storage_model extends CI_Model {
         $res = $query->result();
 
         $uri = $res[0];
-        
+
         return $uri;
     }
+    
+    public function getUri($user_id)
+    {
+        $this->db->select('uri');
+        $this->db->from('amazon_media_storage');
+        $this->db->where('user_id', $user_id);
+        $this->db->group_by('uri');
+        $query = $this->db->get();
+        if ($query->num_rows() == 0) {
+            return false;
+        }
+
+        $res = $query->result();
+
+        $uri = $res[0];
+
+        return $uri;
+    }
+
+    public function deleteMedia($media_name, $user_id)
+    {
+        $data = array(
+            'media_name' => '',
+        );
+
+        $this->db->where('media_name', $media_name);
+        $this->db->where('user_id', $user_id);
+        $this->db->update('amazon_media_storage', $data);
+    }
+
+    public function deleteEmptyRow($user_id, $type=NULL)
+    {
+        $this->db->where('user_id', $user_id);
+        $this->db->where('media_name', '');
+        if($type){$this->db->where('type', $type);}
+        $this->db->delete('amazon_media_storage');
+    }
+
+    public function genrate_unique_name()
+    {
+        return strtoupper(substr(hash('sha256', mt_rand() . microtime()), 0, 10));
+    }
+
 }

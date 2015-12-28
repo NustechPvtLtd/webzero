@@ -922,3 +922,8 @@ body .redactor-box-fullscreen {
   font-size: 12px;
   text-transform: uppercase;
 }
+
+#redactor-modal > footer {
+    padding-bottom: 0;
+    padding-top: 0;
+}

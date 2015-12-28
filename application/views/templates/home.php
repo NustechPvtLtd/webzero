@@ -4,12 +4,12 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1" name="viewport">
         <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="<?php echo base_url(); ?>assets/img/favicon.ico">
-        <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="<?php echo base_url(); ?>assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href='http://fonts.googleapis.com/css?family=Raleway:600,100,400,200' rel='stylesheet' type='text/css'>
         <link href="<?php echo base_url(); ?>assets/home/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/home/css/style.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/home/css/animate.min.css" rel="stylesheet">
-        <!--<link href="<?php // echo base_url();  ?>assets/home/css/font-awesome.min.css" rel="stylesheet">-->
+        <!--<link href="<?php // echo base_url();   ?>assets/home/css/font-awesome.min.css" rel="stylesheet">-->
         <script src="<?php echo base_url(); ?>assets/home/js/jquery-1.10.2.min.js" type="text/javascript" ></script>
 
         <title><?php echo $title; ?></title>
@@ -148,7 +148,7 @@
 
                     <div class="footer_box col-md-4">
                         <div class="section_heading">
-                            <h2>Have a Quoestion? <span class=
+                            <h2>Have a Question? <span class=
                                                         "white_colored_text"><br/><a href="#">Get Help
                                         Now&gt;&gt;</a></span></h2>
                         </div>
@@ -166,7 +166,7 @@
 
                         <div class="col-md-5 social">
                             <ul class="social_media">
-                                <li class="f" ><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                                <li class="f" ><a href="#"><i class="fa fa-facebook"></i></a></li>
                                 <li class="g"><a href="#"><i class="fa fa-google-plus"></i></a></li>
                                 <li class="t"><a href="#"><i class="fa fa-twitter"></i></a></li>
                                 <li class="y"><a href="#"><i class="fa fa-youtube"></i></a></li>
@@ -183,7 +183,8 @@
         <script src="<?php echo base_url(); ?>assets/home/js/smooth-scroll.min.js" type="text/javascript" >
         </script> 
         <script src="<?php echo base_url(); ?>assets/home/js/script.js" type="text/javascript" ></script>
-        <script src="http://cdn.jsdelivr.net/jquery.validation/1.14.0/jquery.validate.js" type="text/javascript" ></script>
+        <script src="<?php echo base_url('elements/scripts/jquery.validate.min.js');?>" type="text/javascript" ></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.maskedinput.js"></script>
         <script type="text/javascript" >
             $(document).ready(function() {
                 $('#embed-responsive-item').hide();
