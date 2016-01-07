@@ -540,12 +540,14 @@ if($('.video-bg')[0]) {
                 }
             });
         } else {
-            $('#booking_submit').button('reset')
+            $('#booking_submit').button('reset');
         }
         return false; 
     });    
     
-    $('.videoGallery').html5gallery();
+    if($('.videoGallery').length){
+        $('.videoGallery').html5gallery();
+    }
 
 });
 

@@ -6,6 +6,7 @@ var _Elements = {"elements": {
         {"url": "elements/nav-login-full.html", "height": 60, "thumbnail": "elements/thumbs/nav-login-full.png"},
         {"url": "elements/nav-login-full-2.html", "height": 60, "thumbnail": "elements/thumbs/nav-login-full-2.png"},
         {"url": "elements/nav-full-soc.html", "height": 60, "thumbnail": "elements/thumbs/nav-full-soc.png"},
+        {"url": "elements/nav-full-soc-2.html", "height": 60, "thumbnail": "elements/thumbs/nav-full-soc-2.png"},
         {"url": "elements/nav-soc.html", "height": 60, "thumbnail": "elements/thumbs/nav-soc.png"},
         {"url": "elements/nav-login.html", "height": 60, "thumbnail": "elements/thumbs/nav-login.png"},
         {"url": "elements/nav-info.html", "height": 60, "thumbnail": "elements/thumbs/nav-info.png"},
@@ -13,7 +14,6 @@ var _Elements = {"elements": {
         {"url": "elements/nav-center.html", "height": 60, "thumbnail": "elements/thumbs/nav-center.png"},
         {"url": "elements/nav-center-light.html", "height": 60, "thumbnail": "elements/thumbs/nav-center-light.png"},
         {"url": "elements/nav-info-3.html", "height": 60, "thumbnail": "elements/thumbs/nav-info-3.png"},
-        {"url": "elements/nav-info-soc.html", "height": 60, "thumbnail": "elements/thumbs/nav-info-soc.png"}
     ],
     "Intro": [
         {"url": "elements/intro-half-left-app.html", "height": 818, "thumbnail": "elements/thumbs/intro-half-left-app.png"},

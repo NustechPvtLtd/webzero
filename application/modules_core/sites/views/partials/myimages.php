@@ -18,7 +18,7 @@
 		?>
 	
 		<button type="button" class="btn btn-info btn-embossed btn-block btn-sm useImage" data-url="<?= $dataUrl;?>"><span class="fui-export"></span> <?php echo $this->lang->line('modal_imagelibrary_button_insertimage')?></button>
-		<button type="button" class="btn btn-danger btn-embossed btn-block btn-sm deleteImage" data-url="<?php echo site_url('sites/amazon_services/imageDelete');?>" data-bucket="<?php echo $bucket; ?>" data-video="<?php echo $img['name']; ?>"><span class="fui-cross"></span> <?php echo $this->lang->line('modal_imagelibrary_button_deleteimage')?></button>
+		<button type="button" class="btn btn-danger btn-embossed btn-block btn-sm deleteImage" data-url="<?php echo site_url('sites/amazon_services/imageDelete');?>" data-bucket="<?php echo $bucket; ?>" data-image="<?php echo $img['name']; ?>"><span class="fui-cross"></span> <?php echo $this->lang->line('modal_imagelibrary_button_deleteimage')?></button>
 	</div>
 	
 </div><!-- /.image -->

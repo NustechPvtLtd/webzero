@@ -742,7 +742,7 @@
 
                                 <div class="tab-pane active" id="myVideosTab">
 
-                                    <?php if (isset($userVideos)): ?>
+                                    <?php if ($userVideos): ?>
 
                                         <?php $this->load->view("partials/myvideos.php", array('userVideos' => $userVideos, 'bucket' => $bucket)); ?>
 

@@ -9,7 +9,7 @@
 
 var pageContainer = "#wrap"; //typically no need to change this
 var enablePreview = true; //set to off to disable previews
-
+var forColor = ''; //Get Editor's content color
 var editableItems = new Array();
 
 editableItems['.frameCover'] = [];
@@ -29,7 +29,7 @@ editableItems['h3'] = ['color', 'font-size', 'background-color', 'font-family', 
 editableItems['h4'] = ['color', 'font-size', 'background-color', 'font-family', 'margin-bottom', 'margin-top', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['h5'] = ['color', 'font-size', 'background-color', 'font-family', 'margin-bottom', 'margin-top', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['p'] = ['color', 'font-size', 'background-color', 'font-family', 'animation', 'data-wow-duration', 'data-wow-delay'];
-editableItems['a.btn, a.download-btn, button.btn, a.goto'] = ['color', 'border-color', 'border-width', 'border-radius', 'font-size', 'background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
+editableItems['a.btn, a.download-btn, button.btn, a.goto'] = ['color', 'border-color', 'border-width', 'border-style', 'border-radius', 'font-size', 'background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['img'] = ['border-top-left-radius', 'border-top-right-radius', 'border-bottom-left-radius', 'border-bottom-right-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['form'] = ['animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.portfolio-list img'] = ['border-top-left-radius', 'border-top-right-radius', 'border-bottom-left-radius', 'border-bottom-right-radius', 'border-color', 'border-style', 'border-width'];
@@ -60,6 +60,8 @@ var editableItemOptions = new Array();
 
 editableItemOptions['nav a : font-weight'] = ['light', 'bold'];
 editableItemOptions['a.btn : border-radius'] = ['0px', '4px', '10px'];
+editableItemOptions['.portfolio-list img : border-style'] = ['none', 'dotted', 'dashed', 'solid'];
+editableItemOptions['a.btn, a.download-btn, button.btn, a.goto : border-style'] = ['none', 'dotted', 'dashed', 'solid'];
 editableItemOptions['img : border-style'] = ['none', 'dotted', 'dashed', 'solid'];
 editableItemOptions['img : border-width'] = ['1px', '2px', '3px', '4px'];
 editableItemOptions['h1 : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
@@ -85,7 +87,7 @@ editableItemOptions['.editBg : background-repeat'] = ['no-repeat', 'repeat', 're
 editableItemOptions['.editBg : background-size'] = ['cover', 'auto'];
 editableItemOptions['.editBg : background-attachment'] = ['fixed', 'scroll'];
 
-var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.download-btn', '.footer a:not(.icon)', '.tableWrapper', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p'];
+var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.download-btn', 'a.goto', '.footer a:not(.icon)', '.tableWrapper', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p'];
 
 var editContForAnim = ['section', '.icon', 'img', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a.btn, a.download-btn, button.btn, a.goto', '.num-icon', '.countdown', '.item-list-right li, .item-list-left li, .item-list-center li', '#testimonials-grid .quote, .pricing-table, .pricing-table .stamp, .post, .panel, .panel-heading, .form-container, .post-content .price-circle', '.step-left-block li, .step-center-block li, .step-path-block li', '.diagram .column span', '.diagram-horizontal .column span', '.item-list-border li', '.border-block'];
 
@@ -175,6 +177,19 @@ $(window).load(function() {
 
     }
 
+    if ($('#pageList ul:visible > li').size() == 0) {
+
+        $('#start').show();
+
+        $('#frameWrapper').addClass('empty');
+
+    } else {
+
+        $('#start').hide();
+
+        $('#frameWrapper').removeClass('empty');
+
+    }
 });
 
 
@@ -202,6 +217,7 @@ function setPendingChanges(v) {
 
         $('#savePage .bLabel').text("Save changes (!)");
         $('#savePage').removeClass('btn-primary');
+        $('#savePage').removeClass('disabled');
         $('#savePage').addClass('btn-success');
 
         pendingChanges = true;
@@ -211,6 +227,7 @@ function setPendingChanges(v) {
         $('#savePage .bLabel').text("Nothing new to save");
         $('#savePage').removeClass('btn-success');
         $('#savePage').addClass('btn-primary');
+        $('#savePage').addClass('disabled');
         pendingChanges = false;
 
     }
@@ -362,7 +379,8 @@ function makeDraggable(theID) {
             },
             start: function() {
                 //switch to block mode
-                $('input:radio[name=mode]#modeBlock').trigger("click");
+                //$('input:radio[name=mode]#modeBlock').trigger("click");
+                $(".modes label:first").click();
                 $('input:radio[name=mode]').parent().addClass('disabled');
 
                 //show all section covers and activate designMode
@@ -492,7 +510,8 @@ function makeSortable(el) {
             $('#start').hide();
         }
     });
-    $('input:radio[name=mode]#modeBlock').trigger('click');
+    //$('input:radio[name=mode]#modeBlock').trigger('click');
+    $(".modes label:first").click();
 }
 
 $('#second #elements').on('click', 'li', function() {
@@ -569,8 +588,22 @@ function buildeStyleElements(el, theSelector) {
 
             }
         } else {
-            var CssElement = $(el).css(editableItems[theSelector][x]) ||
-                    $(el).attr(editableItems[theSelector][x]) || '1s';
+            if (editableItems[theSelector][x] == "border-width") {
+                CssElement = $(el).css('border-top-width');
+            }
+            else if (editableItems[theSelector][x] == "border-color") {
+                CssElement = $(el).css('border-top-color');
+            }
+            else if (editableItems[theSelector][x] == "border-style") {
+                CssElement = $(el).css('border-top-Style');
+            }
+            else if (editableItems[theSelector][x] == "border-radius") {
+                CssElement = $(el).css('border-top-right-radius');
+            }
+            else {
+                var CssElement = $(el).css(editableItems[theSelector][x]) ||
+                        $(el).attr(editableItems[theSelector][x]) || '1s';
+            }
         }
         newStyleEl = $('#styleElTemplate').clone();
 
@@ -1016,6 +1049,7 @@ function styleClick(el) {
     $('#imageModal').on('show.bs.modal', function(e) {
 
         $('#imageModal').off('click', '.image button.useImage');
+        $('#imageModal').off('click', '.image button.deleteImage');
 
         $('#imageModal').on('click', '.image button.useImage', function() {
 
@@ -1036,14 +1070,53 @@ function styleClick(el) {
 
         });
 
+        $('#imageModal').on('click', '.image button.deleteImage', function() {
+            var url = $(this).attr('data-url');
+            var bucket = $(this).attr('data-bucket');
+
+            var uri = $(this).attr('data-image');
+
+            var confirm = window.confirm("Are you sure wants to delete this image?\nPress OK to delete or Cancel!");
+            if (confirm) {
+                $.ajax({
+                    url: url,
+                    data: {"bucket": bucket, "uri": uri},
+                    dataType: "json",
+                    type: 'POST'
+                }).done(function(ret) {
+
+                    //hide loader
+                    $('#imageModal .loader').fadeOut(500);
+
+                    if (ret.responseCode == 0) {//error
+
+                        $('#imageModal .modal-alerts').append($(ret.responseHTML));
+
+                    } else if (ret.responseCode == 1) {//success
+
+                        //append my images
+                        $('#myImagesTab > *').remove();
+                        $('#myImagesTab').append($(ret.myImages));
+
+                        $('#imageModal .modal-alerts').append($(ret.responseHTML));
+
+                        setTimeout(function() {
+                            $('#imageModal .modal-alerts > *').fadeOut(500);
+                        }, 3000);
+                    }
+                });
+            }
+        });
+
     });
 
     //video library
     $('#videoModal').on('show.bs.modal', function(e) {
 
-        $('#videoModal').off('click', '.image button.useVideo');
+        $('#videoModal').off('click', '.video button.useVideo');
+        $('#videoModal').off('click', '.video button.deleteVideo');
 
-        $('#videoModal').on('click', '.image button.useVideo', function() {
+        $('#videoModal').on('click', '.video button.useVideo', function() {
 
             //update live video
             $(el).prev(".videoGallery").remove();
@@ -1059,6 +1132,47 @@ function styleClick(el) {
             setPendingChanges(true);
 
             $(this).unbind('click');
+            $(".videoGallery").html5gallery();
+        });
+
+        $('#videoModal').on('click', '.video button.deleteVideo', function() {
+            var url = $(this).attr('data-url');
+            var bucket = $(this).attr('data-bucket');
+
+            var uri = $(this).attr('data-video');
+
+            var confirm = window.confirm("Are you sure wants to delete this video?\nPress OK to delete or Cancel!");
+            if (confirm) {
+                $.ajax({
+                    url: url,
+                    data: {"bucket": bucket, "uri": uri},
+                    dataType: "json",
+                    type: 'POST'
+                }).done(function(ret) {
+
+                    //hide loader
+                    $('#videoModal .loader').fadeOut(500);
+
+                    if (ret.responseCode == 0) {//error
+
+                        $('#videoModal .modal-alerts').append($(ret.responseHTML));
+
+                    } else if (ret.responseCode == 1) {//success
+
+                        //append my images
+                        $('#myVideosTab > *').remove();
+                        $('#myVideosTab').append($(ret.myVideos));
+
+                        $(".videoGallery").html5gallery();
+
+                        $('#videoModal .modal-alerts').append($(ret.responseHTML));
+
+                        setTimeout(function() {
+                            $('#videoModal .modal-alerts > *').fadeOut(500);
+                        }, 3000);
+                    }
+                });
+            }
         });
 
     });
@@ -1078,6 +1192,9 @@ function styleClick(el) {
                     $(el).css(nameAttrEl, valAttr);
                 } else if (nameAttrEl == 'width') {
                     valAttr = Math.floor(valAttr * 9.8);
+                    $(el).css(nameAttrEl, valAttr);
+                } else if ((nameAttrEl == 'background-color') && (valAttr == '')) {
+                    valAttr = 'transparent';
                     $(el).css(nameAttrEl, valAttr);
                 } else {
                     $(el).css(nameAttrEl, valAttr);
@@ -1891,15 +2008,31 @@ $(function() {
                         $('#editContentModal').modal('show');
 
                         //for the elements below, we'll use a simplyfied editor, only direct text can be done through this one
-                        $('#editContentModal #contentToEdit').redactor({
-                            imageUpload: siteUrl + 'assets/imageUploadEditor/' + siteID,
-                            clipboardUploadUrl: siteUrl + 'assets/imageUploadEditor/' + siteID,
-                            focus: true,
-                            plugins: ['table', 'bufferbuttons', 'video'],
-                            buttonSource: true,
-                            paragraphize: false,
-                            linebreaks: false
-                        });
+
+                        if (this.tagName == 'SMALL' || this.tagName == 'A' || this.tagName == 'SPAN' || this.tagName == 'B' || this.tagName == 'I' || this.tagName == 'EM' || this.tagName == 'STRONG' || this.tagName == 'SUB' || this.tagName == 'BUTTON' || this.tagName == 'LABEL')
+                        {
+                            $('#editContentModal #contentToEdit').redactor({
+                                buttons: ['html', 'bold', 'italic', 'deleted', 'link', 'rtl'],
+                                focus: true,
+                                plugins: ['bufferbuttons'],
+                                buttonSource: true,
+                                paragraphize: false,
+                                linebreaks: true,
+                                enterKey: false,
+                            });
+                        }
+                        else {
+                            $('#editContentModal #contentToEdit').redactor({
+                                imageUpload: siteUrl + 'assets/imageUploadEditor/' + siteID,
+                                clipboardUploadUrl: siteUrl + 'assets/imageUploadEditor/' + siteID,
+                                focus: true,
+                                plugins: ['table', 'bufferbuttons', 'video'],
+                                buttonSource: true,
+                                paragraphize: false,
+                                linebreaks: true,
+//                                deniedTags: ['br'],
+                            });
+                        }
 
                         /*if (this.tagName == 'SMALL' || this.tagName == 'A' || this.tagName == 'LI' || this.tagName == 'SPAN' || this.tagName == 'B' || this.tagName == 'I' || this.tagName == 'TT' || this.tageName == 'CODE' || this.tagName == 'EM' || this.tagName == 'STRONG' || this.tagName == 'SUB' || this.tagName == 'BUTTON' || this.tagName == 'LABEL' || this.tagName == 'P' || this.tagName == 'H1' || this.tagName == 'H2' || this.tagName == 'H2' || this.tagName == 'H3' || this.tagName == 'H4' || this.tagName == 'H5' || this.tagName == 'H6') {
                          console.log('1');
@@ -2028,6 +2161,7 @@ $(function() {
             }
 
         }
+
         elToUpdate.html($('#editContentModal #contentToEdit').redactor('code.get')).css({'outline': '', 'cursor': ''});
 
         var text = elToUpdate.text();
@@ -3560,3 +3694,7 @@ function publishAsset() {
         }
     };
 })(jQuery);
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    $('#savePage').addClass('disabled');
+});

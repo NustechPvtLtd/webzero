@@ -5,7 +5,7 @@
  *
  * @author NUSTECH
  */
-class My_Upload extends CI_Upload {
+class MY_Upload extends CI_Upload {
     
     function __construct($props = array()) 
     {

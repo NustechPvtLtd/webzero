@@ -70,9 +70,16 @@ class Amazon_services extends MY_Controller{
         } else {
             $uri = $this->media_storage_model->genrate_unique_name();
         }
-        if(!empty($_FILES['videoFile'])){
+        
+        $config['allowed_types'] = $this->config->item('upload_allowed_types_video');
+		$config['max_size']	= $this->config->item('upload_max_size');
+		$config['max_width']  = $this->config->item('upload_max_width');
+		$config['max_height']  = $this->config->item('upload_max_height');
+        
+        $this->load->library('upload', $config);
+
+        if(!empty($_FILES['videoFile']) && $this->upload->validate_file('videoFile')){
             $name = $_FILES['videoFile']['name'];
-            $size = $_FILES['videoFile']['size'];
             $tmp = $_FILES['videoFile']['tmp_name'];
             $ext = $this->_getExtension($name);
             $actual_video_name = 'video'.date('DdmY').mt_rand(100000, 999999).".".$ext;
@@ -114,7 +121,7 @@ class Amazon_services extends MY_Controller{
         } else {
             $temp = array();
             $temp['header'] = $this->lang->line('assets_videoUploadAjax_error1_heading');
-            $temp['content'] = $this->lang->line('assets_videoUploadAjax_error1_message');
+            $temp['content'] = $this->lang->line('assets_videoUploadAjax_error1_message').$this->upload->display_errors();
 
             $return['responseCode'] = 0;
             $return['responseHTML'] = $this->load->view('partials/error', array('data'=>$temp), true);
@@ -167,6 +174,57 @@ class Amazon_services extends MY_Controller{
             $temp = array();
             $temp['header'] = $this->lang->line('assets_videoDelete_error1_heading');
             $temp['content'] = $this->lang->line('assets_videoDelete_error1_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error', array('data'=>$temp), true);
+
+            die( json_encode( $return ) );
+        }
+    }
+    
+    public function imageDelete()
+    {
+        if(isset($_POST['bucket']) && isset($_POST['uri'])){
+            $response = $this->s3->deleteObject($_POST['bucket'], $_POST['uri']);
+            if($response){
+                $user_id = userdata('user_id');
+                $temp = array();
+                $temp['header'] = $this->lang->line('assets_imageDelete_success_heading');
+                $temp['content'] = $this->lang->line('assets_imageDelete_success_message');
+                $exp_array = explode('/', $_POST['uri']);
+                $media_name = end($exp_array);
+                $uri = $exp_array[0].'/'.$exp_array[1];
+                $this->media_storage_model->deleteMedia($media_name, $user_id);
+                
+                $userImages = $this->s3->getBucket($_POST['bucket'], $uri);
+
+                if( $userImages ) {
+                    $return['myImages'] = $this->load->view('partials/myimagetab', array('userImages' => $userImages, 'bucket'=>$_POST['bucket']), true);
+                } else {
+                    $return['myImages'] = '<div class="alert alert-info">
+                                            <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+                                            '.$this->lang->line('modal_imagelibrary_message_noimages').'
+                                        </div>';
+                }
+
+                $return['responseCode'] = 1;
+                $return['responseHTML'] = $this->load->view('partials/success', array('data'=>$temp), true);
+
+                die( json_encode( $return ) );
+            } else {
+                $temp = array();
+                $temp['header'] = $this->lang->line('assets_imageDelete_error1_heading');
+                $temp['content'] = $this->lang->line('assets_imageDelete_error1_message');
+
+                $return['responseCode'] = 0;
+                $return['responseHTML'] = $this->load->view('partials/error', array('data'=>$temp), true);
+
+                die( json_encode( $return ) );
+            }
+        }else{
+            $temp = array();
+            $temp['header'] = $this->lang->line('assets_imageDelete_error1_heading');
+            $temp['content'] = $this->lang->line('assets_imageDelete_error1_message');
 
             $return['responseCode'] = 0;
             $return['responseHTML'] = $this->load->view('partials/error', array('data'=>$temp), true);

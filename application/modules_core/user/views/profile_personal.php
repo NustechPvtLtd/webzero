@@ -88,7 +88,7 @@
     </div>
 </section>
 <script>
-    <?php //if(!$this->ion_auth->is_admin()):?>
+    <?php if(!$this->ion_auth->is_admin() || $user_id==$user->id):?>
     $(function(){
         var btnUpload = $('#uploadImageButton');
         var status = $('#notify-container');
@@ -106,6 +106,7 @@
                 }
             },
             onComplete: function(file,response) {
+                console.log(response);
                 var obj = JSON.parse(response);
                 status.text('Photo Uploaded Sucessfully!');
                 if (obj.status === "error") {
@@ -128,5 +129,5 @@
         $('#phone').mask("+91 dd dd dddddd");
         
     });
-    <?php //endif;?>
+    <?php endif;?>
 </script>

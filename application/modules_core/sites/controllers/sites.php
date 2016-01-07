@@ -230,19 +230,16 @@ class Sites extends MY_Controller {
             } else {
                 $bucket = $bucket->bucket_name;
             }
-            $uri = $this->media_storage_model->getUriByType($userID, 'video');
+            $uri = $this->media_storage_model->getUri($userID);
+            $userVideos = FALSE;
+            
             if($uri){
                 $uri = $uri->uri.'/'.'Videos';
-                try{
-                    $userVideos = $this->s3->getBucket($bucket,$uri);
-                }  catch (ErrorException $e){
-                    throw $e;
-                }
-                if (isset($userVideos)) {
-                    $this->data['userVideos'] = $userVideos;
-                }
+                $connected = @fsockopen("www.webzero.in", 80);
+                $userVideos = ($connected)?$this->s3->getBucket($bucket,$uri):FALSE;
             } 
             
+            $this->data['userVideos'] = $userVideos;
             $this->data['bucket'] = $bucket;
             
             $this->data['builder'] = true;

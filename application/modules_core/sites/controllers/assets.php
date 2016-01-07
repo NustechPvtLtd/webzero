@@ -24,12 +24,6 @@ class Assets extends MY_Controller {
 		}
 		
 	}
-
-	public function index() {
-	
-		
-		
-	}
 	
 	public function images() {
 		

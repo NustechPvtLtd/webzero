@@ -4435,8 +4435,8 @@
 						return;
 					}
 
-					// on enter
-					if (key == this.keyCode.ENTER && !e.shiftKey && !e.ctrlKey && !e.metaKey)
+					// on Shift+Enter or Ctrl+Enter
+					if (key === this.keyCode.ENTER && (e.ctrlKey || e.shiftKey))
 					{
 						var stop = this.core.setCallback('enter', e);
 						if (stop === false)
@@ -4515,8 +4515,8 @@
 
 					}
 
-					// Shift+Enter or Ctrl+Enter
-					if (key === this.keyCode.ENTER && (e.ctrlKey || e.shiftKey))
+					// Enter
+					if (key == this.keyCode.ENTER && !e.shiftKey && !e.ctrlKey && !e.metaKey)
 					{
 						return this.keydown.onShiftEnter(e);
 					}

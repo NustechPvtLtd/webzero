@@ -41,7 +41,7 @@
             <?php endif; ?>
         </div>
 
-        <div class="start" id="start" <?php if (isset($siteData['pages']) && count($siteData['pages']) > 0): ?>style="display:none"<?php endif; ?>>
+        <div class="start" id="start" >
             <span><?php echo $this->lang->line('canvas_empty') ?></span>
         </div>
     </div>
