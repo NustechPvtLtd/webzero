@@ -32,7 +32,7 @@ $config['base_url'] = $protocol.'://webzeero.dev/';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +50,7 @@ $config['index_page'] = 'index.php';
 | 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']	= 'AUTO';
+$config['uri_protocol']	= 'REQUEST_URI';
 
 /*
 |--------------------------------------------------------------------------
@@ -371,9 +371,13 @@ $config['elements_dir'] = 'elements';
 $config['images_dir'] = 'elements/images';
 $config['images_uploadDir'] = 'elements/images/uploads';
 
+$config['s_elements_dir'] = 'studentelements';
+$config['s_images_dir'] = 'studentelements/images';
+$config['s_images_uploadDir'] = 'studentelements/images/uploads';
+
 $config['upload_allowed_types'] = "gif|jpg|png";
 $config['upload_allowed_types_video'] = "mov|mp4|flv|avi|wmv";
-$config['upload_max_size'] = "0";
+$config['upload_max_size'] = "2048";
 $config['upload_max_width'] = "0";
 $config['upload_max_height'] = "0";
 

@@ -1,11 +1,11 @@
-<?php echo form_open('register');?>
+<?php echo form_open('recruiter');?>
     <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title">Please register</h3>
+            <h3 class="box-title">Please provide your details</h3>
         </div>
 		<div class="box-body">
 		    <div class="form-group">
-				<div id="infoMessage"><?php echo $message;?></div>
+				<div id="infoMessage"><?php echo $this->session->flashdata('message');?></div>
 			</div>
 			<div class="clearfix"><!-- --></div>
 			<div class="form-group col-lg-6">
@@ -44,7 +44,7 @@
 		</div>
         <div class="box-footer">
             <div class="pull-left">
-                <a class="btn btn-default" href="<?php echo site_url('login'); ?>">Go to login</a>
+                <a class="btn btn-default" href="<?php echo site_url(); ?>">Go to login</a>
             </div>
             <div class="pull-right">
                 <button data-loading-text="Please wait, processing..." class="btn btn-primary btn-submit" type="submit">Register</button>

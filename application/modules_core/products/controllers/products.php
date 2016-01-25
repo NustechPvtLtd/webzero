@@ -188,6 +188,7 @@ class Products extends MX_Controller {
         $this->load->model('products/productsmodel');
 
         $this->productsmodel->success($txnid, $st);
+        $this->productsmodel->updateInvoice($txnid, 1);
 
         $this->data['result'] = $this->productsmodel->getprodctorder($txnid);
 

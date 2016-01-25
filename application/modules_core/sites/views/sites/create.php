@@ -2,12 +2,6 @@
 
     <div class="toolbar">
 
-        <div class="buttons clearfix">
-            <span class="left"></span>
-            <span class="left"></span>
-            <span class="left"></span>
-        </div>
-
         <div class="title" id="pageTitle">
             <span><span>index</span>.html</span>
         </div>

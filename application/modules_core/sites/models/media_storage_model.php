@@ -13,7 +13,8 @@ class Media_storage_model extends CI_Model {
     {
         if ($this->db->insert('amazon_media_storage', $data)) {
             (!empty($data['type']))?$this->deleteEmptyRow($data['user_id'], $data['type']):$this->deleteEmptyRow($data['user_id']);
-            return $newSiteID = $this->db->insert_id();
+            $newSiteID = $this->db->insert_id();
+            return TRUE;
         } else {
             return FALSE;
         }
@@ -57,12 +58,14 @@ class Media_storage_model extends CI_Model {
         return $res;
     }
 
-    public function getBucket($user_id, $type = 'video')
+    public function getBucket($user_id, $type = FALSE)
     {
         $this->db->select('bucket_name');
         $this->db->from('amazon_media_storage');
         $this->db->where('user_id', $user_id);
-        $this->db->where('type', $type);
+        if($type){
+            $this->db->where('type', $type);
+        }
         $this->db->group_by('bucket_name');
         $query = $this->db->get();
         if ($query->num_rows() == 0) {
@@ -75,31 +78,15 @@ class Media_storage_model extends CI_Model {
 
         return $bucket;
     }
-
-    public function getUriByType($user_id, $type)
-    {
-        $this->db->select('uri');
-        $this->db->from('amazon_media_storage');
-        $this->db->where('user_id', $user_id);
-        $this->db->where('type', $type);
-        $this->db->group_by('uri');
-        $query = $this->db->get();
-        if ($query->num_rows() == 0) {
-            return false;
-        }
-
-        $res = $query->result();
-
-        $uri = $res[0];
-
-        return $uri;
-    }
     
-    public function getUri($user_id)
+    public function getUri($user_id, $type = FALSE)
     {
         $this->db->select('uri');
         $this->db->from('amazon_media_storage');
         $this->db->where('user_id', $user_id);
+        if($type){
+            $this->db->where('type', $type);
+        }
         $this->db->group_by('uri');
         $query = $this->db->get();
         if ($query->num_rows() == 0) {
@@ -129,7 +116,11 @@ class Media_storage_model extends CI_Model {
         $this->db->where('user_id', $user_id);
         $this->db->where('media_name', '');
         if($type){$this->db->where('type', $type);}
-        $this->db->delete('amazon_media_storage');
+        if($this->db->delete('amazon_media_storage')){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
     }
 
     public function genrate_unique_name()

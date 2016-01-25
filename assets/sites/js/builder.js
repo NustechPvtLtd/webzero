@@ -20,8 +20,8 @@ editableItems['.diagram .column span'] = ['height', 'color', 'background-color',
 editableItems['.diagram-horizontal .column span'] = ['width', 'color', 'background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.color-mark'] = ['background-color'];
 editableItems['.icon'] = ['color', 'font-size', 'opacity', 'animation', 'data-wow-duration', 'data-wow-delay'];
-editableItems['nav'] = ['background-color', 'color', 'box-shadow'];
-editableItems['nav a'] = ['color', 'font-weight', 'text-transform'];
+editableItems['nav'] = ['background-color', 'color'];
+editableItems['nav a'] = ['color', 'font-size', 'background-color', 'font-family', 'text-transform'];
 editableItems['nav li'] = ['background-color', 'border-color', 'border-width'];
 editableItems['h1'] = ['color', 'font-size', 'background-color', 'font-family', 'margin-bottom', 'margin-top', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['h2'] = ['color', 'font-size', 'background-color', 'font-family', 'margin-bottom', 'margin-top', 'animation', 'data-wow-duration', 'data-wow-delay'];
@@ -37,7 +37,7 @@ editableItems['.footer a'] = ['color'];
 editableItems['ul.diagram, ul.diagram-horizontal'] = ['background-image', 'background-color', 'background-repeat', 'background-size', 'background-attachment', 'border-color', 'border-width', 'border-radius'];
 editableItems['header'] = ['background-image', 'background-color', 'background-repeat', 'background-size', 'background-attachment'];
 editableItems['.editBg'] = ['background-image', 'background-color', 'background-repeat', 'background-size', 'background-attachment'];
-editableItems['section'] = ['background-image', 'background-color', 'background-repeat', 'background-size', 'background-attachment', 'padding-top', 'padding-bottom', 'border-bottom-width', 'border-bottom-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
+editableItems['section'] = ['background-image', 'background-color', 'background-repeat', 'background-size', 'background-attachment', 'padding-top', 'padding-bottom', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['footer'] = ['background-image', 'background-color', 'background-repeat', 'background-size'];
 editableItems['.types-block .row > div'] = ['background-image', 'background-color', 'background-repeat', 'background-size'];
 editableItems['.pricing-table span'] = ['padding-top', 'padding-bottom', 'background-image', 'background-color', 'background-repeat', 'background-size'];
@@ -47,18 +47,20 @@ editableItems['.carousel-control .arrow'] = ['border-radius', 'border-color', 'b
 editableItems['.num-icon'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.countdown'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.border-block'] = ['font-size', 'font-family', 'color', 'background-color', 'border-color', 'border-width', 'border-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
-editableItems['.editContent'] = ['color', 'font-size', 'background-color', 'font-family', ];
+editableItems['.editContent'] = ['color', 'font-size', 'background-color', 'font-family'];
 editableItems['#team-circle .col-sm-4'] = [];
 editableItems['#team-full .col-sm-4'] = [];
 editableItems['#price-3col .benefits-list'] = [];
 editableItems['#diagram-full li'] = [];
+editableItems['#diagram-horiz-full li'] = [];
 editableItems['#border'] = [];
 //editableItems['#intro-video-form .propClone'] = [];
 //editableItems['.propClone'] = [];
 
 var editableItemOptions = new Array();
 
-editableItemOptions['nav a : font-weight'] = ['light', 'bold'];
+editableItemOptions['nav a : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
+editableItemOptions['nav a : text-transform'] = ['none', 'capitalize', 'uppercase', 'lowercase'];
 editableItemOptions['a.btn : border-radius'] = ['0px', '4px', '10px'];
 editableItemOptions['.portfolio-list img : border-style'] = ['none', 'dotted', 'dashed', 'solid'];
 editableItemOptions['a.btn, a.download-btn, button.btn, a.goto : border-style'] = ['none', 'dotted', 'dashed', 'solid'];
@@ -70,6 +72,7 @@ editableItemOptions['h3 : font-family'] = ['default', 'Lato', 'Helvetica', 'Aria
 editableItemOptions['h4 : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
 editableItemOptions['h5 : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
 editableItemOptions['p : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
+editableItemOptions['.editContent : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
 editableItemOptions['header : background-repeat'] = ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'];
 editableItemOptions['header : background-size'] = ['cover', 'auto'];
 editableItemOptions['header : background-attachment'] = ['fixed', 'scroll'];
@@ -1188,11 +1191,15 @@ function styleClick(el) {
                 if (nameAttrEl == 'data-wow-duration' || nameAttrEl == 'data-wow-delay') {
                     $(el).attr(nameAttrEl, valAttr);
                 } else if (nameAttrEl == 'height') {
-                    valAttr = Math.floor(valAttr * 4);
+                    valAttr = Math.floor(parseInt(valAttr) * 4);
                     $(el).css(nameAttrEl, valAttr);
+                    var txt = Math.round(parseInt(valAttr) / 4) + '%';
+                    $(el).text(txt);
                 } else if (nameAttrEl == 'width') {
-                    valAttr = Math.floor(valAttr * 9.8);
+                    valAttr = Math.floor(parseInt(valAttr) * 9.8);
                     $(el).css(nameAttrEl, valAttr);
+                    var txt = Math.round(parseInt(valAttr) / 9.8) + '%';
+                    $(el).text(txt);
                 } else if ((nameAttrEl == 'background-color') && (valAttr == '')) {
                     valAttr = 'transparent';
                     $(el).css(nameAttrEl, valAttr);
@@ -1416,6 +1423,26 @@ function styleClick(el) {
 
         });
 
+        if ($(el).attr('data-selector') == '.diagram .column span') {
+            //get parent div n calculate no of child. accordingly assign width
+            var par = $(el).parents('li:first');
+            var total_span = par.children("span.column").length;
+            par.find("span.column").each(function() {
+                var per_width = 100 / total_span;
+                $(this).css("width", (per_width - 3) + "%");
+                $(this).css("margin", "0 1%");
+            });
+        }
+        if ($(el).attr('data-selector') == '#diagram-full li') {
+            //get parent div n calculate no of child. accordingly assign width
+            var par = $(el).parents('ul.diagram');
+            var total_span = par.children("li").length;
+            par.find("li").each(function() {
+                var per_width = 100 / total_span;
+                $(this).css("width", (per_width - 3) + "%");
+            });
+        }
+
     });
 
     //clone button
@@ -1446,7 +1473,7 @@ function styleClick(el) {
             //theClone.find($(el).prop('tagName')).attr('style', '');
 
             theOne = theClone.find($(el).prop('tagName'));
-            cloned = $(el).parents('.propClone');
+            cloned = $(el).parents('.propClone:first');
 
             cloneParent = $(el).parent().parent();
 
@@ -1504,6 +1531,26 @@ function styleClick(el) {
         //possible height adjustments
         heightAdjustment(el);
 
+
+        if ($(el).attr('data-selector') == '.diagram .column span') {
+            //get parent div n calculate no of child. accordingly assign width
+            var par = $(el).parents('li:first');
+            var total_span = par.children("span.column").length;
+            par.find("span.column").each(function() {
+                var per_width = 100 / total_span;
+                $(this).css("width", (per_width - 3) + "%");
+                $(this).css("margin", "0 1%");
+            });
+        }
+        if ($(el).attr('data-selector') == '#diagram-full li') {
+            //get parent div n calculate no of child. accordingly assign width
+            var par = $(el).parents('ul.diagram');
+            var total_span = par.children("li").length;
+            par.find("li").each(function() {
+                var per_width = 100 / total_span;
+                $(this).css("width", per_width + "%");
+            });
+        }
     });
 
     //reset button
@@ -1617,9 +1664,18 @@ function activeStyling() {
                         }
                     } else if ($(this).prop('tagName') == 'IMG') {
                         if (!$(this).is(".ui-resizable")) {
-                            $(this).resizable({alsoResize: $(this).parent(), start: function(event, ui) {
+                            $(this).resizable({
+                                alsoResize: $(this).parent(),
+                                start: function(event, ui) {
                                     setPendingChanges(true);
-                                }});
+                                },
+                                resize: function(event, ui) {
+                                    $(this).css({'outline': '3px dotted red', 'cursor': 'pointer'});
+                                },
+                                stop: function(event, ui) {
+                                    $(this).css({'outline': '', 'cursor': ''});
+                                }
+                            });
                         }
 
                     }// else {
@@ -1791,7 +1847,11 @@ $(function() {
 
         niceKey = key.toLowerCase().replace(" ", "_");
 
-        $('<li><a href="" id="' + niceKey + '">' + key + '</a></li>').appendTo('#menu #main ul#elements');
+        if (niceKey == "ecommerce_tables" && display_ecom == 'yes') {
+            $('<li><a href="" id="' + niceKey + '">' + key + '</a></li>').appendTo('#menu #main ul#elements');
+        } else if (niceKey != "ecommerce_tables") {
+            $('<li><a href="" id="' + niceKey + '">' + key + '</a></li>').appendTo('#menu #main ul#elements');
+        }
 
         for (x = 0; x < _Elements.elements[key].length; x++) {
 
@@ -2012,13 +2072,22 @@ $(function() {
                         if (this.tagName == 'SMALL' || this.tagName == 'A' || this.tagName == 'SPAN' || this.tagName == 'B' || this.tagName == 'I' || this.tagName == 'EM' || this.tagName == 'STRONG' || this.tagName == 'SUB' || this.tagName == 'BUTTON' || this.tagName == 'LABEL')
                         {
                             $('#editContentModal #contentToEdit').redactor({
-                                buttons: ['html', 'bold', 'italic', 'deleted', 'link', 'rtl'],
+                                buttons: ['html', 'bold', 'italic', 'deleted', 'alignment'],
                                 focus: true,
                                 plugins: ['bufferbuttons'],
                                 buttonSource: true,
                                 paragraphize: false,
                                 linebreaks: true,
                                 enterKey: false,
+                                activeButtonsStates: {
+                                    b: 'bold',
+                                    i: 'italic',
+                                    del: 'deleted',
+                                    strike: 'deleted',
+                                    ul: 'unorderedlist',
+                                    ol: 'orderedlist',
+                                    u: 'underline'
+                                }
                             });
                         }
                         else {
@@ -2161,7 +2230,9 @@ $(function() {
             }
 
         }
-
+        if (elToUpdate.has("table")) {
+            elToUpdate.find("table").addClass("table table-bordered");
+        }
         elToUpdate.html($('#editContentModal #contentToEdit').redactor('code.get')).css({'outline': '', 'cursor': ''});
 
         var text = elToUpdate.text();
@@ -2625,10 +2696,6 @@ $(function() {
     $('#previewModal > form').submit(function() {
 
         $('#previewModal > form #showPreview').hide('');
-
-        $('#previewModal > form #previewCancel').text('Close Window').on('click', function() {
-            activeStyling();
-        });
 
     });
 
@@ -3355,7 +3422,7 @@ $(function() {
             $('#imageModal .modal-alerts > *').remove();
 
             //disable button
-            $('button#uploadImageButton').addClass('disable');
+            $('button#uploadImageButton').addClass('disabled');
 
             //show loader
             $('#imageModal .loader').fadeIn(500);
@@ -3381,7 +3448,7 @@ $(function() {
             }).done(function(ret) {
 
                 //enable button
-                $('button#uploadImageButton').addClass('disable');
+                $('button#uploadImageButton').addClass('disabled');
 
                 //hide loader
                 $('#imageModal .loader').fadeOut(500);
@@ -3423,7 +3490,7 @@ $(function() {
             $('#videoModal .modal-alerts > *').remove();
 
             //disable button
-            $('button#uploadVideoButton').addClass('disable');
+            $('button#uploadVideoButton').addClass('disabled');
 
             //show loader
             $('#videoModal .loader').fadeIn(500);
@@ -3449,7 +3516,7 @@ $(function() {
             }).done(function(ret) {
 
                 //enable button
-                $('button#uploadVideoButton').addClass('disable');
+                $('button#uploadVideoButton').addClass('disabled');
 
                 //hide loader
                 $('#videoModal .loader').fadeOut(500);
@@ -3693,6 +3760,36 @@ function publishAsset() {
             return style;
         }
     };
+
+//Show-Hide the builder's Elements Menu
+    var f = true;
+
+    $("#menu_bar").click(function() {
+
+        if (f) {
+
+            $("#menu").css("left", "-210px");
+
+            $("#scr").css("margin-left", "5px");
+
+            f = !f;
+
+        }
+
+        else {
+
+            $("#menu").css("left", "0px");
+
+            $("#scr").css("margin-left", "215px");
+
+            f = !f;
+
+        }
+
+    }
+
+    );
+
 })(jQuery);
 
 document.addEventListener("DOMContentLoaded", function(event) {

@@ -163,7 +163,7 @@ class Sitemodel extends CI_Model {
         ];
         //create empty index page
         $this->db->insert('pages', $Pagedata);
-        
+
         return $newSiteID;
     }
 
@@ -227,36 +227,6 @@ class Sitemodel extends CI_Model {
             $this->createPages($siteID, $siteData);
         }
     }
-
-    /*
-
-      updates a site's meta data (name, ftp details, etc)
-
-     */
-
-//    public function updateSiteData($siteData)
-//    {
-//        $domainOk = 0;
-//        $siteDetails = $this->db->select('domain')->from('sites')->where('sites_id', $siteData['siteID'])->get();
-//        $result = $siteDetails->result();
-//        if (empty($result[0]->domain) && ($siteData['siteSettings_domain'] != '') && $this->checkDomainAvailability($siteData['siteSettings_domain'])) {
-//            $domainOk = 1;
-//            $data = array(
-////                'sites_name' => $siteData['siteSettings_siteName'],
-//                'domain' => $siteData['siteSettings_domain'],
-//                'domain_ok' => $domainOk,
-//            );
-//            
-//            $this->db->where('sites_id', $siteData['siteID']);
-//            if ($this->db->update('sites', $data)) {
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        }else{
-//            return false;
-//        }
-//    }
 
     /*
 
@@ -451,8 +421,11 @@ class Sitemodel extends CI_Model {
 
     public function adminImages()
     {
-
-        $folderContent = directory_map($this->config->item('images_dir'), 2);
+        if ($this->ion_auth->in_group('students')) {
+            $folderContent = directory_map($this->config->item('s_images_dir'), 2);
+        } else {
+            $folderContent = directory_map($this->config->item('images_dir'), 2);
+        }
 
         if ($folderContent) {
 
@@ -655,6 +628,285 @@ class Sitemodel extends CI_Model {
         } else {
             $query = $this->db->query("insert into users_products(user_id,product_id,name,description,price,site_id,image1)values('" . $uid . "','" . $productid . "','" . $pname . "','" . $pdescription . "','" . $pprice . "','" . $site_id . "','" . $fullui . "')");
         }
+    }
+
+    /*
+      get site settings for resume
+
+     */
+
+    public function getResumeData($_site_id, $_user_id, $_page_id)
+    {
+        // Resume basic details.
+        $this->db->from('jobseeker_profile');
+        $this->db->where(array('site_id' => $_site_id, 'user_id' => $_user_id, 'page_id' => $_page_id));
+        $query = $this->db->get();
+        if ($query->num_rows() == 0) {
+            return false;
+        }
+        $res = $query->result();
+        $resume['basic'] = $res[0];
+
+        // Resume Education For User
+        $this->db->from('jobseeker_education');
+        $this->db->where(array('site_id' => $_site_id, 'user_id' => $_user_id, 'page_id' => $_page_id));
+        $query = $this->db->get();
+        $res = $query->result();
+        $resume['education'] = $res;
+
+        // Resume skills for user
+        $this->db->from('jobseeker_prof_skills');
+        $this->db->where(array('site_id' => $_site_id, 'user_id' => $_user_id, 'page_id' => $_page_id));
+        $query = $this->db->get();
+        $res = $query->result();
+        $resume['skills'] = $res;
+
+        // Resume languages for user 
+        $this->db->from('jobseeker_lang_skills');
+        $this->db->where(array('site_id' => $_site_id, 'user_id' => $_user_id, 'page_id' => $_page_id));
+        $query = $this->db->get();
+        $res = $query->result();
+        $resume['lang'] = $res;
+
+        return $resume;
+    }
+
+    /*
+      Get User details by user id
+     */
+
+    public function getUserDetailsUserId($user_id)
+    {
+        $this->db->select('username,email,first_name,last_name,phone');
+        $this->db->from('users');
+        $this->db->where('id', $user_id);
+        $query = $this->db->get();
+
+        if ($query->num_rows() == 0) {
+
+            return false;
+        }
+
+        $res = $query->result();
+
+        $site = $res[0];
+        return $site;
+    }
+
+    /*
+
+      updates site password
+
+     */
+
+    public function updateSitePassword($pageData)
+    {
+
+        //do we have a siteID?
+
+        if ($pageData['siteID'] != '') {
+            $status = ((isset($pageData['my-checkbox']) && $pageData['my-checkbox'] == '1') ? $pageData['my-checkbox'] : '0');
+            $data = array();
+            $data['has_password'] = $status;
+            if (isset($pageData['pagePassword'])) {
+                $data['site_password'] = $pageData['pagePassword'];
+            }
+
+            $this->db->where('sites_id', $pageData['siteID']);
+            $this->db->update('sites', $data);
+        }
+    }
+
+    /*
+      get site user password.
+     */
+
+    public function getUserPasswordById($site_id, $password)
+    {
+        $this->db->select('*');
+        $this->db->from('sites');
+        $this->db->where(array('sites_id' => $site_id, 'site_password' => $password, 'sites_trashed' => 0));
+        $query = $this->db->get();
+        if ($query->num_rows() == 0) {
+
+            return false;
+        }
+
+        $res = $query->result();
+
+        $site = (array) $res[0];
+        return array_slice($site, 0, 8);
+    }
+
+    /*
+
+      updates an existing site item, including pages and frames
+
+     */
+
+    /*
+      Check profile available in database
+     */
+
+    public function checkProfile($_user_id, $_site_id, $_page_id)
+    {
+
+        $query = $this->db->from('jobseeker_profile')->where(array('site_id' => $_site_id, 'page_id' => $_page_id, 'user_id' => $_user_id))->get();
+
+        $datares = $query->result();
+        if (!empty($datares) && is_object($datares[0])) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+      Delete the Education Details
+     */
+
+    public function deleteEducation($_edu_id)
+    {
+        $where_cls = array('id' => $_edu_id);
+        $this->db->where($where_cls);
+        $this->db->delete('jobseeker_education');
+        if ($this->db->affected_rows() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+      Delete the old skills
+     */
+
+    public function deleteSkills($_skill_id)
+    {
+        $where_cls = array('id' => $_skill_id);
+        $this->db->where($where_cls);
+        $this->db->delete('jobseeker_prof_skills');
+        if ($this->db->affected_rows() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+      Delete the old languages
+     */
+
+    public function deleteLanguages($_lang_id)
+    {
+        $where_cls = array('id' => $_lang_id);
+        $this->db->where($where_cls);
+        $this->db->delete('jobseeker_lang_skills');
+        if ($this->db->affected_rows() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+      Insert batch Skills into the database
+     */
+
+    public function insertSkills($insSkill)
+    {
+        $this->db->insert('jobseeker_prof_skills', $insSkill);
+        $basicData = $this->db->insert_id();
+        if ($basicData != 0) {
+            return $basicData;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+      Insert batch Languagse into the database
+     */
+
+    public function insertLang($insLang)
+    {
+        $this->db->insert('jobseeker_lang_skills', $insLang);
+        $basicData = $this->db->insert_id();
+        if ($basicData != 0) {
+            return $basicData;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+      Update the profile details.
+     */
+
+    public function updateBasicDetails($_user_id, $_site_id, $_page_id, $data)
+    {
+
+        $data['last_updated'] = time();
+        $where_cls = array('site_id' => $_site_id, 'page_id' => $_page_id, 'user_id' => $_user_id);
+        $this->db->where($where_cls);
+        $this->db->update('jobseeker_profile', $data);
+        if ($this->db->affected_rows() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+      Insert the Education Details for the Student.
+     */
+
+    public function createEducationDetails($data)
+    {
+        $this->db->insert('jobseeker_education', $data);
+        $basicData = $this->db->insert_id();
+        if ($basicData != 0) {
+            return $basicData;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+      Create the basic deails profile for the new student
+     */
+
+    public function createBasicDetails($data)
+    {
+        $this->db->insert('jobseeker_profile', $data);
+        $basicData = $this->db->insert_id();
+        if ($basicData != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /*
+      User name by user id
+     */
+
+    public function getUserByUserId($user_id)
+    {
+        $this->db->select('username,email,first_name,last_name,phone');
+        $this->db->from('users');
+        $this->db->where('id', $user_id);
+        $query = $this->db->get();
+
+        if ($query->num_rows() == 0) {
+
+            return false;
+        }
+
+        $res = $query->result();
+
+        $site = $res[0];
+        return $site->username;
     }
 
 }

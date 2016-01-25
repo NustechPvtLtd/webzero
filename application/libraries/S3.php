@@ -116,7 +116,7 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::listBuckets(): [%s] %s", $rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::listBuckets(): [%s] %s", $rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		$results = array();
@@ -171,7 +171,7 @@ class S3 {
 			$response->error = array('code' => $response->code, 'message' => 'Unexpected HTTP status');
 		if ($response->error !== false)
 		{
-			trigger_error(sprintf("S3::getBucket(): [%s] %s", $response->error['code'], $response->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::getBucket(): [%s] %s", $response->error['code'], $response->error['message']), E_USER_WARNING);
 			return false;
 		}
 
@@ -268,8 +268,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::putBucket({$bucket}, {$acl}, {$location}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::putBucket({$bucket}, {$acl}, {$location}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return true;
@@ -289,8 +289,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::deleteBucket({$bucket}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::deleteBucket({$bucket}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return true;
@@ -307,7 +307,7 @@ class S3 {
 	{
 		if (!file_exists($file) || !is_file($file) || !is_readable($file))
 		{
-			trigger_error('S3::inputFile(): Unable to open input file: ' . $file, E_USER_WARNING);
+//			trigger_error('S3::inputFile(): Unable to open input file: ' . $file, E_USER_WARNING);
 			return false;
 		}
 		return array('file' => $file, 'size' => filesize($file),
@@ -327,7 +327,7 @@ class S3 {
 	{
 		if (!is_resource($resource) || $bufferSize < 0)
 		{
-			trigger_error('S3::inputResource(): Invalid resource or buffer size', E_USER_WARNING);
+//			trigger_error('S3::inputResource(): Invalid resource or buffer size', E_USER_WARNING);
 			return false;
 		}
 		$input = array('size' => $bufferSize, 'md5sum' => $md5sum);
@@ -421,7 +421,7 @@ class S3 {
 			$rest->response->error = array('code' => $rest->response->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->response->error !== false)
 		{
-			trigger_error(sprintf("S3::putObject(): [%s] %s", $rest->response->error['code'], $rest->response->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::putObject(): [%s] %s", $rest->response->error['code'], $rest->response->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return true;
@@ -487,8 +487,8 @@ class S3 {
 			$rest->response->error = array('code' => $rest->response->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->response->error !== false)
 		{
-			trigger_error(sprintf("S3::getObject({$bucket}, {$uri}): [%s] %s",
-							$rest->response->error['code'], $rest->response->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::getObject({$bucket}, {$uri}): [%s] %s",
+//							$rest->response->error['code'], $rest->response->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return $rest->response;
@@ -510,8 +510,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::getObjectInfo({$bucket}, {$uri}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::getObjectInfo({$bucket}, {$uri}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return $rest->code == 200 ? $returnInfo ? $rest->headers : true : false;
@@ -549,8 +549,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::copyObject({$srcBucket}, {$srcUri}, {$bucket}, {$uri}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::copyObject({$srcBucket}, {$srcUri}, {$bucket}, {$uri}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return isset($rest->body->LastModified, $rest->body->ETag) ? array(
@@ -620,8 +620,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::setBucketLogging({$bucket}, {$uri}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::setBucketLogging({$bucket}, {$uri}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return true;
@@ -645,8 +645,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::getBucketLogging({$bucket}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::getBucketLogging({$bucket}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		if (!isset($rest->body->LoggingEnabled))
@@ -683,8 +683,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::getBucketLocation({$bucket}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::getBucketLocation({$bucket}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return (isset($rest->body[0]) && (string) $rest->body[0] !== '') ? (string) $rest->body[0] : 'US';
@@ -749,8 +749,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::setAccessControlPolicy({$bucket}, {$uri}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::setAccessControlPolicy({$bucket}, {$uri}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return true;
@@ -772,8 +772,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::getAccessControlPolicy({$bucket}, {$uri}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::getAccessControlPolicy({$bucket}, {$uri}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 
@@ -833,8 +833,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::deleteObject(): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::deleteObject(): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return true;
@@ -948,8 +948,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::createDistribution({$bucket}, " . (int) $enabled . ", '$comment'): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::createDistribution({$bucket}, " . (int) $enabled . ", '$comment'): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		elseif ($rest->body instanceof SimpleXMLElement)
@@ -973,8 +973,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::getDistribution($distributionId): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::getDistribution($distributionId): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		elseif ($rest->body instanceof SimpleXMLElement)
@@ -1005,8 +1005,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::updateDistribution({$dist['id']}, " . (int) $enabled . ", '$comment'): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::updateDistribution({$dist['id']}, " . (int) $enabled . ", '$comment'): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		else
@@ -1035,8 +1035,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::deleteDistribution({$dist['id']}): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::deleteDistribution({$dist['id']}): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		return true;
@@ -1057,8 +1057,8 @@ class S3 {
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false)
 		{
-			trigger_error(sprintf("S3::listDistributions(): [%s] %s",
-							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
+//			trigger_error(sprintf("S3::listDistributions(): [%s] %s",
+//							$rest->error['code'], $rest->error['message']), E_USER_WARNING);
 			return false;
 		}
 		elseif ($rest->body instanceof SimpleXMLElement && isset($rest->body->DistributionSummary))

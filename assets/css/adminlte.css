@@ -881,6 +881,7 @@ body > .header .logo .icon {
   padding: 10px;
   background: #354B60 !important;
   text-align: center;
+  width:100%;
 }
 .navbar-nav > .user-menu > .dropdown-menu > li.user-header > img {
   z-index: 5;
@@ -921,6 +922,7 @@ body > .header .logo .icon {
 .navbar-nav > .user-menu > .dropdown-menu > li.user-footer {
   background-color: #243a4f;
   padding: 10px;
+  width: 100%;
 }
 .navbar-nav > .user-menu > .dropdown-menu > li.user-footer:before,
 .navbar-nav > .user-menu > .dropdown-menu > li.user-footer:after {
@@ -937,6 +939,10 @@ body > .header .logo .icon {
 }
 .navbar-nav > .user-menu > .dropdown-menu > li.user-footer .btn-default:hover {
     background-color: #354b60 !important;
+}
+.header > .logo > .img-responsive {
+    margin: 10px 0;
+    height: 30px;
 }
 /* Add fade animation to dropdown menus */
 .open > .dropdown-menu {

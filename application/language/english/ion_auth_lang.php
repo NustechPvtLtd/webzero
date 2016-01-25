@@ -36,7 +36,7 @@ $lang['activate_successful'] 		  	     = 'Account Activated';
 $lang['activate_unsuccessful'] 		 	     = 'Unable to Activate Account';
 $lang['deactivate_successful'] 		  	     = 'User\'s Account De-Activated';
 $lang['deactivate_unsuccessful'] 	  	     = 'Unable to De-Activate Account';
-$lang['activation_email_successful'] 	  	 = 'Activation Email Sent, please check your registered mail to activate this account';
+$lang['activation_email_successful'] 	  	 = 'Activation Email Sent, please check your registered mail(also check your junk folder) to activate this account';
 $lang['activation_email_unsuccessful']   	 = 'Unable to Send Activation Email';
 
 // Login / Logout
@@ -62,10 +62,10 @@ $lang['group_delete_notallowed']    = 'Can\'t delete the administrators\' group'
 $lang['group_name_required'] 		= 'Group name is a required field';
 
 // Activation Email
-$lang['email_activation_subject']            = 'Account Activation';
+$lang['email_activation_subject']  = 'Your Account on Jadooweb';
 $lang['email_activate_heading']    = 'Activate account for %s';
 $lang['email_activate_subheading'] = 'Please click this link to %s.';
-$lang['email_activate_link']       = 'Activate Your Account';
+$lang['email_activate_link']       = 'Click to activate your account';
 
 // Forgot Password Email
 $lang['email_forgotten_password_subject']    = 'Forgotten Password Verification';

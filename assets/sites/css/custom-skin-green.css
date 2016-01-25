@@ -210,8 +210,12 @@ div#pageList ul > li.element.ui-draggable.ui-draggable-handle{
 .modal .modal-content {
     border-radius: 4px 4px 0 0;
 }
-.modal .form-group .btn {
+/*.modal .form-group .btn {
     padding: 2px !important;
+}*/
+div#siteSettingsWrapper .row {
+	margin-right: -15px;
+    margin-left: -15px;
 }
 .modal form {
     border-top: none;
@@ -262,9 +266,9 @@ div#pageList ul > li.element.ui-draggable.ui-draggable-handle{
  padding:6px;
 }
 
-header .modes {
+/*header .modes {
     margin-left: 232px;
-}
+}*/
 
 .useImage, .deleteImage, .useVideo, .deleteVideo {
     display: inline-block;
@@ -273,6 +277,15 @@ header .modes {
     padding: 5px;
 }
 
-#domain-name .form-group input:focus{
+/*#domain-name .form-group input:focus{
     width: auto;
+}*/
+#cloneElementButton, #resetStyleButton, #removeElementButton {
+    padding: 6px 0px;
+    font-size: 15px;
+}
+#btn_check_availability{
+    padding: 5px;
+    border-radius: 3px;
+    margin: 0;
 }

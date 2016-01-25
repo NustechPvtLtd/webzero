@@ -17,6 +17,10 @@
             <?php echo lang('create_group_desc_label', 'description');?>
             <?php echo form_input($description);?>
 			</div>
+			<div class="form-group">
+            <?php echo lang('create_group_visibility_label', 'visibility');?>
+            <?php echo form_dropdown('visibility', array("No","Yes"), $visibility, 'class="form-control" id="visibility"');?>
+			</div>
 			<div class="clearfix"><!-- --></div>
 		</div>
 		<div class="box-footer">

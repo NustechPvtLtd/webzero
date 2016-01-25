@@ -1,0 +1,33 @@
+/* password css */
+.modal-dialog .modal-footer {
+	text-align: center;
+}
+.modal-content .modal-title {
+	text-align: center;
+}			
+.modal-content .modal-body {
+	text-align: center;
+}	
+.modal-content .modal-body input {
+	text-align: center;
+}
+.modal-dialog .alert.alert-danger.fade.in {
+	padding: 2px 10px;
+}			
+.modal-header .close {
+	margin-right: 0;
+	right: 0;
+	top: 1px;
+}
+.closebox {
+	float: right;
+	cursor: pointer;
+}
+/* End password css */
+/* Front Page css*/
+.navigation nav.navbar {
+   width: 100%;
+   position: fixed;
+}
+
+/* End Front Page css*/

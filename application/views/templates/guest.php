@@ -21,7 +21,7 @@
     <body class="skin-green">
         <header class="header">
             <a href="<?php echo site_url();?>" class="logo icon">
-                <img src="<?php echo base_url();?>assets/img/logo.png"  />            
+                <img class="img-responsive" src="<?php echo base_url();?>assets/img/logo.png"  />            
 			</a>
             <nav class="navbar navbar-static-top" role="navigation"></nav>
         </header>

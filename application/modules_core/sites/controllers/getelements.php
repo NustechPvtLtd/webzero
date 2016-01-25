@@ -21,7 +21,11 @@ class Getelements extends MY_Controller {
 	public function index()
 	{
 	
-		$string = file_get_contents("elements.json");
+        if($this->ion_auth->in_group('individuals')){
+            $string = file_get_contents("elements.json");
+        }else{
+            $string = file_get_contents("resumeelements.json");
+        }
 		
 		echo $string;
 		

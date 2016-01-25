@@ -26,7 +26,7 @@
                           </div>      
                     </div>
                     
-                    <div class="col-md-2 productprice"><i class="fa fa-inr"></i> <?php echo $res->price;?></div>
+             <div class="col-md-2 productprice"><i class="fa fa-inr"></i> <?php echo round($res->price,2);?></div>
                     
                     <div class="col-md-2 col-sm-4  col-xs-6">
                     

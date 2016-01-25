@@ -934,3 +934,8 @@ body .redactor-box-fullscreen {
     padding-bottom: 0;
     padding-top: 0;
 }
+
+#redactor-link-blank {
+ -webkit-appearance: checkbox !important;
+    box-sizing: border-box !important;
+}

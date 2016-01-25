@@ -39,9 +39,14 @@
                 <td><?php echo htmlspecialchars($user->first_name,ENT_QUOTES,'UTF-8');?></td>
                 <td><?php echo htmlspecialchars($user->last_name,ENT_QUOTES,'UTF-8');?></td>
                 <td><?php echo htmlspecialchars($user->email,ENT_QUOTES,'UTF-8');?></td>
+<!--                <td>
+                    <?php // foreach ($user->groups as $group):?>
+                        <?php // echo anchor("login/edit_group/".$group->id, htmlspecialchars($group->description,ENT_QUOTES,'UTF-8')) ;?>&nbsp;&nbsp;&nbsp;
+                    <?php // endforeach?>
+                </td>-->
                 <td>
                     <?php foreach ($user->groups as $group):?>
-                        <?php echo anchor("login/edit_group/".$group->id, htmlspecialchars($group->description,ENT_QUOTES,'UTF-8')) ;?>&nbsp;&nbsp;&nbsp;
+                        <?php echo htmlspecialchars($group->description,ENT_QUOTES,'UTF-8') ;?>&nbsp;&nbsp;&nbsp;
                     <?php endforeach?>
                 </td>
                 <td>
@@ -51,8 +56,8 @@
                 <td><?php echo htmlspecialchars(date("jS M, Y, g:i a", $user->created_on),ENT_QUOTES,'UTF-8');?></td>
                 <td><?php echo htmlspecialchars(($user->last_login)?date("jS M, Y, g:i a", $user->last_login):'--',ENT_QUOTES,'UTF-8');?></td>
                 <td><?php 
-                    echo anchor("user/profile/".$user->id, 'Edit').'&nbsp';
-                    echo anchor("#", 'Login', array('onclick'=>"ajaxLogin({$user->id})")) ;
+                    echo anchor("user/profile/".$user->id, 'Edit', array("class"=>"btn btn-xs btn-default")).'&nbsp';
+                    echo '<button class="btn btn-xs btn-primary" type="button" onclick="ajaxLogin('.$user->id.')" style="padding: 1px 5px;">Login</button> ';
                 ?></td>
             </tr>
         <?php endforeach;?>

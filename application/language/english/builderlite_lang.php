@@ -10,6 +10,7 @@ $lang['newsite_default_title'] = "My New Site";
 $lang['modal_close'] = "Close";
 $lang['modal_areyousure'] = "Are you sure?";
 $lang['modal_cancelclose'] = "Cancel & Close";
+$lang['modal_useblankimg'] = "Use Blank";
 $lang['modal_delete'] = "Delete";
 $lang['back'] = "back";
 $lang['cancel'] = "Cancel";
@@ -278,9 +279,24 @@ $lang['modal_documentlibrary_button_insertdocument'] = "Insert Document";
 $lang['modal_pagesettings_header'] = "Page Settings for";
 $lang['modal_domain_header'] = "Premium Domain";
 $lang['modal_pagesettings_loadertext'] = "Saving page settings...";
+$lang['modal_resume_loadertext'] = "Profile share contents...";
 $lang['modal_domain_loadertext'] = "Saving domain...";
 
+// Share profile settings. 
+$lang['modal_pagesettings_shareprofile'] = "Email Id";
+$lang['modal_pagesettings_share_message'] = "Message";
+$lang['sitesettings_button_sharesettings'] = "Send Mail";
+$lang['sites_shareprofile_error1_message'] = "Error with the profile sharing please try again. !!";
+$lang['sites_shareprofile_error2_message'] = "E-mail address should not be empty.. !!";
+$lang['sites_shareprofile_success_message'] = "E-mail has been sent.. !!";
+$lang['sites_shareProfile_error1_heading'] = "Ohh Something went wrong.. !!";
+$lang['sites_shareProfile_success_heading'] = "All set.. !!";
+$lang['sites_shareProfile_multipleids'] = "You can enter multiple E-mail Ids separated by comma.";
 
+
+// password page settings
+$lang['modal_pagesettings_setpassword'] = "Enter Password";
+$lang['modal_pagesettings_setyesno'] = "Site Password";
 // views/partials/pagedata.php
 $lang['modal_pagesettings_pagetitle'] = "Page Title";
 $lang['modal_pagesettings_pagedescription'] = "Page Meta Description";
@@ -376,9 +392,12 @@ $lang['users_modal_newuser_button_create'] = "Create Account";
 // controllers/assets.php -> imageUploadAjax()
 $lang['assets_imageUploadAjax_error1_heading'] = "Ouch! Something went wrong:";
 $lang['assets_imageUploadAjax_error1_message'] = "Something went wrong when trying to upload your image, please see the details below:<br>";
+$lang['assets_imageDeleteAjax_error1_message'] = "Something went wrong when trying to Delete your image";
+$lang['assets_imageDelete_heading'] = "Image Delete!";
 
 $lang['assets_imageUploadAjax_success_heading'] = "All set!";
 $lang['assets_imageUploadAjax_success_message'] = "Your image was uploaded successfully and can now be found under the 'My Images' tab.";
+$lang['assets_imageDeleteAjax_success_message'] = "Your image was Delete successfully.";
 
 
 // controllers/amazon_services.php -> videoUploadAjax()
@@ -387,6 +406,11 @@ $lang['assets_videoUploadAjax_error1_message'] = "Something went wrong when tryi
 
 $lang['assets_videoUploadAjax_success_heading'] = "All set!";
 $lang['assets_videoUploadAjax_success_message'] = "Your video was uploaded successfully and can now be found under the 'My Videos' tab.";
+$lang['assets_videoDelete_error1_heading'] = "Ouch! Something went wrong:";
+$lang['assets_videoDelete_error1_message'] = "Something went wrong when trying to delete your video.";
+
+$lang['assets_videoDelete_success_heading'] = "All set!";
+$lang['assets_videoDelete_success_message'] = "Your video was deleted successfully.";
 
 
 // controllers/configuration.php -> connect()

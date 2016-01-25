@@ -59,82 +59,14 @@
 
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/blitzer/jquery-ui.css">
 
+        <link href="<?php echo base_url('assets/sites'); ?>/css/new_builder.css" rel="stylesheet">
         <!--CUSTOM-JS-->
 
     </head>
     <body>
-        <div class="menu" id="menu" data-spy="affix" data-offset-top="60" >
-            <a href="#" class="toggle"><span class="list-icon"><i></i><i></i><i></i></span></a>
-
-            <div class="main scrollbar-inner" id="main">
-
-                <h3>Blocks</h3>
-
-                <ul id="elements">
-                    <li><a href="#" id="all">All Blocks</a></li>
-                </ul>
-
-                <hr>
-
-                <h3>Pages</h3>
-
-                <ul id="pages">
-                    <li style="display: none;" id="newPageLI">
-                        <input type="text" value="index" name="page">
-                        <span class="pageButtons">
-                            <a href="" class="fileEdit"><span class="fui-new"></span></a>
-                            <a href="" class="fileDel"><span class="fui-cross"></span></a>
-                            <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
-                            <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
-                        </span>
-                    </li>
-
-                    <?php if (count($siteData['pages']) == 0): ?>
-                        <li class="active">
-                            <a href="#page1">index</a>
-                            <span class="pageButtons">
-                                <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
-                            </span>
-                        </li>
-                    <?php else: ?>
-
-                        <?php $counter = 1; ?>
-
-                        <?php foreach ($siteData['pages'] as $page => $frames): ?>
-                            <li <?php if ($counter == 1): ?>class="active"<?php endif; ?>>
-                                <a href="#page<?php echo $counter; ?>"><?php echo $page; ?></a>
-                                <span class="pageButtons">
-                                    <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
-                                    <?php if ($page != 'index'): ?>
-                                    <a href="" class="fileEdit"><span class="fui-new"></span></a>
-                                    <a href="" class="fileDel"><span class="fui-cross"></span></a>
-                                    <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
-                                    <?php endif; ?>
-                                </span>
-                            </li>
-                            <?php $counter++; ?>
-                        <?php endforeach; ?>
-
-                    <?php endif; ?>
-                </ul>
-
-                <div class="sideButtons clearfix">
-                    <a href="#" class="btn btn-success btn-sm btn-left" id="addPage">Add</a>
-                </div>
-            </div><!-- /.main -->
-
-            <div class="second scrollbar-inner" id="second">
-
-                <ul id="elements">
-
-                </ul>
-
-            </div><!-- /.secondSide -->
-
-        </div><!-- /.menu -->
         <div class="header skin-green">
             <a href="<?php echo site_url(); ?>" class="logo icon">
-                <img  class="img-responsive" src="<?php echo base_url(); ?>assets/img/logo.png" alt="Customer area" />            
+                <img  class="img-responsive" src="<?php echo base_url(); ?>assets/img/logo.png" alt="Customer area" />
             </a>
             <nav class="navbar navbar-static-top" role="navigation">
                 <?php if ($this->router->fetch_class() == 'sites'): ?>
@@ -213,49 +145,127 @@
             </nav>
         </div>
         <div class="container">
-            <header class="clearfix" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
-                <div class="btn-group actionButtons" style="float: right;">           
-                    <!--<button class="btn btn-default btn-embossed"></button>-->
-                    <button class="btn btn-default btn-embossed dropdown-toggle" data-toggle="dropdown">
-                        <span class="fui-gear"></span> Settings<span class="caret"></span>
-                    </button>
-                    <span class="dropdown-arrow dropdown-arrow-inverse"></span>
-                    <ul class="dropdown-menu dropdown-inverse">
-                        <li><a href="#siteSettings" id="siteSettingsButton" class="siteSettingsModalButton" data-siteid="<?php echo $siteData['site']->sites_id; ?>"><?php echo 'URL Settings'/* $this->lang->line('actionbuttons_sitesettings') */ ?></a></li>
-                        <li><a href="#pageSettingsModal" id="pageSettingsButton" data-toggle="modal" data-siteid="<?php echo $siteData['site']->sites_id; ?>"><?php echo 'SEO Settings'/* $this->lang->line('actionbuttons_pagesettings') */ ?></a></li>
-                    </ul>
+            <header class="clearfix" data-spy="affix" data-offset-top="40" >
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="modes">
+                                    <b>Building mode:</b>
+                                    <label class="radio primary first">
+                                        <input type="radio" name="mode" id="modeBlock" value="block" data-toggle="radio" disabled="" checked="">
+                                        Blocks
+                                    </label>
+                                    <label class="radio primary first">
+                                        <input type="radio" name="mode" id="modeContent" value="content" data-toggle="radio" disabled="">
+                                        Edit
+                                    </label>
+                                    <label class="radio primary first">
+                                        <input type="radio" name="mode" id="modeStyle" value="styling" data-toggle="radio" disabled="">
+                                        Styles
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-8 float-right">
+                                <a href="#" id="savePage" class="btn btn-primary disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Nothing new to save</span></a>
+                                <a href="#" id="publishPage" class="btn btn-primary disabled actionButtons" data-siteid="<?php echo $siteData['site']->sites_id; ?>" <?php if ($siteData['site']->domain_ok == 0): ?>data-toggle="tooltip"<?php endif; ?> data-placement="bottom" title="You can not publish your site right now. Please update your url details from settings menu." ><span class="fui-export"></span> <?php echo $this->lang->line('actionbuttons_publish') ?> <span class="fui-alert text-danger" <?php if ($siteData['site']->domain_ok == 1): ?>style="display:none"<?php endif; ?>></span></a>
+                                <a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-primary disabled actionButtons" ><span class="fui-window"></span> Preview</a>
+                                <a href="#" id="clearScreen" class="btn btn-danger disabled actionButtons"><span class="fui-trash"></span> Empty Page</a>
+
+                                <div class="btn-group actionButtons">           
+                                    <button class="btn btn-default btn-embossed dropdown-toggle" data-toggle="dropdown">
+                                        <span class="fui-gear"></span> Settings<span class="caret"></span>
+                                    </button>
+                                    <span class="dropdown-arrow dropdown-arrow-inverse"></span>
+                                    <ul class="dropdown-menu dropdown-inverse">
+                                        <li><a href="#siteSettings" id="siteSettingsButton" class="siteSettingsModalButton" data-siteid="<?php echo $siteData['site']->sites_id; ?>"><?php echo 'URL Settings'/* $this->lang->line('actionbuttons_sitesettings') */ ?></a></li>
+                                        <li><a href="#pageSettingsModal" id="pageSettingsButton" data-toggle="modal" data-siteid="<?php echo $siteData['site']->sites_id; ?>"><?php echo 'SEO Settings'/* $this->lang->line('actionbuttons_pagesettings') */ ?></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <a href="#" id="clearScreen" class="btn btn-danger pull-right disabled actionButtons"><span class="fui-trash"></span> Empty Page</a>
-
-                <a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-primary pull-right disabled actionButtons" ><span class="fui-window"></span> Preview</a>
-
-                <a href="#" id="publishPage" class="btn btn-primary pull-right disabled actionButtons" data-siteid="<?php echo $siteData['site']->sites_id; ?>" <?php if ($siteData['site']->domain_ok == 0): ?>data-toggle="tooltip"<?php endif; ?> data-placement="bottom" title="You can not publish your site right now. Please update your url details from settings menu." ><span class="fui-export"></span> <?php echo $this->lang->line('actionbuttons_publish') ?> <span class="fui-alert text-danger" <?php if ($siteData['site']->domain_ok == 1): ?>style="display:none"<?php endif; ?>></span></a>
-                <a href="#" id="savePage" class="btn btn-primary pull-right disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Nothing new to save</span></a>
-
-                <div class="modes">
-                    <b>Building mode:</b>
-                    <label class="radio primary first">
-                        <input type="radio" name="mode" id="modeBlock" value="block" data-toggle="radio" disabled="" checked="">
-                        Blocks
-                    </label>
-                    <label class="radio primary first">
-                        <input type="radio" name="mode" id="modeContent" value="content" data-toggle="radio" disabled="">
-                        Edit
-                    </label>
-                    <label class="radio primary first">
-                        <input type="radio" name="mode" id="modeStyle" value="styling" data-toggle="radio" disabled="">
-                        Styles
-                    </label>
-
-                </div>
-
             </header>
-
-            <?php echo $body; ?>
-            <!-- Builder Body -->
-
         </div><!-- /.container -->
+        <div class="">
+            <aside class="left-side sidebar-offcanvas" id="mn" data-spy="affix" data-offset-top="40">
+                <div class="menu" id="menu" >
+                    <a id="menu_bar" class="toggle"><span class="list-icon"><i></i><i></i><i></i></span></a>
 
+                    <div class="main scrollbar-inner" id="main">
+
+                        <h3>Blocks</h3>
+
+                        <ul id="elements">
+                            <li><a href="#" id="all">All Blocks</a></li>
+                        </ul>
+
+                        <hr>
+
+                        <h3>Pages</h3>
+
+                        <ul id="pages">
+                            <li style="display: none;" id="newPageLI">
+                                <input type="text" value="index" name="page">
+                                <span class="pageButtons">
+                                    <a href="" class="fileEdit"><span class="fui-new"></span></a>
+                                    <a href="" class="fileDel"><span class="fui-cross"></span></a>
+                                    <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
+                                    <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
+                                </span>
+                            </li>
+
+                            <?php if (count($siteData['pages']) == 0): ?>
+                                <li class="active">
+                                    <a href="#page1">index</a>
+                                    <span class="pageButtons">
+                                        <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
+                                    </span>
+                                </li>
+                            <?php else: ?>
+
+                                <?php $counter = 1; ?>
+
+                                <?php foreach ($siteData['pages'] as $page => $frames): ?>
+                                    <li <?php if ($counter == 1): ?>class="active"<?php endif; ?>>
+                                        <a href="#page<?php echo $counter; ?>"><?php echo $page; ?></a>
+                                        <span class="pageButtons">
+                                            <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
+                                            <?php if ($page !== 'index'): ?>
+                                                <a href="" class="fileEdit"><span class="fui-new"></span></a>
+                                                <a href="" class="fileDel"><span class="fui-cross"></span></a>
+                                                <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
+                                            <?php endif; ?>
+                                        </span>
+                                    </li>
+                                    <?php $counter++; ?>
+                                <?php endforeach; ?>
+
+                            <?php endif; ?>
+                        </ul>
+
+                        <div class="sideButtons clearfix">
+                            <a href="#" class="btn btn-success btn-sm btn-left" id="addPage">Add</a>
+                        </div>
+                    </div><!-- /.main -->
+
+                    <div class="second scrollbar-inner" id="second">
+
+                        <ul id="elements">
+
+                        </ul>
+
+                    </div><!-- /.secondSide -->
+
+                </div><!-- /.menu -->
+            </aside>
+            <aside class="right-side" id="scr">
+                <?php echo $body; ?>
+                <!-- Builder Body -->
+            </aside>
+
+        </div><!-- Wrapper -->
         <div id="styleEditor" class="styleEditor scrollbar-inner" >
 
             <a href="#" class="close"><span class="fui-cross-inverted"></span></a>
@@ -266,7 +276,21 @@
                 <li>Editing:</li>
                 <li class="active" id="editingElement">p</li>
             </ul>
+            <div class="alert alert-success" style="display: none;" id="detailsAppliedMessage">
+                <button class="close fui-cross" type="button" id="detailsAppliedMessageHide"></button>
+                The changes were applied successfully!
+            </div>
 
+            <div class="margin-bottom-5">
+                <button type="button" class="btn btn-primary  btn-sm btn-block" id="saveStyling"><span class="fui-check-inverted"></span> Apply Changes</button>
+            </div>
+
+            <div class="sideButtons clearfix">
+                <button type="button" class="btn btn-inverse  btn-xs" id="cloneElementButton"><span class="fui-windows"></span> Clone</button>
+                <button type="button" class="btn btn-warning  btn-xs" id="resetStyleButton"><i class="fa fa-refresh"></i> Reset</button>
+                <button type="button" class="btn btn-danger  btn-xs" id="removeElementButton"><span class="fui-cross-inverted"></span> Remove</button>
+            </div>
+            
             <ul class="nav nav-tabs" id="detailTabs">
                 <li class="active"><a href="#tab1"><span class="fui-new"></span> Style</a></li>
                 <li style="display: none;"><a href="#link_Tab" id="link_Link"><span class="fui-clip"></span> Link</a></li>
@@ -382,21 +406,6 @@
                 </div><!-- /.tab-pane -->
 
             </div> <!-- /tab-content -->
-
-            <div class="alert alert-success" style="display: none;" id="detailsAppliedMessage">
-                <button class="close fui-cross" type="button" id="detailsAppliedMessageHide"></button>
-                The changes were applied successfully!
-            </div>
-
-            <div class="margin-bottom-5">
-                <button type="button" class="btn btn-primary  btn-sm btn-block" id="saveStyling"><span class="fui-check-inverted"></span> Apply Changes</button>
-            </div>
-
-            <div class="sideButtons clearfix">
-                <button type="button" class="btn btn-inverse  btn-xs" id="cloneElementButton"><span class="fui-windows"></span> Clone</button>
-                <button type="button" class="btn btn-warning  btn-xs" id="resetStyleButton"><i class="fa fa-refresh"></i> Reset</button>
-                <button type="button" class="btn btn-danger  btn-xs" id="removeElementButton"><span class="fui-cross-inverted"></span> Remove</button>
-            </div>
 
         </div><!-- /.styleEditor -->
 
@@ -825,7 +834,7 @@
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/table.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/bufferButtons.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/video.js"></script>
-        <!--<script src="<?php echo base_url('assets/sites'); ?>/js/src-min-noconflict/ace.js"></script>-->
+        <script src="<?php echo base_url('assets/sites'); ?>/js/src-min-noconflict/ace.js"></script>
         <script src="<?php echo base_url(); ?>elements.json"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/builder.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/jquery.form.min.js"></script>
@@ -835,12 +844,12 @@
         <script src="<?php echo base_url('elements/scripts/html5gallery.js'); ?>" type="text/javascript" ></script>
 
         <!-- Loading Elements JS -->
-<!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');         ?>"></script> 
-        <script src="<?php // echo base_url('elements/scripts/bootstrap.min.js');         ?>"></script> -->
+<!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');          ?>"></script> 
+        <script src="<?php // echo base_url('elements/scripts/bootstrap.min.js');          ?>"></script> -->
         <script src="<?php echo base_url('elements/scripts/jquery.validate.min.js'); ?>"></script>
-        <script src="<?php echo base_url('elements/scripts/smoothscroll.js'); ?>"></script> 
+        <!--<script src="<?php echo base_url('elements/scripts/smoothscroll.js'); ?>"></script>--> 
         <script src="<?php echo base_url('elements/scripts/jquery.smooth-scroll.min.js'); ?>"></script> 
-        <script src="<?php echo base_url('elements/scripts/placeholders.jquery.min.js'); ?>"></script> 
+        <!--<script src="<?php echo base_url('elements/scripts/placeholders.jquery.min.js'); ?>"></script>--> 
         <script src="<?php echo base_url('elements/scripts/jquery.magnific-popup.min.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/jquery.counterup.min.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/waypoints.min.js'); ?>"></script>
@@ -855,6 +864,7 @@
             var baseUrl = "<?php echo base_url(); ?>";
             var siteUrl = "<?php echo site_url('/'); ?>";
             var domain_ok = "<?php echo ($siteData['site']->domain_ok == 1) ? 1 : 0; ?>";
+            var display_ecom = '<?php echo (userdata('eccommerce') == 'inactive') ? 'no' : 'yes'; ?>';
 <?php if (isset($siteData)): ?>
                 var siteID = <?php echo $siteData['site']->sites_id; ?>;
 <?php else: ?>

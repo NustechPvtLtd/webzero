@@ -275,9 +275,9 @@
 					
 						<div class="form-group">
                             <div class="input-group" id="get_no">
-								<input class="form-control" id="phone_no" placeholder="Mobile Number" type="text" name="phone_no" style="margin-bottom: 0px">
+                                <input class="form-control" id="phone_no" placeholder="Mobile Number" type="text" name="phone_no" style="margin-bottom: 0px" disabled="disable">
                                 <span class="input-group-btn" style="width: 18%;">
-									<button class="btn btn-lg btn-success light_theame_btn"data-toggle="modal" id="registerNo" type="submit" style="width: 100%; border: 1px solid #a2fbe9; line-height: 1.3">Go!</button>
+                                    <button class="btn btn-lg btn-success light_theame_btn"data-toggle="modal" id="registerNo" type="submit" style="width: 100%; border: 1px solid #a2fbe9; line-height: 1.3" disabled="disable">Go!</button>
 								</span>
 							</div>
                             <div class="input-group" id="get_otp" style="display: none">

@@ -22,7 +22,7 @@ body .modal-dialog {
 
 .actionButtons {
 	border-radius: 0px;
-        margin-right: -110px;
+        /*margin-right: -110px;*/
 }
 
 .margin-bottom-5 {
@@ -537,7 +537,7 @@ body .sp-input {
 	width: 100%;
 	left: 0px;
 	top: 0px;
-	z-index: 99;
+	z-index: 0;
 }
 
 .screen .start > span {

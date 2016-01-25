@@ -82,9 +82,10 @@ $config['salt_prefix']    = version_compare(PHP_VERSION, '5.3.7', '<') ? '$2a$' 
  | The controller should check this function and act
  | appropriately. If this variable set to 0, there is no maximum.
  */
-$config['site_title']                 = "Web Zero";       // Site Title, example.com
+$config['site_title']                 = "Jadooweb";       // Site Title, example.com
 $config['admin_email']                = "info@webzero.in"; // Admin Email, admin@example.com
-$config['default_group']              = 'individuals';           // Default group, use name
+$config['email_send_mail']            = "noreply@jadooweb.com"; // Admin Email, admin@example.com
+$config['default_group']              = 'nogroup';           // Default group, use name
 $config['default_plan']               = 1;           // Default plan, use id
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['identity']                   = 'email';             // A database column which is used to login with

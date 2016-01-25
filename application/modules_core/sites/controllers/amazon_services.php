@@ -34,8 +34,8 @@ class Amazon_services extends MY_Controller{
         $user_id = userdata('user_id');
         $type = 'video';
         $bucket = $this->media_storage_model->getBucket($user_id, $type);
-        $uri = $this->media_storage_model->getUriByType($user_id, $type);
-		$videos = $this->s3->getBucket($bucket->bucket_name,'CF551A5B8B/Videos');
+        $uri = $this->media_storage_model->getUri($user_id, $type);
+		$videos = $this->s3->getBucket($bucket->bucket_name,$uri.'/'.$type);
         $return = array();
         $this->data['thumbnails'] = '';
         $this->data['videos'] = $videos;
@@ -64,7 +64,7 @@ class Amazon_services extends MY_Controller{
         } else {
             $bucket = $bucket->bucket_name;
         }
-        $uri = $this->media_storage_model->getUriByType($user_id, $type);
+        $uri = $this->media_storage_model->getUri($user_id);
         if($uri){
             $uri = $uri->uri;
         } else {
@@ -189,8 +189,8 @@ class Amazon_services extends MY_Controller{
             if($response){
                 $user_id = userdata('user_id');
                 $temp = array();
-                $temp['header'] = $this->lang->line('assets_imageDelete_success_heading');
-                $temp['content'] = $this->lang->line('assets_imageDelete_success_message');
+                $temp['header'] = $this->lang->line('assets_imageDelete_heading');
+                $temp['content'] = $this->lang->line('assets_imageDeleteAjax_success_message');
                 $exp_array = explode('/', $_POST['uri']);
                 $media_name = end($exp_array);
                 $uri = $exp_array[0].'/'.$exp_array[1];
@@ -213,8 +213,8 @@ class Amazon_services extends MY_Controller{
                 die( json_encode( $return ) );
             } else {
                 $temp = array();
-                $temp['header'] = $this->lang->line('assets_imageDelete_error1_heading');
-                $temp['content'] = $this->lang->line('assets_imageDelete_error1_message');
+                $temp['header'] = $this->lang->line('assets_imageDelete_heading');
+                $temp['content'] = $this->lang->line('assets_imageDeleteAjax_error1_message');
 
                 $return['responseCode'] = 0;
                 $return['responseHTML'] = $this->load->view('partials/error', array('data'=>$temp), true);
@@ -223,8 +223,8 @@ class Amazon_services extends MY_Controller{
             }
         }else{
             $temp = array();
-            $temp['header'] = $this->lang->line('assets_imageDelete_error1_heading');
-            $temp['content'] = $this->lang->line('assets_imageDelete_error1_message');
+            $temp['header'] = $this->lang->line('assets_imageDelete_heading');
+            $temp['content'] = $this->lang->line('assets_imageDeleteAjax_error1_message');
 
             $return['responseCode'] = 0;
             $return['responseHTML'] = $this->load->view('partials/error', array('data'=>$temp), true);

@@ -21,7 +21,7 @@ class Sites extends MY_Controller {
         $this->load->model('domain/domainmodel');
         $this->load->model('domain/users_domains_model');
         $this->load->model('sites/media_storage_model');
-        $this->load->library('s3');	
+        $this->load->library('s3');
 
         $this->data['pageTitle'] = "JadooWeb Builder";
         $this->data['title'] = $this->router->fetch_method();
@@ -30,6 +30,35 @@ class Sites extends MY_Controller {
         if (!$this->ion_auth->logged_in()) {
 
             redirect('/login');
+        }
+        if ($this->ion_auth->in_group('nogroup')) {
+
+            redirect(site_url('services'));
+        }
+    }
+
+    function _remap($method, $args)
+    {
+//        var_dump($args);
+//        die();
+        switch ($method) {
+            case 'site': {
+                    if ($this->ion_auth->in_group('individuals')) {
+                        $this->site_individual($args[0]);
+                    } elseif ($this->ion_auth->in_group('students')) {
+                        $this->site_student($args[0]);
+                    }
+                }
+                break;
+
+            default:
+                if (empty($args)) {
+                    $this->$method();
+                } else {
+                    $this->$method($args[0]);
+                }
+
+                break;
         }
     }
 
@@ -80,10 +109,6 @@ class Sites extends MY_Controller {
         $newSiteID = $this->sitemodel->createNew();
 
         redirect('sites/' . $newSiteID);
-
-        //$this->data['builder'] = true;
-        //$this->data['page'] = "newPage";
-        //$this->load->view('sites/create', $this->data);
     }
 
     /*
@@ -94,25 +119,6 @@ class Sites extends MY_Controller {
 
     public function save($forPublish = 0)
     {
-
-        //do we have a site name?
-
-        /* if( !isset($_POST['siteName']) || $_POST['siteName'] == '' ) {
-
-          $return = array();
-
-          $temp = array();
-          $temp['header'] = $this->lang->line('sites_save_error1_heading');
-          $temp['content'] = $this->lang->line('sites_save_error1_message');
-
-          $return['responseCode'] = 0;
-          $return['responseHTML'] = $this->load->view('partials/error', array('data'=>$temp), true);
-
-          die( json_encode($return) );
-
-          } */
-
-
         //do we have some frames to save?
 
         if (!isset($_POST['pageData']) || $_POST['pageData'] == '') {
@@ -186,7 +192,7 @@ class Sites extends MY_Controller {
 
      */
 
-    public function site($siteID)
+    public function site_individual($siteID)
     {
         //if user is not an admin, we'll need to check of this site belongs to this user
 
@@ -223,31 +229,104 @@ class Sites extends MY_Controller {
             //collect data for the image library
 
             $userID = userdata('user_id');
-            
+
             $bucket = $this->media_storage_model->getBucket($userID);
-            if(!$bucket){
+            if (!$bucket) {
                 $bucket = 'mumbaistreet';
             } else {
                 $bucket = $bucket->bucket_name;
             }
             $uri = $this->media_storage_model->getUri($userID);
             $userVideos = FALSE;
-            
-            if($uri){
-                $uri = $uri->uri.'/'.'Videos';
+
+            if ($uri) {
+                $uri = $uri->uri . '/' . 'Videos';
                 $connected = @fsockopen("www.webzero.in", 80);
-                $userVideos = ($connected)?$this->s3->getBucket($bucket,$uri):FALSE;
-            } 
-            
+                $userVideos = ($connected) ? $this->s3->getBucket($bucket, $uri) : FALSE;
+            }
+
             $this->data['userVideos'] = $userVideos;
             $this->data['bucket'] = $bucket;
-            
+
+            $this->data['builder'] = true;
+            $this->data['page'] = "site";
+
+            $this->template->load('builder', 'sites', 'sites/create', $this->data);
+            //$this->load->view('', $this->data);
+        }
+    }
+
+    public function site_student($siteID)
+    {
+        $userID = userdata('user_id');
+        //if user is not an admin, we'll need to check of this site belongs to this user
+
+        if (!$this->ion_auth->is_admin()) {
+
+            if (!$this->sitemodel->isMine($siteID)) {
+
+                redirect('/sites');
+            }
+        }
+
+
+        $siteData = $this->sitemodel->getSite($siteID);
+
+        if ($siteData == false) {
+
+            //site could not be loaded, redirect to /sites, with error message
+
+            $this->session->set_flashdata('error', $this->lang->line('sites_site_error1'));
+
+            redirect('/sites/', 'refresh');
+        } else {
+
+            $this->data['siteData'] = $siteData;
+
+            //get page data
+            $pagesData = $this->pagemodel->getPageData($siteID);
+
+            if ($pagesData) {
+
+                $this->data['pagesData'] = $pagesData;
+            }
+
+            // Get the resume Setting Data 
+            $page_id = 0;
+            if (isset($pagesData['index'])) {
+                $page_id = $pagesData['index']->pages_id;
+            }
+            $resumeData = $this->sitemodel->getResumeData($siteID, $userID, $page_id);
+
+            if ($resumeData) {
+                $this->data['resumeData'] = $resumeData;
+            } else {
+                $this->data['resumeData'] = array();
+            }
+
+            $bucket = $this->media_storage_model->getBucket($userID);
+            if (!$bucket) {
+                $bucket = 'mumbaistreet';
+            } else {
+                $bucket = $bucket->bucket_name;
+            }
+            $uri = $this->media_storage_model->getUri($userID);
+            $userVideos = FALSE;
+
+            if ($uri) {
+                $uri = $uri->uri . '/' . 'Videos';
+                $connected = @fsockopen("www.webzero.in", 80);
+                $userVideos = ($connected) ? $this->s3->getBucket($bucket, $uri) : FALSE;
+            }
+
+            $this->data['userVideos'] = $userVideos;
+
+            $this->data['bucket'] = $bucket;
             $this->data['builder'] = true;
             $this->data['page'] = "site";
             $this->data['js'] = array(
-
             );
-            $this->template->load('builder', 'sites', 'sites/create', $this->data);
+            $this->template->load('resumebuilder', 'sites', 'sites/create', $this->data);
             //$this->load->view('', $this->data);
         }
     }
@@ -396,16 +475,16 @@ class Sites extends MY_Controller {
         if (!stristr($frameContent, 'src="' . base_url('elements') . '/images')) {
             $frameContent = str_replace('src="images', 'src="' . base_url('elements') . '/images', $frameContent);
         }
-        if (stristr($frameContent, 'url(images' )) {
+        if (stristr($frameContent, 'url(images')) {
             $frameContent = str_replace('url(images', 'url(' . base_url('elements') . '/images', $frameContent);
         }
-        if (stristr($frameContent, 'src="./images' )) {
+        if (stristr($frameContent, 'src="./images')) {
             $frameContent = str_replace('src="./images', 'src="' . base_url('elements') . '/images', $frameContent);
         }
-        if (stristr($frameContent, 'src="images' )) {
+        if (stristr($frameContent, 'src="images')) {
             $frameContent = str_replace('src="images', 'src="' . base_url('elements') . '/images', $frameContent);
         }
-        if (stristr($frameContent, 'href="./images' )) {
+        if (stristr($frameContent, 'href="./images')) {
             $frameContent = str_replace('href="./images', 'href="' . base_url('elements') . '/images', $frameContent);
         }
         echo $frameContent;
@@ -522,7 +601,7 @@ class Sites extends MY_Controller {
         if (!empty($pageMeta->pages_title)) {
             //insert title, meta keywords and meta description
             $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
-            $meta_description = '<meta name="description" content="' . $pageMeta->pages_meta_description . '">' ;
+            $meta_description = '<meta name="description" content="' . $pageMeta->pages_meta_description . '">';
             $meta_keyword = '<meta name="keywords" content="' . $pageMeta->pages_meta_keywords . '">';
             $header_includes = $pageMeta->pages_header_includes;
 
@@ -574,19 +653,19 @@ class Sites extends MY_Controller {
         if (strstr($pageContent, 'src="/elements/images')) {
             $pageContent = str_replace('src="/elements/images', 'src="' . base_url('elements') . '/images', $pageContent);
         }
-        if (stristr($pageContent, 'href="scripts' )) {
+        if (stristr($pageContent, 'href="scripts')) {
             $pageContent = str_replace('href="scripts', 'href="' . base_url('elements') . '/scripts', $pageContent);
         }
-        if (stristr($pageContent, '<script src="scripts' )) {
+        if (stristr($pageContent, '<script src="scripts')) {
             $pageContent = str_replace('<script src="scripts', '<script src="' . base_url('elements') . '/scripts', $pageContent);
         }
-        if (stristr($pageContent, 'href="images' )) {
+        if (stristr($pageContent, 'href="images')) {
             $pageContent = str_replace('href="images', 'href="' . base_url('elements') . '/images', $pageContent);
         }
-        if (stristr($pageContent, 'src="./images' )) {
+        if (stristr($pageContent, 'src="./images')) {
             $pageContent = str_replace('src="./images', 'src="' . base_url('elements') . '/images', $pageContent);
         }
-        if (stristr($pageContent, 'href="./images' )) {
+        if (stristr($pageContent, 'href="./images')) {
             $pageContent = str_replace('href="./images', 'href="' . base_url('elements') . '/images', $pageContent);
         }
         write_file($absPath . '/' . $page . ".html", $pageContent);
@@ -623,20 +702,20 @@ class Sites extends MY_Controller {
         if (!isset($_POST['page']) || $_POST['page'] == '') {
             die("No page found");
         }
-        
+
         if (!is_writable('./temp/')) {
             chmod('./temp/', 0777);
         }
-        
-        $filename = "temp/preview_".  $this->generateRandomString(20).".html";
+
+        $filename = "temp/preview_" . $this->generateRandomString(20) . ".html";
         $previewFile = fopen($filename, "w");
-        
+
         $pageMeta = $this->pagemodel->getSinglePage($_POST['siteID'], 'index');
 
         if (!empty($pageMeta->pages_title)) {
             //insert title, meta keywords and meta description
             $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
-            $meta_description = '<meta name="description" content="' . $pageMeta->pages_meta_description . '">' ;
+            $meta_description = '<meta name="description" content="' . $pageMeta->pages_meta_description . '">';
             $meta_keyword = '<meta name="keywords" content="' . $pageMeta->pages_meta_keywords . '">';
             $header_includes = $pageMeta->pages_header_includes;
 
@@ -653,35 +732,35 @@ class Sites extends MY_Controller {
             $pageContent = str_replace('<!--pageTitle-->', $title, $_POST['page']);
         }
 
-        if (stristr($pageContent, 'href="css' )) {
+        if (stristr($pageContent, 'href="css')) {
             $pageContent = str_replace('href="css', 'href="' . base_url('elements') . '/css', $pageContent);
         }
-        if (stristr($pageContent, 'href="scripts' )) {
+        if (stristr($pageContent, 'href="scripts')) {
             $pageContent = str_replace('href="scripts', 'href="' . base_url('elements') . '/scripts', $pageContent);
         }
-        if (stristr($pageContent, 'href="images' )) {
+        if (stristr($pageContent, 'href="images')) {
             $pageContent = str_replace('href="images', 'href="' . base_url('elements') . '/images', $pageContent);
         }
-        if (stristr($pageContent, 'src="scripts' )) {
+        if (stristr($pageContent, 'src="scripts')) {
             $pageContent = str_replace('src="scripts', 'src="' . base_url('elements') . '/scripts', $pageContent);
         }
-        if (stristr($pageContent, 'url(images' )) {
+        if (stristr($pageContent, 'url(images')) {
             $pageContent = str_replace('url(images', 'url(' . base_url('elements') . '/images', $pageContent);
         }
-        if (stristr($pageContent, 'src="./images' )) {
+        if (stristr($pageContent, 'src="./images')) {
             $pageContent = str_replace('src="./images', 'src="' . base_url('elements') . '/images', $pageContent);
         }
-        if (stristr($pageContent, 'src="images' )) {
+        if (stristr($pageContent, 'src="images')) {
             $pageContent = str_replace('src="images', 'src="' . base_url('elements') . '/images', $pageContent);
         }
-        if (stristr($pageContent, 'href="./images' )) {
+        if (stristr($pageContent, 'href="./images')) {
             $pageContent = str_replace('href="./images', 'href="' . base_url('elements') . '/images', $pageContent);
         }
 
         fwrite($previewFile, stripcslashes($pageContent));
 
         fclose($previewFile);
-        header('Location: '.  base_url($filename));
+        header('Location: ' . base_url($filename));
     }
 
     /*
@@ -836,46 +915,822 @@ class Sites extends MY_Controller {
 
         $this->sitemodel->createuserproducts($site_id, $productid, $pname, $pprice, $pdescription, $img1);
     }
-    
-    private function generateRandomString($length = 10) {
-	    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	    $charactersLength = strlen($characters);
-	    $randomString = '';
-	    for ($i = 0; $i < $length; $i++) {
-	        $randomString .= $characters[rand(0, $charactersLength - 1)];
-	    }
-	    return $randomString;
-	}
-    
+
+    private function generateRandomString($length = 10)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
     public function getUserImage($site_id)
     {
         $userID = userdata('user_id');
         $type = 'image';
         $bucket = $this->media_storage_model->getBucket($userID);
-        if(!$bucket){
+        if (!$bucket) {
             $bucket = 'mumbaistreet';
         } else {
             $bucket = $bucket->bucket_name;
         }
         $uri = $this->media_storage_model->getUri($userID);
-        if($uri){
+        if ($uri) {
             $uri = $uri->uri;
         } else {
             $uri = $this->media_storage_model->genrate_unique_name();
         }
-        
-        $userImages = $this->s3->getBucket($bucket, $uri.'/Images');
 
-        $return['responseHTML'] = $this->load->view('partials/myimagetab', array('userImages' => $userImages, 'bucket'=>$bucket), true);
+        $userImages = $this->s3->getBucket($bucket, $uri . '/Images');
+
+        $return['responseHTML'] = $this->load->view('partials/myimagetab', array('userImages' => $userImages, 'bucket' => $bucket), true);
         echo json_encode($return);
     }
-    
+
     public function getAdminImage($site_id)
     {
         $adminImages = $this->sitemodel->adminImages();
-        
+
         $return['responseHTML'] = $this->load->view('partials/adminimagetab', array('adminImages' => $adminImages), true);
         echo json_encode($return);
+    }
+
+    /*
+      get and retrieve the user and his details
+     */
+
+    public function shareprofile($siteID = "")
+    {
+
+        if ($siteID == '' || $siteID == 'undefined') {
+
+            //siteID is missing
+
+            $return = array();
+
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_siteAjax_error1_heading');
+            $temp['content'] = $this->lang->line('sites_siteAjax_error1_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error', array('data' => $temp), true);
+
+            die(json_encode($return));
+        }
+
+        $siteData = $this->sitemodel->getSite($siteID);
+
+        // Get user Details 
+        $userID = userdata('user_id');
+        $userData = $this->sitemodel->getUserDetailsUserId($userID);
+
+        if ($siteData == false && $userData == false) {
+
+            //all did not go well
+            $return = array();
+
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_siteAjax_error2_heading');
+            $temp['content'] = $this->lang->line('sites_siteAjax_error2_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error', array('data' => $temp), true);
+
+            echo json_encode($return);
+        } else {
+
+            //all went well
+            $return = array();
+
+            $return['responseCode'] = 1;
+            $return['responseHTML'] = $this->load->view('partials/shareprofile', array('userdata' => $userData, 'siteData' => $siteData['site']), true);
+
+            echo json_encode($return);
+        }
+    }
+
+    /*
+      Updates resume of Student
+     */
+
+    public function updateMyResume()
+    {
+        $this->form_validation->set_rules('siteID', 'Site ID', 'required');
+        $this->form_validation->set_rules('pageID', 'Page Id', 'required');
+        $this->form_validation->set_rules('resume', 'Resume Sections', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+
+            //all did not go well
+            $return = array();
+
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_siteAjaxUpdate_error1_heading');
+            $temp['content'] = $this->lang->line('sites_siteAjaxUpdate_error1_message1') . validation_errors();
+
+            $return['responseCode'] = 0;
+            $return['responseALERT'] = '<div class="alert alert-danger fade in">
+					<strong>Error! </strong> Error while processing your request...
+			</div>';
+
+            echo json_encode($return);
+        } else {
+            $return = array();
+            $user_id = $this->session->userdata('user_id');
+
+            // check the data available in the database if yes update it else create new. 
+            $hasData = $this->sitemodel->checkProfile($user_id, $_POST['siteID'], $_POST['pageID']);
+            if (count($_POST) > 0 && $_POST['resume'] === 'basic') {
+
+                $temp = array();
+                $temp['resume_headline'] = isset($_POST['r_title']) ? $_POST['r_title'] : "";
+                $temp['summery'] = isset($_POST['r_desc']) ? $_POST['r_desc'] : "";
+                $temp['company'] = isset($_POST['r_company']) ? $_POST['r_company'] : "";
+                $temp['role'] = isset($_POST['r_role']) ? $_POST['r_role'] : "";
+                $temp['notice_period'] = $_POST['r_notice_p'];
+                $temp['location'] = isset($_POST['r_clocaltion']) ? $_POST['r_clocaltion'] : "";
+                $temp['preff_location'] = isset($_POST['r_plocation']) ? $_POST['r_plocation'] : "";
+                $temp['salary'] = $_POST['cctc'];
+                $temp['expected_salary'] = $_POST['ectc'];
+                $temp['total_exp'] = isset($_POST['r_tot_exp']) ? $_POST['r_tot_exp'] : 0;
+
+                if ($hasData == 1) {
+                    // Update the data 
+
+                    $dataUpdated = $this->sitemodel->updateBasicDetails($user_id, $_POST['siteID'], $_POST['pageID'], $temp);
+                    if ($dataUpdated == 1) {
+                        $return['responseCode'] = 1;
+                        $return['responseALERT'] = '<div class="alert alert-success fade in">
+							<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+							<strong>Success!</strong> Basic Details Updated.
+						</div>';
+                    } else {
+                        $return['responseALERT'] = '<div class="alert alert-danger fade in">
+							<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+							<strong>Error! </strong> Error with basic profile updates.
+						</div>';
+                    }
+                } else {
+                    // Create New Entry
+
+                    $temp['site_id'] = isset($_POST['siteID']) ? $_POST['siteID'] : 0;
+                    $temp['page_id'] = isset($_POST['pageID']) ? $_POST['pageID'] : 0;
+                    $temp['user_id'] = isset($user_id) ? $user_id : 0;
+                    $temp['created_date'] = time();
+
+                    $dataUpdated = $this->sitemodel->createBasicDetails($temp);
+                    if ($dataUpdated == 1) {
+                        $return['responseALERT'] = '<div class="alert alert-success fade in">
+							<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+							<strong>Success!</strong> Basic Details Created...!
+						</div>';
+                    } else {
+                        $return['responseALERT'] = '<div class="alert alert-danger fade in">
+							<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+							<strong>Error! </strong> Basic Details Not Created...!
+						</div>';
+                    }
+                }
+            } else if ($_POST['resume'] === 'education') {
+                if (count($_POST) > 0 && isset($_POST['institute']) && $_POST['institute'] != "" && isset($_POST['institute']) && $_POST['institute'] != "" && isset($_POST['per']) && $_POST['per'] != "") {
+                    $temp = array();
+                    $temp['site_id'] = isset($_POST['siteID']) ? $_POST['siteID'] : 0;
+                    $temp['page_id'] = isset($_POST['pageID']) ? $_POST['pageID'] : 0;
+                    $temp['user_id'] = isset($user_id) ? $user_id : 0;
+                    $temp['school'] = isset($_POST['institute']) ? $_POST['institute'] : "";
+                    $temp['from_date'] = isset($_POST['syear']) ? $_POST['syear'] : "";
+                    $temp['to_date'] = isset($_POST['eyear']) ? $_POST['eyear'] : "";
+                    $temp['degree'] = isset($_POST['degree']) ? $_POST['degree'] : "";
+                    $temp['percentage'] = isset($_POST['per']) ? $_POST['per'] : 0.00;
+
+                    $insData = $this->sitemodel->createEducationDetails($temp);
+                    if ($insData != 0) {
+                        $payLoad = '<div class="col-sm-12">
+							<div class="col-sm-2">' . $temp['degree'] . '</div>
+							<div class="col-sm-4">' . $temp['school'] . '</div>
+							<div class="col-sm-2">' . $temp['from_date'] . '-' . $temp['to_date'] . '</div>
+							<div class="col-sm-2">' . $temp['percentage'] . '</div>
+							<div class="col-sm-2"><button type="button" id="' . $insData . '" class="btn btn-info btn-embossed deleteEducation">X</button></div>
+						</div>';
+
+
+                        $return['responseCode'] = 1;
+                        $return['responseALERT'] = '<div class="alert alert-success fade in">
+							<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+							<strong>Success!</strong> Education Details Added.
+						</div>';
+                        $return['payload'] = $payLoad;
+                    } else {
+                        $return['responseCode'] = 0;
+                        $return['responseALERT'] = '<div class="alert alert-danger fade in">
+							<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+							<strong>Error! </strong> Please Re-try to Insert Education...!
+						</div>';
+                    }
+                } else {
+                    $return['responseCode'] = 0;
+                    $return['responseALERT'] = '<div class="alert alert-info fade in">
+						<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+						<strong>Error! </strong> Please Enter Details to Update Education...!
+					</div>';
+                }
+            } else if ($_POST['resume'] === 'skills') {
+                $return = array();
+                // Process the data to insert into database.
+                if (count($_POST) > 0 && isset($_POST['skillname']) && $_POST['skillname'] != "" && isset($_POST['experience']) && $_POST['experience'] != "" && isset($_POST['rating']) && $_POST['rating'] != "") {
+                    $temp = array();
+                    $temp['site_id'] = isset($_POST['siteID']) ? $_POST['siteID'] : 0;
+                    $temp['page_id'] = isset($_POST['pageID']) ? $_POST['pageID'] : 0;
+                    $temp['user_id'] = isset($user_id) ? $user_id : 0;
+                    $temp['name'] = isset($_POST['skillname']) ? $_POST['skillname'] : "";
+                    $temp['experience'] = isset($_POST['experience']) ? $_POST['experience'] : "";
+                    $temp['rating'] = isset($_POST['rating']) ? $_POST['rating'] : "";
+
+                    $insData = $this->sitemodel->insertSkills($temp);
+
+                    if ($insData != 0) {
+                        $payload = '
+								<div class="col-sm-12">
+									<div class="col-sm-3">' . $temp['name'] . '</div>
+									<div class="col-sm-3">' . $temp['experience'] . '</div>
+									<div class="col-sm-3">' . $temp['rating'] . '</div>
+									<div class="col-sm-3"><button type="button" id="' . $insData . '" class="btn btn-info btn-embossed deleteSkill">X</button></div>
+								</div>							
+							';
+                        $return['responseCode'] = 1;
+                        $return['responseALERT'] = '<div class="alert alert-success fade in">
+								<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+								<strong>Success!</strong> Skills Added For Your Profile.
+							</div>';
+                        $return['payload'] = $payload;
+                    } else {
+                        $return['responseCode'] = 0;
+                        $return['responseALERT'] = '<div class="alert alert-danger fade in">
+								<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+								<strong>Error! </strong> Please Re-try to Update Skills...!
+							</div>';
+                    }
+                } else {
+                    $return['responseCode'] = 0;
+                    $return['responseALERT'] = '<div class="alert alert-danger fade in">
+						<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+						<strong>Error! </strong> Enter All Details To Update Skills...!
+					</div>';
+                }
+            } else if ($_POST['resume'] === 'language') {
+                $return = array();
+                // Process the data to insert into database.
+                if (count($_POST) > 0 && isset($_POST['languagenm']) && $_POST['languagenm'] != "" && isset($_POST['rating']) && $_POST['rating'] != "") {
+
+                    $temp = array();
+                    $temp['site_id'] = isset($_POST['siteID']) ? $_POST['siteID'] : 0;
+                    $temp['page_id'] = isset($_POST['pageID']) ? $_POST['pageID'] : 0;
+                    $temp['user_id'] = isset($user_id) ? $user_id : 0;
+                    $temp['language'] = isset($_POST['languagenm']) ? $_POST['languagenm'] : "";
+                    $temp['rating'] = isset($_POST['rating']) ? $_POST['rating'] : "";
+
+                    $insData = $this->sitemodel->insertLang($temp);
+                    if ($insData != "") {
+                        $payload = '
+							<div class="col-sm-12">
+								<div class="col-sm-4">' . $temp['language'] . '</div>
+								<div class="col-sm-4">' . $temp['rating'] . '</div>
+								<div class="col-sm-4"><button type="button" id="' . $insData . '" class="btn btn-info btn-embossed deleteLang">X</button></div>
+							</div>						
+						';
+                        $return['responseCode'] = 1;
+                        $return['responseALERT'] = '<div class="alert alert-success fade in">
+							<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+							<strong>Success!</strong> Languages Skill Added For Your Profile.
+						</div>';
+                        $return['payload'] = $payload;
+                    } else {
+                        $return['responseCode'] = 0;
+                        $return['responseALERT'] = '<div class="alert alert-danger fade in">
+							<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+							<strong>Error! </strong> Please Re-try to Add Languages...!
+						</div>';
+                    }
+                } else {
+                    $return['responseCode'] = 0;
+                    $return['responseALERT'] = '<div class="alert alert-danger fade in">
+						<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+						<strong>Error! </strong> Insert All Details To Update Language Skills...!
+					</div>';
+                }
+            } else {
+                
+            }
+            echo json_encode($return);
+            //Now check for the 
+        }
+    }
+
+    /*
+      Delete the resume details
+     */
+
+    public function deleteCVDetails()
+    {
+        if (count($_POST) > 0 && isset($_POST['delete']) && isset($_POST['id'])) {
+            $return = array();
+            if ($_POST['delete'] === "education") {
+                $delData = $this->sitemodel->deleteEducation($_POST['id']);
+                if ($delData == 1) {
+                    $return['responseCode'] = 1;
+                    $return['responseALERT'] = '<div class="alert alert-success fade in">
+						<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+						<strong>Success!</strong> Education Details Deleted.
+					</div>';
+                } else {
+                    $return['responseCode'] = 0;
+                    $return['responseALERT'] = '<div class="alert alert-danger fade in">
+						<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+						<strong>Error! </strong> No Education details selected...!
+					</div>';
+                }
+            } else if ($_POST['delete'] === "skills") {
+                $delData = $this->sitemodel->deleteSkills($_POST['id']);
+                if ($delData == 1) {
+                    $return['responseCode'] = 1;
+                    $return['responseALERT'] = '<div class="alert alert-success fade in">
+						<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+						<strong>Success!</strong> Skills Deleted.
+					</div>';
+                } else {
+                    $return['responseCode'] = 0;
+                    $return['responseALERT'] = '<div class="alert alert-danger fade in">
+						<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+						<strong>Error! </strong> No skill selected to delete...!
+					</div>';
+                }
+            } else if ($_POST['delete'] === "lang") {
+                $delData = $this->sitemodel->deleteLanguages($_POST['id']);
+                if ($delData == 1) {
+                    $return['responseCode'] = 1;
+                    $return['responseALERT'] = '<div class="alert alert-success fade in">
+						<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+						<strong>Success!</strong> Language Deleted.
+					</div>';
+                } else {
+                    $return['responseCode'] = 0;
+                    $return['responseALERT'] = '<div class="alert alert-danger fade in">
+						<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+						<strong>Error! </strong> No language selected to delete...!
+					</div>';
+                }
+            }
+        } else {
+            $return['responseCode'] = 0;
+            $return['responseALERT'] = '<div class="alert alert-danger fade in">
+				<a title="close" aria-label="close" data-dismiss="alert" class="close" href="#">×</a>
+				<strong>Error! </strong> Something went wrong please refresh page and try again...!
+			</div>';
+        }
+
+        echo json_encode($return);
+    }
+
+    /*
+      publishes a site
+     */
+
+    public function publish_student()
+    {
+        $base_url_all = base_url('studentelements');
+
+        $this->load->helper('file');
+        $this->load->helper('directory');
+        $params = array('hostname' => $this->_hostName, 'username' => $this->_userName, 'password' => $this->_password);
+        $this->load->library('CPanelAddons', $params, 'CPanelAddons');
+        $remote_url = '';
+//        $this->load->library('CPanelAddons');
+        if (!isset($_POST['siteID'])) {
+
+            $return = array();
+
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_publish_error1_heading');
+            $temp['content'] = $this->lang->line('sites_publish_error1_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error', array('data' => $temp), true);
+
+            die(json_encode($return));
+        }
+
+        //some error prevention first
+        //siteID ok?
+        $siteDetails = $this->sitemodel->getSite($_POST['siteID']);
+
+        if ($siteDetails == false) {
+
+            $return = array();
+
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_publish_error1_heading');
+            $temp['content'] = $this->lang->line('sites_publish_error1_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error', array('data' => $temp), true);
+
+            die(json_encode($return));
+        }
+        $userID = $siteDetails['site']->users_id;
+
+        if ($siteDetails['site']->domain_ok != 1 || !isset($siteDetails['site']->domain)) {
+            $return = array();
+
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_publish_error3_heading');
+            $temp['content'] = $this->lang->line('sites_publish_error3_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error', array('data' => $temp), true);
+
+            die(json_encode($return));
+        }
+        $path = 'public_html/' . $siteDetails['site']->domain;
+        $absPath = './' . $siteDetails['site']->domain;
+        if (!is_dir($absPath) && $siteDetails['site']->domain != '') {
+            mkdir($absPath, 0777);
+        }
+        //do we have anythin to publish at all?
+//		if( !isset( $_POST['xpages'] ) || $_POST['xpages'] == '' ) {
+        if (!isset($_POST['item']) || $_POST['item'] == '') {
+            //nothing to upload
+
+            $return = array();
+
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_publish_error2_heading');
+            $temp['content'] = $this->lang->line('sites_publish_error2_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error', array('data' => $temp), true);
+
+            die(json_encode($return));
+        }
+
+        if (isset($siteDetails['site']->url_option) && $siteDetails['site']->url_option != 'freeUrl' && $siteDetails['site']->domain_publish == 0) {
+            $result = $this->CPanelAddons->add($siteDetails['site']->domain, $path);
+            if (isset($result['cpanelresult']['data'][0]['result']) && trim($result['cpanelresult']['data'][0]['result']) == '0'
+            ) {
+                $return = array();
+
+                $temp = array();
+                $temp['header'] = $this->lang->line('sites_publish_error2_heading');
+                $temp['content'] = "cPanel: " . $result['cpanelresult']['data'][0]['reason'];
+
+                $return['responseCode'] = 0;
+                $return['responseHTML'] = $this->load->view('partials/error', array('data' => $temp), true);
+                die(json_encode($return));
+            } else {
+                $this->users_domains_model->domain_publish($_POST['siteID']);
+            }
+        }
+        if ($siteDetails['site']->url_option == 'freeUrl') {
+            $remote_url = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $siteDetails['site']->domain;
+        } else {
+            $remote_url = 'http://' . $siteDetails['site']->domain;
+        }
+//		foreach( $_POST['xpages'] as $page=>$content ) {
+        $page = $_POST['item'];
+        $content = $_POST['pageContent'];
+        //get page meta
+        $pageMeta = $this->pagemodel->getSinglePage($_POST['siteID'], $page);
+
+        $meta = '<title>' . $siteDetails['site']->sites_name . '</title>' . "\r\n";
+        $header_includes = "";
+        if (!empty($pageMeta->pages_title)) {
+            //insert title, meta keywords and meta description
+
+            $meta .= '<meta name="description" content="' . $pageMeta->pages_meta_description . '">' . "\r\n";
+            $meta .= '<meta name="keywords" content="' . $pageMeta->pages_meta_keywords . '">';
+
+            $header_includes .= $pageMeta->pages_header_includes;
+
+            $pageContent = str_replace('<!--pageMeta-->', $meta, $content);
+
+            //insert header includes;
+            $pageContent = str_replace("<!--headerIncludes-->", $header_includes, $pageContent);
+        } else {
+
+            $pageContent = str_replace('<!--pageMeta-->', $meta, $content);
+            $pageContent = str_replace("<!--headerIncludes-->", $header_includes, $pageContent);
+        }
+
+        //remove video cover
+        $pageContent = str_replace('<div style="" data-selector=".frameCover" class="frameCover" data-type="video"></div>', "", $pageContent);
+        $pageContent = str_replace('<div style="margin: 0px;" data-selector=".frameCover" class="frameCover" data-type="video"></div>', "", $pageContent);
+        $pageContent = str_replace('<div data-selector=".frameCover" class="frameCover" data-type="video"></div>', "", $pageContent);
+        $pageContent = str_replace('<div data-type="video" class="frameCover" data-selector=".frameCover"></div>', "", $pageContent);
+        $pageContent = str_replace('class="frameCover"', "", $pageContent);
+
+        /* STUDENT SECTION NEEDED */
+
+        $valUrl = base_url();
+        $accUrl = site_url('login/checkProfileLogin/' . $this->encrypt->encode($_POST['siteID']));
+        $script = <<<'EOS'
+				<?PHP 
+					if(!isset($_SESSION) || session_id() == "") { 
+					if(isset($_REQUEST['sessid']) && $_REQUEST['sessid']!="" ) {
+						list($sid, $ext) = explode('-', $_REQUEST['sessid']);
+						session_id($sid);
+					}
+					session_start();
+				} 
+			?>
+EOS;
+
+        $sessionSet = <<<'EOD'
+		<?PHP
+EOD;
+        $sessionSet .= '  $sess = isset($_SESSION["extids"]["' . base64_encode($siteDetails['site']->site_id) . '"])?$_SESSION["extids"]["' . base64_encode($siteDetails['site']->site_id) . '"]:"";';
+        $sessionSet .= <<<'EOD'
+
+			if(is_array($_SESSION) && count($_SESSION)>0 && isset($sess)) {
+				?>
+				<input type="hidden" class="myid" name="myid" value="<?PHP echo base64_encode($sess); ?>">
+				<?PHP
+			}
+			else {
+				?>
+				<input type="hidden" class="myid" name="myid" value="">
+				<?PHP
+				
+			}
+		?>
+EOD;
+
+        $pageContent = str_replace("<!-- password check url -->", '<input type="hidden" class="siteurl" name="siteurl" value="' . $valUrl . '">', $pageContent);
+        $pageContent = str_replace("<!-- site url -->", '<input type="hidden" class="siteaccess" name="siteaccess" value="' . $accUrl . '">', $pageContent);
+        $pageContent = str_replace("<!-- session -->", $script, $pageContent);
+        $pageContent = str_replace("<!-- password protection on-->", '<input type="hidden" class="hiddenpassword" name="haspassword" value="' . $siteDetails['site']->has_password . '">', $pageContent);
+        $pageContent = str_replace("<!-- session variable -->", $sessionSet, $pageContent);
+
+        $pageContent = str_replace("<!-- site id -->", '<input type="hidden" class="siteId" name="siteId" value="' . base64_encode($siteDetails['site']->site_id) . '">', $pageContent);
+
+
+        /* STUDENT SECTION NEEDED ENDS */
+
+        $pageContent = str_replace("<!-- site contact url div -->", '<div id="contact-url" data-content="' . site_url('login/site_contact/' . $this->encrypt->encode($_POST['siteID'])) . '"></div>', $pageContent);
+
+        $pageContent = str_replace("<!-- site counter url div -->", '<div id="counter-url" data-content="' . site_url('login/visitor_counter/' . $this->encrypt->encode($_POST['siteID'])) . '"></div>', $pageContent);
+
+        $pageContent = str_replace("<!-- site url div -->", '<div id="site-url" data-content="' . $base_url_all . '"></div>', $pageContent);
+
+        $pageContent = str_replace("<!-- page id div -->", '<div id="page-id" data-content="' . $pageMeta->pages_id . '"></div>', $pageContent);
+
+        $pageContent = str_replace("<!-- page url div -->", '<div id="page-url" data-content="' . $remote_url . '/' . $page . '.html"></div>', $pageContent);
+
+
+        if (!stristr($pageContent, '<link href="' . base_url('elements'))) {
+            $pageContent = str_replace('<link href="', '<link href="' . $base_url_all . '/', $pageContent);
+        }
+        if (stristr($pageContent, '<link href="' . $base_url_all . '/https://')) {
+            $pageContent = str_replace('<link href="' . $base_url_all . '/https://', '<link href="https://', $pageContent);
+        }
+        if (!stristr($pageContent, '<script src="' . $base_url_all . '/js')) {
+            $pageContent = str_replace('<script src="js', '<script src="' . $base_url_all . '/js', $pageContent);
+        }
+        if (stristr($pageContent, 'src="' . $base_url_all . '/https://')) {
+            $pageContent = str_replace('src="' . $base_url_all . '/https://', 'src="https://', $pageContent);
+        }
+        if (stristr($pageContent, '<script src="' . $base_url_all . '/http://')) {
+            $pageContent = str_replace('<script src="' . $base_url_all . '/http://', '<script src="http://', $pageContent);
+        }
+        if (strstr($pageContent, 'src="/elements/images')) {
+            $pageContent = str_replace('src="/elements/images', 'src="' . $base_url_all . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'href="scripts')) {
+            $pageContent = str_replace('href="scripts', 'href="' . $base_url_all . '/scripts', $pageContent);
+        }
+        if (stristr($pageContent, '<script src="scripts')) {
+            $pageContent = str_replace('<script src="scripts', '<script src="' . $base_url_all . '/scripts', $pageContent);
+        }
+        if (stristr($pageContent, 'href="images')) {
+            $pageContent = str_replace('href="images', 'href="' . $base_url_all . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'src="./images')) {
+            $pageContent = str_replace('src="./images', 'src="' . $base_url_all . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'href="./images')) {
+            $pageContent = str_replace('href="./images', 'href="' . $base_url_all . '/images', $pageContent);
+        }
+        write_file($absPath . '/' . $page . ".php", $pageContent);
+//		}
+        (isset($userID) && $userID != '') ? remove_directory('./temp/' . $userID) : '';
+
+        $this->sitemodel->publish($_POST['siteID'], base_url() . $siteDetails['site']->domain);
+
+        if ($siteDetails['site']->url_option == 'freeUrl') {
+            $this->users_domains_model->domain_publish($_POST['siteID']);
+        }
+
+        //all went well
+        $return = array();
+
+        $return['responseCode'] = 1;
+
+        die(json_encode($return));
+    }
+
+    /*
+      Send the mail to the users.
+     */
+
+    public function shareMyResume()
+    {
+        if ($_POST['siteID'] == '' || $_POST['siteID'] == 'undefined' || !isset($_POST)) {
+
+            $return = array();
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_shareProfile_error1_heading');
+            $temp['content'] = $this->lang->line('sites_shareprofile_error1_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error_inline', array('data' => $temp), true);
+
+            die(json_encode($return));
+        }
+        // Return site data as well
+        $siteDetails = $this->sitemodel->getSite($_POST['siteID']);
+        if (count($siteDetails) > 0) {
+            $URL = $siteDetails["site"]->remote_url;
+            $userName = $this->sitemodel->getUserByUserId($siteDetails["site"]->users_id);
+            $toAddres = isset($_POST['shareEmail']) ? $_POST['shareEmail'] : "";
+
+            $contents = isset($_POST['emailcontents']) ? $_POST['emailcontents'] : "";
+            //$contents = str_replace('{{NAME}}',$userName,$contents);
+            //$contents = str_replace('{{PROFILEURL}}',$URL,$contents);
+            $subLine = $userName . " Profile";
+
+            if (isset($toAddres) && !empty($toAddres)) {
+                $temp['header'] = "";
+                $temp['content'] = $contents;
+                //$this->load->view('partials/error', array('data' => $temp));
+                $res = $this->sitemodel->shareProfileEmail($toAddres, $contents, $subLine);
+                if (count($res) > 0) {
+                    $return = array();
+                    $temp = array();
+                    $temp['header'] = $this->lang->line('sites_shareProfile_success_heading');
+                    $temp['content'] = $this->lang->line('sites_shareprofile_success_message');
+
+                    $return['responseCode'] = 1;
+                    $return['responseHTML'] = $this->load->view('partials/success_inline', array('data' => $temp), true);
+
+                    die(json_encode($return));
+                } else {
+                    
+                }
+            } else {
+                $return = array();
+                $temp = array();
+                $temp['header'] = $this->lang->line('sites_shareProfile_error1_heading');
+                $temp['content'] = $this->lang->line('sites_shareprofile_error2_message');
+
+                $return['responseCode'] = 0;
+                $return['responseHTML'] = $this->load->view('partials/error_inline', array('data' => $temp), true);
+
+                die(json_encode($return));
+            }
+        } else {
+
+            $return = array();
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_shareProfile_error1_heading');
+            $temp['content'] = $this->lang->line('sites_shareprofile_error1_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error_inline', array('data' => $temp), true);
+
+            die(json_encode($return));
+        }
+        //var_dump($siteDetails);
+    }
+
+    /*
+
+      Update the password for the site for studen profile
+
+     */
+
+    public function updatePasswordData()
+    {
+
+        if ($_POST['siteID'] == '' || $_POST['siteID'] == 'undefined' || !isset($_POST)) {
+
+            $return = array();
+
+            $temp = array();
+            $temp['header'] = $this->lang->line('sites_updatePageData_error1_heading');
+            $temp['content'] = $this->lang->line('sites_updatePageData_error1_message');
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error', array('data' => $temp), true);
+
+            die(json_encode($return));
+        }
+
+        //update site password.
+        $this->sitemodel->updateSitePassword($_POST);
+
+        $return = array();
+
+        //return site data as well
+        $pagesData = $this->pagemodel->getPageData($_POST['siteID']);
+
+        if ($pagesData) {
+            $return['pagesData'] = $pagesData;
+        }
+
+        $temp = array();
+        $temp['header'] = $this->lang->line('sites_updatePageData_success_heading');
+        $temp['content'] = $this->lang->line('sites_updatePageData_success_message');
+
+        $return['responseCode'] = 1;
+        $return['responseHTML'] = $this->load->view('partials/success', array('data' => $temp), true);
+        $siteData = $this->sitemodel->getSite($_POST['siteID']);
+        $return['siteName'] = $siteData['site']->sites_name;
+        $return['siteID'] = $siteData['site']->sites_id;
+        die(json_encode($return));
+    }
+
+    /*
+      preview a site student
+     */
+
+    public function preview_student()
+    {
+        //some error prevention first
+        $siteDetails = $this->sitemodel->getSite($_POST['siteID']);
+
+        if ($siteDetails == false) {
+            die("No details found");
+        }
+        //do we have anythin to preview at all?
+        if (!isset($_POST['page']) || $_POST['page'] == '') {
+            die("No page found");
+        }
+
+        if (!is_writable('./temp/')) {
+            chmod('./temp/', 0777);
+        }
+
+        $filename = "temp/preview_" . $this->generateRandomString(20) . ".html";
+        $previewFile = fopen($filename, "w");
+
+        $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
+        $pageContent = str_replace('<!--pageTitle-->', $title, $_POST['page']);
+
+        $base_url = base_url('studentelements');
+
+        if (stristr($pageContent, 'href="css')) {
+            $pageContent = str_replace('href="css', 'href="' . $base_url . '/css', $pageContent);
+        }
+        if (stristr($pageContent, 'href="scripts')) {
+            $pageContent = str_replace('href="scripts', 'href="' . $base_url . '/scripts', $pageContent);
+        }
+        if (stristr($pageContent, 'href="images')) {
+            $pageContent = str_replace('href="images', 'href="' . $base_url . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'src="scripts')) {
+            $pageContent = str_replace('src="scripts', 'src="' . $base_url . '/scripts', $pageContent);
+        }
+        if (stristr($pageContent, 'url(images')) {
+            $pageContent = str_replace('url(images', 'url(' . $base_url . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'src="./images')) {
+            $pageContent = str_replace('src="./images', 'src="' . $base_url . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'src="images')) {
+            $pageContent = str_replace('src="images', 'src="' . $base_url . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'href="./images')) {
+            $pageContent = str_replace('href="./images', 'href="' . $base_url . '/images', $pageContent);
+        }
+
+        fwrite($previewFile, stripcslashes($pageContent));
+
+        fclose($previewFile);
+        header('Location: ' . base_url($filename));
+    }
+
+    // Get pre build templates using ajax request
+    public function getPrebuildTemplates()
+    {
+        if (isset($_POST) && !empty($_POST) && count($_POST) > 0) {
+            $posts = json_decode(stripslashes($_POST['posts']));
+            if (count($posts) > 0) {
+                foreach ($posts as $a) {
+                    echo file_get_contents($_POST['url'] . $a->url);
+                }
+            }
+        }
     }
 }
 

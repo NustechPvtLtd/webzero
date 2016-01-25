@@ -22,7 +22,7 @@ class login extends MX_Controller
     {
         //$this->data['main_content'] = 'login_form';
         //$this->load->view('includes/template', $this->data);	
-
+        $group = $this->ion_auth->get_groups(array('neglectgroup'=>array('admin')));
         if (!$this->ion_auth->logged_in()) {
             $this->data ['title'] = 'Web Zero';
                 
@@ -41,10 +41,10 @@ class login extends MX_Controller
                     //if the login is successful
                     //redirect them back to the home page
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
-                    if ($this->ion_auth->in_group(array('comp-admin', 'individuals'))) {
+                    if ($this->ion_auth->in_group($group)) {
                         redirect('services', 'refresh');
                     } else {
-                        redirect('/', 'refresh');
+                        redirect(site_url('index.php'), 'refresh');
                     }
                 } else {
                     //if the login was un-successful
@@ -76,8 +76,8 @@ class login extends MX_Controller
             }
         } elseif (!$this->ion_auth->is_admin()) {
             //remove this elseif if you want to enable this for non-admins
-
-            if ($this->ion_auth->in_group(array('comp-admin', 'individuals'))) {
+            
+            if ($this->ion_auth->in_group($group)) {
                 redirect('services', 'refresh');
             } else {
                 return show_error('You must be an logged-in to view this page.');
@@ -87,7 +87,7 @@ class login extends MX_Controller
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
             //list the users
-            $this->data['users'] = $this->ion_auth->users(array('individuals', 'comp-admin'))->result();
+            $this->data['users'] = $this->ion_auth->users($group)->result();
             
             foreach ($this->data['users'] as $k => $user) {
                 $this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
@@ -120,8 +120,10 @@ class login extends MX_Controller
             if ($this->ion_auth->by_pass_login($_POST['id'])) {
                 //if the login is successful
                 //redirect them back to the home page
-                if ($this->ion_auth->in_group(array('comp-admin', 'individuals'))) {
+                if ($this->ion_auth->in_group(array('student', 'individuals'))) {
                     echo site_url('services');
+                }elseif ($this->ion_auth->in_group(array('employer'))) {
+                    echo site_url('index.php');
                 } else {
                     echo site_url();
                 }
@@ -137,7 +139,7 @@ class login extends MX_Controller
 
         //redirect them to the login page
         $this->session->set_flashdata('message', $this->ion_auth->messages());
-        redirect('/', 'refresh');
+        redirect(site_url('index.php'), 'refresh');
     }
     
     //change password
@@ -358,11 +360,16 @@ class login extends MX_Controller
         if ($activation) {
             //redirect them to the auth page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-            redirect("login", 'refresh');
+            if(!$this->ion_auth->is_admin()){
+                $this->ion_auth->by_pass_login($id);
+            }
+            redirect(site_url('index.php'), 'refresh');
         } else {
             //redirect them to the forgot password page
             $this->session->set_flashdata('message', $this->ion_auth->errors());
-            redirect("forgot-password", 'refresh');
+            if(!$this->ion_auth->is_admin()){
+                redirect("forgot-password", 'refresh');
+            }
         }
     }
 
@@ -402,7 +409,7 @@ class login extends MX_Controller
             }
 
             //redirect them back to the auth page
-            redirect('/', 'refresh');
+            redirect(site_url('index.php'), 'refresh');
         }
     }
 
@@ -650,7 +657,7 @@ class login extends MX_Controller
         $this->form_validation->set_rules('group_name', $this->lang->line('create_group_validation_name_label'), 'required|alpha_dash');
 
         if ($this->form_validation->run() == true) {
-            $new_group_id = $this->ion_auth->create_group($this->input->post('group_name'), $this->input->post('description'));
+            $new_group_id = $this->ion_auth->create_group($this->input->post('group_name'), $this->input->post('description'), array('visibility'=>$this->input->post('visibility')));
             if ($new_group_id) {
                 // check to see if we are creating the group
                 // redirect them back to the admin page
@@ -676,6 +683,9 @@ class login extends MX_Controller
                 "class" => "form-control",
                 'value' => $this->form_validation->set_value('description'),
             );
+            $visibility = $this->form_validation->set_value('visibility');
+            $this->data['visibility'] = ($visibility!='')?$visibility:0;
+
             $this->data['pageHeading'] = lang('create_group_heading');
 //			$this->_render_page('login/create_group', $this->data);
             $this->template->load('main', 'login', 'create_group', $this->data);
@@ -771,71 +781,19 @@ class login extends MX_Controller
             //check to see if we are creating the user
             //redirect them back to the admin page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-            redirect("register", 'refresh');
-        } else {
+//            redirect("register", 'refresh');
+           
+        }
+        redirect(site_url()."#login_register", 'refresh');
+        /*else {
             //display the create user form
             //set the flash data error message if there is one
             $this->data['message'] = ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message'));
         
-            $this->data['first_name'] = array(
-                'name'  => 'first_name',
-                'id'    => 'first_name',
-                'type'  => 'text',
-                'value' => $this->form_validation->set_value('first_name'),
-                'class' => 'form-control',
-            );
-//	        $this->data['last_name'] = array(
-//	            'name'  => 'last_name',
-//	            'id'    => 'last_name',
-//	            'type'  => 'text',
-//	            'value' => $this->form_validation->set_value('last_name'),
-//	            'class' => 'form-control',
-//	        );
-            $this->data['email'] = array(
-                'name'  => 'email',
-                'id'    => 'email',
-                'type'  => 'text',
-                'value' => $this->form_validation->set_value('email'),
-                'class' => 'form-control',
-            );
-//	        $this->data['company'] = array(
-//	            'name'  => 'company',
-//	            'id'    => 'company',
-//	            'type'  => 'text',
-//	            'value' => $this->form_validation->set_value('company'),
-//	            'class' => 'form-control',
-//	        );
-            $this->data['password'] = array(
-                'name'  => 'password',
-                'id'    => 'password',
-                'type'  => 'password',
-                'value' => $this->form_validation->set_value('password'),
-                'class' => 'form-control',
-            );
-//	        $this->data['password_confirm'] = array(
-//	            'name'  => 'password_confirm',
-//	            'id'    => 'password_confirm',
-//	            'type'  => 'password',
-//	            'value' => $this->form_validation->set_value('password_confirm'),
-//	            'class' => 'form-control',
-//	        );
-            // 			$this->_render_page('auth/create_user', $this->data);
-//	        $this->template->load('guest', 'login', 'register', $this->data);
-            $this->data['identity'] = array('name' => 'identity',
-                'id' => 'identity',
-                'type' => 'text',
-                'value' => $this->form_validation->set_value('identity'),
-                'class' => "form-control",
-                'placeholder' => 'Email/Username',
-            );
-            $this->data['password'] = array('name' => 'password',
-                'id' => 'password',
-                'type' => 'password',
-                'class' => "form-control",
-                'placeholder' => 'Password',
-            );
-            $this->template->load('home', 'login', 'home', $this->data);
-        }
+            redirect(site_url()."#login_register", 'refresh');
+//            $this->template->load('home', 'login', 'home', $this->data);
+            
+        }*/
     }
 
     public function register_google()
@@ -1058,5 +1016,317 @@ class login extends MX_Controller
                 'message' => 'Please provide correct OTP'
             ));
         }
+    }
+    
+    
+    public function genpdf_user($id,$page = 'index')
+    {
+        header('Access-Control-Allow-Origin: *');
+		//echo $this->encrypt->encode($id);
+		$this->load->model('sites/sitemodel');
+		$this->load->helper('string');
+		
+		$site_id = $this->encrypt->decode($id);
+		$html = "";
+		if(isset($site_id)) {
+
+			$siteDetails = $this->sitemodel->getSite($site_id);
+
+			$siteContents = "";
+			$css 		  = "";
+			if($page === 'index') {
+				$domain = $siteDetails['site']->domain;
+				$contents = file_get_contents(FCPATH."/$domain/$page.php");
+				
+				
+				$this->load->library('Htmltopdf');
+								
+				// You can pass a filename, a HTML string or an URL to the constructor
+				$pdf = new Htmltopdf($contents);
+				require_once('wkhtmltopdf/wkhtmltopdf.php');
+				// On some systems you may have to set the binary path.
+				// $pdf->binary = 'C:\...';
+
+				if (!$pdf->saveAs('/path/to/page.pdf')) {
+					echo $pdf->getError();
+				}
+				die;
+				//var_dump($siteDetails['pages'][$page]);
+
+				if(is_array($siteDetails['pages'][$page]) && count($siteDetails['pages'][$page])>0) {
+					foreach($siteDetails['pages'][$page] as $site) {
+						$siteContents.= $site->frames_content;
+					}
+					
+				}
+
+				
+				$css.=  file_get_contents(base_url('assets/sites')."/bootstrap/css/bootstrap.css");
+				$css.=  file_get_contents(base_url('assets/sites')."/css/pdf.css");
+				$css.=  file_get_contents(base_url('assets/sites')."/css/flat-ui.css");
+				$css.=  file_get_contents(base_url('assets/sites')."/css/style.css");
+				$css.=  file_get_contents(base_url('assets/sites')."/css/spectrum.css");
+				$css.=  file_get_contents(base_url('assets/sites')."/css/chosen.css");
+				$css.=  file_get_contents(base_url('assets/sites')."/css/custom-skin-green.css");
+				$css.=  file_get_contents(base_url('assets/sites')."/css/font-awesome.css");
+				$css.=  file_get_contents(base_url('assets/sites')."/css/iconfont-style.css");
+				$css.=  file_get_contents(base_url('assets')."/css/adminlte.css");
+
+				
+				// Student specific CSS files. 
+				$studCss = "";
+				$cssArray = array("/css/font-awesome.css","/css/animsition.min.css","/css/progress.css","/css/student-style.css");
+				foreach($cssArray as $c ) {
+					$studCss.= file_get_contents($baseurl=base_url('studentelements')."/css/font-awesome.css");
+					$studCss.= '/* END CSS '.$c.' */';
+				}
+				$css.= $studCss;
+			}
+			else {
+				
+			}
+			$html.='<style>'.$css.'</style>';
+			$html.='<body data-spy="scroll" data-target=".navMenuCollapse">';
+			$html.=$siteContents;
+			$html.='</body>';
+		}
+		
+		echo $html; die;	
+		$file = random_string('alnum',20);
+		$pdfFilePath = FCPATH."/downloads/reports/$file.pdf";
+		
+		// Remove the php script all.
+		$contents = preg_replace('/<\\?.*(\\?>|$)/Us', '',$contents);
+		
+		// Remove unwanted contents.
+		$doc = new DOMDocument;
+		$doc->loadHTML($contents);
+		$headerElement = $doc->getElementById('myModal');
+		$headerElement->parentNode->removeChild($headerElement);
+		$contents = $doc->saveHTML();
+		
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+		$pdf->SetFooter($_SERVER['HTTP_HOST'].'|{PAGENO}|'.date(DATE_RFC822)); // Add a footer for good measure <img src="https://s.w.org/images/core/emoji/72x72/1f609.png" alt="ðŸ˜‰" draggable="false" class="emoji">
+		$pdf->WriteHTML($contents); // write the HTML into the PDF
+		$pdf->Output($pdfFilePath, "I"); // save to file because we can
+
+		/*
+		$this->load->library('Pdf');.
+		$Pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+		// set document information
+		$Pdf->SetCreator(PDF_CREATOR);
+		$Pdf->SetAuthor('Nicola Asuni');
+		$Pdf->SetTitle('TCPDF Example 021');
+		$Pdf->SetSubject('TCPDF Tutorial');
+		$Pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+		// set default header data
+		$Pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 021', PDF_HEADER_STRING);
+
+		// set header and footer fonts
+		$Pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$Pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+		// set default monospaced font
+		$Pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+		// set margins
+		$Pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$Pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$Pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+		// set auto page breaks
+		$Pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		// set image scale factor
+		$Pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+		// set some language-dependent strings (optional)
+		if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+			require_once(dirname(__FILE__).'/lang/eng.php');
+			$Pdf->setLanguageArray($l);
+		}
+
+		// ---------------------------------------------------------
+
+		// set font
+		$Pdf->SetFont('helvetica', '', 9);
+
+		// add a page
+		$Pdf->AddPage();
+				
+		// output the HTML content
+		$Pdf->writeHTML($html, true, 0, true, 0);
+
+		// reset pointer to the last page
+		$Pdf->lastPage();
+
+		// ---------------------------------------------------------
+
+		//Close and output PDF document
+		$Pdf->Output('example_021.pdf', 'I');
+		*/
+	}
+	/* 
+		Check profile password 
+	*/
+	public function checkProfileLogin($id){
+		header('Access-Control-Allow-Origin: *');
+		$this->load->model("sites/sitemodel");
+        $site_id = $this->encrypt->decode($id);
+
+		if(count($_REQUEST)>0 && isset($_REQUEST['pwd']) &&$_REQUEST['pwd']!="" && $site_id ){
+			$res = $this->sitemodel->getUserPasswordById($site_id,$_REQUEST['pwd']);
+			if($res){
+				//$_SESSION['extids'] = array();
+				//var_dump($_SESSION);
+				//$ext = md5(uniqid(mt_rand(), true)); // just a semi random diddy
+				$ext = base64_encode($site_id); // This will add my site id as session id so that on front I can validate existance.
+				$_SESSION['extids'][$ext] = $site_id;
+				$linkId = array('sessid' => session_id() . '-' . $ext);
+				$res 	= array_merge($linkId,$res);
+				
+				echo json_encode(array('status'=>'success','message'=>'Successfully Login.','data'=>$res));
+			}
+			else{
+				if(isset($_SESSION['haspassword'])){
+					unset($_SESSION['haspassword']);
+				}
+				echo json_encode(array('status'=>'error','message'=>'Password is wrong.','data'=>array()));
+			}
+		}
+		else {
+			if(isset($_SESSION['haspassword'])){
+				unset($_SESSION['haspassword']);
+			}
+			echo json_encode(array('status'=>'error','message'=>'Please enter password.','data'=>array()));
+		}
+		
+	}
+    
+    public function privacy_policy()
+    {
+        $this->data ['title'] = 'Web Zero';
+        $this->template->load('external', 'login', 'privacy', $this->data);
+    }
+    
+    public function terms_and_condition()
+    {
+        $this->data ['title'] = 'Web Zero';
+        $this->template->load('external', 'login', 'terms', $this->data);
+    }
+    
+    public function registerEmployer()
+    {
+        $this->data ['title'] = 'Registration';
+        $this->data ['pageMetaDescription'] = 'Webzero.in';
+        $tables = $this->config->item('tables', 'ion_auth');
+        //validate form input
+        $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
+	    $this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
+        $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]');
+	    $this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'required');
+        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']');
+	    $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+
+        if ($this->form_validation->run() == true) {
+            $email    = strtolower($this->input->post('email'));
+            $username = explode('@', $email);
+            $username = $username[0].'_'.$username[1];
+            $password = $this->input->post('password');
+        
+            $additional_data = array(
+                'first_name' => $this->input->post('first_name'),
+	            'last_name'  => $this->input->post('last_name'),
+	            'company'    => $this->input->post('company'),
+            );
+            $group = array(8);
+        }
+        if ($this->form_validation->run() == true && $this->ion_auth->register_with_noactivation_mail($username, $password, $email, $additional_data, $group)) {
+            //check to see if we are creating the user
+            //redirect them back to the admin page
+            $this->session->set_flashdata('message', $this->ion_auth->messages());
+            redirect(site_url('recruiter'));
+        }else{
+            $this->session->set_flashdata('message', $this->ion_auth->errors());
+        }
+        
+        $this->data['first_name'] = array(
+            'name'  => 'first_name',
+            'id'    => 'first_name',
+            'type'  => 'text',
+            'value' => $this->form_validation->set_value('first_name'),
+            'class' => 'form-control',
+        );
+        
+        $this->data['last_name'] = array(
+            'name'  => 'last_name',
+            'id'    => 'last_name',
+            'type'  => 'text',
+            'value' => $this->form_validation->set_value('last_name'),
+            'class' => 'form-control',
+        );
+        
+        $this->data['email'] = array(
+            'name'  => 'email',
+            'id'    => 'email',
+            'type'  => 'text',
+            'value' => $this->form_validation->set_value('email'),
+            'class' => 'form-control',
+            'placeholder' => 'Email/Username',
+        );
+        
+        $this->data['company'] = array(
+            'name'  => 'company',
+            'id'    => 'company',
+            'type'  => 'text',
+            'value' => $this->form_validation->set_value('company'),
+            'class' => 'form-control',
+        );
+        
+        $this->data['password'] = array(
+            'name'  => 'password',
+            'id'    => 'password',
+            'type'  => 'password',
+            'value' => $this->form_validation->set_value('password'),
+            'class' => 'form-control',
+            'placeholder' => 'Password',
+        );
+        
+        $this->data['password_confirm'] = array(
+            'name'  => 'password_confirm',
+            'id'    => 'password_confirm',
+            'type'  => 'password',
+            'value' => $this->form_validation->set_value('password_confirm'),
+            'class' => 'form-control',
+        );
+
+        $this->template->load('guest', 'login', 'register', $this->data);
+    }
+    
+    public function sendMail()
+    {
+        $this->data ['id'] = 4;
+        $this->data ['activation'] = '9d8202c403b662bf6ae0e8b808bc1d79a35e9771';
+        $message = $this->load->view('email/activate.tpl.php', $this->data, true);
+        echo $message;
+        /*$headers = array();
+        $headers['MIME-Version'] = "1.0";
+        $headers['Content-type'] = "text/html;";
+        $headers['From'] = "{$this->config->item('site_title', 'ion_auth')}<{$this->config->item('email_send_mail', 'ion_auth')}>";
+        $headers['To'] = "Dear Customer<ymrityunjay@nustech.com>";
+        $headers['X-Mailer'] = "PHP/" . phpversion();
+        
+        $this->email->clear();
+        $this->email->from($this->config->item('email_send_mail', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
+        $this->email->to('ymrityunjay@nustech.com');
+        $this->email->subject($this->lang->line('email_activation_subject'));
+        $this->email->message($message);
+
+        if ($this->email->send() == TRUE)
+        {
+            echo 'Mail Sent';
+        }*/
     }
 }

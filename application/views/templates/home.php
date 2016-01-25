@@ -124,7 +124,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="#">Privacy Policy</a>
+                                    <a href="<?php echo site_url('privacy')?>">Privacy Policy</a>
                                 </li>
                             </ul>
                         </div>
@@ -160,8 +160,8 @@
                     <div class="copyrite">
                         <div class="col-md-7">
                             <p>Copyright 2015 Webzero. All rights reserved.
-                                <a href="#">Privacy Policy</a>
-                                <span>|</span><a href="#">Terms of Service</a></p>
+                                <a href="<?php echo site_url('privacy')?>" >Privacy Policy</a>
+                                <span>|</span><a href="<?php echo site_url('terms-and-condition')?>" >Terms of Service</a></p>
                         </div>
 
                         <div class="col-md-5 social">
@@ -190,10 +190,8 @@
                 $('#embed-responsive-item').hide();
                 $('#vd_img').click(function() {
                     $('#embed-responsive-item').show();
-                    $(this).hide()
-                            ;
-                })
-                        ;
+                    $(this).hide();
+                });
             });
         </script> 
         <script type="text/javascript" >

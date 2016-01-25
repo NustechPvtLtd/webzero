@@ -537,11 +537,9 @@ class Ion_auth_model extends CI_Model
 		$this->db->update($this->tables['users'], $data, array('id' => $id));
 
 		$return = $this->db->affected_rows() == 1;
-		if ($return)
-			$this->set_message('deactivate_successful');
-		else
+		if (!$return){
 			$this->set_error('deactivate_unsuccessful');
-
+        }
 		return $return;
 	}
 
@@ -1627,7 +1625,7 @@ class Ion_auth_model extends CI_Model
 			}
 			$this->_ion_where = array();
 		}
-
+        
 		if (isset($this->_ion_limit) && isset($this->_ion_offset))
 		{
 			$this->db->limit($this->_ion_limit, $this->_ion_offset);
@@ -1652,7 +1650,7 @@ class Ion_auth_model extends CI_Model
 
 		return $this;
 	}
-
+    
 	/**
 	 * group
 	 *
@@ -2088,6 +2086,72 @@ class Ion_auth_model extends CI_Model
 		$this->set_message('group_update_successful');
 
 		return TRUE;
+	}
+    
+	/**
+	 * update_group
+	 *
+	 * @return bool
+	 * @author aditya menon
+	 **/
+	public function update_user_group($user_id, $group_id )
+	{
+		if (empty($group_id)|| empty($user_id)) return FALSE;
+
+		$this->db->update($this->tables['users_groups'], array('group_id' => $group_id), array('user_id'=>$user_id));
+
+		return TRUE;
+	}
+    
+	/**
+	 * get_groups
+	 *
+     * @params array combination of key-value and key should be like $params=array('neglectgroup'=>group name or array of group names,'visibility'=>TRUE, 'all'=>TRUE)
+	 * @return bool
+	 * @author Mrityunjay Yadav
+	 **/
+	public function get_groups($params = array())
+	{
+        if(!empty($params)){
+            if(isset($params['neglectgroup'])){
+                $neglect_groups = $params['neglectgroup'];
+                if(is_array($neglect_groups)){
+                    foreach ($neglect_groups as $value) {
+                        $this->db->where('name !=', $value);
+                    }
+                }  else {
+                    $this->db->where('name !=', $neglect_groups);
+                }
+            }
+
+            if(isset($params['visibility'])){
+                $visibility = $params['visibility'];
+                if($visibility){
+                    $this->db->where('visibility =', 1);
+                }  else {
+                    $this->db->where('visibility =', 0);
+                }
+            }
+
+        }
+        
+        $groups = array();
+        // bail if the group name already exists
+        $query = $this->db->get($this->tables['groups'])->result();
+        if(isset($params['all']) && $params['all']){
+            $groups = $query;
+        }else{
+            foreach ($query as $value) {
+                $groups[$value->id] = $value->name;
+            }
+        }
+        
+        if(!empty($groups)){
+            return $groups;
+        }  else {
+            return FALSE;
+        }
+        
 	}
 
 	/**

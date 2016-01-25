@@ -18,7 +18,7 @@ class User extends MY_Controller {
     public function index()
     {
 
-        $group = array('comp-admin', 'admin', 'sub-admin');
+        $group = array('admin', 'sub-admin');
         if (!$this->ion_auth->in_group($group)) {
             $this->session->set_flashdata('message', 'You must be a Company Admin OR a Application Admin to view this page');
             redirect('/');
@@ -88,34 +88,33 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
     public function profile($id = NULL)
     {
         $this->load->model('account/plans_model');
+        $this->load->model('account/addressmodel');
         if ($id) {
             $user = $this->ion_auth->user($id)->row();
         } else {
             $user = $this->ion_auth->user()->row();
         }
+        $address = $this->addressmodel->get_address($user->id);
         $this->data['user_id'] = $this->ion_auth->get_user_id();
         //validation rule
         if (!$this->ion_auth->is_admin()) {
             $this->form_validation->set_rules('first_name', $this->lang->line('edit_user_validation_fname_label'), 'required');
             $this->form_validation->set_rules('last_name', $this->lang->line('edit_user_validation_lname_label'), 'required');
+            $this->form_validation->set_rules('company', $this->lang->line('edit_user_validation_company_label'));
+            $this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'required');
+            $this->form_validation->set_rules('blng_street', $this->lang->line('edit_blng_street_label'), 'required');
+            $this->form_validation->set_rules('blng_city', $this->lang->line('edit_blng_city_label'), 'required');
+            $this->form_validation->set_rules('blng_state', $this->lang->line('edit_blng_state_label'), 'required');
+            $this->form_validation->set_rules('blng_zipcode', $this->lang->line('edit_blng_zipcode_label'), 'required');
+            $this->form_validation->set_rules('blng_country', $this->lang->line('edit_blng_country_label'), 'required');
         }
         if ($this->ion_auth->is_admin() && $this->data['user_id'] != $user->id) {
             $this->form_validation->set_rules('price_plan_id', $this->lang->line('edit_user_validation_price_plan_label'), 'required');
-        }
-        if (!$this->ion_auth->is_admin()) {
-            $this->form_validation->set_rules('company', $this->lang->line('edit_user_validation_company_label'));
-            $this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'required');
         }
         $this->form_validation->set_rules('email', $this->lang->line('edit_user_validation_email_label'), 'required');
         $this->data['message'] = '';
         if (isset($_POST) && !empty($_POST)) {
 
-            // do we have a valid request?
-//			if ($this->_valid_csrf_nonce() === FALSE )
-//			{
-//				show_error($this->lang->line('error_csrf'));
-////                redirect('user/profile','location');
-//			}
             //update the password if it was posted
             if ($this->input->post('password')) {
                 $this->form_validation->set_rules('password', $this->lang->line('edit_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
@@ -130,6 +129,50 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
                         'company' => $this->input->post('company'),
                         'phone' => $this->input->post('phone'),
                     );
+
+                    if ($address) {
+                        $address_data = array(
+                            array(
+                                'id' => $address['blng_id'],
+                                'street' => $this->input->post('blng_street'),
+                                'city' => $this->input->post('blng_city'),
+                                'state' => $this->input->post('blng_state'),
+                                'zipcode' => $this->input->post('blng_zipcode'),
+                                'country' => $this->input->post('blng_country'),
+                                'phone' => $this->input->post('phone'),
+                                'type' => "billing",
+                                'user_id' => $user->id
+                            )
+                        );
+
+                        //check to see if we are updating the user
+                        if ($this->addressmodel->update_address($address_data)) {
+                            //redirect them back to the admin page if admin, or to the base url if non admin
+                            $this->data['message'] = '<div class="alert alert-success">Address Updated</div>';
+                        } else {
+                            //redirect them back to the admin page if admin, or to the base url if non admin
+                            $this->data['message'] = '<div class="alert alert-error">Error</div>';
+                        }
+                    } else {
+                        $address_data = array(
+                            array(
+                                'street' => $this->input->post('blng_street'),
+                                'city' => $this->input->post('blng_city'),
+                                'state' => $this->input->post('blng_state'),
+                                'zipcode' => $this->input->post('blng_zipcode'),
+                                'country' => $this->input->post('blng_country'),
+                                'phone' => $this->input->post('phone'),
+                                'type' => "billing",
+                                'user_id' => $user->id,
+                            )
+                        );
+
+                        if ($this->addressmodel->set_address($address_data)) {
+                            $this->data['message'] = 'Address Updated';
+                        } else {
+                            $this->data['message'] = '<div class="alert alert-error">Error</div>';
+                        }
+                    }
                 }
 
                 //update the password if it was posted
@@ -149,7 +192,12 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
                 if ($this->ion_auth->update($user->id, $data)) {
                     //redirect them back to the admin page if admin, or to the base url if non admin
                     $this->data['message'] = $this->ion_auth->messages();
-                    ($this->ion_auth->is_admin()) ? redirect('/', 'location') : userdata('complete_profile', FALSE);
+                    if($this->ion_auth->is_admin()) {
+                        redirect('/', 'location') ;
+                    }else{
+                        userdata('complete_profile', FALSE);
+                        redirect(site_url('user/profile'), 'refresh') ;
+                    }
                 } else {
                     //redirect them back to the admin page if admin, or to the base url if non admin
                     $this->data['message'] = $this->ion_auth->errors();
@@ -224,13 +272,43 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
             $plans[$plan->plan_id] = $plan->name;
         }
         $this->data['plans'] = $plans;
-
+        //pass the user to the view
+		$this->data['country'] = $this->addressmodel->get_country();
+        $this->data['states'] = (isset($address['blng_country']))?$this->addressmodel->get_state_by_country($address['blng_country']):array(''=>'please select');
+        $this->data['blng_street'] = array(
+			'name'  => 'blng_street',
+			'id'    => 'blng_street',
+			'type'  => 'text',
+			'value' => (isset($address['blng_street']))?$this->form_validation->set_value('blng_street',$address['blng_street']):'',
+            'class' => 'form-control',
+		);
+		$this->data['blng_city'] = array(
+			'name'  => 'blng_city',
+			'id'    => 'blng_city',
+			'type'  => 'text',
+			'value' => (isset($address['blng_city']))?$this->form_validation->set_value('blng_city', $address['blng_city']):'',
+            'class' => 'form-control city',
+		);
+		$this->data['blng_state'] = (isset($address['blng_state']))?$address['blng_state']:'';
+		$this->data['blng_zipcode'] = array(
+			'name'  => 'blng_zipcode',
+			'id'    => 'blng_zipcode',
+			'type'  => 'text',
+			'value' => (isset($address['blng_zipcode']))?$this->form_validation->set_value('blng_zipcode', $address['blng_zipcode']):'',
+            'class' => 'form-control',
+		);
+		$this->data['blng_country'] = (isset($address['blng_country']))? $address['blng_country']:'';
+        
         $this->data['avatar'] = ($user->avatar) ? $user->avatar : '';
         $this->data['js'] = array(
             '<script type="text/javascript" src="' . base_url() . 'assets/js/ajaxupload.3.5.js"></script>',
             '<script type="text/javascript" src="' . base_url() . 'assets/js/jquery.maskedinput.js"></script>',
+            '<script type="text/javascript" src="'.base_url().'assets/js/select2.min.js"></script>'
         );
-        $this->data['pageHeading'] = 'My Profile';
+        $this->data['css'] = array(
+            '<link href="'.base_url().'assets/css/select2.css" type="text/css" rel="stylesheet">',
+                );
+        $this->data['pageHeading'] = (!$this->ion_auth->is_admin() || $this->data['user_id'] == $user->id)?'My Profile':'User Profile';
         $this->template->load('main', 'user', 'profile_personal', $this->data);
     }
 

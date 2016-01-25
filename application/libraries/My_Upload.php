@@ -31,6 +31,13 @@ class MY_Upload extends CI_Upload {
 		$this->file_ext	 = $this->get_extension($this->file_name);
 		$this->client_name = $this->file_name;
         
+        
+        // Convert the file size to kilobytes
+		if ($this->file_size > 0)
+		{
+			$this->file_size = round($this->file_size/1024, 2);
+		}
+        
         // Is the file type allowed to be uploaded?
 		if ( ! $this->is_allowed_filetype())
 		{

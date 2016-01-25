@@ -60,7 +60,7 @@ class Productsmodel extends CI_Model {
 		$query1=$this->db->query("insert into customer_orders(customer_id,product_id,transaction_id,price,quantity,amount)values('".$id."','".$product_id."','".$transaction_id."','".$price."','".$quantity."','".$amount."')");
 		
 		if(!$query1){ $res1="no";}
-		
+        
 		$res2="";
 		$query2=$this->db->query("insert into customer_address(customer_id,street,city,zipcode,country,state,phone,type)values('".$id."','".$blng_street."','".$blng_city."','".$blng_zipcode."','".$blng_country."','".$blng_state."','".$blng_phone."','billing')");
 		
@@ -70,8 +70,14 @@ class Productsmodel extends CI_Model {
 		$query3=$this->db->query("insert into customer_address(customer_id,street,city,zipcode,country,state,phone,type)values('".$id."','".$spng_street."','".$spng_city."','".$spng_zipcode."','".$spng_country."','".$spng_state."','".$spng_phone."','shipping')");
 		
 		if(!$query3){ $res3="no";}
+        
+        $res4="";
+        $invoice_id = $this->_generateInvoiceId();
+		$query4=$this->db->query("insert into invoices(invoice_id, transaction_id, invoice_date, due_date, total_amount)values('".$invoice_id."', '".$transaction_id."', '".time()."','".time()."','".round($amount,2)."')");
 		
-		if($res=="" && $res1=="" && $res2=="" && $res3=="")
+		if(!$query4){ $res4="no";}
+        
+		if($res=="" && $res1=="" && $res2=="" && $res3=="" && $res4=="")
 		{
 			echo "success";
 		}
@@ -107,11 +113,15 @@ class Productsmodel extends CI_Model {
 	{
 		$query=$this->db->query("update customer_orders set response='".$st."' where transaction_id='".$txnid."' ");
 	}
+	public function updateInvoice($txnid,$status)
+	{
+		$query=$this->db->query("update invoices set status='".$status."' where transaction_id='".$txnid."' ");
+	}
 	
 	//......................get product order details
 	public function getprodctorder($txnid)
 	{
-		$query=$this->db->query("select * from customer_orders where transaction_id='".$txnid."' ");
+		$query=$this->db->query("select * from customer_orders where transaction_id='".$txnid."' GROUP BY transaction_id");
 		return $res=$query->result();
 	}
 	
@@ -188,7 +198,13 @@ class Productsmodel extends CI_Model {
 //			$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_forgotten_password_subject'));
 //			$this->email->message($message);
 	}
-
+    
+    private function _generateInvoiceId(){
+        $i = mt_rand(4,6);
+        $s = (int)substr(number_format(time() * rand(),0,'',''),0,$i);
+        return $s;
+    }
+    
 }
 
 ?>

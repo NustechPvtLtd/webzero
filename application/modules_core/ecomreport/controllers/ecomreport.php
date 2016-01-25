@@ -14,10 +14,10 @@ class Ecomreport extends MY_Controller {
 		$this->load->library( 'template');
 		$this->load->library('ion_auth');
 		$this->load->library('PayUMoney');
-        $this->data['title'] = $this->router->fetch_method();
+        $this->data['title'] = ucfirst($this->router->fetch_class());
 		$this->load->model('ecomreport/ecomreportmodel');
 		$this->load->model('login/ion_auth_model');
-        $this->data['pageMetaDescription'] = $this->router->fetch_class().'-'.$this->router->fetch_method();
+        $this->data['pageMetaDescription'] = ucfirst($this->router->fetch_class().'-'.$this->router->fetch_method());
 
 	}
 	
@@ -179,9 +179,31 @@ class Ecomreport extends MY_Controller {
 			</script>'
         );
 		
-		$this->data['result']=$this->ecomreportmodel->getbuyers();	
+		$this->data['results']=$this->ecomreportmodel->getbuyers();	
 
         $this->template->load('main', 'ecomreport', 'allbuyers', $this->data);
 	}
+    
+    public function invoices()
+    {
+		$this->data['pageHeading'] = 'My Invoices';
+        $this->data['message'] = '';
+        $this->load->model('products/invoices_model');
+        $this->data['css'] = array(
+            '<link href="' . base_url() . 'assets/datatable/css/dataTables.bootstrap.css" type="text/css" rel="stylesheet">',
+            '<link href="' . base_url() . 'assets/datatable/css/dataTables.responsive.css" type="text/css" rel="stylesheet">',
+            '<style>td.child{text-align:justify !important}</style>'
+        );
+        $this->data['js'] = array(
+            '<script type="text/javascript" src="' . base_url() . 'assets/datatable/js/jquery.dataTables.min.js"></script>',
+            '<script type="text/javascript" src="' . base_url() . 'assets/datatable/js/dataTables.bootstrap.js"></script>',
+            '<script type="text/javascript" src="' . base_url() . 'assets/datatable/js/dataTables.responsive.js"></script>',
+            '<script type="text/javascript" src="' . base_url() . 'assets/js/readmore.min.js"></script>',
+        );
+        
+        $this->data['results']=$this->invoices_model->getInvoiceByUser(userdata('user_id'));	
+
+        $this->template->load('main', 'ecomreport', 'invoices', $this->data);
+    }
 
 }

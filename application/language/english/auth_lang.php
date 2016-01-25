@@ -128,6 +128,7 @@ $lang['create_group_desc_label']             = 'Description:';
 $lang['create_group_submit_btn']             = 'Create Group';
 $lang['create_group_validation_name_label']  = 'Group Name';
 $lang['create_group_validation_desc_label']  = 'Description';
+$lang['create_group_visibility_label']       = 'Visible';
 
 // Edit Group
 $lang['edit_group_title']                  = 'Edit Group';
@@ -139,6 +140,7 @@ $lang['edit_group_desc_label']             = 'Description:';
 $lang['edit_group_submit_btn']             = 'Save Group';
 $lang['edit_group_validation_name_label']  = 'Group Name';
 $lang['edit_group_validation_desc_label']  = 'Description';
+$lang['edit_group_visibility_label']       = 'Visible';
 
 // Change Password
 $lang['change_password_heading']                               = 'Change Password';

@@ -347,12 +347,16 @@ class Ion_auth
 			else
 			{
 				$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_activate', 'ion_auth'), $data, true);
-
+                $headers = array();
+                $headers['From'] = "{$this->config->item('site_title', 'ion_auth')}<{$this->config->item('email_send_mail', 'ion_auth')}>";
+                $headers['To'] = "Dear {$additional_data['first_name']}<{$email}>";
+                $headers['X-Mailer'] = "PHP/" . phpversion();
 				$this->email->clear();
-				$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
+				$this->email->from($this->config->item('email_send_mail', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
 				$this->email->to($email);
-				$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_activation_subject'));
+				$this->email->subject($this->lang->line('email_activation_subject'));
 				$this->email->message($message);
+                $this->email->header($headers);
 
 				if ($this->email->send() == TRUE)
 				{
@@ -367,6 +371,32 @@ class Ion_auth
 			$this->set_error('activation_email_unsuccessful');
 			return FALSE;
 		}
+	}
+    
+	/**
+	 * register_with_noactivation_mail
+	 *
+	 * @return void
+	 * @author Nustech
+	 **/
+	public function register_with_noactivation_mail($username, $password, $email, $additional_data = array(), $group_ids = array(), $plan_ids=array()) //need to test email activation
+	{
+		$this->ion_auth_model->trigger_events('pre_account_creation');
+
+        $id = $this->ion_auth_model->register($username, $password, $email, $additional_data, $group_ids, $plan_ids);
+        if ($id !== FALSE)
+        {
+            $deactivate = $this->ion_auth_model->deactivate($id);
+            $this->set_message('account_creation_successful');
+            $this->ion_auth_model->trigger_events(array('post_account_creation', 'post_account_creation_successful'));
+            return $id;
+        }
+        else
+        {
+            $this->set_error('account_creation_unsuccessful');
+            $this->ion_auth_model->trigger_events(array('post_account_creation', 'post_account_creation_unsuccessful'));
+            return FALSE;
+        }
 	}
 
 	/**

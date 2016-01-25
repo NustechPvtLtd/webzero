@@ -19,3 +19,4 @@
 </ul>
 </li>
 <li><a href="<?php echo site_url('ecomreport/allbuyers');?>"><i class="glyphicon glyphicon-briefcase"></i> <span>Ecommerce Report</span></a></li>
+<li><a href="<?php echo site_url('studentsearch');?>"><i class="glyphicon glyphicon-briefcase"></i> <span>Search Student</span></a></li>

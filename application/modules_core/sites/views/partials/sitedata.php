@@ -6,9 +6,19 @@
 </style>
 
 <div id="siteSettingsWrapper" class="siteSettingsWrapper">
-    <div class="col-lg-10">
+    <div class="col-sm-12">
         <div class="panel panel-default" id="freeUrlOptionPane">
-            <div class="panel-heading">Free Url</div>
+            <div class="panel-heading">
+				<div class="row">
+					<div class="col-sm-10">
+						<label>Free Url</label>
+					</div>
+					<div class="col-sm-2">
+						<input type="radio" name="radio1" <?php echo (($data['site']->url_option == 'freeUrl') || empty($data['site']->url_option)) ? 'checked' : ''; ?> class="switch-radio1 pull-right" value="freeUrl">
+					</div>
+				</div>
+			</div>
+			
             <div class="panel-body">
                 <form class="form-horizontal" role="form" id="siteSettingsForm">
                     <input type="hidden" name="siteID" id="siteID" value="<?php echo $data['site']->sites_id; ?>">
@@ -21,62 +31,78 @@
                         </div>
                     </div>
                 </form>
+				<div class="pull-right">
+					<button type="button" class="btn btn-primary btn-embossed" id="saveSiteSettingsButton"><span class="fui-check"></span> <?php echo $this->lang->line('sitesettings_button_savesettings') ?></button>
+				</div>
             </div>
-            <div class="panel-footer pull-right">
-                <button type="button" class="btn btn-primary btn-embossed" id="saveSiteSettingsButton"><span class="fui-check"></span> <?php echo $this->lang->line('sitesettings_button_savesettings') ?></button>
-            </div>
+            
         </div>
-    </div>
-    <div class="col-lg-2">
-        <input type="radio" name="radio1" <?php echo (($data['site']->url_option == 'freeUrl') || empty($data['site']->url_option)) ? 'checked' : ''; ?> class="switch-radio1" value="freeUrl">
     </div>
 
     <div class="clearfix"><!--clear Div--></div>
-    <div class="col-lg-10">
+    <div class="col-sm-12">
         <div class="panel panel-default" id="addDomainOptionPane">
-            <div class="panel-heading">Add Your Personal Domain</div>
+            <div class="panel-heading">
+				<div class="row">
+					<div class="col-sm-10">
+						<label>Add Your Personal Domain</label>
+					</div>
+					<div class="col-sm-2">
+						<input type="radio" name="radio1" <?php echo ($data['site']->url_option == 'addonDomain') ? 'checked' : ''; ?> class="switch-radio1" value="addonDomain">
+					</div>
+				</div>
+			</div>
             <div class="panel-body">
                 <form class="form-horizontal" role="form" id="addDomainForm" action="<?php echo site_url('domain/add_domain/' . $data['site']->sites_id); ?>">
                     <div class="form-group">
-                        <label class="col-sm-4">Personal Domain</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-3">Personal Domain</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="siteSettings_adddomain" name="siteSettings_adddomain" placeholder="example.com" value="<?php echo ($data['site']->url_option == 'addonDomain') ? $data['site']->domain : ''; ?>" <?php echo ($data['site']->url_option == 'addonDomain') ? 'readonly=""' : ''; ?>>
                             <div class="clearfix"><!--Clear Div--></div>
                             <span id="addonDomainURL"><?php echo ($data['site']->url_option == 'addonDomain') ? 'Your web site url: '. anchor('http://' . $data['site']->domain , 'http://' . $data['site']->domain , array("target"=>"_blank")): ''; ?></span>
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="panel-footer pull-right">
-                <button type="button" class="btn btn-primary btn-embossed" id="addDomainButton"><span class="fui-check"></span> <?php echo 'Add your domain' ?></button>
+				<div class="pull-right">
+					<button type="button" class="btn btn-primary btn-embossed" id="addDomainButton"><span class="fui-check"></span> <?php echo 'Add your domain' ?></button>
+				</div>
             </div>
         </div>
     </div>
-    <div class="col-lg-2">
-        <input type="radio" name="radio1" <?php echo ($data['site']->url_option == 'addonDomain') ? 'checked' : ''; ?> class="switch-radio1" value="addonDomain">
-    </div>
+    
 
     <div class="clearfix"><!--clear Div--></div>
-    <div class="col-lg-10">
+    <div class="col-sm-12">
         <div class="panel panel-default" id="premiumDomainOptionPane">
-            <div class="panel-heading">Purchase Premium Domain</div>
+            <div class="panel-heading">
+				<div class="row">
+					<div class="col-sm-10">
+						<label>Purchase Premium Domain</label>
+					</div>
+					<div class="col-sm-2">
+						<input type="radio" name="radio1" <?php echo ($data['site']->url_option == 'premiumDomain') ? 'checked' : ''; ?> class="switch-radio1" value="premiumDomain">
+					</div>
+				</div>
+			</div>
             <div class="panel-body">
                 <div class="product-purchased" id="domain-name">
-                    <form method="POST" name="quickbuy_domain" id="select-product" novalidate="novalidate">
+                    <form class="form-horizontal" method="POST" name="quickbuy_domain" id="select-product" novalidate="novalidate">
                         <input type="hidden" name="siteID" id="siteID" value="<?php echo $data['site']->sites_id; ?>">
                         <input type="hidden" value="check_availability" name="action">
                         <div class="dca-search form-group">
-                            <label class="col-sm-4">Premium Domain</label>
-                            <div class="col-sm-6">
+                            <label class="col-sm-3">Premium Domain</label>
+                            <div class="col-sm-7">
                                 <input type="text" required="" placeholder="Enter Keywords or Domain Names" id="domainname" name="domainname" autocomplete="off" class="form-control" value="<?php echo ($data['site']->url_option == 'premiumDomain') ? $data['site']->domain : ''; ?>" <?php echo ($data['site']->url_option == 'premiumDomain') ? 'readonly=""' : ''; ?>>
                                 <span id="remoteURL"><?php echo ($data['site']->url_option == 'premiumDomain') ? 'Your web site url: '.  anchor('http://' . $data['site']->domain, 'http://' . $data['site']->domain, array("target"=>"_blank")) : ''; ?></span>
                             </div>
-                            <button type="button" class="btn btn-primary btn-embossed col-sm-2" name="btn_check_availability" id="btn_check_availability">
+                            <div class="col-sm-2">
+								<button type="button" class="btn btn-primary btn-embossed col-sm-12" name="btn_check_availability" id="btn_check_availability">
                                 Search
-                            </button>
+								</button>
+							</div>
                             <div class="clearfix"></div>
 
-                            <div class="tld-container">
+                            <div class="tld-container col-sm-12">
                                 <div class="tld-container-primary" >
                                     <span class="inline-block col-1"><input type="checkbox" value="info" id="info" name="tlds[]" ><label class="inline-block" for="info">info</label></span>
                                     <span class="inline-block col-1"><input type="checkbox" value="co.in" id="co.in" name="tlds[]" ><label class="inline-block" for="co.in">co.in</label></span>
@@ -93,17 +119,15 @@
 
                             </div>
                         </form>
+						<div class="pull-right">
+							<button type="button" class="btn btn-primary btn-embossed" id="domainSubmittButton" disabled="disabled"><span class="fui-check"></span> <?php echo $this->lang->line('domainSubmittButton') ?></button>
+						</div>
                     </div>
                 </div>
             </div>
-            <div class="panel-footer pull-right">
-                <button type="button" class="btn btn-primary btn-embossed" id="domainSubmittButton" disabled="disabled"><span class="fui-check"></span> <?php echo $this->lang->line('domainSubmittButton') ?></button>
-            </div>
         </div>
     </div>
-    <div class="col-lg-2">
-        <input type="radio" name="radio1" <?php echo ($data['site']->url_option == 'premiumDomain') ? 'checked' : ''; ?> class="switch-radio1" value="premiumDomain">
-    </div>
+    
     <div class="clearfix"><!--clear Div--></div>
 </div>
 <!---->
