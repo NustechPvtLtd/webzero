@@ -19,7 +19,7 @@
             <table width=100%; height=20px; style="background-color:#949494">
             </table>
             <table width=100%;  style="background-color:#EDEDED; margin-top:2px">
-                <tr>
+                <tr width=100%;>
                     <td style="padding:10px 50px">
                         <p>Thank you for creating your account on <a href="<?php echo site_url(); ?>">www.jadooweb.com</a>. Now you can see the status of all your profile in the "My Account" section of the site.</p>
                         <p><?php echo anchor('login/activate/' . $id . '/' . $activation, lang('email_activate_link')); ?> and start building your profile instantly.</p>
@@ -31,7 +31,7 @@
                 </tr>
             </table>
             <table width=100%; style="background-color:#EDEDED; margin-top:2px">
-                <tr>
+                <tr width=100%;>
                     <td width=50%; style="text-align:left;padding-left: 15%;">
                         <p><b>Quick Links</b></p>
                         <p style="margin:0px;"><a href="<?php echo site_url('support') ?>">Need Help</a></p>
@@ -47,7 +47,7 @@
                 </tr>
             </table>
             <table width=100%;>
-                <tr>
+                <tr width=100%;>
                     <td width=50%;>
                     </td>
                     <td width=50%; style="text-align:center">

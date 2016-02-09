@@ -57,3 +57,28 @@ header .modes > label {
 .menu .toggle .list-icon {
     margin-top: 0px;
 }
+header .row .float-right {
+    padding-right: 30px;
+}
+.dropdown-menu {
+    min-width: 140px;
+}
+
+.tld-container-primary input[type="radio"], .tld-container-primary input[type="checkbox"]{
+    width: auto;
+}
+.tld-container-primary input[type="radio"]:focus, .tld-container-primary input[type="checkbox"]:focus{
+    width: auto;
+}
+.tld-container-primary input[type="radio"],.tld-container-primary input[type="radio"]:focus,.tld-container-primary input[type="radio"]:hover,.tld-container-primary input[type="radio"]:active{
+    -webkit-appearance: radio;
+}
+.tld-container-primary input[type="checkbox"],.tld-container-primary input[type="checkbox"]:focus,.tld-container-primary input[type="checkbox"]:hover,.tld-container-primary input[type="checkbox"]:active{
+    -webkit-appearance: checkbox;
+}
+.search-results-container input[type="radio"],.search-results-container input[type="radio"]:focus,.search-results-container input[type="radio"]:hover,.search-results-container input[type="radio"]:active{
+    -webkit-appearance: radio;
+}
+.search-results-container input[type="checkbox"],.search-results-container input[type="checkbox"]:focus,.search-results-container input[type="checkbox"]:hover,.search-results-container input[type="checkbox"]:active{
+    -webkit-appearance: checkbox;
+}

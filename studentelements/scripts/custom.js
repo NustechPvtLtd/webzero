@@ -1,7 +1,7 @@
 
 $(window).load(function() {
 
-	"use strict";
+    "use strict";
 
 //------------------------------------------------------------------------
 //						PRELOADER SCRIPT
@@ -15,27 +15,29 @@ $(window).load(function() {
 //------------------------------------------------------------------------
     $('#carousel-full-header .item').carouselHeights();
     $('#carousel-testimonials .item').carouselHeights();
-    
+
 
 //------------------------------------------------------------------------
 //						COUNTER SCRIPT
 //------------------------------------------------------------------------
-   $('.timer').counterUp({
-            delay: 20,
-            time: 2500
-        });
+    $('.timer').counterUp({
+        delay: 20,
+        time: 2500
+    });
 
 
 //------------------------------------------------------------------------
 //						COUNTDOWN OPTIONS SCRIPT
 //------------------------------------------------------------------------    
-    if($('div').is('.countdown')){         
+    if ($('div').is('.countdown')) {
         $('.countdown').jCounter({
             date: "14 february 2016 12:00:00", // Deadline date
             timezone: "Europe/Bucharest",
             format: "dd:hh:mm:ss",
             twoDigits: 'on',
-            fallback: function() {console.log("count finished!")}
+            fallback: function() {
+                console.log("count finished!")
+            }
         });
     }
 
@@ -43,42 +45,42 @@ $(window).load(function() {
 //------------------------------------------------------------------------
 //						NAVBAR SLIDE SCRIPT
 //------------------------------------------------------------------------ 		
-	$(window).scroll(function () {
+    $(window).scroll(function() {
         if ($(window).scrollTop() > $("nav").height()) {
             $("nav.navbar-slide").addClass("show-menu");
         } else {
             $("nav.navbar-slide").removeClass("show-menu");
-			$(".navbar-slide .navMenuCollapse").collapse({toggle: false});
-			$(".navbar-slide .navMenuCollapse").collapse("hide");
-			$(".navbar-slide .navbar-toggle").addClass("collapsed");
+            $(".navbar-slide .navMenuCollapse").collapse({toggle: false});
+            $(".navbar-slide .navMenuCollapse").collapse("hide");
+            $(".navbar-slide .navbar-toggle").addClass("collapsed");
         }
     });
 
-	
+
 //------------------------------------------------------------------------
 //						NAVBAR HIDE ON CLICK (COLLAPSED) SCRIPT
 //------------------------------------------------------------------------ 		
-    $('.nav a').on('click', function(){ 
-        if($('.navbar-toggle').css('display') !='none'){
+    $('.nav a').on('click', function() {
+        if ($('.navbar-toggle').css('display') != 'none') {
             $(".navbar-toggle").click()
         }
     });
-	
+
 })
 
 
 
 
-$(document).ready(function(){
-			
-	"use strict";
+$(document).ready(function() {
 
-	
-	
+    "use strict";
+
+
+
 //------------------------------------------------------------------------
 //						ANCHOR SMOOTHSCROLL SETTINGS
 //------------------------------------------------------------------------
-	$('a.goto, .navbar .nav a').smoothScroll({speed: 1200});
+    $('a.goto, .navbar .nav a').smoothScroll({speed: 1200});
 
 
 
@@ -86,10 +88,10 @@ $(document).ready(function(){
 //------------------------------------------------------------------------
 //						FULL HEIGHT SECTION SCRIPT
 //------------------------------------------------------------------------
-	$(".screen-height").css("min-height",$( window ).height());
-	$( window ).resize(function() {
-		$(".screen-height").css("min-height",$( window ).height());
-	});
+    $(".screen-height").css("min-height", $(window).height());
+    $(window).resize(function() {
+        $(".screen-height").css("min-height", $(window).height());
+    });
 
 
 
@@ -97,40 +99,40 @@ $(document).ready(function(){
 //------------------------------------------------------------------------	
 //                    MAGNIFIC POPUP(LIGHTBOX) SETTINGS
 //------------------------------------------------------------------------  
-	          
 
-	$('.portfolio-list li').magnificPopup({
-		delegate: 'a:not(.btn, .link-item)',
-		type: 'image',
-		gallery: {
-			enabled: true
-		}
-	});
 
-	
+    $('.portfolio-list li').magnificPopup({
+        delegate: 'a:not(.btn, .link-item)',
+        type: 'image',
+        gallery: {
+            enabled: true
+        }
+    });
 
-	
+
+
+
 //------------------------------------------------------------------------
 //						VIDEO BACKGROUND SETTINGS
 //------------------------------------------------------------------------
-if($('.video-bg')[0]) {
-	$(function() {
-		var BV = new $.BigVideo({container: $('.video-bg'), useFlashForFirefox:false});
-		BV.init();
-		if(navigator.userAgent.match(/iPhone|iPad|iPod|Android|BlackBerry|IEMobile/i)) {
-				BV.show('images/video_gag.jpg');
-		} else{
-			if (!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0) {
-				BV.show('video/video_bg.ogv', {doLoop:true, ambient:true});
-			} else{
-				BV.show('video/video_bg.mp4', {doLoop:true, ambient:true, altSource:'video/video_bg.ogv'});
-			}
-			BV.getPlayer().on('loadedmetadata', function(){
-				$('#big-video-wrap video').fadeIn('slow');
-			});
-		}
-	});	
-}
+    if ($('.video-bg')[0]) {
+        $(function() {
+            var BV = new $.BigVideo({container: $('.video-bg'), useFlashForFirefox: false});
+            BV.init();
+            if (navigator.userAgent.match(/iPhone|iPad|iPod|Android|BlackBerry|IEMobile/i)) {
+                BV.show('images/video_gag.jpg');
+            } else {
+                if (!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0) {
+                    BV.show('video/video_bg.ogv', {doLoop: true, ambient: true});
+                } else {
+                    BV.show('video/video_bg.mp4', {doLoop: true, ambient: true, altSource: 'video/video_bg.ogv'});
+                }
+                BV.getPlayer().on('loadedmetadata', function() {
+                    $('#big-video-wrap video').fadeIn('slow');
+                });
+            }
+        });
+    }
 
 
 
@@ -141,8 +143,8 @@ if($('.video-bg')[0]) {
     var wow = new WOW();
     wow.init();
 
-		
-	
+
+
 //------------------------------------------------------------------------
 //					SUBSCRIBE FORM VALIDATION'S SETTINGS
 //------------------------------------------------------------------------          
@@ -156,7 +158,7 @@ if($('.video-bg')[0]) {
             }
         },
         errorPlacement: function(error, element) {
-            error.appendTo( element.closest("form"));
+            error.appendTo(element.closest("form"));
         },
         messages: {
             email: {
@@ -164,20 +166,18 @@ if($('.video-bg')[0]) {
                 email: "Please, enter a valid email"
             }
         },
-					
         highlight: function(element) {
             $(element)
-        },                    
-					
+        },
         success: function(element) {
             element
-            .text('').addClass('valid')
+                    .text('').addClass('valid')
         }
-    }); 
-	
+    });
 
-		
-				
+
+
+
 //------------------------------------------------------------------------------------
 //						SUBSCRIBE FORM MAILCHIMP INTEGRATIONS SCRIPT
 //------------------------------------------------------------------------------------		
@@ -185,8 +185,8 @@ if($('.video-bg')[0]) {
         $('.error').hide();
         $('.error').fadeIn();
         // submit the form
-        if($(this).valid()){
-            $('#subscribe_submit').button('loading'); 
+        if ($(this).valid()) {
+            $('#subscribe_submit').button('loading');
             var action = $(this).attr('action');
             $.ajax({
                 url: action,
@@ -196,28 +196,28 @@ if($('.video-bg')[0]) {
                 },
                 success: function(data) {
                     $('#subscribe_submit').button('reset');
-					
-					//Use modal popups to display messages
-					$('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>' + data);
-					$('#modalMessage').modal('show');
-					
+
+                    //Use modal popups to display messages
+                    $('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>' + data);
+                    $('#modalMessage').modal('show');
+
                 },
                 error: function() {
                     $('#subscribe_submit').button('reset');
-					
-					//Use modal popups to display messages
-					$('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
-					$('#modalMessage').modal('show');
-					
+
+                    //Use modal popups to display messages
+                    $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
+                    $('#modalMessage').modal('show');
+
                 }
             });
         }
-        return false; 
+        return false;
     });
-	
-	
-	
-	  
+
+
+
+
 //------------------------------------------------------------------------
 //					SUBSCRIBE 2 FIELDS FORM VALIDATION'S SETTINGS
 //------------------------------------------------------------------------          
@@ -225,36 +225,34 @@ if($('.video-bg')[0]) {
         onfocusout: false,
         onkeyup: false,
         rules: {
-			name: "required",
+            name: "required",
             email: {
                 required: true,
                 email: true
             }
         },
         errorPlacement: function(error, element) {
-            error.appendTo( element.closest(".validation-message"));
+            error.appendTo(element.closest(".validation-message"));
         },
         messages: {
-			name: "What's your name?",
+            name: "What's your name?",
             email: {
                 required: "We need your email address to contact you.",
                 email: "Please, enter a valid email"
             }
         },
-					
         highlight: function(element) {
             $(element)
-        },                    
-					
+        },
         success: function(element) {
             element
-            .text('').addClass('valid')
+                    .text('').addClass('valid')
         }
-    }); 
-	
+    });
 
-		
-				
+
+
+
 //------------------------------------------------------------------------------------
 //						SUBSCRIBE 2 FIELDS FORM MAILCHIMP INTEGRATIONS SCRIPT
 //------------------------------------------------------------------------------------		
@@ -262,40 +260,40 @@ if($('.video-bg')[0]) {
         $('.error').hide();
         $('.error').fadeIn();
         // submit the form
-        if($(this).valid()){
-            $('#subscribe_submit_2').button('loading'); 
+        if ($(this).valid()) {
+            $('#subscribe_submit_2').button('loading');
             var action = $(this).attr('action');
             $.ajax({
                 url: action,
                 type: 'POST',
                 data: {
                     newsletter_email: $('#subscribe_email_2').val(),
-					newsletter_name: $('#subscribe_name_2').val()
+                    newsletter_name: $('#subscribe_name_2').val()
                 },
                 success: function(data) {
                     $('#subscribe_submit_2').button('reset');
-					
-					//Use modal popups to display messages
-					$('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>' + data);
-					$('#modalMessage').modal('show');
-					
+
+                    //Use modal popups to display messages
+                    $('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>' + data);
+                    $('#modalMessage').modal('show');
+
                 },
                 error: function() {
                     $('#subscribe_submit').button('reset');
-					
-					//Use modal popups to display messages
-					$('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
-					$('#modalMessage').modal('show');
-					
+
+                    //Use modal popups to display messages
+                    $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
+                    $('#modalMessage').modal('show');
+
                 }
             });
         }
-        return false; 
+        return false;
     });
-	
-	
-		  
-	  
+
+
+
+
 //------------------------------------------------------------------------------------
 //						CONTACT FORM VALIDATION'S SETTINGS
 //------------------------------------------------------------------------------------		  
@@ -321,17 +319,15 @@ if($('.video-bg')[0]) {
                 email: "Please, enter a valid email"
             }
         },
-					
         highlight: function(element) {
             $(element)
-            .text('').addClass('error')
-        },                    
-					
+                    .text('').addClass('error')
+        },
         success: function(element) {
             element
-            .text('').addClass('valid')
+                    .text('').addClass('valid')
         }
-    });   
+    });
 
 
 
@@ -339,42 +335,44 @@ if($('.video-bg')[0]) {
 //------------------------------------------------------------------------------------
 //								CONTACT FORM SCRIPT
 //------------------------------------------------------------------------------------	
-	
+
     $('#contact_form').submit(function() {
         // submit the form
-        if($(this).valid()){
-            $('#contact_submit').button('loading'); 
-            var action = $(this).attr('action');
+        if ($(this).valid()) {
+            $('#contact_submit').button('loading');
+//            var action = $(this).attr('action');
+            var action = $('#contact-url').data("content");
             $.ajax({
                 url: action,
                 type: 'POST',
                 data: {
-                    contactname: $('#contact_name').val(),
-                    contactemail: $('#contact_email').val(),
-                    contactmessage: $('#contact_message').val()
+                    name: $('#contact_name').val(),
+                    email: $('#contact_email').val(),
+                    message: $('#contact_message').val(),
+                    formname: 'contact2'
                 },
                 success: function() {
                     $('#contact_submit').button('reset');
-					$('#modalContact').modal('hide');
-					
-					//Use modal popups to display messages
-					$('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>Well done!<br>Your message has been successfully sent!');
-					$('#modalMessage').modal('show');
+                    $('#modalContact').modal('hide');
+
+                    //Use modal popups to display messages
+                    $('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>Well done!<br>Your message has been successfully sent!');
+                    $('#modalMessage').modal('show');
                 },
                 error: function() {
                     $('#contact_submit').button('reset');
-					$('#modalContact').modal('hide');
-					
-					//Use modal popups to display messages
-					$('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
-					$('#modalMessage').modal('show');
+                    $('#modalContact').modal('hide');
+
+                    //Use modal popups to display messages
+                    $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
+                    $('#modalMessage').modal('show');
                 }
             });
         } else {
             $('#contact_submit').button('reset')
         }
-        return false; 
-    });	    	  	
+        return false;
+    });
 
 //------------------------------------------------------------------------------------
 //						RENTAL FORM VALIDATION'S SETTINGS
@@ -386,7 +384,7 @@ if($('.video-bg')[0]) {
         autoclose: true,
         todayHighlight: true
     });
-        
+
     $('#rent_form').validate({
         onfocusout: false,
         onkeyup: false,
@@ -422,8 +420,8 @@ if($('.video-bg')[0]) {
 
     $('#rent_form').submit(function() {
         // submit the form
-        if($(this).valid()){
-            $('#rent_submit').button('loading'); 
+        if ($(this).valid()) {
+            $('#rent_submit').button('loading');
             var action = $(this).attr('action');
             $.ajax({
                 url: action,
@@ -440,7 +438,7 @@ if($('.video-bg')[0]) {
                 },
                 success: function() {
                     $('#rent_submit').button('reset');
-                    
+
                     //Use modal popups to display messages
                     $('#modalMessage .modal-title').html('<i class="icon icon-document"></i><strong>Congratulations!</strong><br><br>Your reservation has been sent! <br>We will contact you soon.');
                     $('#modalMessage').modal('show');
@@ -448,7 +446,7 @@ if($('.video-bg')[0]) {
                 error: function() {
                     $('#contact_submit').button('reset');
                     $('#modalContact').modal('hide');
-                    
+
                     //Use modal popups to display messages
                     $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
                     $('#modalMessage').modal('show');
@@ -457,12 +455,12 @@ if($('.video-bg')[0]) {
         } else {
             $('#rent_submit').button('reset')
         }
-        return false; 
+        return false;
     });
-    
-    
-    
-    
+
+
+
+
 //------------------------------------------------------------------------------------
 //						BOOKING FORM VALIDATION'S SETTINGS
 //------------------------------------------------------------------------------------
@@ -473,7 +471,7 @@ if($('.video-bg')[0]) {
         autoclose: true,
         todayHighlight: true
     });
-        
+
     $('#booking_form').validate({
         onfocusout: false,
         onkeyup: false,
@@ -488,7 +486,7 @@ if($('.video-bg')[0]) {
             }
         },
         errorPlacement: function(error, element) {
-            error.appendTo( element.closest(".validation-message"));
+            error.appendTo(element.closest(".validation-message"));
         },
         messages: {
             loc: "Please enter location",
@@ -510,8 +508,8 @@ if($('.video-bg')[0]) {
 
     $('#booking_form').submit(function() {
         // submit the form
-        if($(this).valid()){
-            $('#booking_submit').button('loading'); 
+        if ($(this).valid()) {
+            $('#booking_submit').button('loading');
             var action = $(this).attr('action');
             $.ajax({
                 url: action,
@@ -525,7 +523,7 @@ if($('.video-bg')[0]) {
                 },
                 success: function() {
                     $('#booking_submit').button('reset');
-                    
+
                     //Use modal popups to display messages
                     $('#modalMessage .modal-title').html('<i class="icon icon-map2"></i>Congratulations!<br>Your booking request has been sent! <br>We will contact you soon.');
                     $('#modalMessage').modal('show');
@@ -533,7 +531,7 @@ if($('.video-bg')[0]) {
                 error: function() {
                     $('#booking_submit').button('reset');
                     $('#modalContact').modal('hide');
-                    
+
                     //Use modal popups to display messages
                     $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
                     $('#modalMessage').modal('show');
@@ -542,10 +540,11 @@ if($('.video-bg')[0]) {
         } else {
             $('#booking_submit').button('reset')
         }
-        return false; 
-    });    
-    
-    
+        return false;
+    });
+
+    $('[class^="html5gallery-container"]').remove();
+    $(".html5gallery, .videoGallery").html5gallery();
 
 });
 
@@ -558,31 +557,50 @@ if($('.video-bg')[0]) {
 $.fn.carouselHeights = function() {
 
     var items = $(this), //grab all slides
-        heights = [], //create empty array to store height values
-        tallest; //create variable to make note of the tallest slide
-    
+            heights = [], //create empty array to store height values
+            tallest; //create variable to make note of the tallest slide
+
     var normalizeHeights = function() {
-    
+
         items.each(function() { //add heights to array
-            heights.push($(this).height()); 
+            heights.push($(this).height());
         });
         tallest = Math.max.apply(null, heights); //cache largest value
         items.each(function() {
-            $(this).css('min-height',tallest + 'px');
+            $(this).css('min-height', tallest + 'px');
         });
     };
-    
+
     normalizeHeights();
-    
-    $(window).on('resize orientationchange', function () {
+
+    $(window).on('resize orientationchange', function() {
         //reset vars
         tallest = 0;
         heights.length = 0;
-    
+
         items.each(function() {
-            $(this).css('min-height','0'); //reset min-height
-        }); 
+            $(this).css('min-height', '0'); //reset min-height
+        });
         normalizeHeights(); //run it again 
     });
 
 };
+
+//----------------------------------------------------------------------------------------------------------------------
+//						VISITOR COUNT
+//----------------------------------------------------------------------------------------------------------------------
+
+var counter_url = $('#counter-url').data("content");
+var site_url = $('#site-url').data("content");
+var page_id = $('#page-id').data("content");
+var page_url = $('#page-url').data("content");
+
+$.getJSON("http://jsonip.com?callback=?", function(data) {
+    var ip = data.ip;
+    if (counter_url && page_url) {
+        $.post(counter_url, {ip: ip, page_id: page_id, page_url: page_url}, function(data)
+        {
+            console.log(data);
+        });
+    }
+});

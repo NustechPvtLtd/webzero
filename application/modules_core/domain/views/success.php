@@ -64,7 +64,7 @@
         <ul style="list-style: none;">
             <li>Thank You,</li>
             <li>Administration Team,</li>
-            <li><a href="mailto:info@webzero.in">info@webzero.in</a></li>
+            <li><a href="mailto:info@jadooweb.com">info@jadooweb.com</a></li>
         </ul>
-    </div>
+</div>
 </div>

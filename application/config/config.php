@@ -20,7 +20,6 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
 }
 $protocol = ($config['ssl_active'] === true )?"https":"http";
 $config['base_url'] = $protocol.'://webzeero.dev/';
-//$config['base_url']	= 'http://localhost/ecampaign247';
 
 /*
 |--------------------------------------------------------------------------

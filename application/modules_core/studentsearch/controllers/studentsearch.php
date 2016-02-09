@@ -11,7 +11,7 @@
 			$this->load->library( 'template');
 			$this->load->library('ion_auth');
 			
-			$this->data['title'] = $this->router->fetch_method();
+			$this->data['title'] = ucfirst($this->router->fetch_class());
 			$this->load->model('studentsearch/studentsearchmodel');
 			$this->load->model('login/ion_auth_model');
 			$this->data['pageMetaDescription'] = $this->router->fetch_class().'-'.$this->router->fetch_method();

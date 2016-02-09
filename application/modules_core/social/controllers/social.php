@@ -195,7 +195,7 @@ class Social extends MX_Controller {
         $paramters = array(
             'message' => $_POST['desc'],
             'link' => isset($_POST['link']) ? $_POST['link'] : site_url(),
-            'name' => isset($_POST['title']) ? $_POST['title'] : 'Web Zero',
+            'name' => isset($_POST['title']) ? $_POST['title'] : 'Jadooweb',
 //                        'picture' => $imgPath
         );
 
@@ -234,7 +234,7 @@ class Social extends MX_Controller {
                     $paramters = array(
                         'message' => $_POST['desc'],
                         'link' => isset($_POST['link']) ? $_POST['link'] : site_url(),
-                        'name' => isset($_POST['title']) ? $_POST['title'] : 'Web Zero',
+                        'name' => isset($_POST['title']) ? $_POST['title'] : 'Jadooweb',
 //                        'picture' => $imgPath
                     );
                     $responce = (new Facebook())->publish($paramters);

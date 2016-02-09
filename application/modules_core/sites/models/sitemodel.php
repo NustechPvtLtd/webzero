@@ -236,12 +236,14 @@ class Sitemodel extends CI_Model {
 
     public function getSite($siteID)
     {
-
-        $this->db->from('sites');
-        $this->db->where('sites_id', $siteID);
-        $this->db->join('premium_domain', 'sites.sites_id = premium_domain.siteid', 'left');
-        $this->db->join('users_domains', 'sites.sites_id = users_domains.site_id', 'left');
-        $query = $this->db->get();
+        $query_string = "SELECT * FROM sites
+LEFT JOIN users_domains ON sites.sites_id = users_domains.site_id
+WHERE sites.sites_id = {$siteID} AND (users_domains.active=1 OR ISNULL(users_domains.active));";
+//        $this->db->from('sites');
+//        $this->db->where('sites_id', $siteID);
+//        $this->db->or_where('users_domains.active', 1);
+//        $this->db->join('users_domains', 'sites.sites_id = users_domains.site_id');
+        $query = $this->db->query($query_string);
 
         if ($query->num_rows() == 0) {
 
@@ -254,8 +256,7 @@ class Sitemodel extends CI_Model {
 
         $siteArray = [];
         $siteArray['site'] = $site;
-
-
+        
         //get the pages + frames
 
         $query = $this->db->from('pages')->where('sites_id', $site->sites_id)->where('pages_trashed', 0)->get();
@@ -275,7 +276,7 @@ class Sitemodel extends CI_Model {
         }
 
         $siteArray['pages'] = $pageFrames;
-
+/*
 
         //grab the assets folders as well
         $this->load->helper('directory');
@@ -294,6 +295,38 @@ class Sitemodel extends CI_Model {
 
 
         $siteArray['assetFolders'] = $assetFolders;
+*/
+        return $siteArray;
+    }
+    public function getSiteData($siteID)
+    {
+
+        $this->db->from('sites');
+        $this->db->where('sites_id', $siteID);
+        $query = $this->db->get();
+
+        if ($query->num_rows() == 0) {
+
+            return false;
+        }
+
+        $res = $query->result();
+
+        $site = $res[0];
+
+        $siteArray = [];
+        $siteArray['site'] = $site;
+        
+        $query1 = $this->db->from('users_domains')->where('site_id', $siteID)->get();
+        $res1 = $query1->result();
+        $domains = [];
+        foreach ($res1 as $value) {
+            $domains[$value->url_option]['domain'] = $value->domain;
+            $domains[$value->url_option]['domain_publish'] = $value->domain_publish;
+            $domains[$value->url_option]['active'] = $value->active;
+            
+        }
+        $siteArray['domains'] = $domains;
 
         return $siteArray;
     }
@@ -422,9 +455,9 @@ class Sitemodel extends CI_Model {
     public function adminImages()
     {
         if ($this->ion_auth->in_group('students')) {
-            $folderContent = directory_map($this->config->item('s_images_dir'), 2);
+            $folderContent = directory_map('studentelements/images', 2);
         } else {
-            $folderContent = directory_map($this->config->item('images_dir'), 2);
+            $folderContent = directory_map('elements/images', 2);
         }
 
         if ($folderContent) {
@@ -906,7 +939,60 @@ class Sitemodel extends CI_Model {
         $res = $query->result();
 
         $site = $res[0];
-        return $site->username;
+        $userName = (empty($site->first_name))?$site->email: ucfirst($site->first_name).' '.ucfirst($site->last_name);
+        return $userName;
     }
+	/* 
+		Send mail for sharing your profile 
+	*/
+	public function shareProfileEmail($ids="",$cnt="",$sub="")
+	{
+		 $allids	= isset($ids)?$ids:$_POST['allids'];
+		 $emailcnt	= isset($cnt)?$cnt:$_POST['emailcnt'];
+		 $emailsub	= isset($sub)?$sub:$_POST['emailsub'];
+		 
+		 $pids=explode(',',$allids);
+        $sender_email= userdata('email');
+        $username = $this->getUserByUserId(userdata('user_id'));
+		 $allemail=array();
+		 foreach($pids as $pid)
+		 {
+			  array_push($allemail, $pid);
+		 }
+		 if(!empty($allemail))
+		 {
+			$newarr=array_unique($allemail);
+			   
+			$subject = $emailsub;
+			  
+			$mail_body =$emailcnt;
 
+			$headers  = "MIME-Version: 1.0" . "\r\n";
+			$headers .= "Content-type: text/html; charset=iso-8859-1" . "\r\n";
+			$headers .= "From: {$username}<{$sender_email}>\r\n";
+			$headers .= "Reply-To: {$sender_email}\r\n";
+			$headers .= "X-Mailer: PHP/" . phpversion();
+			$headers .= "X-Priority: 1" . "\r\n"; 	
+			
+			$sendResult = array();
+			foreach($newarr as $res)
+			{
+				$temp = array();
+				$to	  = $res;
+				$send = mail($to, $subject, $mail_body, $headers, "-f " . $sender_email);
+				//$receiver_id=$this->getidusingemail($to);
+				if($send)   {
+					//$this->db->query("insert into jobseeker_email(sender_id,receiver_id,email_contents,email_subject)values('".$sender_id."','".$receiver_id."',".$this->db->escape($mail_body).",".$this->db->escape($emailsub).")");
+					$temp['status']  = "True";
+					$temp['address'] = $to;
+					
+				} else {
+					$temp['status']  = "False";
+					$temp['address'] = $to;						
+				}
+				$sendResult[] = $temp;
+			}
+			return json_encode($sendResult);
+		 }
+	}
 }

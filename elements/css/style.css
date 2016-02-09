@@ -1378,6 +1378,7 @@ span.glyphicon {
     width: 50%;
     opacity: 0.25;
     filter: alpha(opacity=25);
+	z-index: 1;
 }
 
 .carousel-control.left,
@@ -1502,7 +1503,7 @@ span.glyphicon {
 
 .item-list-right li .img-icon,
 .item-list-left li .img-icon {
-    position: absolute;
+    position: relative;
     display: inline-block;
     top: 0;
     width: 50px;
@@ -2286,10 +2287,12 @@ nav .info-header .btn{
 }
 
 .types-block .content{
-    margin:0 80px 70px 80px;
+    margin:0 15px 15px 15px;
     position:absolute;
     left:0;
     bottom:0;
+    padding:0;
+    background:none;
 }
 .types-block .content p{
     margin:0;
@@ -3092,8 +3095,8 @@ aside.blog-sidebar .recent-posts .post-info > * {
     text-align:center;
     height:80px;
     width:80px;
-    padding:31px 5px 0 5px;
-    font-size:20px;
+    padding:25px 5px 0 5px;
+    font-size:18px;
     line-height:1;
 }
 .post .post-content .price-circle small{
@@ -3612,4 +3615,13 @@ li {
 .pad2x{
     padding-left: 50px;
     padding-right: 50px;
+}
+.carousel-inner > .item > img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+#title-1 h2, #title-2 h4 {
+	margin: 0px;
 }

@@ -159,7 +159,7 @@
 
                     <div class="copyrite">
                         <div class="col-md-7">
-                            <p>Copyright 2015 Webzero. All rights reserved.
+                            <p>Copyright 2015 Jadooweb. All rights reserved.
                                 <a href="<?php echo site_url('privacy')?>" >Privacy Policy</a>
                                 <span>|</span><a href="<?php echo site_url('terms-and-condition')?>" >Terms of Service</a></p>
                         </div>

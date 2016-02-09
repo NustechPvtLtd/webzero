@@ -103,8 +103,22 @@
                             ?>
                             <label class="<?= 'col-sm-'.$l;?> group-label">
                                 <input type="radio" name="group" value="<?= $key;?>" />
-                                <img src="<?= ($value=='students')?  base_url('assets/img/personal-icon.png'):base_url('assets/img/business-icon.png');?>" alt="<?= $value;?>">
-                                <h4><b><?= ($value=='students')? 'Personal Profile':'Business Website';?></b></h4>
+                                <?php
+                                    $img_url = '';
+                                    $lbl = '';
+                                    if($value=='students'){
+                                        $img_url = base_url('assets/img/personal-icon.png');
+                                        $lbl = 'Personal Profile';
+                                    }  elseif ($value=='individuals') {
+                                        $img_url = base_url('assets/img/business-icon.png');
+                                        $lbl = 'Business Website';
+                                    } elseif ($value=='ecommerce') {
+                                        $img_url = base_url('assets/img/ecommerce-icon.png');
+                                        $lbl = 'Ecommerce Website';
+                                    }
+                                ?>
+                                <img src="<?= $img_url;?>" alt="<?= $lbl;?>">
+                                <h4><b><?= $lbl;?></b></h4>
                             </label>
                             <?php
                             }

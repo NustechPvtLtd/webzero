@@ -143,7 +143,7 @@ class CPanelAddons {
 		if ( $subdomain ) {
 			$subDomain = $subdomain;
 		} else {
-			$subDomain = $subDomain[0];
+			$subDomain = $subDomain[0].$subDomain[1];
 		}
 		$result = $this -> _api( array (
 			'cpanel_jsonapi_apiversion' => 2,
@@ -221,6 +221,21 @@ class CPanelAddons {
 			'cpanel_jsonapi_module' => 'SubDomain',
 			'cpanel_jsonapi_func' => 'delsubdomain',
 			'domain' => $domain.'.'.$rootdomain
+				) );
+		$json = json_decode( $result, true );
+
+		return $json;
+	}
+    
+	public function delDirectory( $domain)
+	{
+		$result = $this -> _api( array (
+			'cpanel_jsonapi_apiversion' => 2,
+			'user' => $this -> _username,
+			'cpanel_jsonapi_module' => 'Fileman',
+			'cpanel_jsonapi_func' => 'fileop',
+			'op' => "unlink",
+			"sourcefiles"=>"/public_html/".$domain,
 				) );
 		$json = json_decode( $result, true );
 

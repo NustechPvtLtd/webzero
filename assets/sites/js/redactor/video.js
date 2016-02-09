@@ -7,11 +7,11 @@ if (!RedactorPlugins)
         return {
             reUrlYoutube: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube\.com\S*[^\w\-\s])([\w\-]{11})(?=[^\w\-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/ig,
             reUrlVimeo: /https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/,
-            langs: {
-                en: {
+			langs: {
+				en: {
                     "video": "Video",
                     "video-html-code": "Video Embed Code or Youtube/Vimeo Link"
-                }
+				}
             },
             getTemplate: function()
             {
@@ -52,14 +52,14 @@ if (!RedactorPlugins)
                     // parse if it is link on youtube & vimeo
                     var iframeStart = '<iframe style="width: 500px; height: 281px;" src="',
                             iframeEnd = '" frameborder="0" allowfullscreen></iframe>';
-
+                    
                     if (data.match(this.video.reUrlYoutube))
                     {
-                        data = data.replace(this.video.reUrlYoutube, iframeStart + '//www.youtube.com/embed/$1' + iframeEnd);
+						data = data.replace(this.video.reUrlYoutube, iframeStart + '//www.youtube.com/embed/$1' + iframeEnd);
                     }
                     else if (data.match(this.video.reUrlVimeo))
                     {
-                        data = data.replace(this.video.reUrlVimeo, iframeStart + '//player.vimeo.com/video/$2' + iframeEnd);
+						data = data.replace(this.video.reUrlVimeo, iframeStart + '//player.vimeo.com/video/$2' + iframeEnd);
                     }
                 }
 

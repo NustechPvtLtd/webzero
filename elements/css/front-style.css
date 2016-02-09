@@ -1,0 +1,17 @@
+#wrap nav.navbar{
+    width: 100%;
+    position: fixed;
+}
+
+.pf {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.portfolio-list li a {
+    height: 100%;
+}
+
+/*.portfolio-list li {
+    height: 240px;
+}*/

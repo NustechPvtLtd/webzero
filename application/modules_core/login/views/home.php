@@ -7,7 +7,7 @@
                 <img src="<?php echo base_url(); ?>assets/home/img/slide/slide_1.jpg">
 
                 <div class="carousel-caption">
-                    <h2 class="animated fadeInDown" contenteditable="false">Build Website in a <span class="colored_text">Minutes</span></h2><a class="btn btn-lg btn-success theame_btn animated fadeInUp" data-target="#login_form" data-toggle="modal" href="#">Get Started</a>
+                    <h2 class="animated fadeInDown" contenteditable="false">Build Intereactive Resume in a <span class="colored_text">Minutes</span></h2><a class="btn btn-lg btn-success theame_btn animated fadeInUp" data-target="#login_form" data-toggle="modal" href="#">Get Started</a>
                 </div>
             </div>
 
@@ -28,7 +28,7 @@
     </div>
 </div>
 
-<div class="carousel slide" data-interval="10000" data-ride="carousel"
+<div class="carousel slide" data-interval="3000" data-ride="carousel"
      id="fullcarousel-example">
     <div class="carousel-inner">
         <div class="item active">
@@ -45,6 +45,14 @@
             <div class="carousel-caption">
                 <h2>Easy to Customize</h2>
             </div>
+            </div>
+            
+            <div class="item">
+            <img src="<?php echo base_url(); ?>assets/home/img/slide/slide3_3.jpg">
+
+            <div class="carousel-caption">
+                <h2>Responsive Design & Social Media Integrated</h2>
+            </div>
         </div>
     </div><a class="left carousel-control" href="#fullcarousel-example" data-slide="prev"><i class="icon-prev fa fa-angle-left"></i></a>
     <a class="right carousel-control" href="#fullcarousel-example" data-slide="next"><i class="icon-next fa fa-angle-right"></i></a>
@@ -56,7 +64,7 @@
         <div class="row">
             <div class="section_heading">
                 <h2><span class="colored_text">Features</span>
-                    Integrated with Webzero</h2>
+                    Integrated with Jadooweb</h2>
             </div>
 
             <div class="col-md-4 col-sm-4 feature_box wp2">
@@ -75,26 +83,24 @@
             <div class="col-md-4 col-sm-4 feature_box wp2 delay-05s">
                 <div class="feature_box_inner">
                     <img class="img-responsive img-thumbnail" src=
-                         "<?php echo base_url(); ?>assets/home/img/icons/mobile_friendly.png">
+                         "<?php echo base_url(); ?>assets/home/img/icons/security.png">
 
-                    <h2>Mobile Friendly</h2>
+                    <h2>Secured Profile</h2>
                     <hr>
 
-                    <p>Works seamlessly on all PC, Laptop, Notebooks,
-                        Tablets &amp; Mobile Devices.</p>
+                    <p>It comes with Password Protect Profile, Share and Show to Only Known People</p>
                 </div>
             </div>
 
             <div class="col-md-4 col-sm-4 feature_box wp2 delay-1s">
                 <div class="feature_box_inner">
                     <img class="img-responsive img-thumbnail" src=
-                         "<?php echo base_url(); ?>assets/home/img/icons/ecommerce_ready.png">
+                         "<?php echo base_url(); ?>assets/home/img/icons/email.png">
 
-                    <h2>E-commerce Ready</h2>
+                    <h2>Personalized Email</h2>
                     <hr>
 
-                    <p>Put your Products/Services on Sale. Get money in
-                        your account Directly.</p>
+                    <p>Brand Building using own domain email, Use yourname@yourdomain.in Branded Email</p>
                 </div>
             </div>
         </div>
@@ -144,9 +150,10 @@
     </div>
 </div>
 
-<div class="section wp3" id="video_img">
-    <a href="#video_img"><img class="img-responsive" data-target="#video_play" data-toggle="modal" src="<?php echo base_url(); ?>assets/home/img/vd_img.jpg"></a>
-</div>
+<section class="wp3" id="video_img">
+    <a href="#video_img"><img class="img-responsive" data-target=
+                              "#video_play" data-toggle="modal" src="<?php echo base_url(); ?>assets/home/img/vd_img.jpg"></a>
+</section>
 
 <div class="dark_section section staggered-animation-container" id=
      "browse_templates">
@@ -154,7 +161,7 @@
         <div class="row">
             <div class="section_heading">
                 <h2><span class="colored_text">Example</span>
-                    Website</h2>
+                    Professional Profiles</h2>
             </div>
         </div>
 
@@ -176,7 +183,7 @@
 
             <div class="col-md-3 col-sm-3 wp4 delay-15s">
                 <a href="#"><img class="img-responsive" src=
-                                 "<?php echo base_url(); ?>assets/home/img/templates/template14.jpg"></a>
+                                 "<?php echo base_url(); ?>assets/home/img/templates/template4.jpg"></a>
             </div>
         </div>
 
@@ -185,22 +192,22 @@
         <div class="row">
             <div class="col-md-3 col-sm-3 wp4 delay-2s">
                 <a href="#"><img class="img-responsive" src=
-                                 "<?php echo base_url(); ?>assets/home/img/templates/template14.jpg"></a>
+                                 "<?php echo base_url(); ?>assets/home/img/templates/template5.jpg"></a>
             </div>
 
             <div class="col-md-3 col-sm-3 wp4 delay-25s">
                 <a href="#"><img class="img-responsive" src=
-                                 "<?php echo base_url(); ?>assets/home/img/templates/template3.jpg"></a>
+                                 "<?php echo base_url(); ?>assets/home/img/templates/template6.jpg"></a>
             </div>
 
             <div class="col-md-3 col-sm-3 wp4 delay-3s">
                 <a href="#"><img class="img-responsive" src=
-                                 "<?php echo base_url(); ?>assets/home/img/templates/template2.jpg"></a>
+                                 "<?php echo base_url(); ?>assets/home/img/templates/template7.jpg"></a>
             </div>
 
             <div class="col-md-3 col-sm-3 wp4 delay-35s">
                 <a href="#"><img class="img-responsive" src=
-                                 "<?php echo base_url(); ?>assets/home/img/templates/template1.jpg"></a>
+                                 "<?php echo base_url(); ?>assets/home/img/templates/template8.jpg"></a>
             </div>
         </div>
 
@@ -215,88 +222,66 @@
     <div class="container">
         <div class="row">
             <div class="section_heading wp5">
-                <h2>Create Your Website <span class="white_colored_text">Do Yourself</span></h2>
+                <h2>Create Your Professional Profile <span class=
+                                              "white_colored_text">Do Yourself!</span></h2>
             </div>
         </div>
 
         <div class="row delay-1s" id="get_started">
             <div class="col-md-12">
-			
-				<div class="register_form hide_form wp1" style="width: 75%; margin: 0px auto; padding:30px; border: 1px solid #a2fbe9;">
-					<div class="col-md-6" style="border-right: 1px solid #a2fbe9; padding-right:50px">
-					
-						<?php echo form_open('register', array('class' => "form-horizontal  register_form_group")); ?>
-					
-					
-						<div class="form-group">
+                <div class="register_form hide_form wp1">
+                    <?php echo form_open('register', array('class' => "form-horizontal")); ?>
+
+                    <div class="form-group">
 
 
-							<div class="col-sm-12">
-								<input class="form-control" id=
-									   "first_name" placeholder="First Name"
-									   type="text" name="first_name">
+                        <div class="col-sm-4">
+                            <input class="form-control" id=
+                                   "first_name" placeholder="First Name"
+                                   type="text" name="first_name">
 
-	<!--										<input class="form-control" id=
-	"inputname3" placeholder="Last Name"
-	type="text">-->
-							</div>
+<!--										<input class="form-control" id=
+"inputname3" placeholder="Last Name"
+type="text">-->
+                        </div>
 
-							<div class="col-sm-12">
-	<!--                                        <input class="form-control" id=
-								"inputEmail3" placeholder="Company Name" type=
-								"email">-->
-								<input class="form-control" id=
-									   "email" placeholder="Email" type=
-									   "email" name="email">
-							</div>
+                        <div class="col-sm-4">
+<!--                                        <input class="form-control" id=
+                            "inputEmail3" placeholder="Company Name" type=
+                            "email">-->
+                            <input class="form-control" id=
+                                   "email" placeholder="Email" type=
+                                   "email" name="email">
+                        </div>
 
-							<div class="col-sm-12">
-								<input class="form-control" id=
-									   "password" placeholder="Password" type=
-									   "password" name="password">
-	<!--										<input class="form-control" id=
-									   "inputpsw" placeholder="Confirm Password" type=
-									   "password">-->
-							</div>
-						</div>
-					
-						<div class="form-group wp5 delay-05s">
-							<div class=" col-sm-12">
-								<button class=
-										"btn btn-lg btn-success light_theame_btn"
-										data-toggle="modal" id="" type="submit" style="width:100%">Get
-									Started</button>
-							</div>
-						</div>
-						<?php echo form_close(); ?> 
-					</div>
-					<p style="color: ##a2fbe9; z-index: 9; background: #1abc9c; position: absolute; top: 33%; left: 49%; display: block; height: 36px; padding-top: 8px">OR</p>
-					<div class="col-md-6" style="margin: 14.5% 0; padding-left: 50px">
-					
-						<div class="form-group">
-                            <div class="input-group" id="get_no">
-                                <input class="form-control" id="phone_no" placeholder="Mobile Number" type="text" name="phone_no" style="margin-bottom: 0px" disabled="disable">
-                                <span class="input-group-btn" style="width: 18%;">
-                                    <button class="btn btn-lg btn-success light_theame_btn"data-toggle="modal" id="registerNo" type="submit" style="width: 100%; border: 1px solid #a2fbe9; line-height: 1.3" disabled="disable">Go!</button>
-								</span>
-							</div>
-                            <div class="input-group" id="get_otp" style="display: none">
-								<input class="form-control" id="otp" placeholder="Enter OTP" type="text" name="otp" style="margin-bottom: 0px">
-                                <span class="input-group-btn" style="width: 18%;">
-									<button class="btn btn-lg btn-success light_theame_btn"data-toggle="modal" id="verifyNo" type="submit" style="width: 100%; border: 1px solid #a2fbe9; line-height: 1.3">Verify!</button>
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="form-group wp5 delay-05s col-md-12" style="padding-top:30px">
-						<div style="width: 50%; margin: auto">
-							<a class="btn btn-lg btn-success light_theame_btn" data-toggle="modal" id="back_toLogin" style="width:100%">Back to Login</a>
-						</div>
-					</div>
-					<div class="clearfix"></div>
-				
-				</div>
-					
+                        <div class="col-sm-4">
+                            <input class="form-control" id=
+                                   "password" placeholder="Password" type=
+                                   "password" name="password">
+<!--										<input class="form-control" id=
+                                   "inputpsw" placeholder="Confirm Password" type=
+                                   "password">-->
+                        </div>
+                    </div>
+
+                    <div class="form-group wp5 delay-05s">
+                        <div class=" col-sm-6">
+                            <a class=
+                               "btn btn-lg btn-success light_theame_btn pull-right"
+                               data-toggle="modal" id=
+                               "back_toLogin">Back to Login</a>
+                        </div>
+
+                        <div class=" col-sm-6">
+                            <button class=
+                                    "btn btn-lg btn-success light_theame_btn pull-left"
+                                    data-toggle="modal" id="" type="submit">Get
+                                Started</button>
+                        </div>
+                    </div>
+                    <?php echo form_close(); ?> 
+                </div>
+
                 <div class="login_form_container wp1 delay-1s">
                     <div class="col-md-6 social_btn_group">
                         <div class="form-group">
@@ -313,7 +298,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <?php echo form_open('login', array('class' => "login_form_group")); ?>
+                        <?php echo form_open('login/index'); ?>
                         <div class="form-group">
                             <div id="infoMessage"><?php echo $message; ?></div>
                         </div>
@@ -352,7 +337,106 @@
     </div>
 </div>
 
-<script type="text/javascript" >
+<div class="modal fade modal_login" id="login_form"> <!-- Login Popup -->
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="display_hide">
+                    <div class="register_form hide_form">
+                        <?php echo form_open('register', array('class' => "form-horizontal")); ?>
+                        <div class="form-group">
+
+
+                            <div class="col-sm-4">
+                                <input class="form-control" id=
+                                       "first_name" placeholder="First Name"
+                                       type="text" name="first_name">
+
+<!--										<input class="form-control" id=
+"inputname3" placeholder="Last Name"
+type="text">-->
+                            </div>
+
+                            <div class="col-sm-4">
+<!--                                        <input class="form-control" id=
+                                "inputEmail3" placeholder="Company Name" type=
+                                "email">-->
+                                <input class="form-control" id=
+                                       "email" placeholder="Email" type=
+                                       "email" name="email">
+                            </div>
+
+                            <div class="col-sm-4">
+                                <input class="form-control" id=
+                                       "password" placeholder="Password" type=
+                                       "password" name="password">
+<!--										<input class="form-control" id=
+                                       "inputpsw" placeholder="Confirm Password" type=
+                                       "password">-->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-group">
+                                <div class=" col-sm-6">
+                                    <a class=
+                                       "btn btn-lg btn-success light_theame_btn pull-right"
+                                       id="back_login_modal">Back to
+                                        Login</a>
+                                </div>
+
+                                <div class=" col-sm-6">
+                                    <button class=
+                                            "btn btn-lg btn-success light_theame_btn pull-left"
+                                            data-toggle="modal" id="" type="submit">Get
+                                        Started</button>
+                                </div>
+                            </div>
+                        </div>
+                        <?php echo form_close(); ?> 
+
+                    </div>
+
+                    <div class="login_form">
+                        <div class="col-md-6 social_btn_group">
+                            <div class="form-group">
+                                <a class="btn btn-primary facebook_btn" href="<?php // echo $this->facebook->login_url(); ?>"><i class="fa fa-facebook"></i>Facebook Login</a>
+                            </div>
+
+                            <div class="form-group">
+                                <a class="btn btn-primary google_btn" href="<?php // echo $this->google->login_url(); ?>"><i class="fa fa-google-plus"></i>Google+ Login</a>
+                            </div>
+
+                            <!--                            <div class="form-group">
+                                                            <a class="btn btn-primary twitter_btn"><i class="fa fa-twitter"></i>Twitter Login</a>
+                                                        </div>-->
+                        </div>
+
+                        <div class="col-md-6">
+                            <?php echo form_open('login/index'); ?>
+                            <div class="form-group">
+                                <div id="infoMessage"><?php echo $message; ?></div>
+                            </div>
+                            <div class="form-group">
+                                <?php echo form_input($identity); ?>
+                            </div>
+
+                            <div class="form-group">
+                                <?php echo form_input($password); ?>
+                            </div><button class="btn btn-lg btn-success theame_btn" type="submit">Login</button>
+                            <?php echo form_close(); ?>
+                        </div><span class="register_anchor"><a href="#"
+                                                               id="register_now_modal">Register Now</a> |
+                            <a href="<?php echo site_url('forgot-password'); ?>">Forgotton?</a></span>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" defer="defer">
 //doesn't block the load event
 function createIframe(){
   var i = document.createElement("iframe");
@@ -372,85 +456,4 @@ else if (window.attachEvent)
 window.attachEvent("onload", createIframe);
 else window.onload = createIframe;
 
-$(document).on('hide.bs.modal','#video_play', function () {
-    $('iframe').attr('src', $('iframe').attr('src'));
-});
-</script>
-<script>
-    $(document).ready(function(){
-        $.mask.definitions['9'] = '';
-        $.mask.definitions['d'] = '[0-9]';
-        $('#phone_no').mask("+91 ddd ddd dddd");
-        $(".register_form_group").validate({
-            // Specify the validation rules
-            rules: {
-                first_name: "required",
-                email: {
-                    required: true,
-                    email: true
-                },
-                password: {
-                    required: true,
-                    minlength: 5
-                }
-            },
-
-            // Specify the validation error messages
-            messages: {
-                first_name: "Please enter your first name",
-                password: {
-                    required: "Please provide a password",
-                    minlength: "Your password must be at least 5 characters long"
-                },
-                email: "Please enter a valid email address"
-            },
-
-            submitHandler: function(form) {
-                form.submit();
-            }
-        });
-        
-        $(".login_form_group").validate({
-            // Specify the validation rules
-            rules: {
-                identity: {
-                    required: true,
-                    email: true
-                },
-                password: {
-                    required: true,
-                    minlength: 5
-                }
-            },
-
-            // Specify the validation error messages
-            messages: {
-                password: {
-                    required: "Please provide a password",
-                    minlength: "Your password must be at least 5 characters long"
-                },
-                identity: "Please enter a valid email/username address"
-            },
-
-            submitHandler: function(form) {
-                form.submit();
-            }
-        });
-        
-        $("#registerNo").click(function(){
-            var phone_no = $("#phone_no").val();
-            alert(phone_no);
-            if(phone_no){
-                $.ajax({
-                    url:'<?php echo site_url('login/registerWithPhone');?>',
-                    type:'POST',
-                    data:{phone:phone_no},
-                    success:function(){
-                        $("#get_no").fadeOut('slow');
-                        $("#get_otp").fadeIn();
-                    }
-                });
-            }
-        });
-    });
 </script>

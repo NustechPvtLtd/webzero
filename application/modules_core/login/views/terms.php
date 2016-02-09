@@ -9,8 +9,8 @@
     <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%"><FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff"><BR>Jadooweb.com
             (hereinafter referred to as the &quot;Site&quot; or &quot;Jadooweb&quot;)
             provides its users an online store by use of its on demand (web
-            based) e- commerce software. Jadooweb is a website owned by Jadooweb
-            Digital Pvt. Ltd. a company incorporated in Pune. While using the
+            based) e- commerce software. Jadooweb is a website owned by </SPAN><font color="#5a5a5a"><font face="Arial, serif"><span style="background: #ffffff">Jadooweb Systems. a company
+            incorporated in the state of Wisconsin</span></font></font><span style="background-color: #ffffff">.</span><SPAN STYLE="background: #ffffff"> While using the
             facilities or services provided by the &quot;Site&quot; or through
             any other website connected/ linked through this &quot;Site&quot;,
             you shall be bound by these Terms of Service (hereinafter referred to
@@ -84,13 +84,14 @@
                     aspects related to the intellectual property associated with the
                     Site are governed by the &quot;Intellectual Property Policy&quot; of
                     Jadooweb which shall be read as a part of this Agreement.</SPAN></FONT></FONT></FONT></P>
-        <LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%"><FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">The
+        <LI>
+          <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%"><FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">The
                     Site and all the content so presented on the site (including but is
                     not limited to acoustic, photographs, illustrations, graphics, video
                     and software) code, data, works of authorship and materials thereon,
                     the look and feel, blueprint and the manner in which material is
                     arranged on the Site (hereinafter referred to as the &quot;Content&quot;)
-                    are protected by Indian copyright, trademark and other laws.</SPAN></FONT></FONT></FONT></P>
+                    are protected by United States Copyright, trademark and other laws.</SPAN></FONT></FONT></FONT></P>
         <LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%"><FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">Jadooweb
                     and its licensors own, sole and exclusive rights to title and
                     interest in and to the Site, the Content, including, but not limited
@@ -628,11 +629,13 @@
         <FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">This
             Agreement and its interpretation hereunder and all suits and special
             proceedings hereunder shall be construed in accordance with the
-            applicable Indian laws and any dispute arising shall be governed by
-            the same. The District Courts in Pune, Maharashtra, India shall have
+            applicable </SPAN><font color="#5a5a5a"><font face="Arial, serif"><span style="background: #ffffff">United States</span></font></font></FONT><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff"> laws and any dispute arising shall be governed by
+            the same. The District Courts in </SPAN></FONT><font color="#5a5a5a"><font face="Arial, serif"><font size="2" style="font-size: 10pt"><span style="background: #ffffff">Lake Geneva, 
+Wisconsin</span></font></font></font><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff"> shall have
             jurisdiction to try and decide any matter arising out of and related
             to this Agreement. The Parties unconditionally submit to the
-            jurisdiction of Pune District, Maharashtra, India, for settlement of
+            jurisdiction of Lake Geneva, 
+Wisconsin, for settlement of
             any dispute or enforcement if any right under this Agreement.</SPAN></FONT></FONT></FONT></P>
     <P ALIGN=JUSTIFY STYLE="margin-bottom: 0.11in"><BR><BR>
     </P>
@@ -648,13 +651,13 @@
             Jadooweb shall assist you to set up an online store in minutes with
             its hosted shopping cart solution in an easy way without any hassles.
             We request you to please read this Agreement before availing the
-            Services of Jadooweb.<BR><BR>This Merchant User Agreement
+            Services of Jadooweb.<BR><BR>
+            This Merchant User Agreement
             (&quot;Agreement&quot;) is between you, the user, together with any
             company or other business entity you are representing, if any
-            (collectively, &quot;Licensee&quot;), and Jadooweb Digital Pvt. Ltd.
-            a company registered under the Companies Act,1956 and having
-            registered office at - 3/2 IT Knowledge Park, (Dish TV Center) MIDC,
-            Kharadi, Pune – 411014 and its products Jadooweb. This Agreement
+            (collectively, &quot;Licensee&quot;), and Jadooweb Systems.
+            a company 803 Main St,                                                <br />
+Lake Geneva - 53147 Wisconsin    ,              United States and its products Jadooweb. This Agreement
             comes in to effect when you register for using Jadooweb services or
             signing an application for utilizing services of Jadooweb. By
             Registering or signing with Jadooweb, You signify your absolute and
@@ -1166,9 +1169,7 @@
                     beyond the control of Jadooweb.</SPAN></FONT></FONT></FONT></P>
     </OL>
     <P STYLE="margin-left: 0.5in; margin-bottom: 0.11in"><FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">Offline:
-            The Fees could be either collected personally from Licensee or
-            required to be mailed to Us at the following address: 3/2 IT
-            Knowledge Park,(Dish TV Center) MIDC, Kharadi, Pune – 411014.</SPAN></FONT></FONT></FONT></P>
+</SPAN></FONT></FONT></FONT></P>
     <OL TYPE=i START=2>
         <LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; background: #ffffff; line-height: 0.21in">
                 <FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">.
@@ -1330,14 +1331,15 @@
                     payment received by Jadooweb for that particular service or month.
                     There is no warranty in respect of the Jadooweb, Software or
                     Services.</SPAN></FONT></FONT></FONT></P>
-        <LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; background: #ffffff; line-height: 0.21in">
+        <LI>
+          <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; background: #ffffff; line-height: 0.21in">
                 <FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">Jadooweb
                     has made this software /service available to use as a matter of
                     convenience. User agrees and acknowledges that user shall be solely
                     responsible for their conduct and that Jadooweb reserves the right
                     to terminate Licensee's rights to use the service immediately,
                     notwithstanding penal provisions under the laws enacted by the
-                    government of India or any other statutory, legislative or
+                    government of United States or any other statutory, legislative or
                     regulatory authority authorized in this regard from time to time.</SPAN></FONT></FONT></FONT></P>
         <LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; background: #ffffff; line-height: 0.21in">
                 <FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">In
@@ -1479,12 +1481,13 @@
     <P ALIGN=JUSTIFY STYLE="margin-top: 0.19in; margin-bottom: 0.36in; background: #ffffff; line-height: 100%">
         <FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><B><SPAN STYLE="background: #ffffff">GENERAL</SPAN></B></FONT></FONT></FONT></P>
     <UL>
-        <LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; background: #ffffff; line-height: 0.21in">
+        <LI>
+          <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; background: #ffffff; line-height: 0.21in">
                 <FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">This
                     agreement is governed and construed in accordance with the Laws of
-                    Union of India. Licensee hereby irrevocably consents to the
-                    exclusive jurisdiction and venue of courts in Pune, Maharashtra,
-                    India, in all disputes arising out of or relating to the use of the
+                    Union of United States of America. Licensee hereby irrevocably consents to the
+                    exclusive jurisdiction and venue of courts in </SPAN></FONT><font color="#5a5a5a"><font face="Arial, serif"><font size="2" style="font-size: 10pt"><span style="background: #ffffff">Lake Geneva, 
+Wisconsin</span></font></font></font><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">, in all disputes arising out of or relating to the use of the
                     Jadooweb's products/sites/services. Use of the Jadooweb software
                     services is unauthorized in any jurisdiction that does not give
                     effect to all provisions of these terms and conditions, including
@@ -1510,7 +1513,8 @@
                     partnership, joint venture, employee employer or
                     franchiser-franchisee relationship is intended or created by this
                     Agreement.</SPAN></FONT></FONT></FONT></P>
-        <LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; background: #ffffff; line-height: 0.21in">
+        <LI>
+          <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; background: #ffffff; line-height: 0.21in">
                 <FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">Except
                     for the payment of any fees due and payable under this Agreement,
                     neither party's delay in the performance of any duties or
@@ -1519,9 +1523,8 @@
                     materials, fire, earthquake, flood, failures in electric power or
                     telecommunications services, or any other event beyond the control
                     of the party in the breach. Except as explicitly stated otherwise,
-                    any notices Licensee shall be given by postal mail to Jadooweb
-                    Digital Pvt. Ltd - 3/2 IT Knowledge Park, (Dish TV Center) MIDC,
-                    Kharadi, Pune – 411014.or Jadooweb may issue the notice to the
+                    any notices Licensee shall be given by postal mail to Jadooweb Systems
+                    </SPAN></FONT><font color="#5a5a5a"><font face="Arial, serif"><font size="2" style="font-size: 10pt"><span style="background: #ffffff">803 Main St, Lake Geneva - 53147, Wisconsin , United States</span></font></font></font><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">.or Jadooweb may issue the notice to the
                     email address Licensee provide to us during the registration process
                     (in Licensee's case). Notice shall be deemed given 24 hours after
                     email is sent, unless the sending party is notified that the email
@@ -1536,7 +1539,7 @@
                     validity, interpretation, implementation or alleged breach of any
                     provision of the User Agreement, the dispute shall be referred to a
                     sole Arbitrator appointed by Jadooweb. The place of arbitration
-                    shall be Pune. The Arbitration &amp; Conciliation Act, 1996, shall
+                    shall be </SPAN><font color="#5a5a5a"><font face="Arial, serif"><span style="background: #ffffff"> Lake Geneva,Wisconsin </span></font></font><SPAN STYLE="background: #ffffff">. The Arbitration &amp; Conciliation Act, 1996, shall
                     govern the arbitration proceedings. The arbitration proceedings
                     shall be in the English language. All expenses with respect to
                     Arbitrator fee and his expenses shall be borne by the Parties

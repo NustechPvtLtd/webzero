@@ -1,32 +1,32 @@
 body {
-	background: transparent url(../images/noise.png) left top repeat;
+    background: transparent url(../images/noise.png) left top repeat;
 }
 
 body #builder > .container {
-	width: 100%;
-	margin-top: 0px;
-	position: relative;
+    width: 100%;
+    margin-top: 0px;
+    position: relative;
 }
 
 body .modal-dialog {
-	margin: 120px auto 30px;
+    margin: 120px auto 30px;
 }
 
 .toggle:hover, .toggle:focus {
-	color: #fff;
+    color: #fff;
 }
 
 #hidden {
-	display: none !important;
+    display: none !important;
 }
 
 .actionButtons {
-	border-radius: 0px;
-        /*margin-right: -110px;*/
+    border-radius: 0px;
+    /*margin-right: -110px;*/
 }
 
 .margin-bottom-5 {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 textarea:hover, 
@@ -44,61 +44,61 @@ button:hover
 }
 
 body .drop-hover {
-	border: 3px dashed #95A5A6;
-	height: 150px;
-	background: #ECF0F1;
+    border: 3px dashed #95A5A6;
+    height: 150px;
+    background: #ECF0F1;
 }
 
 #loader {
-	position: fixed;
-	left: 0px;
-	top: 0px;
-	width: 100%;
-	height: 100%;
-	background: #fff;
-	z-index: 10000;
-	text-align: center;
-	font-size: 14px;
-	text-transform: uppercase;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 10000;
+    text-align: center;
+    font-size: 14px;
+    text-transform: uppercase;
 }
 
 #loader > img {
-	display: block;
-	width: 128px;
-	height: 128px;
-	margin: 150px auto 0px;
+    display: block;
+    width: 128px;
+    height: 128px;
+    margin: 150px auto 0px;
 }
 
 body .btn-warning {
-	background-color: #F39C12;
+    background-color: #F39C12;
 }
 
 body .btn-warning:hover {
-	background-color: #F4A62A;
+    background-color: #F4A62A;
 }
 
 body .fileinput .fileinput-preview {
-	cursor: default !important;
+    cursor: default !important;
 }
 
 body .btn-file > input[type="file"] {
-	position: absolute !important;
+    position: absolute !important;
 }
 
 /* header */
 
 .builder-header {
-	padding-top: 15px;
-	padding-bottom: 15px;
-	margin-left: auto;
-	margin-right: auto;
-	width: 94%;
-	background: #ECF0F1;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 94%;
+    background: #ECF0F1;
 }
 
 .builder-header.affix {
-	left: 0;
-	top:0px;
+    left: 0;
+    top:0px;
     width: 100%;
     z-index: 1040;
     padding-right: 3.5%;
@@ -107,53 +107,53 @@ body .btn-file > input[type="file"] {
 }
 
 /*.toggle {
-	display: block;
-	background: #1ABC9C;
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
-	text-align: center;
-	color: #fff;
-	position: absolute;
-	left: 0px;
-	top: 0px;
+        display: block;
+        background: #1ABC9C;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+        left: 0px;
+        top: 0px;
 }*/
 
- .builder-header .modes {
-	margin: 8px 0px 0px;
-	width: 460px;
-	text-align: center;
+.builder-header .modes {
+    margin: 8px 0px 0px;
+    width: 460px;
+    text-align: center;
 }
 
- .builder-header .modes #modeContent {
-	/*display: none;*/
+.builder-header .modes #modeContent {
+    /*display: none;*/
 }
 
- .builder-header .modes > b {
-	display: block;
-	float: left;
-	text-transform: uppercase;
-	font-size: 13px;
-	position: relative;
-	top: 3px;
+.builder-header .modes > b {
+    display: block;
+    float: left;
+    text-transform: uppercase;
+    font-size: 13px;
+    position: relative;
+    top: 3px;
 }
 
- .builder-header .modes > label.radio.primary {
-	display: inline-block;
-	margin-top: 0px !important;
+.builder-header .modes > label.radio.primary {
+    display: inline-block;
+    margin-top: 0px !important;
 }
 
- .builder-header .modes > label {
-	margin-right: 20px;
+.builder-header .modes > label {
+    margin-right: 20px;
 }
 
- .builder-header .modes > label:last-child {
+.builder-header .modes > label:last-child {
 }
 
 .navbar a > .fui-home {
-	position: relative;
-	font-size: 14px;
-	top: -1px;
+    position: relative;
+    font-size: 14px;
+    top: -1px;
 }
 
 /* end header */
@@ -163,152 +163,152 @@ body .btn-file > input[type="file"] {
 /* style editor */
 
 .styleEditor {
-	position: fixed;
-	left: -300px;
-	/*top: 0px;*/
-	height: 100%;
-	width: 260px;
-	background: #f9f9f9;
-	z-index: 1000;
-	box-shadow: 6px 0px 1px rgba(0,0,0,0.1);
-	padding: 90px 20px 20px;
-	overflow-y: auto;
-	overflow-x: visible;
+    position: fixed;
+    left: -300px;
+    /*top: 0px;*/
+    height: 100%;
+    width: 260px;
+    background: #f9f9f9;
+    z-index: 1000;
+    box-shadow: 6px 0px 1px rgba(0,0,0,0.1);
+    padding: 90px 20px 20px;
+    overflow-y: auto;
+    overflow-x: visible;
 }
 
 .styleEditor .tab-content {
-	padding: 0px;
-	border: 0px;
-	border-radius: 0px;
-	margin-bottom: 20px;
-	border-bottom: 2px dashed #ccc;
+    padding: 0px;
+    border: 0px;
+    border-radius: 0px;
+    margin-bottom: 20px;
+    border-bottom: 2px dashed #ccc;
 }
 
 .styleEditor .nav-tabs li span {
-	font-size: 12px;
-	color: #34495E;
+    font-size: 12px;
+    color: #34495E;
 }
 
 .styleEditor form {
-	width: 100%;
-	overflow: visible;
-	position: relative;
-	margin-bottom: 20px;
+    width: 100%;
+    overflow: visible;
+    position: relative;
+    margin-bottom: 20px;
 }
 
 .styleEditor > a.close {
-	position: absolute;
-	/*top: 90px;*/
-	right: 15px;
-	font-size: 20px;
+    position: absolute;
+    /*top: 90px;*/
+    right: 15px;
+    font-size: 20px;
 }
 
 .styleEditor h3 {
-	font-size: 17px;
-	font-weight: normal;
-	margin-top: 0px;
-	margin-bottom: 30px;
+    font-size: 17px;
+    font-weight: normal;
+    margin-top: 0px;
+    margin-bottom: 30px;
 }
 
 .styleEditor .control-label {
-	line-height: 20px;
-	padding-top: 6px;
-	font-size: 13px;
-	float: left;
-	width: 55%;
+    line-height: 20px;
+    padding-top: 6px;
+    font-size: 13px;
+    float: left;
+    width: 55%;
 }
 
 .styleEditor .form-group {
-	position: relative;
-	margin-bottom: 10px;
-	min-height: 40px;
+    position: relative;
+    margin-bottom: 10px;
+    min-height: 40px;
 }
 
 .styleEditor .form-group > input {
-	float: right;
-	width: 42%;
-	text-overflow: ellipsis;
+    float: right;
+    width: 42%;
+    text-overflow: ellipsis;
 }
 
 .styleEditor .form-group > .btn-group.select {
-	float: right;
-	width: 42%;
+    float: right;
+    width: 42%;
 }
 
 .styleEditor .form-group > .btn-group.select > .btn {
-	width: 100%;
+    width: 100%;
 }
 
 .styleEditor .form-group > .btn-group.select .dropdown-menu {
-	right: 0px;
-	left: auto;
+    right: 0px;
+    left: auto;
 }
 
 .styleEditor .form-group > .sp-replacer {
-	float: right;
-	width: 42%;
-	border: 2px solid #bdc3c7;
-	height: 35px;
-	background: #fff;
-	padding: 6px;
+    float: right;
+    width: 42%;
+    border: 2px solid #bdc3c7;
+    height: 35px;
+    background: #fff;
+    padding: 6px;
 }
 
 .styleEditor .form-group .sp-preview {
-	width: 75%;
-	border: 0px;
+    width: 75%;
+    border: 0px;
 }
 
 body .sp-container {
-	border: 2px solid #bdc3c7;
+    border: 2px solid #bdc3c7;
 }
 
 body .sp-container .sp-palette-container {
-	border-right: 2px solid #bdc3c7;
+    border-right: 2px solid #bdc3c7;
 }
 
 body .sp-container .sp-picker-container {
-	border-left: 0px;
+    border-left: 0px;
 }
 
 body .sp-container button, body .sp-container button:hover {
-	background-image: none;
-	background-color: #1ABC9C;
-	color: #fff;
-	border-radius: 0px;
-	border: 0px;
-	font-family: "Lato",​Helvetica,​Arial,​;
-	font-weight: normal;
-	padding: 0px 12px;
-	text-shadow: none;
-	line-height: 31px;
-	text-transform: uppercase;
+    background-image: none;
+    background-color: #1ABC9C;
+    color: #fff;
+    border-radius: 0px;
+    border: 0px;
+    font-family: "Lato",​Helvetica,​Arial,​;
+    font-weight: normal;
+    padding: 0px 12px;
+    text-shadow: none;
+    line-height: 31px;
+    text-transform: uppercase;
 }
 
 body .sp-input {
-	border-radius: 0px;
-	background: #fff;
-	border: 1px solid #ccc;
+    border-radius: 0px;
+    background: #fff;
+    border: 1px solid #ccc;
 }
 
 .styleEditor .form-group > input.active {
-	position: absolute;
-	right: 0px;
-	width: 100%;
+    position: absolute;
+    right: 0px;
+    width: 100%;
 }
 
 .styleEditor div#styleElements {
-	margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 .styleEditor ul.breadcrumb {
-	background: #E1E0E0;
-	border-radius: 0px;
-	font-size: 14px;
-	text-transform: uppercase;
+    background: #E1E0E0;
+    border-radius: 0px;
+    font-size: 14px;
+    text-transform: uppercase;
 }
 
 .styleEditor .breadcrumb > li:after {
-	color: #24bfa0;
+    color: #24bfa0;
 }
 
 .styleEditor .breadcrumb .active {
@@ -317,70 +317,70 @@ body .sp-input {
 }
 
 .styleEditor .nav-tabs > li > a {
-	padding: 7px 15px 8px;
+    padding: 7px 15px 8px;
 }
 
 .styleEditor .sideButtons {
-	margin: 0px 0px 10px;
-	width: 100%;
+    margin: 0px 0px 10px;
+    width: 100%;
 }
 
 .styleEditor .sideButtons > * {
-	float: left;
-	/*width: 33.33%;*/
+    float: left;
+    /*width: 33.33%;*/
 }
 
 .styleEditor p.or {
-	color: #7F8C8D;
-	font-weight: bold;
-	font-size: 15px;
-	border-bottom: 2px solid #BDC3C7;
-	line-height: 0px;
-	margin-bottom: 25px;
+    color: #7F8C8D;
+    font-weight: bold;
+    font-size: 15px;
+    border-bottom: 2px solid #BDC3C7;
+    line-height: 0px;
+    margin-bottom: 25px;
 }
 
 .styleEditor p.or span {
-	background: #F9F9F9;
-	padding: 0px 10px;
+    background: #F9F9F9;
+    padding: 0px 10px;
 }
 
 .styleEditor .link_Tab .btn-group {
-	margin-bottom: 25px;
+    margin-bottom: 25px;
 }
 
 .styleEditor .link_Tab .btn-group, .styleEditor .link_Tab .btn-group button {
-	width: 100%;
+    width: 100%;
 }
 
 .styleEditor .link_Tab .btn-group .dropdown-menu {
-	right: 0px;
-	left: auto;
+    right: 0px;
+    left: auto;
 }
 
 .styleEditor .link_Tab input {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .styleEditor ul.nav-tabs li.active a {
-	background-color: #f9f9f9;
-	border-color: #e1e4e7 #e1e4e7 #f9f9f9;
+    background-color: #f9f9f9;
+    border-color: #e1e4e7 #e1e4e7 #f9f9f9;
 }
 
 .styleEditor .fileinput .thumbnail {
-	border-radius: 0px;
+    border-radius: 0px;
 }
 
 .styleEditor .imageFileTab > input {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .styleEditor .imageFileTab > .form-group {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .styleEditor #icons_chosen {
-	width: 100% !important;
-	margin-bottom: 30px;
+    width: 100% !important;
+    margin-bottom: 30px;
 }
 
 /* end style editor */
@@ -390,221 +390,221 @@ body .sp-input {
 /* side */
 
 .menu .main h3 {
-	font-size: 17px;
-	color: #fff;
-	text-transform: uppercase;
-	font-weight: normal;
-	margin: 0px 0px 10px 30px;
-	letter-spacing: 1px;
+    font-size: 17px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: normal;
+    margin: 0px 0px 10px 30px;
+    letter-spacing: 1px;
 }
 
 .menu .main h3 > span {
-	font-size: 15px;
+    font-size: 15px;
 }
 
 .menu .main > ul {
-	margin: 0px 0px 0px 0px;
-	padding: 0px;
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
 }
 
 .menu .main > ul > li {
-	list-style: none;
-	list-style-type: none;
+    list-style: none;
+    list-style-type: none;
 }
 .main > hr {
-	border-top: 1px dashed #ECF0F1 !important;
+    border-top: 1px dashed #ECF0F1 !important;
 }
 
 .menu .main > ul > li > a {
-	color: #ecf0f1;
-	display: block;
-	line-height: 35px;
-	-webkit-transition: color 0.5s; /* For Safari 3.1 to 6.0 */
-	-moz-transition: color 0.5s;
-	transition: color 0.5s;
-	font-size: 16px;
-	padding-left: 30px;
+    color: #ecf0f1;
+    display: block;
+    line-height: 35px;
+    -webkit-transition: color 0.5s; /* For Safari 3.1 to 6.0 */
+    -moz-transition: color 0.5s;
+    transition: color 0.5s;
+    font-size: 16px;
+    padding-left: 30px;
 }
 
 .menu .main > ul#elements > li > a:hover, .menu .main > ul#elements > li > a.active {
-	color: #fff;
-	background: #1f2e3c;
+    color: #fff;
+    background: #1f2e3c;
 }
 
 .main > .sideButtons {
-	margin-left: 30px;
-	width: 150px;
-	margin-bottom: 30px;
+    margin-left: 30px;
+    width: 150px;
+    margin-bottom: 30px;
 }
 
 .main > .sideButtons > * {
-	margin: 0px;
-	width: 100%;
+    margin: 0px;
+    width: 100%;
 }
 
 .menu .main ul#pages {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .menu .main ul#pages li {
-	display: block;
-	height: 35px;
-	cursor: pointer;
+    display: block;
+    height: 35px;
+    cursor: pointer;
 }
 
 .menu .main ul#pages li.active {
-	background: #1f2e3c;
+    background: #1f2e3c;
 }
 
 .menu .main ul#pages li input {
-	float: left;
-	font-size: 16px;
-	height: 35px;
-	margin: 0;
-	padding: 0;
-	width: 54%;
-	margin-left: 30px;
-	border: 0px;
-	color: #ecf0f1;
-	background: none;
+    float: left;
+    font-size: 16px;
+    height: 35px;
+    margin: 0;
+    padding: 0;
+    width: 54%;
+    margin-left: 30px;
+    border: 0px;
+    color: #ecf0f1;
+    background: none;
 }
 
 .menu .main ul#pages li > a {
-	float: left;
+    float: left;
 }
 
 .menu .main ul#pages li > span {
-	float: right;
-	font-weight: normal;
-	font-size: 12px;
-	margin-right: 30px;
-	margin-top: 8px;
-	display: none;
+    float: right;
+    font-weight: normal;
+    font-size: 12px;
+    margin-right: 30px;
+    margin-top: 8px;
+    display: none;
 }
 
 .menu .main ul#pages li.active > span {
-	display: block;
+    display: block;
 }
 
 .menu .main ul#pages li > span a {
-	color: #CBD0D3;
-	float: right;
-	margin-left: 5px;
-	transform: color 0.7s;
+    color: #CBD0D3;
+    float: right;
+    margin-left: 5px;
+    transform: color 0.7s;
 }
 
 .menu .main ul#pages li > span a.btn {
-	color: #fff;
-	position: relative;
-	top: -3px;
-	display: none;
+    color: #fff;
+    position: relative;
+    top: -3px;
+    display: none;
 }
 
 .menu .main ul#pages li.active.edit > span a.btn {
-	display: inline;
+    display: inline;
 }
 
 .menu .main ul#pages li.active.edit > span .fileDel, .menu .main ul#pages li.active.edit > span .fileEdit, .menu .main ul#pages li.active.edit > span .fileCopy{
-	display: none;
+    display: none;
 }
 
 .menu .main ul#pages li > span a:hover.fileDel {
-	color: #E74C3C;
+    color: #E74C3C;
 }
 
 .menu .main ul#pages li > span a:hover.fileEdit {
-	color: #2ECC71;
+    color: #2ECC71;
 }
 
 .menu .main ul#pages li > span a:hover.fileCopy {
-	color: #1E90FF;
+    color: #1E90FF;
 }
 
 /* end side */
 
 
 #frame {
-	display: block;
-	border: 0px;
+    display: block;
+    border: 0px;
 }
 
 .screen .zoomer-wrapper {
-	background: #fff;
+    background: #fff;
 }
 
 .screen .start {
-	position: absolute;
-	width: 100%;
-	left: 0px;
-	top: 0px;
-	z-index: 0;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    z-index: 0;
 }
 
 .screen .start > span {
-	display: block;
-	background: #34495E;
-	padding: 10px 20px;
-	width: 450px;
-	color: #fff;
-	font-size: 13px;
-	text-transform: uppercase;
-	text-align: center;
-	margin: 170px auto 0px;
+    display: block;
+    background: #34495E;
+    padding: 10px 20px;
+    width: 450px;
+    color: #fff;
+    font-size: 13px;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 170px auto 0px;
 }
 
 .screen .toolbar .buttons {
-	float: left;
-	height: 13px;
-	margin-top: 11px;
+    float: left;
+    height: 13px;
+    margin-top: 11px;
 }
 
 .screen .toolbar .title {
-	font-size: 14px;
-	color: #000;
-	text-align: center;
-	margin-right: 80px;
-	padding-top: 5px;
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+    margin-right: 80px;
+    padding-top: 5px;
 }
 
 .screen .frameWrapper {
-	border: 1px groove #e1e0e0;
-	padding-top: 0px;
-	position: relative;
+    border: 1px 1px 0px 1px groove #e1e0e0;
+    padding-top: 0px;
+    position: relative;
 }
 
 .screen .frameWrapper.empty {
-	min-height: 400px;
+    min-height: 400px;
 }
 
 .screen .frameWrapper #pageList ul li .zoomer-cover {
-	cursor: move;
-	overflow: hidden !important;
+    cursor: move;
+    overflow: hidden !important;
 }
 
 .screen .frameWrapper #pageList ul li .zoomer-small, .screen .frameWrapper #pageList ul li .zoomer-small iframe {
-	overflow: hidden !important;
-	overflow-y: hidden !important;
+    overflow: hidden !important;
+    overflow-y: hidden !important;
 }
 
 .screen .zoomer-cover button.btn-danger, .screen .zoomer-cover button.btn-warning, .screen .zoomer-cover button.btn-inverse {
-	border-radius: 0px;
-	float: right;
-	visibility:hidden;
-	opacity:0;
-	transition: visibility 0s linear 0.5s,opacity 0.5s linear;
-	-webkit-transition: visibility 0s linear 0.5s,opacity 0.5s linear;
-	-moz-transition: visibility 0s linear 0.5s,opacity 0.5s linear;
-	width: 100px;
+    border-radius: 0px;
+    float: right;
+    visibility:hidden;
+    opacity:0;
+    transition: visibility 0s linear 0.5s,opacity 0.5s linear;
+    -webkit-transition: visibility 0s linear 0.5s,opacity 0.5s linear;
+    -moz-transition: visibility 0s linear 0.5s,opacity 0.5s linear;
+    width: 100px;
 }
 
 .screen .zoomer-cover:hover button.btn-danger, .screen .zoomer-cover:hover button.btn-warning, .screen .zoomer-cover:hover button.btn-inverse {
-	visibility:visible;	
-	opacity:1;
-	transition-delay:0s;
+    visibility:visible;	
+    opacity:1;
+    transition-delay:0s;
 }
 
 .screen .aceEditor {
-	position: absolute;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
@@ -615,35 +615,35 @@ body .sp-input {
 /* modals */
 
 .modal-content {
-	border-radius: 0px;
-	border: 0px;
+    border-radius: 0px;
+    border: 0px;
 }
 
 .modal.small-modal > .modal-dialog, .modal.small-modal .modal-content {
-	width: 400px;
+    width: 400px;
 }
 
 .modal.small-modal > .modal-dialog {
-	margin-top: 140px;
+    margin-top: 140px;
 }
 
 
 /* some flat ui resets */
 
 .btn {
-	border-radius: 0px;
+    border-radius: 0px;
 }
 
 .form-control {
-	border-radius: 0px;
+    border-radius: 0px;
 }
 
 .alert {
-	border-radius: 0px;
+    border-radius: 0px;
 }
 
 #successModal .alert, #errorModal .alert {
-	margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 /* end modals */
@@ -653,17 +653,17 @@ body .sp-input {
 /* image upload tab */
 
 .tab-pane#uploadTab .fileinput-preview.thumbnail {
-	width: 100%;
-	height: 350px;
+    width: 100%;
+    height: 350px;
 }
 
 .tab-pane#uploadTab hr {
-	border: 0px;
-	border-top: 2px dashed #ccc;
+    border: 0px;
+    border-top: 2px dashed #ccc;
 }
 
 .tab-pane#uploadTab button.upload {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 /* end image upload tab */
@@ -680,3 +680,6 @@ body .sp-input {
     clear: both;
     margin-left: 10px;
 }
+li.element.content{
+    background: #111 none repeat scroll 0 0;
+} 

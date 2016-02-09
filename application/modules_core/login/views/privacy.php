@@ -17,7 +17,7 @@
             Privacy Policy is effective upon acceptance for new users as amended
             from time to time. While using the facilities or services provided by
             Jadooweb, or through any other website connected/ linked through this
-            website by jadooweb, you shall be bound by this Privacy Policy.</SPAN></FONT></FONT></FONT></P>
+            website by JADOOWEB, you shall be bound by this Privacy Policy.</SPAN></FONT></FONT></FONT></P>
     <P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%"><FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff"><BR>For
             purposes of this Privacy Policy, the term &quot;You&quot; or &quot;Your&quot;
             shall refer to the &quot;User (Store Owner)&quot; or the &quot;End
@@ -33,8 +33,8 @@
                 the Company</SPAN></B></FONT></FONT></FONT></P>
     <P ALIGN=JUSTIFY STYLE="margin-bottom: 0.36in; background: #ffffff; line-height: 100%">
         <FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">Jadooweb
-            is owned and managed by Jadooweb Digital Pvt. Ltd. a company
-            incorporated in Pune (India). This Privacy Policy describes how we
+            is owned and managed by Jadooweb Systems. a company
+            incorporated in the state of Wisconsin. This Privacy Policy describes how we
             handle your personal information on the website and other storage
             devices and platforms related to the website. This Privacy Policy is
             applicable to you:</SPAN></FONT></FONT></FONT></P>
@@ -164,7 +164,7 @@
                     the required information is conveyed to us the user is no longer
                     anonymous to Jadooweb. If, thereafter, you choose to provide us with
                     personal information, your consent to transfer and store the
-                    information on our server located in Chicago, IL (USA) is implied.</SPAN></FONT></FONT></FONT></P>
+                    information on our server located in Virgin Islands, British  (USA) is implied.</SPAN></FONT></FONT></FONT></P>
         <LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%"><FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">We
                     may collect and store information and it includes the following:
                     Personal Information that you provide to us or disclose in
@@ -426,6 +426,5 @@
     <P STYLE="margin-bottom: 0.11in"><FONT COLOR="#5a5a5a"><FONT FACE="Arial, serif"><FONT SIZE=2 STYLE="font-size: 10pt"><SPAN STYLE="background: #ffffff">If
             you have any questions about this privacy policy or our treatment of
             your personal data, please write to us by email to
-            support@jadooweb.com or by post to 3/2 IT Knowledge Park,<BR>(Dish TV
-            Center) MIDC, Kharadi, Pune – 411014.</SPAN></FONT></FONT></FONT></P>
+            support@jadooweb.com or by post to 803 Main St, Lake Geneva - 53147, Wisconsin , United States</SPAN></FONT></FONT></FONT></P>
 </div>

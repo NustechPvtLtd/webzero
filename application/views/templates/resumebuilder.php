@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>WebZero</title>
+        <title>Jadooweb</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Loading Bootstrap -->
@@ -38,90 +38,17 @@
 		<link href="<?php echo base_url('studentelements');?>/css/font-awesome.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url('studentelements');?>/css/animsition.min.css">
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url('studentelements');?>/css/progress.css">
-		<link rel="stylesheet" type="text/css" href="<?php echo base_url('studentelements');?>/css/student-style.css">			
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url('studentelements');?>/css/student-style.css">	
+		
+		<link href="<?php echo base_url('assets/sites'); ?>/css/new_builder_student.css" rel="stylesheet">
 		
         <!-- End Student Resume CSS  -->
 		<script src="<?php echo base_url('elements/scripts/jquery-1.11.2.min.js'); ?>"></script> 
-		<link rel="stylesheet" href="<?php echo base_url('assets'); ?>/jquery-ui/jquery-ui.min.css"/>
-		<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/blitzer/jquery-ui.css"/>-->
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/blitzer/jquery-ui.css"/>
 		
     </head>
     <body>
-        <div class="menu affix-top" id="menu" data-spy="affix" data-offset-top="60" >
-            <a href="#" class="toggle"><span class="list-icon"><i></i><i></i><i></i></span></a>
-
-            <div class="main scrollbar-inner" id="main">
-
-                <h3>Blocks</h3>
-
-                <ul id="elements">
-                    <li><a href="#" id="all">All Blocks</a></li>
-                </ul>
-
-                <hr>
-
-                <h3>Pages</h3>
-
-				<ul id="pages">
-                    <li style="display: none;" id="newPageLI">
-                        <input type="text" value="index" name="page">
-                        <span class="pageButtons">
-                            <a href="" class="fileEdit"><span class="fui-new"></span></a>
-                            <a href="" class="fileDel"><span class="fui-cross"></span></a>
-                            <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
-                            <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
-                        </span>
-                    </li>
-
-                    <?php if (count($siteData['pages']) == 0): ?>
-                        <li class="active">
-                            <a href="#page1">index</a>
-                            <span class="pageButtons">
-                                <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
-                            </span>
-                        </li>
-                    <?php else: ?>
-
-                        <?php $counter = 1; ?>
-
-                        <?php foreach ($siteData['pages'] as $page => $frames): ?>
-                            <li <?php if ($counter == 1): ?>class="active"<?php endif; ?>>
-                                <a href="#page<?php echo $counter; ?>"><?php echo $page; ?></a>
-                                <span class="pageButtons">
-                                    <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
-                                    <?php if ($page !== 'index'): ?>
-                                    <a href="" class="fileEdit"><span class="fui-new"></span></a>
-                                    <a href="" class="fileDel"><span class="fui-cross"></span></a>
-                                    <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
-                                    <?php endif; ?>
-                                </span>
-                            </li>
-                            <?php $counter++; ?>
-                        <?php endforeach; ?>
-
-                    <?php endif; ?>
-                </ul>
-
-                <div class="sideButtons clearfix">
-                    <a href="#" class="btn btn-success btn-sm btn-left" id="addPage">Add</a>
-                    <!--<a href="#exportModal" data-toggle="modal" class="btn btn-primary btn-sm disabled actionButtons btn-right">Export</a>-->
-                </div>
-                <!--<hr>-->
-                <!--                <div class="expCenter">
-                                    <a href="#projModal" id="expImp" class="btn btn-primary btn-block" data-toggle="modal">Project Exp/Imp</a>
-                                </div>-->
-                <!--<hr>-->
-            </div><!-- /.main -->
-
-            <div class="second scrollbar-inner" id="second">
-
-                <ul id="elements">
-
-                </ul>
-
-            </div><!-- /.secondSide -->
-
-        </div><!-- /.menu -->
+        
         <div class="header skin-green">
             <a href="<?php echo site_url(); ?>" class="logo icon">
                 <img  class="img-responsive" src="<?php echo base_url(); ?>assets/img/logo.png" alt="Customer area" />            
@@ -158,11 +85,11 @@
                                 }
                                 ?>
 
-                                <li><a href="<?php echo site_url('services') ?>" id="backButton"><span class="fui-arrow-left"></span> <?php echo 'Back to services'; /* $this->lang->line( $t ) */ ?></a></li>
+                                <li><a href="<?php echo site_url('services') ?>" id="backButton"><span class="fui-arrow-left"></span> <?php echo 'Back to services home'; /* $this->lang->line( $t ) */ ?></a></li>
 
                             <?php else: ?>
 
-                                <li><a href="<?php echo site_url('services') ?>" id="backButton"><span class="fui-arrow-left"></span> <?php echo 'Back to services'; /* $this->lang->line('nav_goback_sites') */ ?></a></li>
+                                <li><a href="<?php echo site_url('services') ?>" id="backButton"><span class="fui-arrow-left"></span> <?php echo 'Back to services home'; /* $this->lang->line('nav_goback_sites') */ ?></a></li>
 
                             <?php endif; ?>
 
@@ -203,12 +130,11 @@
             </nav>
         </div>
         <div class="container">
-          <header class="clearfix" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+            <header class="clearfix" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-12">
-						
-							<div class="col-lg-4">
+						<div class="col-md-12">
+							<div class="col-md-4">
 								<div class="modes">
 									<b>Building mode:</b>
 									<label class="radio primary first">
@@ -225,7 +151,7 @@
 									</label>
 								</div>
 							</div>
-							<div class="col-lg-8 float-right">
+							<div class="col-md-8 float-right">
 								<a href="#" id="savePage" class="btn btn-primary disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Nothing new to save</span></a>
 								<a href="#" id="publishPage" class="btn btn-primary disabled actionButtons" data-siteid="<?php echo $siteData['site']->sites_id; ?>" <?php if ($siteData['site']->domain_ok == 0): ?>data-toggle="tooltip"<?php endif; ?> data-placement="bottom" title="You can not publish your site right now. Please update your url details from settings menu." ><span class="fui-export"></span> <?php echo $this->lang->line('actionbuttons_publish') ?> <span class="fui-alert text-danger" <?php if ($siteData['site']->domain_ok == 1): ?>style="display:none"<?php endif; ?>></span></a>
 								<a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-primary disabled actionButtons" ><span class="fui-window"></span> Preview</a>
@@ -252,13 +178,101 @@
 					</div>
 				</div>
 			</header>
+		</div><!-- /.container -->
+		<div class="wrapper row-offcanvas row-offcanvas-left">
+            <aside class="left-side sidebar-offcanvas">
+                <div class="menu affix-top" id="menu" data-spy="affix" data-offset-top="60" >
+					<a id="menu_bar" class="toggle"><span class="list-icon"><i></i><i></i><i></i></span></a>
 
-             <?php echo $body; ?>
-            <!-- Builder Body -->
+					<div class="main scrollbar-inner" id="main">
+						<h3>HTMLS</h3>
 
-        </div><!-- /.container -->
+						<ul id="htmltemplates">
+						
+						</ul>
+						
+						<h3>BLOCKS</h3>
 
-        <div id="styleEditor" class="styleEditor scrollbar-inner" data-spy="affix" data-offset-top="205" >
+						<ul id="elements">
+							<li><a href="#" id="all">All Blocks</a></li>
+						</ul>
+
+						<hr>
+
+						<h3>Pages</h3>
+
+						<ul id="pages">
+							<li style="display: none;" id="newPageLI">
+								<input type="text" value="index" name="page">
+								<span class="pageButtons">
+									<a href="" class="fileEdit"><span class="fui-new"></span></a>
+									<a href="" class="fileDel"><span class="fui-cross"></span></a>
+									<a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
+									<a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
+								</span>
+							</li>
+
+							<?php if (count($siteData['pages']) == 0): ?>
+								<li class="active">
+									<a href="#page1">index</a>
+									<span class="pageButtons">
+										<a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
+									</span>
+								</li>
+							<?php else: ?>
+
+								<?php $counter = 1; ?>
+
+								<?php foreach ($siteData['pages'] as $page => $frames): ?>
+									<li <?php if ($counter == 1): ?>class="active"<?php endif; ?>>
+										<a href="#page<?php echo $counter; ?>"><?php echo $page; ?></a>
+										<span class="pageButtons">
+											<a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
+											<?php if ($page !== 'index'): ?>
+											<a href="" class="fileEdit"><span class="fui-new"></span></a>
+											<a href="" class="fileDel"><span class="fui-cross"></span></a>
+											<a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
+											<?php endif; ?>
+										</span>
+									</li>
+									<?php $counter++; ?>
+								<?php endforeach; ?>
+
+							<?php endif; ?>
+						</ul>
+
+						<div class="sideButtons clearfix">
+							<a href="#" class="btn btn-success btn-sm btn-left" id="addPage">Add</a>
+							<!--<a href="#exportModal" data-toggle="modal" class="btn btn-primary btn-sm disabled actionButtons btn-right">Export</a>-->
+						</div>
+						<!--<hr>-->
+						<!--                <div class="expCenter">
+											<a href="#projModal" id="expImp" class="btn btn-primary btn-block" data-toggle="modal">Project Exp/Imp</a>
+										</div>-->
+						<!--<hr>-->
+					</div><!-- /.main -->
+
+					<div class="second scrollbar-inner" id="second">
+
+						<ul id="elements">
+
+						</ul>
+						
+						<ul id="htmltemplates">
+						
+						</ul>						
+
+					</div><!-- /.secondSide -->
+
+				</div><!-- /.menu -->
+            </aside>
+			<aside class="right-side" id="scr">
+				<?php echo $body; ?>
+				<!-- Builder Body -->
+            </aside>
+        </div>
+		
+		<div id="styleEditor" class="styleEditor scrollbar-inner" data-spy="affix" data-offset-top="205" >
 
             <a href="#" class="close"><span class="fui-cross-inverted"></span></a>
 
@@ -268,7 +282,7 @@
                 <li>Editing:</li>
                 <li class="active" id="editingElement">p</li>
             </ul>
-			
+
 			<div class="margin-bottom-5">
                 <button type="button" class="btn btn-primary  btn-sm btn-block" id="saveStyling"><span class="fui-check-inverted"></span> Apply Changes</button>
             </div>
@@ -285,7 +299,7 @@
             </div>
 			
             <hr>
-
+			
             <ul class="nav nav-tabs" id="detailTabs">
                 <li class="active"><a href="#tab1"><span class="fui-new"></span> Style</a></li>
                 <li style="display: none;"><a href="#link_Tab" id="link_Link"><span class="fui-clip"></span> Link</a></li>
@@ -393,7 +407,9 @@
 
             </div> <!-- /tab-content -->
 
-           
+            
+
+            
 
         <!--<p class="text-center or">
             <span>OR</span>
@@ -865,7 +881,7 @@
                                             </tbody>
                                         </table>
                                     </div><!-- /.table-responsive -->
-
+                                    <div class=""><small>Note:-<mark>This may take few minutes to publish. Please have patients!</mark></small></div>
                                 </div><!-- /.optionPane -->
                             </div>
 
@@ -1316,11 +1332,5 @@
 		}
 		window.onload = init;
 		</script> 		
-        <style>
-            button#uploadVideoButtonDrop{
-                position: relative;
-                display: none;
-            }
-        </style>
     </body>
 </html>

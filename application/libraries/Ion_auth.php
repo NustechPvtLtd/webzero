@@ -571,7 +571,7 @@ FROM `users` JOIN `sites` ON `sites`.`users_id` = `users`.`id` WHERE `sites`.`si
             $this->email->clear();
             $this->email->from($sender_email, $sender_name);
             $this->email->to($result[0]['email']);
-            $this->email->subject($sender_name.' Contact you');
+            $this->email->subject('Mail from your webpage at '. site_url());
             $this->email->message($message);
 
             if ($this->email->send())

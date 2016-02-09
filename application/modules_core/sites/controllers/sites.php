@@ -7,9 +7,9 @@ class Sites extends MY_Controller {
 
     public $data = array();
     public $pages = array();
-    private $_hostName = 'www.webzero.in';
-    private $_userName = 'webzero';
-    private $_password = '124essdfd';
+    private $_hostName = 'www.jadooweb.com';
+    private $_userName = 'jadoowe';
+    private $_password = 'greatpune123';
 
     function __construct()
     {
@@ -23,7 +23,7 @@ class Sites extends MY_Controller {
         $this->load->model('sites/media_storage_model');
         $this->load->library('s3');
 
-        $this->data['pageTitle'] = "JadooWeb Builder";
+        $this->data['pageTitle'] = "Jadooweb";
         $this->data['title'] = $this->router->fetch_method();
         $this->data['pageMetaDescription'] = $this->router->fetch_class() . '|' . $this->router->fetch_method();
 
@@ -43,7 +43,7 @@ class Sites extends MY_Controller {
 //        die();
         switch ($method) {
             case 'site': {
-                    if ($this->ion_auth->in_group('individuals')) {
+                    if ($this->ion_auth->in_group(array('individuals','employer','ecommerce'))) {
                         $this->site_individual($args[0]);
                     } elseif ($this->ion_auth->in_group('students')) {
                         $this->site_student($args[0]);
@@ -241,7 +241,7 @@ class Sites extends MY_Controller {
 
             if ($uri) {
                 $uri = $uri->uri . '/' . 'Videos';
-                $connected = @fsockopen("www.webzero.in", 80);
+                $connected = @fsockopen("www.jadooweb.com", 80);
                 $userVideos = ($connected) ? $this->s3->getBucket($bucket, $uri) : FALSE;
             }
 
@@ -315,7 +315,7 @@ class Sites extends MY_Controller {
 
             if ($uri) {
                 $uri = $uri->uri . '/' . 'Videos';
-                $connected = @fsockopen("www.webzero.in", 80);
+                $connected = @fsockopen("www.jadooweb.com", 80);
                 $userVideos = ($connected) ? $this->s3->getBucket($bucket, $uri) : FALSE;
             }
 
@@ -356,8 +356,11 @@ class Sites extends MY_Controller {
             die(json_encode($return));
         }
 
-        $siteData = $this->sitemodel->getSite($siteID);
-
+        $siteData = $this->sitemodel->getSiteData($siteID);
+//        echo '<pre>';
+//        print_r($siteData);
+//        echo '</pre>';
+//        die();
         if ($siteData == false) {
 
             //all did not go well
@@ -377,7 +380,7 @@ class Sites extends MY_Controller {
             $return = array();
 
             $return['responseCode'] = 1;
-            $return['responseHTML'] = $this->load->view('partials/sitedata', array('data' => $siteData), true);
+            $return['responseHTML'] = $this->load->view('partials/sitedata', $siteData, true);
 
             echo json_encode($return);
         }
@@ -438,9 +441,9 @@ class Sites extends MY_Controller {
 
 
             //we'll send back the updated site data as well
-            $siteData = $this->sitemodel->getSite($_POST['siteID']);
+            $siteData = $this->sitemodel->getSiteData($_POST['siteID']);
 
-            $return['responseHTML2'] = $this->load->view('partials/sitedata', array('data' => $siteData), true);
+            $return['responseHTML2'] = $this->load->view('partials/sitedata', $siteData, true);
 
 //			$return['siteName'] = $siteData['site']->sites_name;
             $return['siteID'] = $siteData['site']->sites_id;
@@ -625,9 +628,11 @@ class Sites extends MY_Controller {
         $pageContent = str_replace('<div data-type="video" class="frameCover" data-selector=".frameCover"></div>', "", $pageContent);
         $pageContent = str_replace('class="frameCover"', "", $pageContent);
 
-//        $pageContent = str_replace("<!-- site contact url div -->", '<div id="contact-url" data-content="' . site_url('login/site_contact/' . $this->encrypt->encode($_POST['siteID'])) . '"></div>', $pageContent);
+        $pageContent = str_replace("<!-- site contact url div -->", '<div id="contact-url" data-content="' . site_url('login/site_contact/' . $this->encrypt->encode($_POST['siteID'])) . '"></div>', $pageContent);
 
         $pageContent = str_replace("<!-- site counter url div -->", '<div id="counter-url" data-content="' . site_url('login/visitor_counter/' . $this->encrypt->encode($_POST['siteID'])) . '"></div>', $pageContent);
+        
+        $pageContent = str_replace("<!-- site subscribe url div -->", '<div id="subscribe-url" data-content="' . site_url('login/subscribe/' . $this->encrypt->encode($_POST['siteID'])) . '"></div>', $pageContent);
 
         $pageContent = str_replace("<!-- site url div -->", '<div id="site-url" data-content="' . base_url('elements') . '"></div>', $pageContent);
 
@@ -652,6 +657,9 @@ class Sites extends MY_Controller {
         }
         if (strstr($pageContent, 'src="/elements/images')) {
             $pageContent = str_replace('src="/elements/images', 'src="' . base_url('elements') . '/images', $pageContent);
+        }
+        if (strstr($pageContent, 'url(&quot;/elements/images')) {
+            $pageContent = str_replace('url(&quot;/elements/images', 'url(&quot;'.site_url('elements/images'), $pageContent);
         }
         if (stristr($pageContent, 'href="scripts')) {
             $pageContent = str_replace('href="scripts', 'href="' . base_url('elements') . '/scripts', $pageContent);
@@ -793,7 +801,7 @@ class Sites extends MY_Controller {
         $siteData = $this->sitemodel->getSite($siteID);
 
         if (isset($siteData['site']->domain) && $siteData['site']->published) {
-            $result = $this->CPanelAddons->delSub($siteData['site']->domain, "webzero.in");
+            $result = $this->CPanelAddons->delSub($siteData['site']->domain, "jadooweb.com");
             if (isset($result['cpanelresult']['data'][0]['result']) && trim($result['cpanelresult']['data'][0]['result']) == '0') {
                 $return = array();
 
@@ -1400,6 +1408,7 @@ class Sites extends MY_Controller {
 //		foreach( $_POST['xpages'] as $page=>$content ) {
         $page = $_POST['item'];
         $content = $_POST['pageContent'];
+
         //get page meta
         $pageMeta = $this->pagemodel->getSinglePage($_POST['siteID'], $page);
 
@@ -1436,12 +1445,12 @@ class Sites extends MY_Controller {
         $accUrl = site_url('login/checkProfileLogin/' . $this->encrypt->encode($_POST['siteID']));
         $script = <<<'EOS'
 				<?PHP 
-					if(!isset($_SESSION) || session_id() == "") { 
+                session_start();
+                if(!isset($_SESSION) || session_id() == "") { 
 					if(isset($_REQUEST['sessid']) && $_REQUEST['sessid']!="" ) {
 						list($sid, $ext) = explode('-', $_REQUEST['sessid']);
 						session_id($sid);
 					}
-					session_start();
 				} 
 			?>
 EOS;
@@ -1485,7 +1494,7 @@ EOD;
 
         $pageContent = str_replace("<!-- page id div -->", '<div id="page-id" data-content="' . $pageMeta->pages_id . '"></div>', $pageContent);
 
-        $pageContent = str_replace("<!-- page url div -->", '<div id="page-url" data-content="' . $remote_url . '/' . $page . '.html"></div>', $pageContent);
+        $pageContent = str_replace("<!-- page url div -->", '<div id="page-url" data-content="' . $remote_url . '/' . $page . '.php"></div>', $pageContent);
 
 
         if (!stristr($pageContent, '<link href="' . base_url('elements'))) {
@@ -1506,6 +1515,15 @@ EOD;
         if (strstr($pageContent, 'src="/elements/images')) {
             $pageContent = str_replace('src="/elements/images', 'src="' . $base_url_all . '/images', $pageContent);
         }
+        if (strstr($pageContent, 'url(&quot;/elements/images')) {
+            $pageContent = str_replace('url(&quot;/elements/images', 'url(&quot;'.site_url('elements/images'), $pageContent);
+        }
+        if (strstr($pageContent, 'url(&quot;/studentelements/images')) {
+            $pageContent = str_replace('url(&quot;/studentelements/images', 'url(&quot;'.site_url('studentelements/images'), $pageContent);
+        }
+        if (strstr($pageContent, 'src="/studentelements/images')) {
+            $pageContent = str_replace('src="/studentelements/images', 'src="' . $base_url_all . '/images', $pageContent);
+        }
         if (stristr($pageContent, 'href="scripts')) {
             $pageContent = str_replace('href="scripts', 'href="' . $base_url_all . '/scripts', $pageContent);
         }
@@ -1518,10 +1536,13 @@ EOD;
         if (stristr($pageContent, 'src="./images')) {
             $pageContent = str_replace('src="./images', 'src="' . $base_url_all . '/images', $pageContent);
         }
+        if (stristr($pageContent, 'src="../elements/scripts')) {
+            $pageContent = str_replace('src="../elements/scripts', 'src="' . site_url('/elements/scripts') , $pageContent);
+        }
         if (stristr($pageContent, 'href="./images')) {
             $pageContent = str_replace('href="./images', 'href="' . $base_url_all . '/images', $pageContent);
         }
-        write_file($absPath . '/' . $page . ".php", $pageContent);
+        write_file($absPath . '/' . $page . ".php", trim($pageContent));
 //		}
         (isset($userID) && $userID != '') ? remove_directory('./temp/' . $userID) : '';
 
@@ -1731,6 +1752,69 @@ EOD;
                 }
             }
         }
+    }
+    
+    public function preview_profile($id)
+    {
+        $site_id = $this->encrypt->decode($id);
+        $siteDetails = $this->sitemodel->getSite($site_id);
+        $remote_url = '';
+        
+        if ($siteDetails == false) {
+            die("No details found");
+        }
+        
+        if ($siteDetails['site']->url_option == 'freeUrl') {
+            $remote_url = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $siteDetails['site']->domain;
+        } else {
+            $remote_url = 'http://' . $siteDetails['site']->domain;
+        }
+        
+        $pageContent = '';
+        if(!empty($siteDetails['pages']['index'])){
+            foreach ($siteDetails['pages']['index'] as $value) {
+                $pageContent .=$value->frames_content. "\r\n";
+            }
+        }
+        $pageMeta = $this->pagemodel->getSinglePage($site_id, 'index');
+        $base_url = base_url('studentelements');
+        
+        $this->data['pageTitle'] = $siteDetails['site']->sites_name;
+
+        if (stristr($pageContent, 'href="css')) {
+            $pageContent = str_replace('href="css', 'href="' . $base_url . '/css', $pageContent);
+        }
+        if (stristr($pageContent, 'href="scripts')) {
+            $pageContent = str_replace('href="scripts', 'href="' . $base_url . '/scripts', $pageContent);
+        }
+        if (stristr($pageContent, 'href="images')) {
+            $pageContent = str_replace('href="images', 'href="' . $base_url . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'src="scripts')) {
+            $pageContent = str_replace('src="scripts', 'src="' . $base_url . '/scripts', $pageContent);
+        }
+        if (stristr($pageContent, 'url(images')) {
+            $pageContent = str_replace('url(images', 'url(' . $base_url . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'src="./images')) {
+            $pageContent = str_replace('src="./images', 'src="' . $base_url . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'src="images')) {
+            $pageContent = str_replace('src="images', 'src="' . $base_url . '/images', $pageContent);
+        }
+        if (stristr($pageContent, 'href="./images')) {
+            $pageContent = str_replace('href="./images', 'href="' . $base_url . '/images', $pageContent);
+        }
+
+        $this->data['site_url'] = '<div id="site-url" data-content="' . $base_url . '"></div>';
+        $this->data['contact_url'] = '<div id="contact-url" data-content="' . site_url('login/site_contact/' . $this->encrypt->encode($site_id)) . '"></div>';
+        $this->data['counter_url'] = '<div id="counter-url" data-content="' . site_url('login/visitor_counter/' . $this->encrypt->encode($site_id)) . '"></div>';
+        $this->data['page_id'] = '<div id="page-id" data-content="' . $pageMeta->pages_id . '"></div>';
+        $this->data['page_url'] = '<div id="page-url" data-content="' . $remote_url . '/index.php"></div>';
+        $this->data['siteurl'] = '<input type="hidden" class="siteurl" name="siteurl" value="'.site_url().'">';
+        $this->data['siteId'] = '<input type="hidden" class="siteId" name="siteId" value="'.  base64_encode($site_id).'">';
+        $this->data['pageContent'] = $pageContent;
+        $this->template->load('resume_preview', 'sites', 'sites/preview_resume', $this->data);
     }
 }
 

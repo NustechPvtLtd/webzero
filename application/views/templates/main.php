@@ -178,7 +178,7 @@
                     </div>
                     <ul class="sidebar-menu">
                         <?php
-                        if ($this->ion_auth->in_group(array('individuals', 'students'))) {
+                        if ($this->ion_auth->in_group(array('individuals', 'students', 'ecommerce'))) {
                             include_once 'user_menu.php';
                         } elseif ($this->ion_auth->in_group(array('employer'))) {
                             include_once 'recruiter_menu.php';
@@ -216,6 +216,7 @@
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/notify.js"></script>
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/adminlte.js"></script>	
+        <script src="<?php echo base_url('assets/sites'); ?>/js/jquery-ui.min.js"></script>
         <!--<script type="text/javascript" src="<?php //echo base_url();      ?>customer/assets/js/app.js"></script>-->
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/flot/jquery.flot.min.js"></script>
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/flot/jquery.flot.resize.min.js"></script>

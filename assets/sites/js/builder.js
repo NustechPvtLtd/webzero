@@ -20,7 +20,7 @@ editableItems['.diagram .column span'] = ['height', 'color', 'background-color',
 editableItems['.diagram-horizontal .column span'] = ['width', 'color', 'background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.color-mark'] = ['background-color'];
 editableItems['.icon'] = ['color', 'font-size', 'opacity', 'animation', 'data-wow-duration', 'data-wow-delay'];
-editableItems['nav'] = ['background-color', 'color'];
+editableItems['nav'] = ['background-color', 'color', 'opacity'];
 editableItems['nav a'] = ['color', 'font-size', 'background-color', 'font-family', 'text-transform'];
 editableItems['nav li'] = ['background-color', 'border-color', 'border-width'];
 editableItems['h1'] = ['color', 'font-size', 'background-color', 'font-family', 'margin-bottom', 'margin-top', 'animation', 'data-wow-duration', 'data-wow-delay'];
@@ -47,7 +47,7 @@ editableItems['.carousel-control .arrow'] = ['border-radius', 'border-color', 'b
 editableItems['.num-icon'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.countdown'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.border-block'] = ['font-size', 'font-family', 'color', 'background-color', 'border-color', 'border-width', 'border-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
-editableItems['.editContent'] = ['color', 'font-size', 'background-color', 'font-family'];
+editableItems['.editContent'] = ['color', 'font-size', 'background-color', 'font-family', 'padding-right', 'padding-left'];
 editableItems['#team-circle .col-sm-4'] = [];
 editableItems['#team-full .col-sm-4'] = [];
 editableItems['#price-3col .benefits-list'] = [];
@@ -146,7 +146,8 @@ if (typeof (Storage) !== "undefined") {
 $(window).load(function() {
 
     $('#loader').fadeOut(function() {
-        $(".videoGallery").html5gallery();
+        $('[class^="html5gallery-container"]').remove();
+        $(".html5gallery").html5gallery();
     });
 
 
@@ -462,7 +463,9 @@ function makeSortable(el) {
                         success: function(data) {
                             ui.item.find('section:first').css('background-image', 'none');
                             ui.item.find('section:first').html(data);
-                            ui.item.find('section').find('.videoGallery').html5gallery();
+
+                            ui.item.find('section').find('[class^="html5gallery-container"]').remove();
+                            ui.item.find('section').find('.html5gallery').html5gallery();
                         }
                     });
                     ui.item.find('section:first').uniqueId();
@@ -564,7 +567,8 @@ $('#second #elements').on('click', 'li', function() {
         $('#pageList > ul:visible li').each(function() {
             $(this).find('.zoomer-cover > a').remove();
         });
-        $(".videoGallery").html5gallery();
+        $('[class^="html5gallery-container"]').remove();
+        $(".html5gallery").html5gallery();
         pageEmpty();
         allEmpty();
         $('#start').hide();
@@ -1057,11 +1061,23 @@ function styleClick(el) {
         $('#imageModal').on('click', '.image button.useImage', function() {
 
             //update live image
-            $(el).attr('src', $(this).attr('data-url'));
-            $(el).parents("a").attr('href', $(this).attr('data-url'));
-
+            var img_url = $(this).attr('data-url');
+            if ($(el).is('[class^="html5gallery-elem-image"]')) {
+                $(el).parents('div.imageGallery').find("a > img").each(function() {
+                    if ($(this).attr('src') == $(el).attr('src')) {
+                        $(this).attr('src', img_url);
+                        $(this).parent('a').attr('href', img_url);
+                    }
+                });
+                $('[class^="html5gallery-container"]').remove();
+                $(".html5gallery").html5gallery();
+                $(".modes label:nth-of-type(2)").click();
+            } else {
+                $(el).attr('src', img_url);
+                $(el).parents("a").attr('href', img_url);
+            }
             //update image URL field
-            $('input#imageURL').val($(this).attr('data-url'));
+            $('input#imageURL').val(img_url);
 
             //hide modal
             $('#imageModal').modal('hide');
@@ -1265,29 +1281,27 @@ function styleClick(el) {
 
         }
 
-
         //do we need to upload an image?
         if ($('a#img_Link').css('display') == 'block') {
-
             //no image to upload, just a SRC change
             if ($('input#imageURL').val() != '' && $('input#imageURL').val() != $(el).attr('src')) {
 
-                $(el).attr('src', $('input#imageURL').val());
-                $(el).load();
+                if ($(el).is('[class^="html5gallery-elem-image"]')) {
+                    $(el).parents('div.imageGallery').find("a > img").each(function() {
+                        if ($(this).attr('src') == $(el).attr('src')) {
+                            $(this).attr('src', $('input#imageURL').val());
+                            $(this).parent('a').attr('href', $('input#imageURL').val());
+                        }
+                    });
+                    $('[class^="html5gallery-container"]').remove();
+                    $(".html5gallery").html5gallery();
+                    $(".modes label:nth-of-type(2)").click();
+                } else {
+                    $(el).attr('src', $('input#imageURL').val());
+                    $(el).load();
+                }
             }
         }
-
-        //do we need to upload an video?
-        if ($('a#video_Link').css('display') == 'block') {
-
-            //no video to upload, just a SRC change
-            if ($('input#videoURL').val() != '' && $('input#videoURL').val() != $(el).attr('data-src')) {
-                $(el).prev(".videoGallery").remove();
-                $('<div class="videoGallery" data-responsive="true" responsivefullscreen="true" data-html5player="true" data-src="' + $('input#videoURL').val() + '" data-showtitle="false" style="display:none;"></div>').insertBefore($(el));
-                $(el).prev(".videoGallery").html5gallery();
-            }
-        }
-
 
         //icons
 
@@ -1355,8 +1369,6 @@ function styleClick(el) {
             }, 3000);
 
         });
-
-        heightAdjustment(el);
 
         setPendingChanges(true);
 
@@ -1529,7 +1541,7 @@ function styleClick(el) {
 
         activeStyling();
         //possible height adjustments
-        heightAdjustment(el);
+
 
 
         if ($(el).attr('data-selector') == '.diagram .column span') {
@@ -1556,6 +1568,7 @@ function styleClick(el) {
     //reset button
     $('button#resetStyleButton').unbind('click').bind('click', function() {
 
+        pos = $(el).css("position");
         if ($(el).closest('div#wrap').width() != $(el).width()) {
 
             $(el).attr('style', '').css({'outline': '3px dotted red', 'cursor': 'pointer'})
@@ -1566,6 +1579,7 @@ function styleClick(el) {
 
         }
 
+        $(el).css("position", pos);
         $('#styleEditor form#stylingForm').height($('#styleEditor form#stylingForm').height() + "px");
 
         $('#styleEditor form#stylingForm .form-group:not(#styleElTemplate)').fadeOut(500, function() {
@@ -1992,7 +2006,7 @@ $(function() {
 
             //close style editor
             closeStyleEditor();
-
+            $('[class^="html5gallery-car"]').show();
             //hide all section covers and activate designMode
 
             $('#pageList ul .frameCover').each(function() {
@@ -2068,8 +2082,15 @@ $(function() {
                         $('#editContentModal').modal('show');
 
                         //for the elements below, we'll use a simplyfied editor, only direct text can be done through this one
-
-                        if (this.tagName == 'SMALL' || this.tagName == 'A' || this.tagName == 'SPAN' || this.tagName == 'B' || this.tagName == 'I' || this.tagName == 'EM' || this.tagName == 'STRONG' || this.tagName == 'SUB' || this.tagName == 'BUTTON' || this.tagName == 'LABEL')
+                        if ($(this).hasClass('pprice')) {
+                            $("#editContentModal #contentToEdit").on('keypress',function(e) {
+                                //if the letter is not digit then don't type anything
+                                if (e.which != 8 && e.which != 0 && e.which != 46 && e.which > 31 && (e.which < 48 || e.which > 57)) {
+                                    return false;
+                                }
+                            });
+                        }
+                        else if (this.tagName == 'SMALL' || this.tagName == 'A' || this.tagName == 'SPAN' || this.tagName == 'B' || this.tagName == 'I' || this.tagName == 'EM' || this.tagName == 'STRONG' || this.tagName == 'SUB' || this.tagName == 'BUTTON' || this.tagName == 'LABEL')
                         {
                             $('#editContentModal #contentToEdit').redactor({
                                 buttons: ['html', 'bold', 'italic', 'deleted', 'alignment'],
@@ -2208,7 +2229,7 @@ $(function() {
 
             // spcl for portfolio templates
             $(".portfolio-list span").css("display", "none");
-
+            $('[class^="html5gallery-car"]').hide();
         }
     });
 
@@ -2218,7 +2239,7 @@ $(function() {
         //alert( elToUpdate.text() )
         if (elToUpdate.hasClass('pprice') == true)
         {
-            var text1 = $('#editContentModal #contentToEdit').redactor('code.get');
+            var text1 = $('#editContentModal #contentToEdit').val();
 
             var checkprice = /^\d+(\.\d{0,2})?$/;
             var pricevalid = checkprice.test(text1);
@@ -2228,13 +2249,19 @@ $(function() {
                 alert("Please enter only numbers");
                 return false;
             }
-
+            elToUpdate.html(text1).css({'outline': '', 'cursor': ''});
+            $('#editContentModal #contentToEdit').val('');
+        }else{
+            elToUpdate.html($('#editContentModal #contentToEdit').redactor('code.get')).css({'outline': '', 'cursor': ''});
+            $('#editContentModal textarea').each(function() {
+                $(this).redactor('core.destroy');
+                $(this).val('');
+            });
         }
         if (elToUpdate.has("table")) {
             elToUpdate.find("table").addClass("table table-bordered");
         }
-        elToUpdate.html($('#editContentModal #contentToEdit').redactor('code.get')).css({'outline': '', 'cursor': ''});
-
+        
         var text = elToUpdate.text();
 
         if (elToUpdate.hasClass('createproduct') == true)
@@ -2242,20 +2269,10 @@ $(function() {
             //function to set values for product form 1
             updateproductinfo(elToUpdate, text);
         }
-
-        $('#editContentModal textarea').each(function() {
-
-            $(this).redactor('core.destroy');
-            $(this).val('');
-
-        });
-
+        
         $('#editContentModal').modal('hide');
 
         $(this).closest('div#wrap').removeClass('modal-open').attr('style', '');
-
-        //reset section height
-        heightAdjustment(elToUpdate.get(0));
 
         //element was deleted, so we've got pending changes
         setPendingChanges(true);
@@ -2403,7 +2420,8 @@ $(function() {
                     frameToReset.css('background-image', 'none');
                     frameToReset.html('');
                     frameToReset.html(data);
-                    frameToReset.find('.videoGallery').html5gallery();
+                    frameToReset.find('[class^="html5gallery-container"]').remove();
+                    frameToReset.find(".html5gallery").html5gallery();
                 }
             });
             setPendingChanges(true);
@@ -2589,6 +2607,8 @@ $(function() {
     $('#previewModal').on('shown.bs.modal', function(e) {
 
         $('#previewModal form input[type="hidden"]').remove();
+
+        $(".modes label:nth-of-type(2)").click();
 
         //grab visible page
         $('#pageList > ul:visible').each(function() {
@@ -2897,10 +2917,24 @@ $(function() {
 
         newPageLI.addClass('active').addClass('edit');
 
+        var navigationStart = '<li class="element navigation " style="display: list-item; height: auto;">';
+        var navigationEnd = '</li>';
+        var navigation = '';
+        var footerStart = '<li class="element footer " style="display: list-item; height: auto;">';
+        var footerEnd = '</li>';
+        var footer = '';
+        //Copy navigation elements
+        $('#pageList ul:first > li').each(function() {
+            if ($(this).hasClass('navigation')) {
+                navigation = navigationStart + $(this).html() + navigationEnd;
+            }
+            if ($(this).hasClass('footer')) {
+                footer = footerStart + $(this).html() + footerEnd;
+            }
+        });
 
         //create the page structure
-
-        newPageList = $('<ul></ul>');
+        newPageList = $('<ul>' + navigation + footer + '</ul>');
         newPageList.css('display', 'block');
         newPageList.attr('id', 'page' + ($('#pages li').size() - 1));
 
@@ -2916,7 +2950,7 @@ $(function() {
         $('#pageTitle span span').text('page' + ($('#pages li').size() - 1));
 
         $('#frameWrapper').addClass('empty');
-        $('#start').fadeIn();
+//        $('#start').fadeIn();
 
         //add page to page dropdown
 
@@ -3108,7 +3142,8 @@ $(function() {
     $('#publishPage').click(function(e) {
 
         e.preventDefault();
-        $('input:radio[name=mode]#modeBlock').trigger('click');
+//        $('input:radio[name=mode]#modeBlock').trigger('click');
+        $(".modes label:nth-of-type(2)").click();
 
         if (publishActive == 0) {//check if we're currently publishing anything
 
@@ -3310,7 +3345,7 @@ $(function() {
 
     //submit publish
     $('#publishSubmit').click(function() {
-
+        $(".modes label:nth-of-type(2)").click();
         //track the publishing state
         publishActive = 1;
 
@@ -3546,23 +3581,6 @@ $(function() {
 
     });
 
-    $('#domainSubmittButton').click(function() {
-        if ($("input:radio[name='domain']").is(':checked')) {
-            $.ajax({
-                url: $('form#book-domain-form').attr('action'),
-                type: 'post',
-                data: $('form#book-domain-form').serialize()
-            }).done(function(ret) {
-                $('.search-results-container').html(' ');
-                $('.search-results-container').html(ret);
-                $('#domain_result').show();
-                $('#domainSubmittButton').attr('disabled', 'disabled');
-            });
-        } else {
-            alert('Please select domain!');
-        }
-    });
-
     //update page settings
     $('button#pageSettingsSubmittButton').click(function() {
 
@@ -3768,7 +3786,7 @@ function publishAsset() {
 
         if (f) {
 
-            $("#menu").css("left", "-210px");
+            $("#mn").css("left", "-210px");
 
             $("#scr").css("margin-left", "5px");
 
@@ -3778,7 +3796,7 @@ function publishAsset() {
 
         else {
 
-            $("#menu").css("left", "0px");
+            $("#mn").css("left", "0px");
 
             $("#scr").css("margin-left", "215px");
 

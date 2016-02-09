@@ -171,9 +171,9 @@ class Productsmodel extends CI_Model {
 			
 			$mail_body = "Hello".$firstname.","."<br>Thank you for your order. This e-mail confirms that we've received your order. <br><br> Below are your order details. <br><br><b>Product Name</b> - ".$pname."<br><br><b>Price</b> - ".$price."<br><br><b>Quantity</b> - ".$quantity."<br><br><b>Total Amount</b> - ".$amount." <br><br>";
 
-			 $headers  ='From: Webzero <info@webzero.in>' . "\r\n" .
+			 $headers  ='From: Jadooweb <info@jadooweb.com>' . "\r\n" .
 	
-				'Reply-To: info@webzero.in' . "\r\n" .
+				'Reply-To: info@jadooweb.com' . "\r\n" .
 	
 				'X-Mailer: PHP/' . phpversion() . "\r\n" .
 	

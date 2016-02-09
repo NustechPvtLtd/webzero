@@ -145,8 +145,9 @@
             });
             $.mask.definitions['9'] = '';
             $.mask.definitions['d'] = '[0-9]';
-            $('#phone').mask("+91 dd dd dddddd");
-            $('#blng_zipcode').mask("ddd ddd");
+//            $.mask.definitions['x'] = '[A-Z0-9]';
+            $('#phone').mask("ddd ddd dddd");
+            $('#blng_zipcode').mask("*** ***");
             $(".city").bind("keyup", function(event) {
                 var regex = /^[a-zA-Z\s]+$/;
                 if (!regex.test($(this).val())) {

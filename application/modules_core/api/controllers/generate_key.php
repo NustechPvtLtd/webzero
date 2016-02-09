@@ -12,7 +12,7 @@ class Generate_key extends MX_Controller{
     {
         parent::__construct();
         $this->load->library(array('ion_auth','form_validation', 'template'));
-        $this->load->config('rest');
+        $this->load->config('rest', TRUE);
         $this->load->model('api/api_key_model');
         $this->load->model('sites/media_storage_model');
         $this->load->model('login/ion_auth_model');
@@ -75,7 +75,7 @@ class Generate_key extends MX_Controller{
                 $return = array(
                     'status' => 'success',
                     'item' => array(
-                        $this->config->item('rest_key_name') => $key,
+                        $this->config->item('rest_key_name','rest') => $key,
                         'user_id' => $responce,
                         'bucket_name' => $bucket,
                         'folder_name' => $uri
@@ -117,7 +117,7 @@ class Generate_key extends MX_Controller{
 		do
 		{
 			$salt = do_hash(time().mt_rand());
-			$new_key = substr($salt, 0, $this->config->item('rest_key_length'));
+			$new_key = substr($salt, 0, $this->config->item('rest_key_length','rest'));
 		}while ($this->_key_exists($new_key));
 
 		return $new_key;
@@ -142,7 +142,7 @@ class Generate_key extends MX_Controller{
 	private function _insert_key($key, $data)
 	{
 		
-		$data[$this->config->item('rest_key_column')] = $key;
+		$data[$this->config->item('rest_key_column','rest')] = $key;
 		$data['date_created'] = function_exists('now') ? now() : time();
 
 		return $this->api_key_model->insert_key($data);

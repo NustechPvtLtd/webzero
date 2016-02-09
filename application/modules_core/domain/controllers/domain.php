@@ -88,16 +88,23 @@ class Domain extends MY_Controller {
                 $table = array();
                 foreach ($data as $key => $value) {
                     if($value['status']=='available'){
-                        $classkey = $value['classkey'];
-                        if(array_key_exists($classkey, $priceArray)){
+//                        $classkey = $value['classkey'];
+//                        if(array_key_exists($classkey, $priceArray)){
                             $table[]=  array_merge(
                                     array(form_radio('domain', $key),'name'=>$key),
                                     array(
                                         $value['status'],
-                                        $priceArray[$classkey]['addnewdomain'][1].' INR'
+//                                        $priceArray[$classkey]['addnewdomain'][1].' USD'
                                     )
                                 );
-                        }
+//                        }
+                    }else{
+                        $table[]=  array_merge(
+                            array('','name'=>$key),
+                            array(
+                                'Not available',
+                            )
+                        );
                     }
                 }
                 
@@ -123,10 +130,11 @@ class Domain extends MY_Controller {
                   );
 
                 $this->table->set_template($tmpl);
-                $this->table->set_heading('#','Name', 'Status', 'Price');
+                $this->table->set_heading('#','Name', 'Status');
                 echo $this->table->generate($table);
             }  else {
-                echo $data['status'].' : '.$data['message'];
+                echo 'Somthing went wrong, Please try again later!';
+                
             }
         }
     }
@@ -187,7 +195,7 @@ class Domain extends MY_Controller {
             userdata('domain_order_id', $order_id);
             userdata('site_id', $site_id);
             
-            $return['responseCode'] = 0;
+                $return['responseCode'] = 0;
             $return['responseHTML'] = $this->load->view('adddomain', $this->data, true);
         } else {
             $temp['header'] = "Add Your Personal Domain";

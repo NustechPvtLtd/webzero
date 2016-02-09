@@ -24,9 +24,9 @@ class login extends MX_Controller
         //$this->load->view('includes/template', $this->data);	
         $group = $this->ion_auth->get_groups(array('neglectgroup'=>array('admin')));
         if (!$this->ion_auth->logged_in()) {
-            $this->data ['title'] = 'Web Zero';
+            $this->data ['title'] = 'Jadooweb';
                 
-            $this->data ['pageMetaDescription'] = 'Login to WebZero.in';
+            $this->data ['pageMetaDescription'] = 'Login to Jadooweb.com';
 
             //validate form input
             $this->form_validation->set_rules('identity', 'Email/Username', 'required');
@@ -95,7 +95,7 @@ class login extends MX_Controller
             }
 
             $this->data['title'] = 'Users';
-            $this->data['pageMetaDescription'] = 'webzero.in';
+            $this->data['pageMetaDescription'] = 'jadooweb.com';
             $this->data['pageHeading'] = lang('index_heading');
             $this->data['css'] = array(
                 '<link href="'. base_url().'assets/datatable/css/dataTables.bootstrap.css" type="text/css" rel="stylesheet">',
@@ -214,7 +214,7 @@ class login extends MX_Controller
         }
         
         $this->data['title'] = 'Forgot Password';
-        $this->data['pageMetaDescription'] = 'webzero.in';
+        $this->data['pageMetaDescription'] = 'jadooweb.com';
 
         if ($this->form_validation->run() == false) {
             //setup the input
@@ -276,7 +276,7 @@ class login extends MX_Controller
 
         if ($user) {
             $this->data ['title'] = 'Reset Password';
-            $this->data ['pageMetaDescription'] = 'webzero.in';
+            $this->data ['pageMetaDescription'] = 'jadooweb.com';
             //if the code is valid then display the password reset form
 
             $this->form_validation->set_rules('new', $this->lang->line('reset_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
@@ -417,7 +417,7 @@ class login extends MX_Controller
     public function create_user()
     {
         $this->data['title'] = 'Create User';
-        $this->data['pageMetaDescription'] = 'webzero.in';
+        $this->data['pageMetaDescription'] = 'jadooweb.com';
 
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()) {
             redirect('login', 'refresh');
@@ -750,7 +750,7 @@ class login extends MX_Controller
     {
         $this->data ['title'] = 'Registration';
             
-        $this->data ['pageMetaDescription'] = 'Webzero.in';
+        $this->data ['pageMetaDescription'] = 'jadooweb.com';
         if ($this->ion_auth->logged_in()) {
             redirect('/', 'refresh');
         }
@@ -781,19 +781,12 @@ class login extends MX_Controller
             //check to see if we are creating the user
             //redirect them back to the admin page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-//            redirect("register", 'refresh');
            
+        }else {
+            //display the create user form
+            $this->session->set_flashdata('message', validation_errors());
         }
         redirect(site_url()."#login_register", 'refresh');
-        /*else {
-            //display the create user form
-            //set the flash data error message if there is one
-            $this->data['message'] = ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message'));
-        
-            redirect(site_url()."#login_register", 'refresh');
-//            $this->template->load('home', 'login', 'home', $this->data);
-            
-        }*/
     }
 
     public function register_google()
@@ -913,6 +906,31 @@ class login extends MX_Controller
                 $status['formname']    = $formname;
                 $status['message']    = "Something went wrong, Please try leter.!!!!";
                 echo json_encode($status);
+            }
+        } else {
+            // control will not come here test in future if in use..
+            $status['status']    = "error";
+            $status['message']    = "Please feel all required fields...";
+            echo json_encode($result);
+        }
+    }
+    
+    public function subscribe($id)
+    {
+        header('Access-Control-Allow-Origin: *');
+        $site_id = $this->encrypt->decode($id);
+        $status = array();
+        
+        if (!empty($_POST['newsletter_email']) && filter_var($_POST['newsletter_email'], FILTER_VALIDATE_EMAIL)) {
+            $email     = $_POST['newsletter_email'];
+            $name = (isset($_POST['newsletter_name']))?$_POST['newsletter_name']:$email;
+            $message = $name.' has requested for email subscription.';
+            // Now its time to send the mail to user. Function will work for you...
+            $result = $this->ion_auth->contact_webpage_owner($email, $name, $message, $site_id);
+            if ($result) {
+                echo 'Got it, you\'ve been added to our email list.';
+            } else {
+                echo "Something went wrong, Please try leter.!!!!";
             }
         } else {
             // control will not come here test in future if in use..
@@ -1207,20 +1225,20 @@ class login extends MX_Controller
     
     public function privacy_policy()
     {
-        $this->data ['title'] = 'Web Zero';
+        $this->data ['title'] = 'Jadooweb';
         $this->template->load('external', 'login', 'privacy', $this->data);
     }
     
     public function terms_and_condition()
     {
-        $this->data ['title'] = 'Web Zero';
+        $this->data ['title'] = 'Jadooweb';
         $this->template->load('external', 'login', 'terms', $this->data);
     }
     
     public function registerEmployer()
     {
         $this->data ['title'] = 'Registration';
-        $this->data ['pageMetaDescription'] = 'Webzero.in';
+        $this->data ['pageMetaDescription'] = 'jadooweb.com';
         $tables = $this->config->item('tables', 'ion_auth');
         //validate form input
         $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
@@ -1309,9 +1327,12 @@ class login extends MX_Controller
     {
         $this->data ['id'] = 4;
         $this->data ['activation'] = '9d8202c403b662bf6ae0e8b808bc1d79a35e9771';
-        $message = $this->load->view('email/activate.tpl.php', $this->data, true);
-        echo $message;
-        /*$headers = array();
+//        $message = $this->load->view('email/activate.tpl.php', $this->data, true);
+        $data['username']="ymrityunjay@nustech.com";
+        $data['password']="djshjdhsds";
+        $message = $this->load->view('user/email/invite.tpl.php', $data, true);
+        //echo $message;
+        $headers = array();
         $headers['MIME-Version'] = "1.0";
         $headers['Content-type'] = "text/html;";
         $headers['From'] = "{$this->config->item('site_title', 'ion_auth')}<{$this->config->item('email_send_mail', 'ion_auth')}>";
@@ -1327,6 +1348,6 @@ class login extends MX_Controller
         if ($this->email->send() == TRUE)
         {
             echo 'Mail Sent';
-        }*/
+        }
     }
 }

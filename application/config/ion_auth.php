@@ -83,7 +83,7 @@ $config['salt_prefix']    = version_compare(PHP_VERSION, '5.3.7', '<') ? '$2a$' 
  | appropriately. If this variable set to 0, there is no maximum.
  */
 $config['site_title']                 = "Jadooweb";       // Site Title, example.com
-$config['admin_email']                = "info@webzero.in"; // Admin Email, admin@example.com
+$config['admin_email']                = "info@jadooweb.com"; // Admin Email, admin@example.com
 $config['email_send_mail']            = "noreply@jadooweb.com"; // Admin Email, admin@example.com
 $config['default_group']              = 'nogroup';           // Default group, use name
 $config['default_plan']               = 1;           // Default plan, use id

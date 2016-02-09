@@ -11,7 +11,7 @@ class User extends MY_Controller {
         parent::__construct();
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
         $this->lang->load('auth');
-        $this->data['title'] = $this->router->fetch_method();
+        $this->data['title'] = ucfirst($this->router->fetch_class());
         $this->data['pageMetaDescription'] = $this->router->fetch_class() . '|' . $this->router->fetch_method();
     }
 
@@ -192,11 +192,11 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
                 if ($this->ion_auth->update($user->id, $data)) {
                     //redirect them back to the admin page if admin, or to the base url if non admin
                     $this->data['message'] = $this->ion_auth->messages();
-                    if($this->ion_auth->is_admin()) {
-                        redirect('/', 'location') ;
-                    }else{
+                    if ($this->ion_auth->is_admin()) {
+                        redirect('/', 'location');
+                    } else {
                         userdata('complete_profile', FALSE);
-                        redirect(site_url('user/profile'), 'refresh') ;
+                        redirect(site_url('user/profile'), 'refresh');
                     }
                 } else {
                     //redirect them back to the admin page if admin, or to the base url if non admin
@@ -253,7 +253,7 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
             'type' => 'text',
             'value' => $this->form_validation->set_value('phone', $user->phone),
             'class' => 'form-control',
-            'placeholder' => '+91 00 00 000000'
+            'placeholder' => '000 000 0000'
         );
         $this->data['password'] = array(
             'name' => 'password',
@@ -273,42 +273,42 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
         }
         $this->data['plans'] = $plans;
         //pass the user to the view
-		$this->data['country'] = $this->addressmodel->get_country();
-        $this->data['states'] = (isset($address['blng_country']))?$this->addressmodel->get_state_by_country($address['blng_country']):array(''=>'please select');
+        $this->data['country'] = $this->addressmodel->get_country();
+        $this->data['states'] = (isset($address['blng_country'])) ? $this->addressmodel->get_state_by_country($address['blng_country']) : array('' => 'please select');
         $this->data['blng_street'] = array(
-			'name'  => 'blng_street',
-			'id'    => 'blng_street',
-			'type'  => 'text',
-			'value' => (isset($address['blng_street']))?$this->form_validation->set_value('blng_street',$address['blng_street']):'',
+            'name' => 'blng_street',
+            'id' => 'blng_street',
+            'type' => 'text',
+            'value' => (isset($address['blng_street'])) ? $this->form_validation->set_value('blng_street', $address['blng_street']) : '',
             'class' => 'form-control',
-		);
-		$this->data['blng_city'] = array(
-			'name'  => 'blng_city',
-			'id'    => 'blng_city',
-			'type'  => 'text',
-			'value' => (isset($address['blng_city']))?$this->form_validation->set_value('blng_city', $address['blng_city']):'',
+        );
+        $this->data['blng_city'] = array(
+            'name' => 'blng_city',
+            'id' => 'blng_city',
+            'type' => 'text',
+            'value' => (isset($address['blng_city'])) ? $this->form_validation->set_value('blng_city', $address['blng_city']) : '',
             'class' => 'form-control city',
-		);
-		$this->data['blng_state'] = (isset($address['blng_state']))?$address['blng_state']:'';
-		$this->data['blng_zipcode'] = array(
-			'name'  => 'blng_zipcode',
-			'id'    => 'blng_zipcode',
-			'type'  => 'text',
-			'value' => (isset($address['blng_zipcode']))?$this->form_validation->set_value('blng_zipcode', $address['blng_zipcode']):'',
+        );
+        $this->data['blng_state'] = (isset($address['blng_state'])) ? $address['blng_state'] : '';
+        $this->data['blng_zipcode'] = array(
+            'name' => 'blng_zipcode',
+            'id' => 'blng_zipcode',
+            'type' => 'text',
+            'value' => (isset($address['blng_zipcode'])) ? $this->form_validation->set_value('blng_zipcode', $address['blng_zipcode']) : '',
             'class' => 'form-control',
-		);
-		$this->data['blng_country'] = (isset($address['blng_country']))? $address['blng_country']:'';
-        
+        );
+        $this->data['blng_country'] = (isset($address['blng_country'])) ? $address['blng_country'] : '';
+
         $this->data['avatar'] = ($user->avatar) ? $user->avatar : '';
         $this->data['js'] = array(
             '<script type="text/javascript" src="' . base_url() . 'assets/js/ajaxupload.3.5.js"></script>',
             '<script type="text/javascript" src="' . base_url() . 'assets/js/jquery.maskedinput.js"></script>',
-            '<script type="text/javascript" src="'.base_url().'assets/js/select2.min.js"></script>'
+            '<script type="text/javascript" src="' . base_url() . 'assets/js/select2.min.js"></script>'
         );
         $this->data['css'] = array(
-            '<link href="'.base_url().'assets/css/select2.css" type="text/css" rel="stylesheet">',
-                );
-        $this->data['pageHeading'] = (!$this->ion_auth->is_admin() || $this->data['user_id'] == $user->id)?'My Profile':'User Profile';
+            '<link href="' . base_url() . 'assets/css/select2.css" type="text/css" rel="stylesheet">',
+        );
+        $this->data['pageHeading'] = (!$this->ion_auth->is_admin() || $this->data['user_id'] == $user->id) ? 'My Profile' : 'User Profile';
         $this->template->load('main', 'user', 'profile_personal', $this->data);
     }
 
@@ -350,6 +350,62 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
         echo json_encode($return);
     }
 
+    public function invite()
+    {
+        $group = array('admin');
+        if (!$this->ion_auth->in_group($group)) {
+            $this->session->set_flashdata('message', 'You must be Administrator to view this page');
+            redirect('/');
+        }
+        
+        $this->data['message'] = '';
+        if(!empty($_POST['emails'])){
+            $emails = explode(',', $_POST['emails']);
+            foreach ($emails as $value) {
+                $pwd = $this->_generatePassword();
+                $username = explode('.', $value);
+                $username = str_replace('@', '_', $username[0]);
+                $data['username']=$value;
+                $data['password']=$pwd;
+                $id = $this->ion_auth->register_with_noactivation_mail($username, $pwd, $value, array('active'=>1));
+                if ($id !== FALSE) {
+                    $message = $this->load->view('email/invite.tpl.php', $data, true);
+                    $headers = array();
+                    $headers['From'] = "JADOOWEB<noreply@jadooweb.com>";
+                    $headers['To'] = "{$value}";
+                    $headers['X-Mailer'] = "PHP/" . phpversion();
+                    $this->email->clear();
+                    $this->email->from('JADOOWEB','noreply@jadooweb.com');
+                    $this->email->to($value);
+                    $this->email->subject("Invitation from ".site_url()." platform!");
+                    $this->email->message($message);
+                    $this->email->header($headers);
+                    
+                    if ($this->email->send() == TRUE)
+                    {
+                        $this->ion_auth->activate($id);
+                        $this->data['message'] = 'User\'s are invited successfully!';
+                    }
+                }
+            }
+        }
+        $this->data['css'] = array(
+            '<link rel="stylesheet" type="text/css" href="' . base_url() . 'assets/jquery-ui/jquery-ui.min.css" />',
+            '<link rel="stylesheet" type="text/css" href="'.base_url('assets/plugin/tag-it/css/jquery.tagit.css'). '" />',
+            '<link rel="stylesheet" type="text/css" href="'.base_url('assets/plugin/tag-it/css/tagit.ui-zendesk.css'). '" />',
+        );
+        $this->data['js'] = array(
+            '<script src="'.base_url('assets/plugin/tag-it/js/tag-it.min.js').'"></script>',
+            '<script>
+$(document).ready(function(){
+    $("#inviteMails").tagit({allowDuplicates: false});
+});
+</script>'
+            );
+        $this->data['pageHeading'] = 'Invite users';
+        $this->template->load('main', 'user', 'invite', $this->data);
+    }
+    
     function _get_csrf_nonce()
     {
         $this->load->helper('string');
@@ -369,6 +425,13 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
         } else {
             return FALSE;
         }
+    }
+    
+    function _generatePassword()
+    {
+        $this->load->helper('string');
+        $pwd = random_string('alnum', 8);
+        return $pwd;
     }
 
 }

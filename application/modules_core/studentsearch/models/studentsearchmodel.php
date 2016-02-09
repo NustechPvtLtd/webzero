@@ -445,8 +445,8 @@
 
 				$headers  = "MIME-Version: 1.0" . "\r\n";
 				$headers .= "Content-type: text/html; charset=iso-8859-1" . "\r\n";
-				$headers .= "From: info@webzero.in\r\n";
-				$headers .= "Reply-To: info@webzero.in\r\n";
+				$headers .= "From: info@jadooweb.com\r\n";
+				$headers .= "Reply-To: info@jadooweb.com\r\n";
 				$headers .= "X-Mailer: PHP/" . phpversion();
 				$headers .= "X-Priority: 1" . "\r\n"; 		
 				

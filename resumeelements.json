@@ -1,44 +1,122 @@
 var _Elements = {"elements": {
-		"Navigation": [
-			{"url": "studentelements/studnav_1.html", "height": 60, "thumbnail": "studentelements/images/thumbs/studnav_1.PNG"},
-            {"url": "studentelements/studnav_2.html", "height": 60, "thumbnail": "studentelements/images/thumbs/studnav_2.PNG"}
-		],        
-		"Headers": [
-			{"url":"studentelements/studhead_txt_1.html","height":775, "thumbnail":"studentelements/images/thumbs/studhead_txt_1.jpg"},
-			{"url":"studentelements/studhead_txt_2.html","height":775, "thumbnail":"studentelements/images/thumbs/studhead_txt_2.jpg"},
-			{"url":"studentelements/studhead_vid_1.html","height":775, "thumbnail":"studentelements/images/thumbs/studhead_vid_1.jpg"},
-			{"url":"studentelements/studhead_vid_2.html","height":775, "thumbnail":"studentelements/images/thumbs/studhead_vid_2.jpg"}
-        ],
-        "Intro": [
-			{"url":"studentelements/studintro_1.html","height":155, "thumbnail":"studentelements/images/thumbs/studintro_1.jpg"},
-			{"url":"studentelements/studintro_2.html","height":155, "thumbnail":"studentelements/images/thumbs/studintro_2.jpg"},
-			{"url":"studentelements/studintro_3.html","height":930, "thumbnail":"studentelements/images/thumbs/studintro_3.jpg"}
-        ],
-        "Works": [
-			{"url":"studentelements/studexp_1.html","height":930, "thumbnail":"studentelements/images/thumbs/studexp_1.jpg"},
-			{"url":"studentelements/studexp_2.html","height":930, "thumbnail":"studentelements/images/thumbs/studexp_2.jpg"},
-			{"url":"studentelements/studexp_3.html","height":930, "thumbnail":"studentelements/images/thumbs/studexp_3.jpg"},
-			{"url":"studentelements/studexp_4.html","height":930, "thumbnail":"studentelements/images/thumbs/studexp_4.jpg"}
-        ],
-        "Additional": [
-			{"url":"studentelements/studadd_1.html","height":220, "thumbnail":"studentelements/images/thumbs/studadd_1.jpg"}
+    "Navigation": [
+        {"url": "studentelements/studnav_1.html", "height": 60, "thumbnail": "studentelements/images/thumbs/studnav_1.PNG"},
+        {"url": "studentelements/studnav_2.html", "height": 60, "thumbnail": "studentelements/images/thumbs/studnav_2.PNG"}
+    ],
+    "Headers": [
+        {"url":"studentelements/studhead_txt_1.html", "height":775, "thumbnail":"studentelements/images/thumbs/studhead_txt_1.jpg"},
+        {"url":"studentelements/studhead_txt_2.html", "height":775, "thumbnail":"studentelements/images/thumbs/studhead_txt_2.jpg"},
+        {"url":"studentelements/studhead_vid_1.html", "height":775, "thumbnail":"studentelements/images/thumbs/studhead_vid_1.jpg"},
+        {"url":"studentelements/studhead_vid_2.html", "height":775, "thumbnail":"studentelements/images/thumbs/studhead_vid_2.jpg"}
+    ],
+    "Intro": [
+        {"url":"studentelements/studintro_1.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_1.jpg"},
+        {"url":"studentelements/studintro_2.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_2.jpg"},
+        {"url":"studentelements/studintro_3.html", "height":930, "thumbnail":"studentelements/images/thumbs/studintro_3.jpg"},
+        {"url": "studentelements/text-img.html", "height": 547, "thumbnail": "studentelements/images/thumbs/text-img.png"},
+    ],
+    "Works": [
+        {"url":"studentelements/studexp_1.html", "height":930, "thumbnail":"studentelements/images/thumbs/studexp_1.jpg"},
+        {"url":"studentelements/studexp_2.html", "height":930, "thumbnail":"studentelements/images/thumbs/studexp_2.jpg"},
+        {"url":"studentelements/studexp_3.html", "height":930, "thumbnail":"studentelements/images/thumbs/studexp_3.jpg"}
+    ],
+    "Additional": [
+        {"url":"studentelements/studadd_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studadd_1.jpg"}
         ],
         "Skills": [
-			{"url":"studentelements/studskills_1.html","height":400, "thumbnail":"studentelements/images/thumbs/studskills_1.jpg"},
-			{"url":"studentelements/studskills_2.html","height":350, "thumbnail":"studentelements/images/thumbs/studskills_2.jpg"},
-			{"url":"studentelements/studskills_3.html","height":300, "thumbnail":"studentelements/images/thumbs/studskills_3.jpg"}
-        ],
-        "Video": [
-            {"url": "studentelements/studvideo_1.html", "height": 1026, "thumbnail": "studentelements/images/thumbs/studvideo_1.jpg"},
-            {"url": "studentelements/studvideo_2.html", "height": 612, "thumbnail": "studentelements/images/thumbs/studvideo_2.jpg"},
-            {"url": "studentelements/studvideo_3.html", "height": 640, "thumbnail": "studentelements/images/thumbs/studvideo_3.jpg"},
-            {"url": "studentelements/studvideo_4.html", "height": 640, "thumbnail": "studentelements/images/thumbs/studvideo_4.jpg"},
-            {"url": "studentelements/studvideo_5.html", "height": 634, "thumbnail": "studentelements/images/thumbs/studvideo_5.jpg"}
-        ],		
-        "Footer": [
-			{"url":"studentelements/studfooter_1.html","height":220, "thumbnail":"studentelements/images/thumbs/studfooter_1.jpg"},
-			{"url":"studentelements/studcontact_1.html","height":220, "thumbnail":"studentelements/images/thumbs/studcontact_1.jpg"}
-			//{"url":"studentelements/contact-half-3.html","height":220, "thumbnail":"studentelements/images/thumbs/contact-half-3.jpg"}
-        ]
-    }
+        {"url":"studentelements/studskills_1.html", "height":400, "thumbnail":"studentelements/images/thumbs/studskills_1.jpg"},
+        {"url":"studentelements/studskills_2.html", "height":350, "thumbnail":"studentelements/images/thumbs/studskills_2.jpg"},
+        {"url":"studentelements/studskills_3.html", "height":300, "thumbnail":"studentelements/images/thumbs/studskills_3.jpg"}
+    ],
+    "Video": [
+        {"url": "studentelements/studvideo_1.html", "height": 1026, "thumbnail": "studentelements/images/thumbs/studvideo_1.jpg"},
+        {"url": "studentelements/studvideo_2.html", "height": 612, "thumbnail": "studentelements/images/thumbs/studvideo_2.jpg"},
+        {"url": "studentelements/studvideo_3.html", "height": 640, "thumbnail": "studentelements/images/thumbs/studvideo_3.jpg"},
+        {"url": "studentelements/studvideo_4.html", "height": 640, "thumbnail": "studentelements/images/thumbs/studvideo_4.jpg"},
+        {"url": "studentelements/studvideo_5.html", "height": 634, "thumbnail": "studentelements/images/thumbs/studvideo_5.jpg"}
+    ],
+    "Footer": [
+        {"url":"studentelements/studfooter_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studfooter_1.jpg"},
+        {"url":"studentelements/studcontact_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studcontact_1.jpg"}
+    ]
+}
+}
+var _HtmlElements = {"elements": {
+    "Templates": [
+        {"url": "sites/getPrebuildTemplates", "height": 60, "thumbnail": "studentelements/images/thumbs/student1.png",
+            "sequence":[
+                {"url": "studentelements/studvideo_4.html", "height": 640, "thumbnail": "studentelements/images/thumbs/studvideo_4.jpg"},
+                {"url":"studentelements/studintro_1.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_1.jpg"},
+                {"url":"studentelements/studintro_2.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_2.jpg"},
+                {"url":"studentelements/studintro_3.html", "height":930, "thumbnail":"studentelements/images/thumbs/studintro_3.jpg"},
+                {"url":"studentelements/studexp_2.html", "height":930, "thumbnail":"studentelements/images/thumbs/studexp_2.jpg"},
+                {"url":"studentelements/studexp_3.html", "height":930, "thumbnail":"studentelements/images/thumbs/studexp_3.jpg"},
+                {"url":"studentelements/studadd_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studadd_1.jpg"},
+                {"url":"studentelements/studskills_1.html", "height":400, "thumbnail":"studentelements/images/thumbs/studskills_1.jpg"},
+                {"url":"studentelements/studskills_2.html", "height":350, "thumbnail":"studentelements/images/thumbs/studskills_2.jpg"},
+                {"url":"studentelements/studskills_3.html", "height":300, "thumbnail":"studentelements/images/thumbs/studskills_3.jpg"},
+                {"url":"studentelements/studcontact_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studcontact_1.jpg"}
+            ]
+        },
+        {"url": "sites/getPrebuildTemplates", "height": 60, "thumbnail": "studentelements/images/thumbs/student2.png",
+            "sequence":[
+                {"url": "studentelements/studvideo_3.html", "height": 640, "thumbnail": "studentelements/images/thumbs/studvideo_3.jpg"},
+                {"url":"studentelements/studintro_1.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_1.jpg"},
+                {"url":"studentelements/studintro_2.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_2.jpg"},
+                {"url":"studentelements/studintro_3.html", "height":930, "thumbnail":"studentelements/images/thumbs/studintro_3.jpg"},
+                {"url":"studentelements/studexp_1.html", "height":930, "thumbnail":"studentelements/images/thumbs/studexp_1.jpg"},
+                {"url":"studentelements/studadd_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studadd_1.jpg"},
+                {"url":"studentelements/studskills_1.html", "height":400, "thumbnail":"studentelements/images/thumbs/studskills_1.jpg"},
+                {"url":"studentelements/studskills_2.html", "height":350, "thumbnail":"studentelements/images/thumbs/studskills_2.jpg"},
+                {"url":"studentelements/studskills_3.html", "height":300, "thumbnail":"studentelements/images/thumbs/studskills_3.jpg"},
+                {"url":"studentelements/studcontact_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studcontact_1.jpg"}
+            ]
+        },
+        {"url": "sites/getPrebuildTemplates", "height": 60, "thumbnail": "studentelements/images/thumbs/student3.png",
+            "sequence":[
+                {"url": "studentelements/studnav_1.html", "height": 60, "thumbnail": 	"studentelements/images/thumbs/studnav_1.PNG"},
+                {"url": "studentelements/studvideo_3.html", "height": 640, "thumbnail": "studentelements/images/thumbs/studvideo_3.jpg"},
+                {"url":"studentelements/studintro_1.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_1.jpg"},
+                {"url":"studentelements/studintro_2.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_2.jpg"},
+                {"url":"studentelements/studintro_3.html", "height":930, "thumbnail":"studentelements/images/thumbs/studintro_3.jpg"},
+                {"url":"studentelements/studexp_1.html", "height":930, "thumbnail":"studentelements/images/thumbs/studexp_1.jpg"},
+                {"url":"studentelements/studadd_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studadd_1.jpg"},
+                {"url":"studentelements/studskills_1.html", "height":400, "thumbnail":"studentelements/images/thumbs/studskills_1.jpg"},
+                {"url":"studentelements/studskills_2.html", "height":350, "thumbnail":"studentelements/images/thumbs/studskills_2.jpg"},
+                {"url":"studentelements/studskills_3.html", "height":300, "thumbnail":"studentelements/images/thumbs/studskills_3.jpg"},
+                {"url":"studentelements/studfooter_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studfooter_1.jpg"},
+            ]
+        },
+        {"url": "sites/getPrebuildTemplates", "height": 60, "thumbnail": "studentelements/images/thumbs/student4.png",
+            "sequence":[
+                {"url": "studentelements/studnav_1.html", "height": 60, "thumbnail": 	"studentelements/images/thumbs/studnav_1.PNG"},
+                {"url": "studentelements/studvideo_1.html", "height": 640, "thumbnail": "studentelements/images/thumbs/studvideo_1.jpg"},
+                {"url":"studentelements/studintro_1.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_1.jpg"},
+                {"url":"studentelements/studintro_2.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_2.jpg"},
+                {"url":"studentelements/studintro_3.html", "height":930, "thumbnail":"studentelements/images/thumbs/studintro_3.jpg"},
+                {"url":"studentelements/studexp_1.html", "height":930, "thumbnail":"studentelements/images/thumbs/studexp_1.jpg"},
+                {"url":"studentelements/studadd_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studadd_1.jpg"},
+                {"url":"studentelements/studskills_1.html", "height":400, "thumbnail":"studentelements/images/thumbs/studskills_1.jpg"},
+                {"url":"studentelements/studskills_2.html", "height":350, "thumbnail":"studentelements/images/thumbs/studskills_2.jpg"},
+                {"url":"studentelements/studskills_3.html", "height":300, "thumbnail":"studentelements/images/thumbs/studskills_3.jpg"},
+                {"url":"studentelements/studfooter_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studfooter_1.jpg"},
+            ]
+        },
+        {"url": "sites/getPrebuildTemplates", "height": 60, "thumbnail": "studentelements/images/thumbs/student5.png",
+            "sequence":[
+                {"url": "studentelements/studnav_1.html", "height": 60, "thumbnail": 	"studentelements/images/thumbs/studnav_1.PNG"},
+                {"url":"studentelements/studhead_txt_1.html", "height":775, "thumbnail":"studentelements/images/thumbs/studhead_txt_1.jpg"},
+                {"url":"studentelements/studintro_1.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_1.jpg"},
+                {"url":"studentelements/studintro_2.html", "height":155, "thumbnail":"studentelements/images/thumbs/studintro_2.jpg"},
+                {"url":"studentelements/studintro_3.html", "height":930, "thumbnail":"studentelements/images/thumbs/studintro_3.jpg"},
+                {"url":"studentelements/studexp_1.html", "height":930, "thumbnail":"studentelements/images/thumbs/studexp_1.jpg"},
+                {"url":"studentelements/studadd_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studadd_1.jpg"},
+                {"url":"studentelements/studskills_1.html", "height":400, "thumbnail":"studentelements/images/thumbs/studskills_1.jpg"},
+                {"url":"studentelements/studskills_2.html", "height":350, "thumbnail":"studentelements/images/thumbs/studskills_2.jpg"},
+                {"url":"studentelements/studskills_3.html", "height":300, "thumbnail":"studentelements/images/thumbs/studskills_3.jpg"},
+                {"url":"studentelements/studfooter_1.html", "height":220, "thumbnail":"studentelements/images/thumbs/studfooter_1.jpg"},
+            ]
+        }
+    ],
+}
 }

@@ -14,20 +14,20 @@
 						<label>Free Url</label>
 					</div>
 					<div class="col-sm-2">
-						<input type="radio" name="radio1" <?php echo (($data['site']->url_option == 'freeUrl') || empty($data['site']->url_option)) ? 'checked' : ''; ?> class="switch-radio1 pull-right" value="freeUrl">
+                        <input type="radio" name="radio1" <?php echo ((isset($domains['freeUrl']) && $domains['freeUrl']['active']) || empty($domains)) ? 'checked' : ''; ?> class="switch-radio1 pull-right" value="freeUrl">
 					</div>
 				</div>
 			</div>
 			
             <div class="panel-body">
                 <form class="form-horizontal" role="form" id="siteSettingsForm">
-                    <input type="hidden" name="siteID" id="siteID" value="<?php echo $data['site']->sites_id; ?>">
+                    <input type="hidden" name="siteID" id="siteID" value="<?php echo $site->sites_id; ?>">
                     <div class="form-group">
                         <label class="col-sm-3">Set Free URL</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="siteSettings_domain" name="siteSettings_domain" placeholder="<?php echo $this->lang->line('sitedata_label_domain_placeholder') ?>" value="<?php echo ($data['site']->url_option == 'freeUrl') ? $data['site']->domain : ''; ?>" <?php echo ($data['site']->url_option == 'freeUrl') ? 'readonly=""' : ''; ?>>
+                            <input type="text" class="form-control" id="siteSettings_domain" name="siteSettings_domain" placeholder="<?php echo $this->lang->line('sitedata_label_domain_placeholder') ?>" value="<?php echo (isset($domains['freeUrl']) && !empty($domains['freeUrl']['domain'])) ? $domains['freeUrl']['domain'] : ''; ?>" <?php echo (isset($domains['freeUrl']) && !empty($domains['freeUrl']['domain'])) ? 'readonly=""' : ''; ?>>
                             <div class="clearfix"><!--Clear Div--></div>
-                            <span id="publicURL"><?php echo ($data['site']->url_option == 'freeUrl') ? 'Your web site url: '.anchor(base_url($data['site']->domain), base_url($data['site']->domain), array('target'=>'_blank')) : ''; ?></span>
+                            <span id="publicURL"><?php echo (isset($domains['freeUrl']) && !empty($domains['freeUrl']['domain'])) ? 'Your web site url: '.anchor(base_url($domains['freeUrl']['domain']), base_url($domains['freeUrl']['domain']), array('target'=>'_blank')) : ''; ?></span>
                         </div>
                     </div>
                 </form>
@@ -48,18 +48,19 @@
 						<label>Add Your Personal Domain</label>
 					</div>
 					<div class="col-sm-2">
-						<input type="radio" name="radio1" <?php echo ($data['site']->url_option == 'addonDomain') ? 'checked' : ''; ?> class="switch-radio1" value="addonDomain">
+						<input type="radio" name="radio1" <?php echo (isset($domains['addonDomain']) && $domains['addonDomain']['active']) ? 'checked' : ''; ?> class="switch-radio1" value="addonDomain">
 					</div>
 				</div>
 			</div>
             <div class="panel-body">
-                <form class="form-horizontal" role="form" id="addDomainForm" action="<?php echo site_url('domain/add_domain/' . $data['site']->sites_id); ?>">
+                <form class="form-horizontal" role="form" id="addDomainForm" action="<?php echo site_url('domain/add_domain/' . $site->sites_id); ?>">
                     <div class="form-group">
-                        <label class="col-sm-3">Personal Domain</label>
+                        <label class="col-sm-3">Your Domain Name</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="siteSettings_adddomain" name="siteSettings_adddomain" placeholder="example.com" value="<?php echo ($data['site']->url_option == 'addonDomain') ? $data['site']->domain : ''; ?>" <?php echo ($data['site']->url_option == 'addonDomain') ? 'readonly=""' : ''; ?>>
+                            <input type="text" class="form-control" id="siteSettings_adddomain" name="siteSettings_adddomain" placeholder="example.com" value="<?php echo (isset($domains['addonDomain']) && !empty($domains['addonDomain']['domain'])) ? $domains['addonDomain']['domain'] : ''; ?>" <?php echo (isset($domains['addonDomain']) && !empty($domains['addonDomain']['domain'])) ? 'readonly=""' : ''; ?>>
                             <div class="clearfix"><!--Clear Div--></div>
-                            <span id="addonDomainURL"><?php echo ($data['site']->url_option == 'addonDomain') ? 'Your web site url: '. anchor('http://' . $data['site']->domain , 'http://' . $data['site']->domain , array("target"=>"_blank")): ''; ?></span>
+                            <span id="addonDomainURL"><?php echo (isset($domains['addonDomain']) && !empty($domains['addonDomain']['domain'])) ? 'Your web site url: '. anchor('http://' . $domains['addonDomain']['domain'] , 'http://' . $domains['addonDomain']['domain'] , array("target"=>"_blank")): ''; ?></span>
+                            <span style="color:red;"><label>Make Sure your Domain is set at  our DNS Server Name: ns1.artwork.mysitehosted.com and ns2.artwork.mysitehosted.com</label></span>
                         </div>
                     </div>
                 </form>
@@ -77,27 +78,27 @@
             <div class="panel-heading">
 				<div class="row">
 					<div class="col-sm-10">
-						<label>Purchase Premium Domain</label>
+						<label>Search Your Domain Name</label>
 					</div>
 					<div class="col-sm-2">
-						<input type="radio" name="radio1" <?php echo ($data['site']->url_option == 'premiumDomain') ? 'checked' : ''; ?> class="switch-radio1" value="premiumDomain">
+						<input type="radio" name="radio1" <?php echo (isset($domains['premiumDomain']) && $domains['premiumDomain']['active']) ? 'checked' : ''; ?> class="switch-radio1" value="premiumDomain">
 					</div>
 				</div>
 			</div>
             <div class="panel-body">
                 <div class="product-purchased" id="domain-name">
                     <form class="form-horizontal" method="POST" name="quickbuy_domain" id="select-product" novalidate="novalidate">
-                        <input type="hidden" name="siteID" id="siteID" value="<?php echo $data['site']->sites_id; ?>">
+                        <input type="hidden" name="siteID" id="siteID" value="<?php echo $site->sites_id; ?>">
                         <input type="hidden" value="check_availability" name="action">
                         <div class="dca-search form-group">
-                            <label class="col-sm-3">Premium Domain</label>
-                            <div class="col-sm-7">
-                                <input type="text" required="" placeholder="Enter Keywords or Domain Names" id="domainname" name="domainname" autocomplete="off" class="form-control" value="<?php echo ($data['site']->url_option == 'premiumDomain') ? $data['site']->domain : ''; ?>" <?php echo ($data['site']->url_option == 'premiumDomain') ? 'readonly=""' : ''; ?>>
-                                <span id="remoteURL"><?php echo ($data['site']->url_option == 'premiumDomain') ? 'Your web site url: '.  anchor('http://' . $data['site']->domain, 'http://' . $data['site']->domain, array("target"=>"_blank")) : ''; ?></span>
+                            <label class="col-sm-3">Find Domain Name</label>
+                            <div class="col-sm-5">
+                                <input type="text" required="" placeholder="Enter Keywords or Domain Names" id="domainname" name="domainname" autocomplete="off" class="form-control" value="<?php echo (isset($domains['premiumDomain']) && !empty($domains['premiumDomain']['domain'])) ? $domains['premiumDomain']['domain'] : ''; ?>" <?php echo (isset($domains['premiumDomain']) && !empty($domains['premiumDomain']['domain'])) ? 'readonly=""' : ''; ?>>
+                                <span id="remoteURL"><?php echo (isset($domains['premiumDomain']) && !empty($domains['premiumDomain']['domain'])) ? 'Your web site url: '.  anchor('http://' . $domains['premiumDomain']['domain'], 'http://' . $domains['premiumDomain']['domain'], array("target"=>"_blank")) : ''; ?></span>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
 								<button type="button" class="btn btn-primary btn-embossed col-sm-12" name="btn_check_availability" id="btn_check_availability">
-                                Search
+                                Search Subscribed Domain
 								</button>
 							</div>
                             <div class="clearfix"></div>
@@ -105,22 +106,21 @@
                             <div class="tld-container col-sm-12">
                                 <div class="tld-container-primary" >
                                     <span class="inline-block col-1"><input type="checkbox" value="info" id="info" name="tlds[]" ><label class="inline-block" for="info">info</label></span>
-                                    <span class="inline-block col-1"><input type="checkbox" value="co.in" id="co.in" name="tlds[]" ><label class="inline-block" for="co.in">co.in</label></span>
-                                    <span class="inline-block col-1"><input type="checkbox" value="net" id="net" name="tlds[]" ><label class="inline-block" for="net">net</label></span>
-                                    <span class="inline-block col-1"><input type="checkbox" value="in" id="in" name="tlds[]" ><label class="inline-block" for="in">in</label></span>
+                                    <span class="inline-block col-1"><input type="checkbox" value="org" id="org" name="tlds[]" ><label class="inline-block" for="org">org</label></span>
+                                    <span class="inline-block col-1"><input type="checkbox" value="com" id="com" name="tlds[]" ><label class="inline-block" for="com">com</label></span>
                                 </div>
                             </div>
                         </div>
                     </form>
                     <div id="domain_result" class="results-wrapper" style="display: none">
                         <h6>Search Results <span id="plan_error" class="error hide">Please select a domain name</span></h6>
-                        <form method="POST" name="buy_domain" id="book-domain-form" novalidate="novalidate" action="<?php echo site_url('domain/bookDomain/' . $data['site']->sites_id); ?>">
+                        <form method="POST" name="buy_domain" id="book-domain-form" novalidate="novalidate" action="<?php echo site_url('domain/bookDomain/' . $site->sites_id); ?>">
                             <div class="search-results-container table-responsive">
 
                             </div>
                         </form>
 						<div class="pull-right">
-							<button type="button" class="btn btn-primary btn-embossed" id="domainSubmittButton" disabled="disabled"><span class="fui-check"></span> <?php echo $this->lang->line('domainSubmittButton') ?></button>
+							<button type="button" class="btn btn-primary btn-embossed" id="domainSubmittButton" disabled="disabled"><span class="fui-check"></span> <?php echo 'Use This Domain';//$this->lang->line('domainSubmittButton') ?></button>
 						</div>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
                     async: false
                 });
             } else {
-                $('#publicURL').text('Domain names can only contain letters and numbers').css('color', 'red');
+                $('#publicURL').text('Domain names must have minimum 3 letters and can not have symbols.').css('color', 'red');
             }
         });
 
@@ -327,9 +327,26 @@
                 $('#publicURL').text('Domain names can only contain letters and numbers').css('color', 'red');
             }
         });
-
+        $('#domainSubmittButton').click(function() {
+//            alert("click");
+            if ($("input:radio[name='domain']").is(':checked')) {
+                $.ajax({
+                    url: $('form#book-domain-form').attr('action'),
+                    type: 'post',
+                    data: $('form#book-domain-form').serialize()
+                }).done(function(ret) {
+                    $('.search-results-container').html(' ');
+                    $('.search-results-container').html(ret);
+                    $('#domain_result').show();
+                    $('#domainSubmittButton').attr('disabled', 'disabled');
+                });
+            } else {
+                alert('Please select domain!');
+            }
+        });
     });
-    disable('<?php echo (!empty($data['site']->url_option)) ? $data['site']->url_option : 'freeUrl'; ?>');
+
+    disable('<?php echo (isset($domains['premiumDomain']) && $domains['premiumDomain']['active']) ? 'premiumDomain' : (isset($domains['addonDomain']) && $domains['addonDomain']['active']) ? 'addonDomain' : 'freeUrl'; ?>');
     function disable(url_option) {
         if (url_option == 'freeUrl') {
             $("#freeUrlOptionPane :input").attr("disabled", false);

@@ -46,6 +46,7 @@ $route['register'] = 'login/register';
 $route['recruiter'] = 'login/registerEmployer';
 $route['create-user'] = 'login/create_user';
 $route['create-group'] = 'login/create_group';
+$route['invite-user'] = 'user/invite';
 $route['logout'] = 'login/logout';
 $route['ajaxLogin'] = 'login/ajaxLogin';
 $route['privacy'] = 'login/privacy_policy';

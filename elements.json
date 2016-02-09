@@ -20,7 +20,6 @@ var _Elements = {"elements": {
         {"url": "elements/intro-half-left.html", "height": 721, "thumbnail": "elements/thumbs/intro-half-left.png"},
         {"url": "elements/intro-center.html", "height": 882, "thumbnail": "elements/thumbs/intro-center.png"},
         {"url": "elements/intro-right.html", "height": 896, "thumbnail": "elements/thumbs/intro-right.png"},
-        {"url": "elements/intro-center-img.html", "height": 540, "thumbnail": "elements/thumbs/intro-center-img.png"},
         {"url": "elements/intro-center-form.html", "height": 1094, "thumbnail": "elements/thumbs/intro-center-form.png"},
         {"url": "elements/intro-items.html", "height": 1129, "thumbnail": "elements/thumbs/intro-items.png"},
         {"url": "elements/intro-left-subscribe.html", "height": 903, "thumbnail": "elements/thumbs/intro-left-subscribe.png"},
@@ -39,8 +38,7 @@ var _Elements = {"elements": {
         {"url": "elements/page-404.html", "height": 861, "thumbnail": "elements/thumbs/page-404.png"},
         {"url": "elements/intro-slider.html", "height": 869, "thumbnail": "elements/thumbs/intro-slider.png"},
         {"url": "elements/intro-slider-2.html", "height": 654, "thumbnail": "elements/thumbs/intro-slider-2.png"},
-        {"url": "elements/intro-slider-3.html", "height": 846, "thumbnail": "elements/thumbs/intro-slider-3.png"},
-        {"url": "elements/intro-right-form.html", "height": 814, "thumbnail": "elements/thumbs/intro-right-form.png"}
+        {"url": "elements/intro-slider-3.html", "height": 846, "thumbnail": "elements/thumbs/intro-slider-3.png"}
     ],
     "Content": [
         {"url": "elements/content-right.html", "height": 740, "thumbnail": "elements/thumbs/content-right.png"},
@@ -73,8 +71,11 @@ var _Elements = {"elements": {
     "Text Grid": [
         {"url": "elements/text-1col.html", "height": 637, "thumbnail": "elements/thumbs/text-1col.png"},
         {"url": "elements/text-2col.html", "height": 547, "thumbnail": "elements/thumbs/text-2col.png"},
+        {"url": "elements/text-img.html", "height": 547, "thumbnail": "elements/thumbs/text-img.png"},
         {"url": "elements/text-3col.html", "height": 547, "thumbnail": "elements/thumbs/text-3col.png"},
-        {"url": "elements/text-4col.html", "height": 540, "thumbnail": "elements/thumbs/text-4col.png"}
+        {"url": "elements/text-4col.html", "height": 540, "thumbnail": "elements/thumbs/text-4col.png"},
+        {"url": "elements/title-1.html", "height": 60, "thumbnail": "elements/thumbs/title-1.png"},
+        {"url": "elements/title-2.html", "height": 60, "thumbnail": "elements/thumbs/title-2.png"}
     ],
     "Benefits": [
         {"url": "elements/benefits-grid-num-2.html", "height": 692, "thumbnail": "elements/thumbs/benefits-grid-num-2.png"},
@@ -108,18 +109,6 @@ var _Elements = {"elements": {
         {"url": "elements/team-circle.html", "height": 929, "thumbnail": "elements/thumbs/team-circle.png"},
         {"url": "elements/team-full.html", "height": 959, "thumbnail": "elements/thumbs/team-full.png"},
         {"url": "elements/team-border.html", "height": 1258, "thumbnail": "elements/thumbs/team-border.png"}
-    ],
-    "Pricing Tables": [
-        {"url": "elements/pricing-3col.html", "height": 1154, "thumbnail": "elements/thumbs/pricing-3col.png"},
-        {"url": "elements/pricing-2col-img-2.html", "height": 961, "thumbnail": "elements/thumbs/pricing-2col-img-2.png"}
-    ],
-    "Ecommerce": [
-        {"url": "elements/ecommerce_table4.html", "height": 650, "thumbnail": "elements/thumbs/ecommerce_table4.png"},
-        {"url": "elements/items-3col-2.html", "height": 890, "thumbnail": "elements/thumbs/items-3col-2.png"},
-    ],
-    "Elements": [
-        {"url": "elements/table.html", "height": 867, "thumbnail": "elements/thumbs/table.png"},
-        {"url": "elements/element-rent-form.html", "height": 785, "thumbnail": "elements/thumbs/element-rent-form.png"}
     ],
     "Contact": [
         {"url": "elements/contact-half.html", "height": 850, "thumbnail": "elements/thumbs/contact-half.png"},

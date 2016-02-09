@@ -16,7 +16,7 @@ class Services extends MY_Controller {
     {
         $data['title'] = 'Home';
         $data['pageMetaDescription'] = 'webzero.in';
-        $data['pageHeading'] = 'Services';
+        $data['pageHeading'] = 'Services Home';
         $group = $this->ion_auth->get_groups(array('neglectgroup'=>array('admin','nogroup','business'),'visibility'=>TRUE));
         $data['group'] = $group;
         $user_id = userdata('user_id');
@@ -27,10 +27,6 @@ class Services extends MY_Controller {
         $data['css'] = array(
             '<link rel="stylesheet" type="text/css" href="'.base_url().'assets/customer/css/style.css"/>'
         );
-        if($this->ion_auth->in_group(array('employer'))){
-            $this->template->load('main', 'services', 'services/recruiter', $data);
-        }  else {
-            $this->template->load('main', 'services', 'services/index', $data);
-        }
+        $this->template->load('main', 'services', 'services/index', $data);
     }
 }

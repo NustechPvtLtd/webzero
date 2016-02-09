@@ -65,7 +65,11 @@
     
 </table>
 
-<p><?php echo anchor('create-user', lang('index_create_user_link'), array('class' => 'btn btn-primary'))?> <?php echo anchor('create-group', lang('index_create_group_link'), array('class' => 'btn btn-primary'))?></p>
+<p>
+    <?php echo anchor('create-user', lang('index_create_user_link'), array('class' => 'btn btn-primary'))?> 
+    <?php // echo anchor('create-group', lang('index_create_group_link'), array('class' => 'btn btn-primary'))?>
+    <?php // echo anchor('invite-user', 'Invite Users', array('class' => 'btn btn-primary'))?>
+</p>
     
 <script>
     $(document).ready( function () {

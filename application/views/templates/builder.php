@@ -703,7 +703,7 @@
                                             </tbody>
                                         </table>
                                     </div><!-- /.table-responsive -->
-
+                                    <div class=""><small>Note:-<mark>This may take few minutes to publish. Please have patients!</mark></small></div>
                                 </div><!-- /.optionPane -->
                             </div>
 
@@ -808,7 +808,7 @@
         <div id="loader">
             <span>
                 <img src="<?php echo base_url('assets/sites'); ?>/images/loading.gif" alt="Loading...">
-                JadooWeb builder...
+                Jadooweb builder...
             </span>
         </div>
 
@@ -835,7 +835,11 @@
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/bufferButtons.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/video.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/src-min-noconflict/ace.js"></script>
+        <?php if($this->ion_auth->in_group(array('individuals','employer'))):?>
         <script src="<?php echo base_url(); ?>elements.json"></script>
+        <?php else:?>
+        <script src="<?php echo base_url(); ?>ecomelements.json"></script>
+        <?php endif;?>
         <script src="<?php echo base_url('assets/sites'); ?>/js/builder.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/jquery.form.min.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/scrollbar/jquery.nicescroll.min.js"></script>
@@ -859,6 +863,7 @@
         <script src="<?php echo base_url('elements/scripts/jquery.jCounter-0.1.4.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/bootstrap-datepicker.min.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/custom.js'); ?>"></script>
+        <script src="<?php echo base_url('elements/scripts/autoNumeric.js'); ?>"></script>
 
         <script>
             var baseUrl = "<?php echo base_url(); ?>";

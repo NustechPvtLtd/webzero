@@ -21,10 +21,18 @@ class Users_domains_model extends CI_Model {
             'user_id'=>$user_id,
             'site_id'=>$site_id,
             'domain_publish'=>0,
-            'url_option'=>$url_option
+            'url_option'=>$url_option,
+            'active'=>1
         );
-        if ($this->exist($site_id)) {
-            $this->db->update('users_domains', $data, array('site_id'=>$site_id));
+        
+//        if ($this->exist($site_id)) {
+        $this->deactivateDomain($site_id);
+//        }
+        
+        if ($this->exist($site_id,$url_option)) {
+            $this->db->where('site_id', $site_id);
+            $this->db->where('url_option', $url_option);
+            $this->db->update('users_domains', $data);
             $query = $this->getDomain($site_id);
             $domainID = $query->id ;
         } else {
@@ -54,12 +62,16 @@ class Users_domains_model extends CI_Model {
         
     }
     
-    public function exist($site_id)
+    public function exist($site_id,$url_option)
     {
         $query = null;
-        $query = $this->db->get_where('users_domains', array(//making selection
-            'site_id'=>$site_id
-        ));
+        
+        $condition = array(
+            'site_id'=>$site_id,
+            'url_option'=>$url_option
+        );
+        
+        $query = $this->db->get_where('users_domains', $condition);
 
         $count = $query->num_rows(); //counting result from query
         if ($count === 0) {
@@ -71,11 +83,15 @@ class Users_domains_model extends CI_Model {
     
     public function domain_publish($site_id)
     {
-        if ( $this->db->where('site_id', $site_id)->update('users_domains', array('domain_publish'=>1))) {
+        if ( $this->db->where(array('site_id'=>$site_id,'active'=>1))->update('users_domains', array('domain_publish'=>1))) {
             return TRUE;
         } else {
             return FALSE;
         }
     }
     
+    public function deactivateDomain($site_id)
+    {
+        $this->db->update('users_domains', array('active'=>0,'domain_publish'=>0), array('site_id'=>$site_id));
+    }
 }

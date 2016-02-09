@@ -1,0 +1,36 @@
+var _Elements = {"elements": {
+    "Navigation": [
+        {"url": "elements/nav-full.html", "height": 60, "thumbnail": "elements/thumbs/nav-full.png"},
+        {"url": "elements/nav.html", "height": 60, "thumbnail": "elements/thumbs/nav.png"},
+        {"url": "elements/nav-2.html", "height": 60, "thumbnail": "elements/thumbs/nav-2.png"},
+        {"url": "elements/nav-login-full.html", "height": 60, "thumbnail": "elements/thumbs/nav-login-full.png"},
+        {"url": "elements/nav-login-full-2.html", "height": 60, "thumbnail": "elements/thumbs/nav-login-full-2.png"},
+        {"url": "elements/nav-full-soc.html", "height": 60, "thumbnail": "elements/thumbs/nav-full-soc.png"},
+        {"url": "elements/nav-full-soc-2.html", "height": 60, "thumbnail": "elements/thumbs/nav-full-soc-2.png"}
+    ],
+    "Text Grid": [
+        {"url": "elements/text-1col.html", "height": 637, "thumbnail": "elements/thumbs/text-1col.png"},
+        {"url": "elements/text-2col.html", "height": 547, "thumbnail": "elements/thumbs/text-2col.png"},
+        {"url": "elements/text-img.html", "height": 547, "thumbnail": "elements/thumbs/text-img.png"},
+        {"url": "elements/text-3col.html", "height": 547, "thumbnail": "elements/thumbs/text-3col.png"},
+        {"url": "elements/text-4col.html", "height": 540, "thumbnail": "elements/thumbs/text-4col.png"},
+        {"url": "elements/title-1.html", "height": 60, "thumbnail": "elements/thumbs/title-1.png"},
+        {"url": "elements/title-2.html", "height": 60, "thumbnail": "elements/thumbs/title-2.png"}
+    ],
+    "Ecommerce": [
+        {"url": "elements/ecommerce_table4.html", "height": 650, "thumbnail": "elements/thumbs/ecommerce_table4.png"},
+        {"url": "elements/items-3col-3.html", "height": 890, "thumbnail": "elements/thumbs/items-3col-3.png"},
+        {"url": "elements/items-3col-2.html", "height": 890, "thumbnail": "elements/thumbs/items-3col-2.png"},
+    ],
+    "Contact": [
+        {"url": "elements/contact-half.html", "height": 850, "thumbnail": "elements/thumbs/contact-half.png"},
+        {"url": "elements/map-half-left.html", "height": 717, "thumbnail": "elements/thumbs/map-half-left.png"},
+        {"url": "elements/contact-half-team.html", "height": 840, "thumbnail": "elements/thumbs/contact-half-team.png"},
+        {"url": "elements/map-full-2.html", "height": 455, "thumbnail": "elements/thumbs/map-full-2.png"},
+    ],
+    "Footer": [
+        {"url": "elements/footer-2col.html", "height": 211, "thumbnail": "elements/thumbs/footer-2col.png"},
+        {"url": "elements/footer-center.html", "height": 349, "thumbnail": "elements/thumbs/footer-center.png"},
+    ]
+}
+}
