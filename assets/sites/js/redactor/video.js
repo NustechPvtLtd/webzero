@@ -1,81 +1,75 @@
-if (!RedactorPlugins)
-    var RedactorPlugins = {};
 (function($)
 {
-    RedactorPlugins.video = function()
-    {
-        return {
-            reUrlYoutube: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube\.com\S*[^\w\-\s])([\w\-]{11})(?=[^\w\-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/ig,
-            reUrlVimeo: /https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/,
-			langs: {
-				en: {
-                    "video": "Video",
-                    "video-html-code": "Video Embed Code or Youtube/Vimeo Link"
-				}
-            },
-            getTemplate: function()
-            {
-                return String()
-                        + '<div class="modal-section" id="redactor-modal-video-insert">'
-                        + '<label>Video Embed Code or Youtube/Vimeo Link</label>'
-                        + '<textarea id="redactor-insert-video-area" style="height: 160px;"></textarea>'
-                        + '</div>';
-            },
-            init: function()
-            {
-                var button = this.button.addAfter('image', 'video', this.lang.get('video'));
-                this.button.addCallback(button, this.video.show);
-            },
-            show: function()
-            {
-                this.modal.addTemplate('video', this.video.getTemplate());
+	$.Redactor.prototype.video = function()
+	{
+		return {
+			reUrlYoutube: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube\.com\S*[^\w\-\s])([\w\-]{11})(?=[^\w\-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/ig,
+			reUrlVimeo: /https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/,
+			getTemplate: function()
+			{
+				return String()
+				+ '<section id="redactor-modal-video-insert">'
+					+ '<label>' + this.lang.get('video_html_code') + '</label>'
+					+ '<textarea id="redactor-insert-video-area" style="height: 160px;"></textarea>'
+				+ '</section>';
+			},
+			init: function()
+			{
+				var button = this.button.addAfter('image', 'video', this.lang.get('video'));
+				this.button.addCallback(button, this.video.show);
+			},
+			show: function()
+			{
+				this.modal.addTemplate('video', this.video.getTemplate());
 
-                this.modal.load('video', this.lang.get('video'), 700);
-                this.modal.createCancelButton();
+				this.modal.load('video', this.lang.get('video'), 700);
+				this.modal.createCancelButton();
 
-                // action button
-                this.modal.createActionButton(this.lang.get('insert')).on('click', this.video.insert);
+				var button = this.modal.createActionButton(this.lang.get('insert'));
+				button.on('click', this.video.insert);
 
-                this.modal.show();
+				this.selection.save();
+				this.modal.show();
 
-                $('#redactor-insert-video-area').focus();
+				$('#redactor-insert-video-area').focus();
 
-            },
-            insert: function()
-            {
-                var data = $('#redactor-insert-video-area').val();
+			},
+			insert: function()
+			{
+				var data = $('#redactor-insert-video-area').val();
 
-                if (!data.match(/<iframe|<video/gi))
-                {
-                    data = this.clean.stripTags(data);
+				if (!data.match(/<iframe|<video/gi))
+				{
+					data = this.clean.stripTags(data);
 
-                    // parse if it is link on youtube & vimeo
-                    var iframeStart = '<iframe style="width: 500px; height: 281px;" src="',
-                            iframeEnd = '" frameborder="0" allowfullscreen></iframe>';
-                    
-                    if (data.match(this.video.reUrlYoutube))
-                    {
+					// parse if it is link on youtube & vimeo
+					var iframeStart = '<iframe style="width: 500px; height: 281px;" src="',
+						iframeEnd = '" frameborder="0" allowfullscreen></iframe>';
+
+					if (data.match(this.video.reUrlYoutube))
+					{
 						data = data.replace(this.video.reUrlYoutube, iframeStart + '//www.youtube.com/embed/$1' + iframeEnd);
-                    }
-                    else if (data.match(this.video.reUrlVimeo))
-                    {
+					}
+					else if (data.match(this.video.reUrlVimeo))
+					{
 						data = data.replace(this.video.reUrlVimeo, iframeStart + '//player.vimeo.com/video/$2' + iframeEnd);
-                    }
-                }
+					}
+				}
 
-                this.modal.close();
-                this.placeholder.remove();
+				this.selection.restore();
+				this.modal.close();
 
-                // buffer
-                this.buffer.set();
+				var current = this.selection.getBlock() || this.selection.getCurrent();
 
-                // insert
-//                this.air.collapsed();
+				if (current) $(current).after(data);
+				else
+				{
+					this.insert.html(data);
+				}
 
-                this.insert.html(data, false);
+				this.code.sync();
+			}
 
-            }
-
-        };
-    };
+		};
+	};
 })(jQuery);

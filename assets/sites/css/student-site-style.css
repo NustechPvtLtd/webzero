@@ -5,7 +5,7 @@ body {
 
 body > .container {
     width: 100%;
-    margin: ;
+    /*margin: ;*/
     position: relative;
 }
 
@@ -154,12 +154,12 @@ header .modes > label:last-child {
     position: fixed;
     left: -300px;
     top: 48px;
-    height: 100%;
-    width: 300px;
+    height: 95%;
+    width: 240px;
     background: #f9f9f9;
     z-index: 100;
     box-shadow: 2px 0px 1px rgba(0,0,0,0.1);
-    padding: 20px !important;
+    padding: 15px !important;
     /*overflow-y: auto;*/
     /*overflow-x: visible;*/
 }
@@ -489,7 +489,7 @@ div.affix {
     -moz-transition: color 0.5s;
     transition: color 0.5s;
     font-size: 16px;
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .menu .main > ul#elements > li > a:hover, .menu .main > ul#elements > li > a.active {
@@ -509,6 +509,10 @@ div.affix {
     width: 50%;
 }
 
+.main > .sideButtons > .btn{
+    padding: 5px 10px;
+}
+
 .main > hr {
     border-top: 1px solid #3a3a3a !important;
 }
@@ -520,7 +524,7 @@ div.affix {
     float: left;
     display: none;
     box-shadow: inset 2px 0px 5px rgba(0,0,0,0.3);
-    z-index: 5;
+    z-index: -1;
     overflow-y: hidden;
     position: absolute;
     left:210px;
@@ -663,6 +667,7 @@ li.element {
 }
 .screen {
     border: 1px solid #E1E0E0;
+	max-width: 100%;
 }
 .screen .zoomer-wrapper {
     background: #fff;
@@ -678,14 +683,15 @@ li.element {
 
 .screen .start > span {
     display: block;
-    background: #444;
-    padding: 40px;
-    width: 550px;
+    background: #34495E;
+    padding: 10px 20px;
+    width: 40%;
     color: #fff;
-    font-size: 18px;
+    font-size: 13px;
+    text-transform: uppercase;
     text-align: center;
-    margin: 140px auto 0px;
-    border-radius:3px;
+    margin: 170px auto 0px;
+	border-radius: 3px;
 }
 
 .screen .toolbar {
@@ -787,26 +793,27 @@ li.element {
 .screen .frameCover {
     position: absolute;
     top: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
+    right: 0px;
+	display: none;
 }
 
-.screen .frameCover button.btn-danger, .screen .frameCover button.btn-warning, .screen .frameCover button.btn-inverse {
+.screen .frameCover button.btn-danger, .screen .frameCover button.btn-warning, .screen .frameCover button.btn-inverse, .screen .frameCover .btn-success, .screen .frameCover button.btn-info {
     border-radius: 0px;
     float: right;
-    visibility:hidden;
-    opacity:0;
     transition: visibility 0s linear 0.5s,opacity 0.5s linear;
     -webkit-transition: visibility 0s linear 0.5s,opacity 0.5s linear;
     -moz-transition: visibility 0s linear 0.5s,opacity 0.5s linear;
     width: 100px;
 }
 
-.screen .frameCover:hover button.btn-danger, .screen .frameCover:hover button.btn-warning, .screen .frameCover:hover button.btn-inverse {
+/*.screen .frameCover:hover button.btn-danger, .screen .frameCover:hover button.btn-warning, .screen .frameCover:hover button.btn-inverse, .screen .frameCover:hover .btn-success, .screen .frameCover:hover button.btn-info {
     visibility:visible;	
     opacity:1;
     transition-delay:0s;
+}*/
+
+.screen .frameCover:hover .btn-success {
+	cursor: move;
 }
 
 .screen .aceEditor {
@@ -1022,4 +1029,13 @@ li.element {
 }
 .ui-resizable-handle.ui-resizable-se.ui-icon.ui-icon-gripsmall-diagonal-se {
     z-index: 20 !important;
+}
+
+.fileSave {
+	padding: 0px !important;
+	top: 0px !important;
+}
+
+.redactor-toolbar {
+	z-index: 0 !important;
 }

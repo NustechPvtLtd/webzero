@@ -32,6 +32,7 @@ $lang['login_forgot_password'] = 'Forgot your password?';
 // Index
 $lang['index_heading']           = 'Users';
 $lang['index_subheading']        = 'Below is a list of the users.';
+$lang['index_name_th']          = 'Name';
 $lang['index_fname_th']          = 'First Name';
 $lang['index_lname_th']          = 'Last Name';
 $lang['index_email_th']          = 'Email';
@@ -61,6 +62,7 @@ $lang['create_user_subheading']                        = 'Please enter the user\
 $lang['create_user_fname_label']                       = 'First Name:';
 $lang['create_user_lname_label']                       = 'Last Name:';
 $lang['create_user_company_label']                     = 'Company Name:';
+$lang['create_user_group_label']                       = 'User Group:';
 $lang['create_user_email_label']                       = 'Email:';
 $lang['create_user_phone_label']                       = 'Phone:';
 $lang['create_user_password_label']                    = 'Password:';
@@ -73,6 +75,7 @@ $lang['create_user_validation_phone1_label']           = 'First Part of Phone';
 $lang['create_user_validation_phone2_label']           = 'Second Part of Phone';
 $lang['create_user_validation_phone3_label']           = 'Third Part of Phone';
 $lang['create_user_validation_company_label']          = 'Company Name';
+$lang['create_user_validation_group_label']            = 'User Group';
 $lang['create_user_validation_password_label']         = 'Password';
 $lang['create_user_validation_password_confirm_label'] = 'Password Confirmation';
 

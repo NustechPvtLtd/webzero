@@ -19,6 +19,7 @@ class Social extends MX_Controller {
         $this->load->library(array('ion_auth', 'form_validation', 'template'));
         $this->load->library('facebook');
         $this->load->library('twitteroauth');
+        $this->load->library('linkedin');
         $this->data['title'] = ucwords(str_replace('_', ' ', $this->router->fetch_class()));
         $this->data['pageMetaDescription'] = $this->router->fetch_class() . '|' . $this->router->fetch_method();
     }
@@ -61,10 +62,16 @@ class Social extends MX_Controller {
                 $this->session->unset_userdata('redirect_url');
                 redirect(site_url('seo'));
             } else {
+                if(!isset($Fbuser['data']['email'])){
+                    $this->session->set_flashdata('message', 'There is some problem in registration.<br>Please use your email to register yourself.');
+                    redirect(site_url('#login_register'), 'refresh');
+                }
                 if (!$this->ion_auth->email_check($Fbuser['data']['email'])) {
-                    $username = strtolower($Fbuser['data']['name']);
+//                    $username = strtolower($Fbuser['data']['name']);
                     $email = strtolower($Fbuser['data']['email']);
-                    $password = 'facebook2015';
+                    $username = explode('@', $email);
+                    $username = $username[0].'_'.$username[1];
+                    $password = random_string('alnum', 8);
 
                     $additional_data = array(
                         'first_name' => $Fbuser['data']['first_name'],
@@ -74,11 +81,14 @@ class Social extends MX_Controller {
                             'facebook' => $facebook
                         ))
                     );
-                    if ($this->ion_auth_model->register($username, $password, $email, $additional_data)) {
-                        $this->ion_auth->login($email, $password);
+                    $id = $this->ion_auth->register($username, $password, $email, $additional_data);
+                    if ($id) {
+                        $user_id = $this->encrypt->encode($id);
+                        redirect(site_url('choose-plan/'.$user_id));
+//                        $this->ion_auth->login($email, $password);
                     }
                 } else {
-                    $this->ion_auth->by_pass_login($Fbuser['data']['email']);
+                    /*$this->ion_auth->by_pass_login($Fbuser['data']['email']);
                     if($this->make_json()){
                         $data = array(
                             'social_account' => $this->make_json()
@@ -86,9 +96,10 @@ class Social extends MX_Controller {
 
                         $userId = userdata('user_id');
                         $this->ion_auth_model->update($userId, $data);
-                    }
+                    }*/
+                    $this->session->set_flashdata('message', 'Email already in used.<br>Please use your email to login directly.<br>If you have forgotten your password, use Forget Password to recover.');
+                    redirect(site_url('#login_register'), 'refresh');
                 }
-                redirect('/', 'refresh');
             }
         } else {
             redirect('/', 'refresh');
@@ -140,52 +151,36 @@ class Social extends MX_Controller {
 
     public function register_linkedin()
     {
-        $userId = $this->ion_auth->get_user_id();
-        if (isset($_GET['register'])) {
-            # Now we retrieve a request token. It will be set as $linkedin->request_token
-            $token = (new Linkedin())->get_request_token();
-            $oauth_data = array(
-                'oauth_request_token' => $token['oauth_token'],
-                'oauth_request_token_secret' => $token['oauth_token_secret']
-            );
-            $this->session->set_userdata($oauth_data);
+        $reponse = $this->linkedin->getAccessToken();
+        if($reponse){
+            $linkedin = array('access_token' => $reponse);
+            $user = $this->linkedin->user();
+            if (!$this->ion_auth->email_check($user->emailAddress)) {
+                $email = strtolower($user->emailAddress);
+                $username = explode('@', $email);
+                $username = $username[0] . '_' . $username[1];
+                $password = random_string('alnum', 8);
 
-            # With a request token in hand, we can generate an authorization URL, which we'll direct the user to
-            $request_link = (new Linkedin())->get_authorize_URL($token);
-
-            header("Location: " . $request_link);
-        } else {
-            $LinkedInOAuth = new Linkedin();
-            $this->session->set_userdata('oauth_verifier', $this->input->get('oauth_verifier'));
-
-            $tokens = $LinkedInOAuth->get_access_token($this->input->get('oauth_verifier'));
-            $access_data = array(
-                'oauth_access_token' => $tokens['oauth_token'],
-                'oauth_access_token_secret' => $tokens['oauth_token_secret']
-            );
-            $this->session->set_userdata($access_data);
-            /*
-             * Store Linkedin info in a session
-             */
-            $auth_data = array('linked_in' => serialize($LinkedInOAuth->token), 'oauth_secret' => $this->input->get('oauth_verifier'));
-
-            $this->session->set_userdata(array('auth' => $auth_data));
-            
-            $linkedin = array(
-                'li_access_token'      => $tokens['oauth_token'],
-                'li_access_key'        => $tokens['oauth_token_secret'],
-                'li_access_verifier'   => $this->input->get('oauth_verifier'),
-            );
-            $this->session->set_userdata($linkedin);
-            if($this->make_json()){
-                $data = array(
-                    'social_account' => $this->make_json()
+                $additional_data = array(
+                    'first_name' => $user->firstName,
+                    'last_name' => $user->lastName,
+                    'active' => 1,
+                    'social_account' => json_encode(array(
+                        'linkedin' => $linkedin
+                    ))
                 );
-
-                $userId = userdata('user_id');
-                $this->ion_auth_model->update($userId, $data);
+                $id = $this->ion_auth->register($username, $password, $email, $additional_data);
+                if ($id) {
+                    $user_id = $this->encrypt->encode($id);
+                    redirect(site_url('choose-plan/' . $user_id));
+                }
+            } else {
+                $this->session->set_flashdata('message', 'Email already in used.<br>Please use your email to login directly.<br>If you have forgotten your password, use Forget Password to recover.');
+                redirect(site_url('#login_register'), 'refresh');
             }
-            redirect(site_url('social'));
+        } else {
+            $this->session->set_flashdata('message', 'There is some problem in registration.<br>Please try again later.');
+            redirect(site_url('#login_register'), 'refresh');
         }
     }
 

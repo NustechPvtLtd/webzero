@@ -73,7 +73,7 @@ class Plans extends MY_Controller {
 
     public function index()
     {
-        if(!$this->ion_auth->is_admin()){
+        if (!$this->ion_auth->is_admin()) {
             redirect('account/plans', 'location');
         }
         $this->data['pageHeading'] = 'Plans';
@@ -118,6 +118,8 @@ startOpen: false,
         $this->form_validation->set_rules('discount', $this->lang->line('discount'), 'numeric');
         $this->form_validation->set_rules('expiration_type', $this->lang->line('expiration_type'), 'required');
         $this->form_validation->set_rules('expiration', $this->lang->line('expiration'), 'required|numeric');
+        $this->form_validation->set_rules('plan_grps', $this->lang->line('plans_grp_name'), 'required');
+        $this->form_validation->set_rules('plan_websites', $this->lang->line('plans_no_of_sites'), 'required');
 
         if (isset($_POST) && !empty($_POST)) {
             if ($this->form_validation->run() === TRUE) {
@@ -136,8 +138,16 @@ startOpen: false,
                         'visitor_count' => $this->input->post('visitor_count'),
                         'eccommerce' => $this->input->post('eccommerce'),
                         'premium_domain' => $this->input->post('premium_domain'),
+                        'no_of_sites' => $this->input->post('plan_websites'),
                         'last_updated' => date("Y-m-d H:i:s")
                     );
+                    if ($this->input->post('plan_recommends') == 'yes') {
+                        $this->plans_model->update_plan(array('recommended' => 'no'));
+                    }
+                    $plan_grps = $this->input->post('plan_grps');
+                    if (isset($plan_grps)) {
+                        $this->plans_model->update_plan_group($plans->plan_id, $plan_grps);
+                    }
                     $this->data['message'] = ($this->plans_model->update_plan($data)) ? 'Successfully Update Plan' : 'Something happen, please try again!';
                 } else {
                     $data = array(
@@ -153,10 +163,23 @@ startOpen: false,
                         'visitor_count' => $this->input->post('visitor_count'),
                         'eccommerce' => $this->input->post('eccommerce'),
                         'premium_domain' => $this->input->post('premium_domain'),
+                        'no_of_sites' => $this->input->post('plan_websites'),
                         'date_added' => date("Y-m-d H:i:s"),
                         'last_updated' => date("Y-m-d H:i:s")
                     );
-                    $this->data['message'] = ($this->plans_model->create_plan($data)) ? 'Successfully Plan Created' : 'Something happen, please try again!';
+                    if ($this->input->post('plan_recommends') == 'yes') {
+                        $this->plans_model->update_plan(array('recommended' => 'no'));
+                    }
+                    $plan_id = $this->plans_model->create_plan($data);
+                    if ($plan_id) {
+                        $plan_grps = $this->input->post('plan_grps');
+                        if (isset($plan_grps)) {
+                            $this->plans_model->update_plan_group($plan_id, $plan_grps);
+                        }
+                        $this->data['message'] = 'Successfully Plan Created';
+                    } else {
+                        $this->data['message'] = 'Something happen, please try again!';
+                    }
                 }
                 redirect(site_url('/plans'), 'refresh');
             }
@@ -186,7 +209,18 @@ startOpen: false,
             'class' => 'form-control',
             'onkeypress' => 'return isNumberKey(event)',
         );
-        $this->data['plan_recommends'] = (isset($plans->recommended)) ? $this->form_validation->set_value('plan_recommends', $plans->recommended) : '';
+        $this->data['plan_websites'] = array(
+            'name' => 'plan_websites',
+            'id' => 'plan_websites',
+            'type' => 'number',
+            'value' => (isset($plans->no_of_sites)) ? $this->form_validation->set_value('plan_websites', $plans->no_of_sites) : 1,
+            'class' => 'form-control',
+            'onkeypress' => 'return isNumberKey(event)',
+        );
+        $this->data['plan_grps'] = (!empty($plan_id)) ? $this->form_validation->set_value('plan_grps', $this->plans_model->get_plan_group($plan_id)) : '';
+        $group = $this->ion_auth->get_groups(array('neglectgroup' => array('admin', 'nogroup'), 'visibility' => TRUE));
+        $this->data['group'] = $group;
+        $this->data['plan_recommends'] = (isset($plans->recommended)) ? $this->form_validation->set_value('plan_recommends', $plans->recommended) : 'no';
         $this->data['plan_status'] = (isset($plans->status)) ? $this->form_validation->set_value('plan_status', $plans->status) : 'inactive';
         $this->data['visitor_count'] = (isset($plans->visitor_count)) ? $this->form_validation->set_value('visitor_count', $plans->visitor_count) : $this->form_validation->set_value('visitor_count', 'inactive');
         $this->data['eccommerce'] = (isset($plans->eccommerce)) ? $this->form_validation->set_value('eccommerce', $plans->eccommerce) : $this->form_validation->set_value('eccommerce', 'inactive');
@@ -196,7 +230,7 @@ startOpen: false,
             'name' => 'discount',
             'id' => 'discount',
             'type' => 'text',
-            'value' => (isset($plans->discount)) ? $this->form_validation->set_value('discount', $plans->discount) : '',
+            'value' => (isset($plans->discount)) ? $this->form_validation->set_value('discount', $plans->discount) : 0,
             'class' => 'form-control',
             'onkeypress' => 'return isNumberKey(event)',
         );
@@ -231,20 +265,21 @@ startOpen: false,
 
     public function change_status($attributes, $arg)
     {
-
         $data = array(
             'plan_id' => $arg[0],
             $attributes => $arg[1],
             'last_updated' => date("Y-m-d H:i:s")
         );
-
+        if ($attributes == 'recommended') {
+            $this->plans_model->update_plan(array($attributes => 'no'));
+        }
         $this->data['message'] = ($this->plans_model->update_plan($data)) ? 'Successfully Update Plan' : 'Something happen, please try again!';
         redirect(site_url('/plans'), 'refresh');
     }
 
     public function payment_success()
     {
-        if(empty($_POST)){
+        if (empty($_POST)) {
             redirect(site_url('account/plans'), 'refresh');
         }
         $user = $this->ion_auth_model->user()->result();
@@ -259,7 +294,7 @@ startOpen: false,
         $salt = $this->config->item('SALT', 'payu_money');
         $this->data['name'] = $user[0]->first_name . ' ' . $user[0]->last_name;
         $plan_id = $this->session->userdata['upgrade_plan_id'];
-        
+
         If (isset($_POST["additionalCharges"])) {
             $additionalCharges = $_POST["additionalCharges"];
             $retHashSeq = $additionalCharges . '|' . $salt . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
@@ -268,7 +303,7 @@ startOpen: false,
         }
         $hash = hash("sha512", $retHashSeq);
         $order_id = $this->session->userdata['upgrade_plan_order_id'];
-        
+
         $plan_transaction_data = array(
             'order_id' => $order_id,
             'payment_gateway_name' => 'PayU Money',
@@ -276,6 +311,18 @@ startOpen: false,
             'payment_gateway_response' => $status,
             'date_added' => date("Y-m-d H:i:s")
         );
+         //calculate expiry date
+        $plan_info=$this->plans_model->get_plans_by_id($plan_id); 
+        $expiration_format=$plan_info->expiration_type;
+        if($expiration_format=="months"){
+            $expiration_format="month";
+        }
+        $expiration=$plan_info->expiration;
+        if($expiration!=0){
+            $expiry_date=strtotime(date('Y-m-d', strtotime("+$expiration $expiration_format")));
+        }else{
+            $expiry_date=0;
+        }
         if ($hash != $posted_hash) {
             $account_upgrade = array(
                 'user_id' => $user[0]->id,
@@ -283,12 +330,12 @@ startOpen: false,
                 'notes' => "Invalid Transaction. Please try again",
                 'upgrade_from' => $user[0]->price_plan_id,
                 'upgrade_to' => $plan_id,
-                'date' => time()
+                'date' => time(),
+                'expiry_date'=> $expiry_date
             );
             $plan_transaction_data['status'] = 'invalid';
             $this->data['error'] = "Invalid Transaction. Please try again";
         } else {
-
             $this->data['status'] = $status;
             $this->data['txnid'] = $txnid;
             $this->data['amount'] = $amount;
@@ -299,12 +346,22 @@ startOpen: false,
                 'notes' => $_POST["productinfo"],
                 'upgrade_from' => $user[0]->price_plan_id,
                 'upgrade_to' => $plan_id,
-                'date' => time()
+                'date' => time(),
+                'expiry_date'=> $expiry_date
             );
             $data['price_plan_id'] = $plan_id;
+            $data['upgrade_by'] = 'self';
             $user = $this->ion_auth_model->update($user[0]->id, $data);
+            userdata('plan_id', $plan_id);
+            userdata('expiry_date', $expiry_date);
         }
+        $this->data['js'] = array(
+            '<script>
+    // Use p.countdown as container, pass redirect, duration, and optional message
+    $(".countdown").countdown(redirect, 10, "s.");
 
+</script>'
+        );
         $this->account_upgrade_model->account_upgrade($account_upgrade);
         $this->plans_transaction_model->create_plan_transaction($plan_transaction_data);
         $this->template->load('main', 'account', 'plans/success', $this->data);
@@ -432,6 +489,26 @@ startOpen: false,
     private function _genrate_txnid()
     {
         return substr(hash('sha256', mt_rand() . microtime()), 0, 20);
+    }
+
+    public function plan_selling_report()
+    {
+        if (!$this->ion_auth->is_admin()) {
+            redirect('account/plans', 'location');
+        }
+        $this->data['css'] = array(
+            '<link href="' . base_url() . 'assets/datatable/css/dataTables.bootstrap.css" type="text/css" rel="stylesheet">',
+            '<link href="' . base_url() . 'assets/datatable/css/dataTables.responsive.css" type="text/css" rel="stylesheet">',
+            '<style>td.child{text-align:left !important}</style>'
+        );
+        $this->data['js'] = array(
+            '<script type="text/javascript" src="' . base_url() . 'assets/datatable/js/jquery.dataTables.min.js"></script>',
+            '<script type="text/javascript" src="' . base_url() . 'assets/datatable/js/dataTables.bootstrap.js"></script>',
+            '<script type="text/javascript" src="' . base_url() . 'assets/datatable/js/dataTables.responsive.js"></script>',
+            '<script type="text/javascript" src="' . base_url() . 'assets/js/readmore.min.js"></script>');
+        $this->data['plan_report'] = $this->plans_orders_model->plan_selling_reports();
+        $this->data['message'] = "Customers plan upgraded report";
+        $this->template->load('main', 'account', 'plans/plan_report_view', $this->data);
     }
 
 }

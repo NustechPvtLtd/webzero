@@ -71,9 +71,9 @@
     <body data-spy="scroll" data-target=".navMenuCollapse">
 
         <!--PRELOADER-->
-        <div id="wrap">
+        <div class="wrap">
             <?php echo $body; ?>
-        </div><!-- /#wrap -->
+        </div><!-- /.wrap -->
 
         <!-- MODALS BEGIN-->
         <div class="modal fade" id="modalMessage" tabindex="-1" role="dialog" aria-hidden="true">

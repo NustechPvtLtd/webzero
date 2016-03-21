@@ -1,15 +1,8 @@
-<div id="wrap">
+<div class="wrap">
 
     <!-- INTRO SLIDER -->
     <header id="intro-slider" class="intro-block full-slider no-sep">
-        <div id="carousel-full-header" class="carousel slide carousel-full" data-ride="carousel">
-
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-                <li data-target="#carousel-full-header" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-full-header" data-slide-to="1"></li>
-                <li data-target="#carousel-full-header" data-slide-to="2"></li>
-            </ol>
+        <div class="intro-slider carousel slide carousel-full" data-ride="carousel">
 
             <div class="carousel-inner" role="listbox">
 
@@ -45,9 +38,9 @@
                 <div class="item cover-bg editBg dark-bg" style="background-image: url(/elements/images/bg45.jpg);">
                     <div class="container double-padding">
                         <div class="row">
-                            <div class="col-md-6 editContent drag">
+                            <div class="col-md-6 drag">
                                 <h2 class="big-title drag"><strong>satisfaction</strong><br> guarantee</h2>
-                                <a href="#" class="goto btn btn-lg btn-default-white drag">Happy Customers</a>
+                                <a href="#" class="goto btn btn-lg btn-default-white drag"><span>Happy Customers<span></a>
                             </div>
                             <div class="col-md-6"></div>
                         </div>
@@ -55,8 +48,17 @@
                 </div>
 
             </div>
+			
+			<!-- Controls -->
+            <a class="left carousel-control" href=".intro-slider" role="button" data-slide="prev">
+                <span class="arrow"></span>
+            </a>
+            <a class="right carousel-control" href=".intro-slider" role="button" data-slide="next">
+                <span class="arrow"></span>
+            </a>
+			
         </div>
 
     </header>
 
-</div><!-- /#wrap -->
+</div><!-- /.wrap -->

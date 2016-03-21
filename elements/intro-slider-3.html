@@ -1,8 +1,8 @@
-<div id="wrap">
+<div class="wrap">
 
     <!-- INTRO SLIDER 3 -->
     <header id="intro-slider-3" class="intro-block full-slider no-sep cover-bg dark-bg" style="background-image: url(/elements/images/bg49.jpg);">
-        <div id="carousel-full-header" class="carousel slide carousel-full" data-ride="carousel">
+        <div class="intro-slider-3 carousel slide carousel-full" data-ride="carousel">
             <div class="carousel-inner" role="listbox"> 
 
                 <!-- Slide 1 -->
@@ -26,8 +26,8 @@
                             </div>
                             <div class="col-md-6 col-md-offset-1 drag propClone">
                                 <div class="embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/Kaq9jmOuvPU?rel=0&amp;controls=0&amp;showinfo=0" allowfullscreen></iframe>
-                                    <div class="frameCover" data-type="video"></div>
+                                <div class="videoGallery html5gallery" data-showtitle="false" data-html5player="true" responsivefullscreen="true" data-responsive="true" data-src="https://www.youtube.com/embed/Kaq9jmOuvPU?rel=0&amp;controls=0&amp;showinfo=0"></div>
+                                <div class="frameCover" data-type="video"></div>
                                 </div>
                             </div>
                         </div>
@@ -35,12 +35,14 @@
                 </div>
 
             </div>
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-                <li data-target="#carousel-full-header" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-full-header" data-slide-to="1"></li>
-            </ol>
+            <!-- Controls -->
+            <a class="left carousel-control" href=".intro-slider-3" role="button" data-slide="prev">
+                <span class="arrow"></span>
+            </a>
+            <a class="right carousel-control" href=".intro-slider-3" role="button" data-slide="next">
+                <span class="arrow"></span>
+            </a>
         </div>
     </header>
 
-</div><!-- /#wrap -->
+</div><!-- /.wrap -->

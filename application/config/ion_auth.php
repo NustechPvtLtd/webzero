@@ -145,6 +145,14 @@ $config['email_activate'] = 'activate.tpl.php';
 
 /*
  | -------------------------------------------------------------------------
+ | Register Account Email Template
+ | -------------------------------------------------------------------------
+ | Default: register.tpl.php
+ */
+$config['email_register'] = 'register.tpl.php';
+
+/*
+ | -------------------------------------------------------------------------
  | Forgot Password Email Template
  | -------------------------------------------------------------------------
  | Default: forgot_password.tpl.php

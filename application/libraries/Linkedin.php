@@ -1,184 +1,271 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
 
-/* Load OAuth lib. You can find it at http://oauth.net */
-$path = realpath(APPPATH.'/third_party/OAuth.php');
-require_once($path);
+defined('BASEPATH') OR exit('No direct script access allowed');
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-class Linkedin
-{
+/**
+ * Description of Linkedin
+ *
+ * @author NUSTECH
+ */
+class Linkedin {
 
-    var $consumer;
-    var $token;
-    var $method;
-    var $http_status;
-    var $last_api_call;
-    var $callback;
-    
-    function __construct()
+    protected $base_url = "http://api.linkedin.com";
+    protected $secure_base_url = "https://api.linkedin.com";
+    protected $oauth_callback;
+    private $consumer_key;
+    private $consumer_secret;
+    protected $authorize_path;
+    protected $access_token_path;
+    protected $state;
+    protected $scope;
+
+    /**
+     * @var string Prefix to use for session variables
+     */
+    private $sessionPrefix = 'LIRLH_';
+
+    /**
+     * @var boolean Toggle for PHP session status check
+     */
+    protected $checkForSessionStatus = true;
+    protected $access_token;
+
+    public function __construct()
     {
-        $this->ci =& get_instance();
-        $this->ci->config->load("linkedin",TRUE); 
-        $consumer_key = $this->ci->config->item('api_key', 'linkedin');
-        $consumer_secret = $this->ci->config->item('secret_key', 'linkedin');
-        $this->callback = $this->ci->config->item('callback_url', 'linkedin');
-        
-        $this->method = new OAuthSignatureMethod_HMAC_SHA1();
-        $this->consumer = new OAuthConsumer($consumer_key, $consumer_secret);
-
-        if (isset($this->session->userdata('oauth_request_token')) && isset($this->session->userdata('oauth_request_token_secret')))
-        {
-            $this->token = new OAuthConsumer($this->session->userdata('oauth_request_token'), $this->session->userdata('oauth_request_token_secret'));
-        }
-        else
-        {
-            $this->token = NULL;
-        }
+        // Load config
+        $this->load->config('linkedin', TRUE);
+        $this->consumer_key = $this->config->item('api_key', 'linkedin');
+        $this->consumer_secret = $this->config->item('secret_key', 'linkedin');
+        $this->oauth_callback = $this->config->item('callback_url', 'linkedin');
+        $this->scope = $this->config->item('scope', 'linkedin');
+        $this->authorize_path = "https://www.linkedin.com/uas/oauth2/authorization?";
+        $this->access_token_path = "https://www.linkedin.com/uas/oauth2/accessToken";
     }
 
-    function get_request_token()
+    public function login_url()
     {
-        $args = array('scope' => 'rw_nus');
+        $this->state = $this->random(16);
+        $this->storeState($this->state);
+        $params = array(
+            'response_type' => 'code',
+            'client_id' => $this->consumer_key,
+            'redirect_uri' => $this->oauth_callback,
+            'state' => $this->state,
+            'scope' => implode(' ', $this->scope)
+        );
 
-        $request = OAuthRequest::from_consumer_and_token($this->consumer, $this->token, 'GET', "https://api.linkedin.com/uas/oauth/requestToken", $args);
-        $request->set_parameter("oauth_callback", $this->callback);
-        $request->sign_request($this->method, $this->consumer, $this->token);
-        $request = $this->http($request->to_url());
-
-        parse_str($request, $token);
-
-        $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret'], $this->callback);
-
-        return $token;
+        return $this->authorize_path . http_build_query($params, null, '&');
     }
 
-    function get_access_token($oauth_verifier)
+    public function getAccessToken()
     {
-        $args = array();
+        if ($this->isValidRedirect()) {
+            $params = array(
+                'grant_type' => 'authorization_code',
+                'client_id' => $this->consumer_key,
+                'client_secret' => $this->consumer_secret,
+                'code' => $this->getCode(),
+                'redirect_uri' => $this->oauth_callback,
+            );
 
-        $request = OAuthRequest::from_consumer_and_token($this->consumer, $this->token, 'GET', "https://api.linkedin.com/uas/oauth/accessToken", $args);
-        $request->set_parameter("oauth_verifier", $oauth_verifier);
-        $request->sign_request($this->method, $this->consumer, $this->token);
-        $request = $this->http($request->to_url());
+            // Access Token request
+            $url = 'https://www.linkedin.com/uas/oauth2/accessToken?' . http_build_query($params);
+            
+            // Tell streams to make a POST request
+            $context = stream_context_create(
+                    array('http' =>
+                        array('method' => 'POST',
+                        )
+                    )
+            );
 
-        parse_str($request, $token);
+            // Retrieve access token information
+            $response = file_get_contents($url, false, $context);
 
-        $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret'], 1);
-
-        return $token;
-    }
-
-    function get_authorize_URL($token)
-    {
-        if (is_array($token))
-        {
-            $token = $token['oauth_token'];
+            // Native PHP object, please
+            $token = json_decode($response);
+            $this->access_token = $token->access_token; // guard this! 
+//            print_r(time() + $token->expires_in); // absolute time
+//            $response = $this->__callAPI('POST', $this->access_token_path, $params);
+            return $token->access_token;
         }
-        return "https://api.linkedin.com/uas/oauth/authorize?oauth_token=" . $token;
+        return null;
     }
 
-    function http($url, $post_data = null)
+    public function user()
     {
-        $ch = curl_init();
+        $opts = array(
+            'http' => array(
+                'method' => 'GET',
+                'header' => "Authorization: Bearer " . $this->access_token . "\r\n" . "x-li-format: json\r\n"
+            )
+        );
 
-        if (defined("CURL_CA_BUNDLE_PATH"))
-            curl_setopt($ch, CURLOPT_CAINFO, CURL_CA_BUNDLE_PATH);
+        // Need to use HTTPS
+        $url = 'https://api.linkedin.com/v1/people/~:(firstName,lastName,email-address)?format=json';
 
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        // Tell streams to make a (GET, POST, PUT, or DELETE) request
+        // And use OAuth 2 access token as Authorization
+        $context = stream_context_create($opts);
 
-        if (isset($post_data))
-        {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        }
+        // Hocus Pocus
+        $response = file_get_contents($url, false, $context);
 
-        $response = curl_exec($ch);
-        $this->http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $this->last_api_call = $url;
-        curl_close($ch);
-
-        return $response;
+        // Native PHP object, please
+        return json_decode($response);
     }
 
     /**
-     * Post to Linkedin
-     * @param type $comment
-     * @param type $title
-     * @param type $url
-     * @param type $image_url
-     * @param type $access_token
-     * @return type
+     * Return the code.
+     *
+     * @return string|null
      */
-    function share($comment, $title, $url, $image_url, $access_token)
+    protected function getCode()
     {
-        $shareUrl = "http://api.linkedin.com/v1/people/~/shares";
-
-        $xml = "<share>
-              <comment>$comment</comment>
-              <content>
-                 <title>$title</title>
-                     <description>asdfsadf</description>
-                 <submitted-url>$url</submitted-url>
-                 <submitted-image-url>$image_url</submitted-image-url>
-              </content>
-              <visibility>
-                <code>anyone</code>
-              </visibility>
-            </share>";
-
-
-        $request = OAuthRequest::from_consumer_and_token($this->consumer, $access_token, "POST", $shareUrl);
-        $request->sign_request($this->method, $this->consumer, $access_token);
-        $auth_header = $request->to_header("https://api.linkedin.com");
-
-        $response = $this->httpRequest($shareUrl, $auth_header, "POST", $xml);
-
-        return $response;
+        return isset($_GET['code']) ? $_GET['code'] : null;
     }
 
     /**
-     * Send a http request using Curl
-     * @param type $url
-     * @param type $auth_header
-     * @param string $method
-     * @param type $body
-     * @return type
+     * Stores a state string in session storage for CSRF protection.
+     * Developers should subclass and override this method if they want to store
+     *   this state in a different location.
+     *
+     * @param string $state
+     *
+     * @throws LinkedinException
      */
-    function httpRequest($url, $auth_header, $method, $body = NULL)
+    protected function storeState($state)
     {
+        if ($this->checkForSessionStatus === true && session_status() !== PHP_SESSION_ACTIVE) {
+            throw new LinkedinException(
+            'Session not active, could not store state.', 720
+            );
+        }
+        $_SESSION[$this->sessionPrefix . 'state'] = $state;
+    }
 
-        if (!$method)
-        {
-            $method = "GET";
-        };
+    /**
+     * Check if a redirect has a valid state.
+     *
+     * @return bool
+     */
+    protected function isValidRedirect()
+    {
+        $savedState = $this->loadState();
+        if (!$this->getCode() || !isset($_GET['state'])) {
+            return false;
+        }
+        $givenState = $_GET['state'];
+        $savedLen = mb_strlen($savedState);
+        $givenLen = mb_strlen($givenState);
+        if ($savedLen !== $givenLen) {
+            return false;
+        }
+        $result = 0;
+        for ($i = 0; $i < $savedLen; $i++) {
+            $result |= ord($savedState[$i]) ^ ord($givenState[$i]);
+        }
+        return $result === 0;
+    }
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array($auth_header)); // Set the headers.
+    /**
+     * Loads a state string from session storage for CSRF validation.  May return
+     *   null if no object exists.  Developers should subclass and override this
+     *   method if they want to load the state from a different location.
+     *
+     * @return string|null
+     *
+     * @throws LinkedinException
+     */
+    protected function loadState()
+    {
+        if ($this->checkForSessionStatus === true && session_status() !== PHP_SESSION_ACTIVE) {
+            throw new LinkedinException(
+            'Session not active, could not load state.', 721
+            );
+        }
+        if (isset($_SESSION[$this->sessionPrefix . 'state'])) {
+            $this->state = $_SESSION[$this->sessionPrefix . 'state'];
+            return $this->state;
+        }
+        return null;
+    }
 
-        if ($body)
-        {
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array($auth_header, "Content-Type: text/xml;charset=utf-8"));
+    /**
+     * Generate a cryptographically secure pseudrandom number
+     * 
+     * @param integer $bytes - number of bytes to return
+     * 
+     * @return string
+     * 
+     * @throws LinkedinException
+     * 
+     * @todo Support Windows platforms
+     */
+    public function random($bytes)
+    {
+        if (!is_numeric($bytes)) {
+            throw new LinkedinException(
+            'random() expects an integer'
+            );
+        }
+        if ($bytes < 1) {
+            throw new LinkedinException(
+            'random() expects an integer greater than zero'
+            );
+        }
+        $buf = '';
+        // http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers/
+        if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
+            $fp = fopen('/dev/urandom', 'rb');
+            if ($fp !== FALSE) {
+                $buf = fread($fp, $bytes);
+                fclose($fp);
+                if ($buf !== FALSE) {
+                    return bin2hex($buf);
+                }
+            }
         }
 
-        $data = curl_exec($curl);
-        echo curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if (function_exists('mcrypt_create_iv')) {
+            $buf = mcrypt_create_iv($bytes, MCRYPT_DEV_URANDOM);
+            if ($buf !== FALSE) {
+                return bin2hex($buf);
+            }
+        }
 
-        echo $data . "\n";
+        while (strlen($buf) < $bytes) {
+            $buf .= md5(uniqid(mt_rand(), true), true);
+            // We are appending raw binary
+        }
+        return bin2hex(substr($buf, 0, $bytes));
+    }
 
-        curl_close($curl);
+    // ------------------------------------------------------------------------
 
-        return $data;
+    /**
+     * Enables the use of CI super-global without having to define an extra variable.
+     * I can't remember where I first saw this, so thank you if you are the original author.
+     *
+     * Copied from the Ion Auth library
+     *
+     * @access  public
+     * @param   $var
+     * @return  mixed
+     */
+    public function __get($var)
+    {
+        return get_instance()->$var;
     }
 
 }
 
-?>
+/**
+ * Class LinkedinException
+ */
+class LinkedinException extends \Exception {
+    
+}

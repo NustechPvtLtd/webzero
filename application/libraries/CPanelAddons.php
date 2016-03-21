@@ -154,6 +154,7 @@ class CPanelAddons {
 			'subdomain' => $subDomain,
 			'dir' => $relativeDir
 				) );
+                
 		$json = json_decode( $result, true );
 // error found?
 		/*if ( isset( $json['cpanelresult']['data'][0]['result'] ) && trim( $json['cpanelresult']['data'][0]['result'] ) == '0'
@@ -221,7 +222,7 @@ class CPanelAddons {
 			'cpanel_jsonapi_module' => 'SubDomain',
 			'cpanel_jsonapi_func' => 'delsubdomain',
 			'domain' => $domain.'.'.$rootdomain
-				) );
+				) );                
 		$json = json_decode( $result, true );
 
 		return $json;
@@ -236,14 +237,28 @@ class CPanelAddons {
 			'cpanel_jsonapi_func' => 'fileop',
 			'op' => "unlink",
 			"sourcefiles"=>"/public_html/".$domain,
-				) );
+				) );                    
 		$json = json_decode( $result, true );
 
 		return $json;
 	}
-
+	public function deladdondomain($domain, $rootdomain){
+		$subDomain = explode( '.', $domain );		  
+		$subDomain = $subDomain[0].$subDomain[1];	   
+		$result=$this->_api(array(
+			'user' => $this -> _username,
+			'cpanel_jsonapi_apiversion' => 2,
+			'cpanel_jsonapi_module' =>'AddonDomain',
+			'cpanel_jsonapi_func' =>'deladdondomain',
+			'domain' => $domain,
+			'subdomain' => $subDomain.'.'.$rootdomain
+		));
+		$json = json_decode( $result, true );
+		return $json;
+	}
 	public function saveFile( $relativeDir, $content )
-	{
+	{	
+		
 		$result = $this -> _api( array (
 			'cpanel_jsonapi_apiversion' => 2,
 			'user' => $this -> _username,

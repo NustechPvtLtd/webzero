@@ -34,12 +34,12 @@
                             </div>
                         </div><!-- /.tab-pane -->
                         <div class="tab-pane" id="uploadTab">
-                            <form id="imageUploadForm" action="<?php echo site_url('sites/assets/imageUploadAjax/' . $site->sites_id); ?>">
+                            <form id="imageUploadForm" action="<?php echo site_url('sites/assets/imageUploadAjax/'); ?>">
 
                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                     <div id="fileinput-preview" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
                                     <div>
-                                        <span class="btn btn-primary btn-embossed btn-file">
+                                        <span class="btn btn-primary btn-embossed btn-file" style="height:39px;">
                                             <span class="fileinput-new new"><span class="fui-image"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_selectimage') ?></span>
                                             <span class="fileinput-exists exists"><span class="fui-gear"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_imagelibrary_button_change') ?></span>
                                             <input type="file" name="imageFile" id="imageFile" >

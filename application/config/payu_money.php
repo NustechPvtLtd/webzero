@@ -18,9 +18,9 @@ $config['Sandbox'] = TRUE;
  * Your sandbox values go on the left and your live values go on the right.
  * 
  */
-$config['MERCHANT_ID'] = $config['Sandbox'] ? 4929338 : 'PRODUCTION_MERCHANT_ID_GOES_HERE';
-$config['MERCHANT_KEY'] = $config['Sandbox'] ? 'KbubL1' : 'PRODUCTION_MERCHANT_KEY_GOES_HERE';
-$config['SALT'] = $config['Sandbox'] ? 'OEoDQoL8' : 'PRODUCTION_SALT_GOES_HERE';
+$config['MERCHANT_ID'] = $config['Sandbox'] ? 4934960 : 'PRODUCTION_MERCHANT_ID_GOES_HERE';
+$config['MERCHANT_KEY'] = $config['Sandbox'] ? 'wsyhIKEu' : 'PRODUCTION_MERCHANT_KEY_GOES_HERE';
+$config['SALT'] = $config['Sandbox'] ? 'xXuyP8enbk' : 'PRODUCTION_SALT_GOES_HERE';
 $config['PAYU_BASE_URL'] = $config['Sandbox'] ? 'https://test.payu.in/' : 'https://secure.payu.in/';
 $config['PAYU_SUCCESS_URL'] = site_url('plans/success');
 $config['PAYU_FAILURE_URL'] = site_url('plans/failure');

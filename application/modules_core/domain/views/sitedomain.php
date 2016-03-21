@@ -6,6 +6,24 @@
         padding: 0;
         width: 50px;
     }
+	input[type=checkbox]:hover, input[type=checkbox]:focus, input[type=checkbox]:active{
+		outline: 0px !important;
+		-webkit-appearance: checkbox !important;
+	}
+	#tld {
+		margin-top: 20px;
+	}
+	.tld-container {
+		padding-left: 15px;
+		margin-top: 20px;
+	}
+	label {
+		font-weight: normal;
+		padding-left: 3px;
+		top: -1px;
+		position: absolute;
+	}
+	    
 </style>		
 <div id="siteSettingsWrapper" class="siteSettingsWrapper container-fluid">				
 
@@ -14,7 +32,8 @@
         <h6><?php echo $this->lang->line('sitedata_publishingdetails')?></h6>                
         <div class="product-purchased" id="domain-name">
             <form method="POST" name="quickbuy_domain" id="select-product" novalidate="novalidate">
-                <input type="hidden" name="siteID" id="siteID" value="<?php echo $siteData->sites_id;?>">
+                <!--<input type="hidden" name="siteID" id="siteID" value="<?php echo $siteData->sites_id;?>">-->
+                <input type="hidden" name="main_domain_page" value="1" />
                 <input type="hidden" value="check_availability" name="action">
                 <div class="dca-search">
                     <div class="col-sm-6">
@@ -26,20 +45,25 @@
                     <div class="clearfix"></div>
                     <div class="tld-container">
                         <div class="tld-container-primary" >
-                            <span class="inline-block col-1"><input type="checkbox" value="com" id="com" name="tlds[]" ><label class="inline-block" for="com">com</label></span>
-                            <span class="inline-block col-1"><input type="checkbox" value="net" id="net" name="tlds[]" ><label class="inline-block" for="net">net</label></span>
-                            <span class="inline-block col-1"><input type="checkbox" value="org" id="org" name="tlds[]" ><label class="inline-block" for="org">org</label></span>
-                            <span class="inline-block col-1"><input type="checkbox" value="biz" id="biz" name="tlds[]" ><label class="inline-block" for="biz">biz</label></span>
-                            <span class="inline-block col-1"><input type="checkbox" value="in" id="in" name="tlds[]" ><label class="inline-block" for="in">in</label></span>
-                            <span class="inline-block col-1"><input type="checkbox" value="club" id="club" name="tlds[]" ><label class="inline-block" for="club">club</label></span>
-                            <span class="inline-block col-1"><input type="checkbox" value="desi" id="desi" name="tlds[]" ><label class="inline-block" for="desi">desi</label></span>
-                            <span class="inline-block col-1"><input type="checkbox" value="guru" id="guru" name="tlds[]" ><label class="inline-block" for="guru">guru</label></span>
-                            <span class="inline-block col-1"><input type="checkbox" value="xyz" id="xyz" name="tlds[]" ><label class="inline-block" for="xyz">xyz</label></span>
-                            <span class="inline-block col-1"><a class="show-all-tlds inline-block " href="#">more</a></span>
+                            <span class="inline-block col-sm-1">
+								<input type="checkbox" value="com" id="com" name="tlds[]" ><label class="inline-block" for="com">com</label>
+							</span>
+                            <span class="inline-block col-sm-1">
+								<input type="checkbox" value="net" id="net" name="tlds[]" ><label class="inline-block" for="net">net</label>
+							</span>
+                            <span class="inline-block col-sm-1">
+								<input type="checkbox" value="org" id="org" name="tlds[]" ><label class="inline-block" for="org">org</label>
+							</span>
+                            <span class="inline-block col-sm-1">
+								<input type="checkbox" value="biz" id="biz" name="tlds[]" ><label class="inline-block" for="biz">biz</label>
+							</span>
+                            <span class="inline-block col-sm-1">
+								<input type="checkbox" value="in" id="in" name="tlds[]" ><label class="inline-block" for="in">in</label>
+							</span>
+                            <span class="inline-block col-sm-1"><a class="show-all-tlds inline-block label label-primary" href="#">more</a></span>
                         </div>
                     <div class="tld-select" id="tld" style="display: block;clear:both;">
-
-                        <span class="inline-block col-sm-2">
+						<span class="inline-block col-sm-2">
                             <input type="checkbox" value="info" id="info" name="tlds[]"><label class="inline-block" for="info">info</label>
                         </span>
                         <span class="inline-block col-sm-2">
@@ -1005,6 +1029,18 @@
                         <span class="inline-block col-sm-2">
                             <input type="checkbox" value="भारत" id="भारत" name="tlds[]"><label class="inline-block" for="भारत">भारत</label>
                         </span>
+						<span class="inline-block col-sm-2">
+							<input type="checkbox" value="club" id="club" name="tlds[]" ><label class="inline-block" for="club">club</label>
+						</span>
+						<span class="inline-block col-sm-2">
+							<input type="checkbox" value="desi" id="desi" name="tlds[]" ><label class="inline-block" for="desi">desi</label>
+						</span>
+						<span class="inline-block col-sm-2">
+							<input type="checkbox" value="guru" id="guru" name="tlds[]" ><label class="inline-block" for="guru">guru</label>
+						</span>
+						<span class="inline-block col-sm-2">
+							<input type="checkbox" value="xyz" id="xyz" name="tlds[]" ><label class="inline-block" for="xyz">xyz</label>
+						</span>
                     </div>
                     </div>
 
@@ -1027,9 +1063,132 @@
         <button type="button" class="btn btn-primary btn-embossed  btn-wide pull-right" id="domainSubmittButton" disabled="disabled"><span class="fui-check"></span> <?php echo $this->lang->line('domainSubmittButton')?></button>
     </div>
 </div><!-- /.siteSettingsWrapper -->
+<?php
+if ($premiumDomain == TRUE) {
+    ?>
+    <div id="siteSettingsWrapper" class="siteSettingsWrapper container-fluid">				
+
+        <div class="optionPane">
+            <h6>Site Domain Setting</h6>
+            <?php if (isset($sites) && !empty($sites)) { ?>
+                <div class="row">
+                    <div class="col-sm-2"><h6>Sites</h6></div><div class="col-sm-4"><h6>Domain</h6></div>
+                </div>
+                <?php foreach ($sites as $k => $sites_detail) {
+                    ?>
+
+                    <div class="row"><div class="col-sm-2"><?php echo $sites_detail['siteData']->sites_name; ?></div> 
+                        <form class="col-sm-4">
+                            <input type="hidden" class="site" name="siteid" value="<?php echo $sites_detail['siteData']->sites_id; ?>" />
+                            <select class="dropd" id='dropdown<?php echo $k; ?>' name="dropdown<?php echo $k; ?>">
+                                <option>Select Premium Domain</option>
+                                <?php
+                                if (isset($mappedDomain) && !empty($mappedDomain)) {
+                                    foreach ($premDomainInfo as $key => $paid_D) {
+                                        $newflag = 0;
+                                        foreach ($mappedDomain as $mapped) {
+                                            $flag = 0;
+                                            if (($paid_D->domainname == $mapped->domain) && ($mapped->site_id == $sites_detail['siteData']->sites_id)) {
+                                                $flag = 1;
+                                                $newflag = 1;
+                                                break;
+                                            } else if (($paid_D->domainname == $mapped->domain) && ($mapped->site_id != $sites_detail['siteData']->sites_id)) {
+                                                $flag = -1;
+                                                break;
+                                            } else {
+                                                $flag = 0;
+                                            }
+                                        }
+                                        if ($flag == 0) {
+                                            echo'<option value="' . $key . '">' . $paid_D->domainname . '</option>';
+                                        } else if ($flag == 1 && $newflag == 1) {
+                                            echo'<option selected="selected" value="' . $key . '">' . $paid_D->domainname . '</option>';
+                                        }
+                                    }
+                                } else {
+                                    foreach ($premDomainInfo as $key => $paid_D) {
+                                        echo'<option value="' . $key . '">' . $paid_D->domainname . '</option>';
+                                    }
+                                }
+                                ?> 
+                            </select> 
+
+                            <button type="button" id="remove_<?php echo $k; ?>" class="btn btn-sm btn-primary rem_option">X</button>
+
+                        </form>
+
+                    </div>
+
+                    <?php
+                }
+            }
+            ?>
+        </div>
+    </div>
+<?php } ?>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
+        // $('select').select2();
+        $('.rem_option').attr("disabled", true);
+        $('.rem_option').on('click', function() {            
+            var siteid = $(this).parents('form:first').children('input[name=siteid]').val();
+            var id = $(this).attr("id");
+            bootbox.confirm("Do you want to save updated text in database?", function(result) {
+                if (result == true) {
+
+                    $.ajax({
+                        url: '<?php echo site_url('domain/map_delete_domain'); ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {siteid: siteid}
+                    }).done(function(res) {
+                        if (res.responseCode) {
+                            location.reload(true);
+                        }
+                    });
+                }
+            });
+        })
+        $('.dropd').each(function() {
+            var notchange = $(this).attr("id");
+            $('#' + notchange + ' option:not(:first-child)').each(function() {
+                if ($(this).is(":selected")) {
+                    $(this).parent().attr("disabled", true);
+
+                    $('#' + notchange).parents('').children('.rem_option').removeAttr("disabled");
+                }
+            });
+        });
+        $('.dropd').on('change', function() {
+            var notchange = $(this).attr("id");
+            var selectedItem = $('#' + notchange + ' option:selected').val();
+            var domain = $('#' + notchange + ' option:selected').text();
+
+            var siteid = $(this).parents('form:first').children('input[name=siteid]').val();
+            var postdata = {
+                domain: $('#' + notchange + ' option:selected').text(),
+                siteid: siteid
+            };
+            console.log(selectedItem);
+            $('.dropd').not('#' + notchange).each(function() {
+                $('.dropd').not('#' + notchange).find('option[value="' + selectedItem + '"]').remove();
+                //do ajax function to add this in table user domain
+
+            });
+            $.ajax({
+                url: '<?php echo site_url('domain/map_domain'); ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: postdata
+            }).done(function(res) {
+                if (res.responseCode) {
+                    $('#' + notchange).attr("disabled", true);
+                    $('#' + notchange).parents('').children('.rem_option').removeAttr("disabled");
+                }
+            });
+        });
+
         jQuery.validator.addMethod("regx", function(value, element, regexpr) {          
             return regexpr.test(value);
         }, "Please enter a valid domain name.");
@@ -1042,9 +1201,17 @@
             }else{
                 $(this).text('more');
             }
-            $( "#tld" ).toggle();
-        });
-        
+            $( "#tld" ).fadeToggle('slow', 'linear');
+			
+			if ($('.tld-container-primary span').hasClass('col-sm-1')) {
+				$('.tld-container-primary span').removeClass('col-sm-1').addClass('col-sm-2');
+			}else {
+				$('.tld-container-primary span').addClass('col-sm-1')
+			}
+			
+		});
+		
+		
         $('#select-product').validate({
             rules: {
                 domainname:{
@@ -1063,6 +1230,7 @@
         });
         
         $('#btn_check_availability').on('click', function(){
+            
             var checked = false;
             if($("#select-product").valid()){
                 $('.tld-container input[type=checkbox]').each(function(){
@@ -1075,20 +1243,23 @@
                         $( this ).prop( "checked", true );
                     });
                 }
-
+                $.blockUI();
                 $.ajax({
                     url: "<?php echo site_url('domain/checkDomainAvalability')?>",
                     type: 'post',
                     data: $('#select-product').serialize(),
                     success:function(ret){
+                        $.unblockUI();
                         $('.search-results-container').html(ret);
                         $('#domain_result').show();
                         $('#domainSubmittButton').removeAttr('disabled');
                     }
                 });
             }
-            $('#domainSubmittButton').click(function(){
-                if($("input:radio[name='domain']").is(':checked')) {
+            $('#domainSubmittButton').click(function() {
+
+                if ($("input:radio[name='domain']").is(':checked')) {
+                    $('form#book-domain-form').submit();
                     $.ajax({
                             url: $('form#book-domain-form').attr('action'),
                             type: 'post',
@@ -1098,8 +1269,8 @@
                         $('.search-results-container').html(ret);
                         $('#domain_result').show();
                         $('#domainSubmittButton').attr('disabled','disabled');
-                    });
-                }else{
+                     });
+                } else {
                     alert('Please select domain!');
                 }
             });

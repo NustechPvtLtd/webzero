@@ -17,7 +17,7 @@ body {
     background: #fff;
 }
 
-#wrap {
+.wrap {
     overflow: hidden;
 }
 
@@ -27,7 +27,7 @@ section {
     position: relative;
     overflow: hidden;
     z-index: 1;
-    border-bottom: 1px solid #e8e8e8;
+    /*border-bottom: 1px solid #e8e8e8;*/
 }
 header {
     padding-top: 50px;
@@ -1425,6 +1425,13 @@ span.glyphicon {
     padding:0;
 }
 
+#testimonials-slider-star-2 .carousel-control,
+#intro-slider-3 .carousel-control,
+#intro-slider  .carousel-control {
+	width: 10%;
+	top: 45%;
+}
+
 
 /*----------------------------------------------------------------------------------------
                                                 ITEM LIST STYLES
@@ -2151,6 +2158,10 @@ nav .info-header .btn{
     vertical-align: middle;
 }
 
+.navbar-brand span {
+	display: inline-block;
+}
+
 .navbar-toggle {
     float: right;
     height: 60px;
@@ -2188,6 +2199,21 @@ nav .info-header .btn{
     border-width: 0;
 }
 @media (max-width: 992px) {
+	.navbar-collapse {
+        margin: 0;
+    }
+
+    .navbar .nav,
+    .navbar .soc-list {
+        float: right;
+        text-align: right;
+        padding: 0;
+    }
+	.navbar.navbar-center .nav li {
+        display: inline-block;
+    }
+}
+@media (max-width: 768px) {
 
     nav .container {
         width: 100%;
@@ -2387,6 +2413,8 @@ nav .info-header .btn{
     overflow: hidden;
     float: left;
     padding: 0;
+	width: 25%;
+	height: 240px;
 }
 
 .ng li{
@@ -2398,6 +2426,7 @@ nav .info-header .btn{
     display: block;
     position: relative;
     color: #000;
+	height: 100%;
     /*background: #252830;*/
 }
 
@@ -2407,7 +2436,7 @@ nav .info-header .btn{
     display: block;
     z-index: 2;
     top: 50%;
-    margin-top: -10px;
+    /*margin-top: -10px;*/
     left: 5%;
     right: 5%;
     text-align: center;
@@ -2457,7 +2486,7 @@ nav .info-header .btn{
 
 .portfolio-list li img {
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 .portfolio-list li > a:hover img {
@@ -2471,10 +2500,6 @@ nav .info-header .btn{
     -ms-transition: all 0.25s ease-in-out;
     -o-transition: all 0.25s ease-in-out;
     transition: all 0.25s ease-in-out;
-}
-
-.portfolio-list li {
-    width: 25%;
 }
 
 .container .portfolio-list li {
@@ -2898,7 +2923,6 @@ footer .links-list li {
 
 footer img.logo {
     float: left;
-    margin: 0 20px 0 0;
 }
 @media (max-width: 992px) {
 

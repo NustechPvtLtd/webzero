@@ -21,6 +21,11 @@ class Seo extends MY_Controller {
 		if(!$this->ion_auth->logged_in()) {
 			redirect('/login');
 		}
+        if (!$this->ion_auth->is_admin()) {
+            if (check_account_expiration() == 1) {
+                redirect(site_url('account/plans'));
+            }
+        }
 			
 	}
 	

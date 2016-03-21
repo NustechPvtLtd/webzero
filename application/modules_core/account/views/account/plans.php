@@ -9,15 +9,19 @@ $promo_price = '';
     <div class="tabs-container">
         <ul id="yw0" class="nav nav-tabs">
             <li class="active"><a href="<?php echo site_url('account/plans') ?>"><span class="glyphicon glyphicon-list"></span> Plans & Features</a></li>
-            <li><a href="<?php echo site_url('account/address_details') ?>"><span class="glyphicon glyphicon-list"></span> Address</a></li>
+            <li><a href="<?php echo site_url('account/address_details') ?>"><span class="glyphicon glyphicon-home"></span> Address</a></li>
+            <?php if($this->ion_auth->in_group('ecommerce')):?>
+            <li><a href="<?php echo site_url('account/payment_gateways') ?>"><span class="glyphicon glyphicon-credit-card"></span> Payment Gateways</a></li>
+            <?php endif;?>
         </ul>
         <div class="box box-primary no-top-border">
             <div class="box-body">
-                <div class="row">
-                    <?php if (!empty($plans)) {
+                <div class="row plan">
+                    <?php
+                    if (!empty($plans)) {
                         foreach ($plans as $plan) {
                             ?>
-                            <div class="col-xs-12 col-md-3">
+                            <div class="col-xs-12 col-md-3 ">
                                 <div class="panel panel-primary">
                                     <?php if (abs($plan->discount)) { ?>
                                         <div class="cnrflash">
@@ -33,9 +37,9 @@ $promo_price = '';
                                                     ?></span>
                                             </div>
                                         </div>
-        <?php } ?>
+                                    <?php } ?>
                                     <div class="panel-heading">
-                                        <h3 class="panel-title"><?php echo $plan->name; ?></h3>
+                                        <h3 class="panel-title"><?php echo $plan->plan_name; ?></h3>
                                     </div>
                                     <div class="panel-body">
                                         <table class="table">
@@ -44,44 +48,37 @@ $promo_price = '';
                                                     <td>
                                                         <?php
                                                         if (abs($plan->discount)) {
-                                                            echo '<i class="fa fa-inr"></i>  ';
+                                                            echo '<i class="fa fa-inr"></i>';
                                                             if ($plan->discount_type == 'percentage') {
                                                                 $promo_price = $plan->price - ($plan->price * $plan->discount / 100);
                                                             } else {
                                                                 $promo_price = $plan->price - $plan->discount;
                                                             }
-                                                            echo abs($promo_price) . ' <del style="color:#C50000;border: 1px solid #F37878;background-color: rgba(248, 155, 155, 0.67);padding: 5px;}"><i class="fa fa-inr"></i>  ' . abs($plan->price) . '</del>';
+                                                            echo abs($promo_price) . ' <del style="color:#C50000;border: 1px solid #F37878;background-color: rgba(248, 155, 155, 0.67);padding: 5px;}"><i class="fa fa-inr"></i>' . abs($plan->price) . '</del>';
                                                         } else {
-                                                            echo $promo_price = abs($plan->price);
+                                                            $promo_price = abs($plan->price);
+                                                            echo ($promo_price) ? '<i class="fa fa-inr"></i>' . $promo_price : 'Free';
                                                         }
                                                         ?>
                                                     </td>
                                                 </tr>
                                                 <tr class="active">
                                                     <td>
-        <?php echo $plan->description; ?>
+                                                        <?php echo $plan->plan_desc; ?>
                                                     </td>
                                                 </tr>
                                                 <tr class="active">
                                                     <td>
-                                                        Recommended: <?php echo ucfirst($plan->recommended); ?>
+                                                        <?php echo lang('visitor_count') . ': ' . (($plan->visitor_count == 'active') ? 'Yes' : 'No'); ?>
                                                     </td>
                                                 </tr>
-                                                <tr class="active">
-                                                    <td>
-        <?php echo lang('visitor_count') . ': ' . ucfirst($plan->visitor_count); ?>
-                                                    </td>
-                                                </tr>
-                                                <tr class="active">
-                                                    <td>
-        <?php echo lang('eccommerce') . ': ' . ucfirst($plan->eccommerce); ?>
-                                                    </td>
-                                                </tr>
-                                                <tr class="active">
-                                                    <td>
-        <?php echo lang('premium_domain') . ': ' . ucfirst($plan->premium_domain); ?>
-                                                    </td>
-                                                </tr>
+                                                <?php if ($plan->plan_id != 1): ?>
+                                                    <tr class="active">
+                                                        <td>
+                                                            <?php echo lang('premium_domain') . ': ' . (($plan->premium_domain == 'active') ? 'Yes' : 'No'); ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php endif; ?>
                                                 <tr class="active">
                                                     <td>
                                                         Validity: <?php echo $plan->expiration . ' ' . $plan->expiration_type; ?>
@@ -90,8 +87,8 @@ $promo_price = '';
                                             </tbody>
                                         </table>
                                         <div class="hide_form">
-                                            <form action="<?php echo site_url('plans/upgrade'); ?>" id="upgrade_plan_<?php echo $plan->name; ?>" method="POST">
-                                                <input name="plan_name" value="<?php echo $plan->name; ?>" type="hidden" />
+                                            <form action="<?php echo site_url('plans/upgrade'); ?>" id="upgrade_plan_<?php echo $plan->plan_name; ?>" method="POST">
+                                                <input name="plan_name" value="<?php echo $plan->plan_name; ?>" type="hidden" />
                                                 <input name="plan_id" value="<?php echo $plan->plan_id; ?>" type="hidden" />
                                                 <input name="plan_price" value="<?php echo ($promo_price) ? abs($promo_price) : abs($plan->price); ?>" type="hidden" />
                                                 <input name="plan_discount" value="<?php echo ($plan->discount_type == 'percentage') ? abs($plan->price * $plan->discount / 100) : abs($plan->discount); ?>" type="hidden" />
@@ -100,17 +97,24 @@ $promo_price = '';
                                         </div>
                                     </div>
                                     <div class="panel-footer">
-                                        <?php if (userdata('plan_id') === $plan->plan_id) { ?>
-                                            <a role="button" class="btn btn-default" href="javascript:void(0)" style="cursor: not-allowed;">Active Plan</a>
-                                        <?php } else { ?>
-                                            <a role="button" class="btn btn-primary" href="javascript:void(0)" style="cursor: default;">Upgrade</a>
-                                            <!--<a role="button" class="btn btn-primary" onclick="javascript:upgrade('<?= $plan->name; ?>')" href="javascript:void(0)" style="cursor: default;">Upgrade</a>-->
+                                        <?php if (userdata('plan_id') === $plan->plan_id) {
+                                            if (check_account_expiration() == 1) {
+                                                ?>                                      
+
+                                                <a role="button" class="btn btn-primary" onclick="javascript:upgrade('<?= $plan->plan_name; ?>')" href="javascript:void(0)" style="cursor: default;">Extend Plan</a>
+                                            <?php } else { ?>
+                                                <a role="button" class="btn btn-primary" href="javascript:void(0)" style="cursor: not-allowed;">Active Plan</a>
+                                            <?php }
+                                        } else { ?>
+                                            <a role="button" class="btn btn-primary" onclick="javascript:upgrade('<?= $plan->plan_name; ?>')" href="javascript:void(0)" style="cursor: default;">Upgrade</a>
         <?php } ?>
                                     </div>
                                 </div>
                             </div>
-                        <?php }
-                    } else { ?>
+                        <?php
+                        }
+                    } else {
+                        ?>
                         <div id="notify-container" style="margin-left: 15px;">There is no plans to view!</div>
 <?php } ?>
 
@@ -155,5 +159,8 @@ $promo_price = '';
         //    $('#updateProfile').on('show.bs.modal', function(e) {
         //        
         //    });
+<?php if (isset($got_expired)): ?>
+            $('#acct-upgrade-popup').modal('show');
+<?php endif; ?>
     });
 </script>

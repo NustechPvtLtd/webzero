@@ -18,8 +18,11 @@
     </div>
     <div class="tabs-container">
         <ul id="yw0" class="nav nav-tabs">
-            <li><a href="<?php echo site_url('account/plans')?>"><span class="glyphicon glyphicon-list"></span> Plans & Features</a></li>
-            <li class="active"><a href="<?php echo site_url('account/address_details')?>"><span class="glyphicon glyphicon-list"></span> Address</a></li>
+            <li><a href="<?php echo site_url('account/plans') ?>"><span class="glyphicon glyphicon-list"></span> Plans & Features</a></li>
+            <li class="active"><a href="<?php echo site_url('account/address_details') ?>"><span class="glyphicon glyphicon-home"></span> Address</a></li>
+            <?php if($this->ion_auth->in_group('ecommerce')):?>
+            <li><a href="<?php echo site_url('account/payment_gateways') ?>"><span class="glyphicon glyphicon-credit-card"></span> Payment Gateways</a></li>
+            <?php endif;?>
         </ul>
         <?php echo form_open(uri_string());?>
             <div class="box box-primary no-top-border">

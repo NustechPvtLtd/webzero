@@ -65,8 +65,7 @@ $(window).load(function() {
             $(".navbar-toggle").click()
         }
     });
-
-})
+});
 
 
 
@@ -604,3 +603,11 @@ $.getJSON("http://jsonip.com?callback=?", function(data) {
         });
     }
 });
+
+
+//------------------------------------------------------------------------------------------------------------------
+//                                              Generate QR Code                                                    
+//------------------------------------------------------------------------------------------------------------------
+
+$('.qr-code').attr('src','http://chart.apis.google.com/chart?chs=100x100&cht=qr&chld=M|10&chl='+page_url);
+$('.qr-code').attr('title',$('title').text());

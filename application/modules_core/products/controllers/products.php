@@ -1,6 +1,4 @@
-<?php
-
-(defined('BASEPATH')) OR exit('No direct script access allowed');
+<?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 class Products extends MX_Controller {
 
@@ -11,7 +9,6 @@ class Products extends MX_Controller {
 
     function __construct()
     {
-        
         parent::__construct();
         $this->load->database();
         $this->load->library('template');
@@ -19,8 +16,9 @@ class Products extends MX_Controller {
         $this->load->library('PayUMoney');
         $this->data['title'] = $this->router->fetch_method();
         $this->data['pageMetaDescription'] = $this->router->fetch_class() . '-' . $this->router->fetch_method();
+        
+        $this->load->model('account/payment_gateways_model');
     }
-
 
     // get selected product details using product id
     public function buynow()
@@ -28,23 +26,26 @@ class Products extends MX_Controller {
         $productid = $_GET['pid'];
 
         $this->load->model('products/productsmodel');
+        $user_id = $this->productsmodel->getUserByProduct($productid);
 
+        $gateways = $this->payment_gateways_model->get_payment_gateways($user_id);
         $this->load->config('payu_money', TRUE);
-        $this->_salt = $this->config->item('SALT', 'payu_money');
+        if(!empty($gateways)){
+            $this->_salt = $gateways->salt;
+            $this->data['key'] = $gateways->merchant_key;
+        }  else {
+            $this->_salt = $this->config->item('SALT', 'payu_money');
+            $this->data['key'] = $this->config->item('MERCHANT_KEY', 'payu_money');
+        }
+        
         $this->_url = $this->config->item('PAYU_BASE_URL', 'payu_money');
-        $this->data['key'] = $this->config->item('MERCHANT_KEY', 'payu_money');
+        
         $this->data['surl'] = site_url('products/success');
         $this->data['furl'] = site_url('products/failure');
         $this->data['curl'] = site_url('products/cancel');
         $this->data['service_provider'] = 'payu_paisa';
 
-        //  $this->data['amount'] = floatval(59);
-//        $this->data['firstname'] = 'shubhangee';
-//        $this->data['lastname'] = 'kadu';
-//        $this->data['email'] ='shubhangee@nustech.com';
-//        $this->data['phone'] = '9049970237';
-
-        $this->data['productinfo'] = "product";
+        $this->data['productinfo'] = $productid;
 
         $this->data['txnid'] = $this->_genrate_txnid();
         $this->data['hash'] = $this->_genrate_hash($this->data);
@@ -67,14 +68,22 @@ class Products extends MX_Controller {
         $this->template->load('ecommerce', 'products', 'index', $this->data);
     }
 
-    function getnewhash()
+    function getnewhash($product_id)
     {
         $transaction_id = $_POST['transaction_id'];
+        $this->load->model('products/productsmodel');
+        $user_id = $this->productsmodel->getUserByProduct($product_id);
 
+        $gateways = $this->payment_gateways_model->get_payment_gateways($user_id);
         $this->load->config('payu_money', TRUE);
-        $this->_salt = $this->config->item('SALT', 'payu_money');
+        if(!empty($gateways)){
+            $this->_salt = $gateways->salt;
+            $this->data['key'] = $gateways->merchant_key;
+        }  else {
+            $this->_salt = $this->config->item('SALT', 'payu_money');
+            $this->data['key'] = $this->config->item('MERCHANT_KEY', 'payu_money');
+        }
         $this->_url = $this->config->item('PAYU_BASE_URL', 'payu_money');
-        $this->data['key'] = $this->config->item('MERCHANT_KEY', 'payu_money');
         $this->data['surl'] = site_url('products/success');
         $this->data['furl'] = site_url('products/failure');
         $this->data['curl'] = site_url('products/cancel');
@@ -89,7 +98,7 @@ class Products extends MX_Controller {
 
         $user = $query = $this->db->query("select * from customer_details where id='" . $uid . "' ") or die(mysql_error());
         $urows = $user->result();
-        ;
+        
         foreach ($urows as $urows) {
 
             $this->data['firstname'] = $urows->firstname;
@@ -98,7 +107,7 @@ class Products extends MX_Controller {
             $this->data['phone'] = $urows->phone;
         }
 
-        $this->data['productinfo'] = "product";
+        $this->data['productinfo'] = $product_id;
 
         $this->data['txnid'] = $transaction_id;
 
@@ -107,7 +116,6 @@ class Products extends MX_Controller {
 
     private function _genrate_hash($posted)
     {
-
         $hashVarsSeq = explode('|', $this->hashSequence);
         $hash_string = '';
         foreach ($hashVarsSeq as $hash_var) {
@@ -123,8 +131,7 @@ class Products extends MX_Controller {
     {
         $this->load->model('products/productsmodel');
 
-		$this->productsmodel->proceedetocheckout();
-
+        $this->productsmodel->proceedetocheckout();
     }
 
     //.........function to generate transaction id
@@ -157,8 +164,15 @@ class Products extends MX_Controller {
         $key = $_POST["key"];
         $productinfo = $_POST["productinfo"];
         $email = $_POST["email"];
-        $salt = $this->config->item('SALT', 'payu_money');
-
+        $this->load->model('products/productsmodel');
+        $user_id = $this->productsmodel->getUserByProduct($productinfo);
+        $gateways = $this->payment_gateways_model->get_payment_gateways($user_id);
+        $this->load->config('payu_money', TRUE);
+        if(!empty($gateways)){
+            $salt = $gateways->salt;
+        }  else {
+            $salt = $this->config->item('SALT', 'payu_money');
+        }
         if (isset($_POST["additionalCharges"])) {
             $additionalCharges = $_POST["additionalCharges"];
             $retHashSeq = $additionalCharges . '|' . $salt . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
@@ -210,7 +224,15 @@ class Products extends MX_Controller {
         $key = $_POST["key"];
         $productinfo = $_POST["productinfo"];
         $email = $_POST["email"];
-        $salt = $this->config->item('SALT', 'payu_money');
+        $this->load->model('products/productsmodel');
+        $user_id = $this->productsmodel->getUserByProduct($productinfo);
+        $gateways = $this->payment_gateways_model->get_payment_gateways($user_id);
+        $this->load->config('payu_money', TRUE);
+        if(!empty($gateways)){
+            $salt = $gateways->salt;
+        }  else {
+            $salt = $this->config->item('SALT', 'payu_money');
+        }
 
         if (isset($_POST["additionalCharges"])) {
             $additionalCharges = $_POST["additionalCharges"];

@@ -7,7 +7,7 @@ $(function(){
         
         if(userImageLoaded){return;}
         $.ajax({
-            url:'<?php echo site_url('sites/getUserImage');?>/'+siteID,
+            url:'<?php echo site_url('sites/getUserImage');?>',
             type:'GET',
             dataType:'json'
         }).done(function(res){
@@ -21,7 +21,7 @@ $(function(){
     $('#imageModal .nav-tabs a').one('click', function(){
         if($(this).attr('href') == '#adminImagesTab'){
             $.ajax({
-                url:'<?php echo site_url('sites/getAdminImage');?>/'+siteID,
+                url:'<?php echo site_url('sites/getAdminImage');?>',
                 type:'GET',
                 dataType:'json'
             }).done(function(res){

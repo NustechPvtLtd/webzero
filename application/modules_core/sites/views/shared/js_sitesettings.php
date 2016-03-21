@@ -6,6 +6,11 @@ $(function(){
     	
     		e.preventDefault();
     		
+            if(pendingChanges){
+                alert("Please save the changes fist!");
+                return false;
+            }
+            
     		$('#siteSettings').modal('show');
     		
     		//destroy all alerts

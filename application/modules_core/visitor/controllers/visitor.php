@@ -9,8 +9,8 @@ if (!defined('BASEPATH')) {
  *
  * @author NUSTECH
  */
-class visitor extends MY_Controller
-{
+class visitor extends MY_Controller {
+
     public $data = array();
 
     public function __construct()
@@ -30,6 +30,11 @@ class visitor extends MY_Controller
         }
         if ($this->ion_auth->is_admin()) {
             redirect('/');
+        }
+        if (!$this->ion_auth->is_admin()) {
+            if (check_account_expiration() == 1) {
+                redirect(site_url('account/plans'));
+            }
         }
     }
 
@@ -67,4 +72,5 @@ class visitor extends MY_Controller
         }
         echo json_encode($ipDetails);
     }
+
 }

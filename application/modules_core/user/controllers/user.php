@@ -112,7 +112,7 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
             $this->form_validation->set_rules('price_plan_id', $this->lang->line('edit_user_validation_price_plan_label'), 'required');
         }
         $this->form_validation->set_rules('email', $this->lang->line('edit_user_validation_email_label'), 'required');
-        $this->data['message'] = '';
+//        $this->data['message'] = '';
         if (isset($_POST) && !empty($_POST)) {
 
             //update the password if it was posted
@@ -122,66 +122,81 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
             }
 
             if ($this->form_validation->run() === TRUE) {
-                if (!$this->ion_auth->is_admin() || $this->data['user_id'] == $user->id) {
-                    $data = array(
-                        'first_name' => $this->input->post('first_name'),
-                        'last_name' => $this->input->post('last_name'),
-                        'company' => $this->input->post('company'),
-                        'phone' => $this->input->post('phone'),
+//                if (!$this->ion_auth->is_admin() || $this->data['user_id'] == $user->id) {
+                $data = array(
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'company' => $this->input->post('company'),
+                    'phone' => $this->input->post('phone'),
+                );
+
+                if ($address) {
+                    $address_data = array(
+                        array(
+                            'id' => $address['blng_id'],
+                            'street' => $this->input->post('blng_street'),
+                            'city' => $this->input->post('blng_city'),
+                            'state' => $this->input->post('blng_state'),
+                            'zipcode' => $this->input->post('blng_zipcode'),
+                            'country' => $this->input->post('blng_country'),
+                            'phone' => $this->input->post('phone'),
+                            'type' => "billing",
+                            'user_id' => $user->id
+                        )
                     );
 
-                    if ($address) {
-                        $address_data = array(
-                            array(
-                                'id' => $address['blng_id'],
-                                'street' => $this->input->post('blng_street'),
-                                'city' => $this->input->post('blng_city'),
-                                'state' => $this->input->post('blng_state'),
-                                'zipcode' => $this->input->post('blng_zipcode'),
-                                'country' => $this->input->post('blng_country'),
-                                'phone' => $this->input->post('phone'),
-                                'type' => "billing",
-                                'user_id' => $user->id
-                            )
-                        );
-
-                        //check to see if we are updating the user
-                        if ($this->addressmodel->update_address($address_data)) {
-                            //redirect them back to the admin page if admin, or to the base url if non admin
-                            $this->data['message'] = '<div class="alert alert-success">Address Updated</div>';
-                        } else {
-                            //redirect them back to the admin page if admin, or to the base url if non admin
-                            $this->data['message'] = '<div class="alert alert-error">Error</div>';
-                        }
+                    //check to see if we are updating the user
+                    if ($this->addressmodel->update_address($address_data)) {
+                        //redirect them back to the admin page if admin, or to the base url if non admin
+                        $this->data['message'] = '<div class="alert alert-success">Address Updated</div>';
                     } else {
-                        $address_data = array(
-                            array(
-                                'street' => $this->input->post('blng_street'),
-                                'city' => $this->input->post('blng_city'),
-                                'state' => $this->input->post('blng_state'),
-                                'zipcode' => $this->input->post('blng_zipcode'),
-                                'country' => $this->input->post('blng_country'),
-                                'phone' => $this->input->post('phone'),
-                                'type' => "billing",
-                                'user_id' => $user->id,
-                            )
-                        );
+                        //redirect them back to the admin page if admin, or to the base url if non admin
+                        $this->data['message'] = '<div class="alert alert-error">Error</div>';
+                    }
+                } else {
+                    $address_data = array(
+                        array(
+                            'street' => $this->input->post('blng_street'),
+                            'city' => $this->input->post('blng_city'),
+                            'state' => $this->input->post('blng_state'),
+                            'zipcode' => $this->input->post('blng_zipcode'),
+                            'country' => $this->input->post('blng_country'),
+                            'phone' => $this->input->post('phone'),
+                            'type' => "billing",
+                            'user_id' => $user->id,
+                        )
+                    );
 
-                        if ($this->addressmodel->set_address($address_data)) {
-                            $this->data['message'] = 'Address Updated';
-                        } else {
-                            $this->data['message'] = '<div class="alert alert-error">Error</div>';
-                        }
+                    if ($this->addressmodel->set_address($address_data)) {
+                        $this->data['message'] = 'Address Updated';
+                    } else {
+                        $this->data['message'] = '<div class="alert alert-error">Error</div>';
                     }
                 }
-
+//                }
                 //update the password if it was posted
                 if ($this->input->post('password')) {
                     $data['password'] = $this->input->post('password');
                 }
 
-                if ($this->input->post('price_plan_id')) {
+                if ($this->input->post('price_plan_id') && $this->input->post('price_plan_id') != $user->price_plan_id) {
                     $data['price_plan_id'] = $this->input->post('price_plan_id');
+                    $data['upgrade_by'] = 'Admin';
+                    switch ($data['price_plan_id']) {
+                        case 2:
+                            $data['group_id'] = 4;
+                            break;
+                        case 3:
+                            $data['group_id'] = 7;
+                            break;
+                        case 4:
+                            $data['group_id'] = 9;
+                            break;
+
+                        default:
+                            $data['group_id'] = 7;
+                            break;
+                    }
                 }
 
                 if ($this->input->post('notes')) {
@@ -192,6 +207,7 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
                 if ($this->ion_auth->update($user->id, $data)) {
                     //redirect them back to the admin page if admin, or to the base url if non admin
                     $this->data['message'] = $this->ion_auth->messages();
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
                     if ($this->ion_auth->is_admin()) {
                         redirect('/', 'location');
                     } else {
@@ -269,12 +285,12 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
         );
         $this->data['price_plan_id'] = (isset($user->price_plan_id)) ? $this->form_validation->set_value('price_plan_id', $user->price_plan_id) : '';
         foreach ($this->plans_model->get_plans() as $plan) {
-            $plans[$plan->plan_id] = $plan->name;
+            $plans[$plan->plan_id] = $plan->plan_name;
         }
         $this->data['plans'] = $plans;
         //pass the user to the view
         $this->data['country'] = $this->addressmodel->get_country();
-        $this->data['states'] = (isset($address['blng_country'])) ? $this->addressmodel->get_state_by_country($address['blng_country']) : array('' => 'please select');
+        $this->data['states'] = (isset($address['blng_country'])) ? $this->addressmodel->get_state_by_country($address['blng_country']) : $this->addressmodel->get_state_by_country(99);
         $this->data['blng_street'] = array(
             'name' => 'blng_street',
             'id' => 'blng_street',
@@ -297,7 +313,7 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
             'value' => (isset($address['blng_zipcode'])) ? $this->form_validation->set_value('blng_zipcode', $address['blng_zipcode']) : '',
             'class' => 'form-control',
         );
-        $this->data['blng_country'] = (isset($address['blng_country'])) ? $address['blng_country'] : '';
+        $this->data['blng_country'] = (isset($address['blng_country'])) ? $address['blng_country'] : 99;
 
         $this->data['avatar'] = ($user->avatar) ? $user->avatar : '';
         $this->data['js'] = array(
@@ -357,17 +373,17 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
             $this->session->set_flashdata('message', 'You must be Administrator to view this page');
             redirect('/');
         }
-        
+
         $this->data['message'] = '';
-        if(!empty($_POST['emails'])){
+        if (!empty($_POST['emails'])) {
             $emails = explode(',', $_POST['emails']);
             foreach ($emails as $value) {
                 $pwd = $this->_generatePassword();
                 $username = explode('.', $value);
                 $username = str_replace('@', '_', $username[0]);
-                $data['username']=$value;
-                $data['password']=$pwd;
-                $id = $this->ion_auth->register_with_noactivation_mail($username, $pwd, $value, array('active'=>1));
+                $data['username'] = $value;
+                $data['password'] = $pwd;
+                $id = $this->ion_auth->register_with_noactivation_mail($username, $pwd, $value, array('active' => 1));
                 if ($id !== FALSE) {
                     $message = $this->load->view('email/invite.tpl.php', $data, true);
                     $headers = array();
@@ -375,14 +391,13 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
                     $headers['To'] = "{$value}";
                     $headers['X-Mailer'] = "PHP/" . phpversion();
                     $this->email->clear();
-                    $this->email->from('JADOOWEB','noreply@jadooweb.com');
+                    $this->email->from('JADOOWEB', 'noreply@jadooweb.com');
                     $this->email->to($value);
-                    $this->email->subject("Invitation from ".site_url()." platform!");
+                    $this->email->subject("Invitation from " . site_url() . " platform!");
                     $this->email->message($message);
                     $this->email->header($headers);
-                    
-                    if ($this->email->send() == TRUE)
-                    {
+
+                    if ($this->email->send() == TRUE) {
                         $this->ion_auth->activate($id);
                         $this->data['message'] = 'User\'s are invited successfully!';
                     }
@@ -391,21 +406,21 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
         }
         $this->data['css'] = array(
             '<link rel="stylesheet" type="text/css" href="' . base_url() . 'assets/jquery-ui/jquery-ui.min.css" />',
-            '<link rel="stylesheet" type="text/css" href="'.base_url('assets/plugin/tag-it/css/jquery.tagit.css'). '" />',
-            '<link rel="stylesheet" type="text/css" href="'.base_url('assets/plugin/tag-it/css/tagit.ui-zendesk.css'). '" />',
+            '<link rel="stylesheet" type="text/css" href="' . base_url('assets/plugin/tag-it/css/jquery.tagit.css') . '" />',
+            '<link rel="stylesheet" type="text/css" href="' . base_url('assets/plugin/tag-it/css/tagit.ui-zendesk.css') . '" />',
         );
         $this->data['js'] = array(
-            '<script src="'.base_url('assets/plugin/tag-it/js/tag-it.min.js').'"></script>',
+            '<script src="' . base_url('assets/plugin/tag-it/js/tag-it.min.js') . '"></script>',
             '<script>
 $(document).ready(function(){
     $("#inviteMails").tagit({allowDuplicates: false});
 });
 </script>'
-            );
+        );
         $this->data['pageHeading'] = 'Invite users';
         $this->template->load('main', 'user', 'invite', $this->data);
     }
-    
+
     function _get_csrf_nonce()
     {
         $this->load->helper('string');
@@ -426,7 +441,7 @@ $(document).ready(function(){
             return FALSE;
         }
     }
-    
+
     function _generatePassword()
     {
         $this->load->helper('string');

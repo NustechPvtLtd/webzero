@@ -7,8 +7,7 @@
 
     <thead>
         <tr>
-            <th><?php echo lang('index_fname_th');?></th>
-            <th><?php echo lang('index_lname_th');?></th>
+            <th><?php echo lang('index_name_th');?></th>
             <th><?php echo lang('index_email_th');?></th>
             <th><?php echo lang('index_groups_th');?></th>
             <th><?php echo lang('index_active_plan_th');?></th>
@@ -21,8 +20,7 @@
 
     <tfoot>
         <tr>
-            <th><?php echo lang('index_fname_th');?></th>
-            <th><?php echo lang('index_lname_th');?></th>
+            <th><?php echo lang('index_name_th');?></th>
             <th><?php echo lang('index_email_th');?></th>
             <th><?php echo lang('index_groups_th');?></th>
             <th><?php echo lang('index_active_plan_th');?></th>
@@ -36,8 +34,7 @@
     <tbody>
         <?php foreach ($users as $user):?>
             <tr>
-                <td><?php echo htmlspecialchars($user->first_name,ENT_QUOTES,'UTF-8');?></td>
-                <td><?php echo htmlspecialchars($user->last_name,ENT_QUOTES,'UTF-8');?></td>
+                <td><?php echo htmlspecialchars($this->ion_auth->get_user_name($user->id),ENT_QUOTES,'UTF-8');?></td>
                 <td><?php echo htmlspecialchars($user->email,ENT_QUOTES,'UTF-8');?></td>
 <!--                <td>
                     <?php // foreach ($user->groups as $group):?>
@@ -53,8 +50,16 @@
                     <?php echo htmlspecialchars(ucfirst($user->plans->name),ENT_QUOTES,'UTF-8') ;?>
                 </td>
                 <td><?php echo ($user->active) ? anchor("login/deactivate/".$user->id, lang('index_active_link')) : anchor("login/activate/". $user->id, lang('index_inactive_link'));?></td>
-                <td><?php echo htmlspecialchars(date("jS M, Y, g:i a", $user->created_on),ENT_QUOTES,'UTF-8');?></td>
-                <td><?php echo htmlspecialchars(($user->last_login)?date("jS M, Y, g:i a", $user->last_login):'--',ENT_QUOTES,'UTF-8');?></td>
+                <?php 
+                    $ip_info = ip_info($user->ip_address, 'location', TRUE);
+                    $address = '';
+                    $address .= (!empty($ip_info['city']))? $ip_info['city'].', ':$address;
+                    $address .= (!empty($ip_info['state']))? $ip_info['state'].', ':$address;
+                    $address .= (!empty($ip_info['country']))? $ip_info['country'].', ':$address;
+                    $address .= (!empty($ip_info['continent']))? $ip_info['continent']:$address;
+                ?>
+                <td><?php echo ($user->last_login)?htmlspecialchars(date("jS M, Y, g:i a", $user->created_on),ENT_QUOTES,'UTF-8'):htmlspecialchars(date("jS M, Y, g:i a", $user->created_on),ENT_QUOTES,'UTF-8').'<br><small>'.$address.'</small>';?></td>
+                <td><?php echo ($user->last_login )?htmlspecialchars(date("jS M, Y, g:i a", $user->last_login),ENT_QUOTES,'UTF-8').'<br><small>'.$address.'</small>':'--';?><br></td>
                 <td><?php 
                     echo anchor("user/profile/".$user->id, 'Edit', array("class"=>"btn btn-xs btn-default")).'&nbsp';
                     echo '<button class="btn btn-xs btn-primary" type="button" onclick="ajaxLogin('.$user->id.')" style="padding: 1px 5px;">Login</button> ';

@@ -7,7 +7,7 @@
 
 /* SETTINGS */
 
-var pageContainer = "#wrap"; //typically no need to change this
+var pageContainer = ".wrap"; //typically no need to change this
 var enablePreview = true; //set to off to disable previews
 var forColor = ''; //Get Editor's content color
 var editableItems = new Array();
@@ -15,7 +15,7 @@ var editableItems = new Array();
 editableItems['.frameCover'] = [];
 editableItems['.item-list-right li, .item-list-left li, .item-list-center li'] = ['animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.item-list-border li'] = ['color', 'background-color', 'border-color', 'border-width', 'border-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
-editableItems['.step-left-block li, .step-center-block li, .step-path-block li'] = ['animation', 'data-wow-duration', 'data-wow-delay'];
+editableItems['.step-left-block li, .step-center-block li, .step-path-block li'] = ['background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.diagram .column span'] = ['height', 'color', 'background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.diagram-horizontal .column span'] = ['width', 'color', 'background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.color-mark'] = ['background-color'];
@@ -29,6 +29,7 @@ editableItems['h3'] = ['color', 'font-size', 'background-color', 'font-family', 
 editableItems['h4'] = ['color', 'font-size', 'background-color', 'font-family', 'margin-bottom', 'margin-top', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['h5'] = ['color', 'font-size', 'background-color', 'font-family', 'margin-bottom', 'margin-top', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['p'] = ['color', 'font-size', 'background-color', 'font-family', 'animation', 'data-wow-duration', 'data-wow-delay'];
+editableItems['.name'] = ['color', 'font-size', 'background-color', 'font-family', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['a.btn, a.download-btn, button.btn, a.goto'] = ['color', 'border-color', 'border-width', 'border-style', 'border-radius', 'font-size', 'background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['img'] = ['border-top-left-radius', 'border-top-right-radius', 'border-bottom-left-radius', 'border-bottom-right-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['form'] = ['animation', 'data-wow-duration', 'data-wow-delay'];
@@ -45,6 +46,7 @@ editableItems['.container-half'] = ['background-image', 'background-color', 'bac
 editableItems['#testimonials-grid .quote, .pricing-table, .pricing-table .stamp, .post, .panel, .panel-heading, .form-container, .post-content .price-circle'] = ['color', 'border-color', 'border-width', 'border-radius', 'font-size', 'background-color', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.carousel-control .arrow'] = ['border-radius', 'border-color', 'border-style', 'border-width'];
 editableItems['.num-icon'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
+editableItems['.step-num'] = ['color', 'background-color', 'border-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.countdown'] = ['color', 'background-color', 'border-radius', 'border-color', 'border-width', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.border-block'] = ['font-size', 'font-family', 'color', 'background-color', 'border-color', 'border-width', 'border-radius', 'animation', 'data-wow-duration', 'data-wow-delay'];
 editableItems['.editContent'] = ['color', 'font-size', 'background-color', 'font-family', 'padding-right', 'padding-left'];
@@ -72,6 +74,7 @@ editableItemOptions['h3 : font-family'] = ['default', 'Lato', 'Helvetica', 'Aria
 editableItemOptions['h4 : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
 editableItemOptions['h5 : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
 editableItemOptions['p : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
+editableItemOptions['.name : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
 editableItemOptions['.editContent : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
 editableItemOptions['header : background-repeat'] = ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'];
 editableItemOptions['header : background-size'] = ['cover', 'auto'];
@@ -90,9 +93,9 @@ editableItemOptions['.editBg : background-repeat'] = ['no-repeat', 'repeat', 're
 editableItemOptions['.editBg : background-size'] = ['cover', 'auto'];
 editableItemOptions['.editBg : background-attachment'] = ['fixed', 'scroll'];
 
-var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.download-btn', 'a.goto', '.footer a:not(.icon)', '.tableWrapper', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p'];
+var editableContent = ['.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4:not(.price)', 'h5', '.tableWrapper', '.navbar a', 'button', 'a.btn', 'a.btn span', 'a.download-btn', 'a.download-btn span', 'a.goto ', 'a.goto span', '.footer a:not(.icon)', '.tableWrapper', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', 'p:not(.price)', '.num-icon', '.soc-list .icon'];
 
-var editContForAnim = ['section', '.icon', 'img', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a.btn, a.download-btn, button.btn, a.goto', '.num-icon', '.countdown', '.item-list-right li, .item-list-left li, .item-list-center li', '#testimonials-grid .quote, .pricing-table, .pricing-table .stamp, .post, .panel, .panel-heading, .form-container, .post-content .price-circle', '.step-left-block li, .step-center-block li, .step-path-block li', '.diagram .column span', '.diagram-horizontal .column span', '.item-list-border li', '.border-block'];
+var editContForAnim = ['section', '.icon', 'img', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a.btn, a.download-btn, button.btn, a.goto', '.num-icon', '.step-num', '.countdown', '.item-list-right li, .item-list-left li, .item-list-center li', '#testimonials-grid .quote, .pricing-table, .pricing-table .stamp, .post, .panel, .panel-heading, .form-container, .post-content .price-circle', '.step-left-block li, .step-center-block li, .step-path-block li', '.diagram .column span', '.diagram-horizontal .column span', '.item-list-border li', '.border-block', '.name'];
 
 for (var i = 0; i < editContForAnim.length; i++) {
     editableItemOptions[editContForAnim[i] + ' : animation'] = [
@@ -228,7 +231,7 @@ function setPendingChanges(v) {
 
     } else {
 
-        $('#savePage .bLabel').text("Nothing new to save");
+        $('#savePage .bLabel').text("Nothing to save");
         $('#savePage').removeClass('btn-success');
         $('#savePage').addClass('btn-primary');
         $('#savePage').addClass('disabled');
@@ -404,6 +407,42 @@ function makeDraggable(theID) {
 
     });
 
+    $('#second #htmltemplates li').each(function() {
+
+        $(this).draggable({
+            helper: function() {
+                return $('<div style="height: 100px; width: 300px; background: #fafafa; box-shadow: 1px 1px 1px rgba(0,0,0,0.15); text-align: center; line-height: 100px; font-size: 28px; color: #00baff"><span class="fui-list"></span></div>');
+            },
+            revert: 'invalid',
+            appendTo: 'body',
+            connectToSortable: theID,
+            stop: function() {
+
+                pageEmpty();
+                allEmpty();
+
+            },
+            start: function() {
+                //switch to block mode
+                $('input:radio[name=mode]').parent().addClass('disabled');
+                $(".modes label:first").click();
+                //$('input:radio[name=mode]#modeBlock').trigger('click');
+
+                //show all section covers and activate designMode
+
+                $('#pageList ul .zoomer-wrapper .zoomer-cover').each(function() {
+                    $(this).show();
+                });
+
+                //deactivate designmode
+
+                $('#pageList ul li section').each(function() {
+                    this.designMode = "off";
+                });
+            }
+        });
+    });
+
     $('#elements li a').each(function() {
 
         $(this).unbind('click').bind('click', function(e) {
@@ -427,27 +466,75 @@ function makeSortable(el) {
 
             if (ui.item.find('.frameCover').size() == 0) {
 
-                if (ui.item.find('section:first').size() > 0) {//section thumbnails
+                if (ui.item.hasClass("templates")) {
 
-                    theHeight = ui.item.height();
-
-                    ui.item.html('<section src="' + ui.item.find('section:first').attr('src') + '" scrolling="no" data-originalurl="' + ui.item.find('section:first').attr('src') + '" frameborder="0"></section>');
+                    var Themes_Elements = _HtmlElements.elements.Templates[ui.item.attr("order")].sequence;
+                    //console.log(ui.item);
+                    ui.item.remove();
+                    //console.log(ui.item);
                     $.ajax({
                         type: "POST",
-                        url: ui.item.find('section:first').attr('data-originalurl'),
+                        data: {posts: JSON.stringify(Themes_Elements), url: baseUrl},
+                        url: ui.item.find('img').attr('data-srcc'),
                         beforeSend: function() {
-                            ui.item.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% ui.i no-repeat');
+                            $('#start').hide();
+                            $("#pageList").css('background-image', 'url(' + baseUrl + 'assets/sites/images/loading.gif)');
+                            $("#pageList").css('background-position', 'center center');
+                            $("#pageList").css('background-repeat', 'no-repeat');
                         },
                         success: function(data) {
-                            ui.item.find('section:first').css('background-image', 'none');
-                            ui.item.find('section:first').html(data);
-                        }
-                    });
+                            $("#pageList").css('background-image', 'none');
+                            var i = 0;
 
-                    ui.item.find('section:first').uniqueId();
-                    ui.item.find('section:first').css('height', theHeight + "px");
-                    ui.item.find('section:first').css('padding', '0px');
-                    ui.item.find('section:first').css('z-index', '0');
+                            $(data).find(".wrap").each(function() {
+                                // Clone the li div and append the section in order to create single template. 
+                                var el = ui.item.clone();
+                                theHeight = Themes_Elements[i].height;
+
+                                templete = '<div class="wrap">' + $(this).closest(".wrap").html() + '</div>';
+
+                                // add section to each contents. 
+                                el.html('<section src="' + baseUrl + "" + Themes_Elements[i].url + '" scrolling="no" data-originalurl="' + baseUrl + "" + Themes_Elements[i].url + '" frameborder="0">' + templete + '</section>');
+                                el.find('section').html(templete);
+                                //console.log(el);
+                                el.find('section:first').uniqueId();
+                                el.find('section:first').css('height', "auto");
+                                el.find('section:first').css('padding', '0px');
+                                el.find('section:first').css('z-index', '0');
+                                //remove the link if it excists
+                                el.find('.zoomer-cover a').remove();
+                                //add a delete button
+                                delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> remove</button>');
+                                resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> reset</button>');
+                                htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> source</button>');
+
+                                frameCover = $('<div class="frameCover"></div>');
+                                frameCover.append(delButton);
+                                frameCover.append(resetButton);
+                                frameCover.append(htmlButton);
+
+                                el.append(frameCover);
+                                //console.log(el);
+                                //dropped element, so we've got pending changes
+
+                                el.find('.videoGallery').html5gallery();
+                                $('#pageList > ul:visible').append(el);
+                                heightAdjustment(el.find('section').attr('id'), true);
+
+                                i++;
+                            });
+
+                        }
+                    }).done(function() {
+                        setPendingChanges(true);
+                        $('#pageList > ul:visible li').each(function() {
+                            $(this).find('.zoomer-cover > a').remove();
+                        });
+                        pageEmpty();
+                        allEmpty();
+
+                        $(".modes label:first").click();
+                    });
 
                 } else {//image thumbnails
 
@@ -475,20 +562,20 @@ function makeSortable(el) {
 
                     heightAdjustment(ui.item.find('section').attr('id'), true);
 
+                    //add a delete button
+                    delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> remove</button>');
+                    resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> reset</button>');
+                    htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> source</button>');
+
+                    frameCover = $('<div class="frameCover"></div>');
+
+                    frameCover.append(delButton);
+                    frameCover.append(resetButton);
+                    frameCover.append(htmlButton);
+
+                    ui.item.append(frameCover);
                 }
 
-                //add a delete button
-                delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> remove</button>');
-                resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> reset</button>');
-                htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> source</button>');
-
-                frameCover = $('<div class="frameCover"></div>');
-
-                frameCover.append(delButton);
-                frameCover.append(resetButton);
-                frameCover.append(htmlButton);
-
-                ui.item.append(frameCover);
 
             } else {
 
@@ -576,6 +663,78 @@ $('#second #elements').on('click', 'li', function() {
         $('input:radio[name=mode]#modeBlock').trigger('click');
     });
 
+});
+
+$('#second #htmltemplates').on('click', 'li', function() {
+    ui = $(this);
+    var Themes_Elements = _HtmlElements.elements.Templates[$(this).attr("order")].sequence;
+    $.ajax({
+        type: "POST",
+        data: {posts: JSON.stringify(Themes_Elements), url: baseUrl},
+        url: ui.find('img').attr('data-srcc'),
+        beforeSend: function() {
+            $('#start').hide();
+            $("#pageList").css('background-image', 'url(' + baseUrl + 'assets/sites/images/loading.gif)');
+            $("#pageList").css('background-position', 'center center');
+            $("#pageList").css('background-repeat', 'no-repeat');
+        },
+        success: function(data) {
+            $("#pageList").css('background-image', 'none');
+            var i = 0;
+            //console.log(data);
+            $(data).find(".wrap").each(function() {
+                var el = ui.clone();
+
+                theHeight = Themes_Elements[i].height;
+
+                templete = '<div class="wrap">' + $(this).html() + '</div>';
+                // add section to each contents. 
+                el.html('<section src="' + baseUrl + "" + Themes_Elements[i].url + '" scrolling="no" data-originalurl="' + baseUrl + "" + Themes_Elements[i].url + '" frameborder="0">' + templete + '</section>');
+
+//                el.find('section').html(templete);
+                // console.log(el);
+                el.find('section:first').uniqueId();
+                el.find('section:first').css('height', "auto");
+                //  el.find('section:first').css('background', '#ffffff url(' + baseUrl + 'assets/sites/images/loading.gif) 50% 50% no-repeat');
+                el.find('section:first').css('padding', '0px');
+                el.find('section:first').css('z-index', '0');
+
+                //remove the link if it excists
+                el.find('.zoomer-cover a').remove();
+
+                //add a delete button
+                delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> remove</button>');
+                resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> reset</button>');
+                htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> source</button>');
+
+                frameCover = $('<div class="frameCover"></div>');
+
+                frameCover.append(delButton);
+                frameCover.append(resetButton);
+                frameCover.append(htmlButton);
+
+                el.append(frameCover);
+                //console.log(el);
+                //dropped element, so we've got pending changes
+
+                el.find('.videoGallery').html5gallery();
+                $('#pageList > ul:visible').append(el);
+                heightAdjustment(el.find('section').attr('id'), true);
+
+                i++;
+            });
+
+        }
+    }).done(function() {
+        setPendingChanges(true);
+        $('#pageList > ul:visible li').each(function() {
+            $(this).find('.zoomer-cover > a').remove();
+        });
+        pageEmpty();
+        allEmpty();
+
+        $(".modes label:first").click();
+    });
 });
 
 function buildeStyleElements(el, theSelector) {
@@ -744,13 +903,13 @@ function buildeStyleElements(el, theSelector) {
 
             } else if (editableItems[theSelector][x] == 'width') {
 
-                CssElement = Math.round(parseInt(CssElement) / 9.8);
-                newStyleEl.find('input').val(CssElement + '%').attr('name', editableItems[theSelector][x]);
+                var width = Math.round(100 * parseFloat($(el).css('width')) / parseFloat($(el).parent().css('width'))) + '%';
+                newStyleEl.find('input').val(width).attr('name', editableItems[theSelector][x]);
 
             } else if (editableItems[theSelector][x] == 'height') {
 
-                CssElement = Math.round(parseInt(CssElement) / 4);
-                newStyleEl.find('input').val(CssElement + '%').attr('name', editableItems[theSelector][x]);
+                var height = Math.round(100 * parseFloat($(el).css('height')) / parseFloat($(el).parent().css('height'))) + '%';
+                newStyleEl.find('input').val(height).attr('name', editableItems[theSelector][x]);
 
             }
 
@@ -777,7 +936,7 @@ function getParentFrameID(el) {
 
     $('#pageList li:visible section').each(function() {
 
-        theBody = $(this).find('div#wrap');
+        theBody = $(this).find('div.wrap');
 
         if ($.contains(document.getElementById($(this).attr('id')), el)) {
 
@@ -804,7 +963,7 @@ function heightAdjustment(el, par) {
 
         $('#pageList li:visible section').each(function() {
 
-            theBody = $(this).find('div#wrap');
+            theBody = $(this).find('div.wrap');
 
             if ($.contains(document.getElementById($(this).attr('id')), el)) {
 
@@ -1033,7 +1192,7 @@ function styleClick(el) {
 
     }
 
-    if ($(el).closest('div#wrap').width() != $(el).width()) {
+    if ($(el).closest('div.wrap').width() != $(el).width()) {
         $(el).css({'outline': '3px dotted red', 'cursor': 'pointer'});
     } else {
         $(el).css({'outline': '3px dotted red', 'outline-offset': '-3px', 'cursor': 'pointer'});
@@ -1207,15 +1366,13 @@ function styleClick(el) {
                 if (nameAttrEl == 'data-wow-duration' || nameAttrEl == 'data-wow-delay') {
                     $(el).attr(nameAttrEl, valAttr);
                 } else if (nameAttrEl == 'height') {
-                    valAttr = Math.floor(parseInt(valAttr) * 4);
-                    $(el).css(nameAttrEl, valAttr);
-                    var txt = Math.round(parseInt(valAttr) / 4) + '%';
-                    $(el).text(txt);
+                    var valAttr = parseInt(valAttr);
+                    $(el).css(nameAttrEl, valAttr + '%');
+                    $(el).text(valAttr + '%');
                 } else if (nameAttrEl == 'width') {
-                    valAttr = Math.floor(parseInt(valAttr) * 9.8);
-                    $(el).css(nameAttrEl, valAttr);
-                    var txt = Math.round(parseInt(valAttr) / 9.8) + '%';
-                    $(el).text(txt);
+                    var valAttr = parseInt(valAttr);
+                    $(el).css(nameAttrEl, valAttr + '%');
+                    $(el).text(valAttr + '%');
                 } else if ((nameAttrEl == 'background-color') && (valAttr == '')) {
                     valAttr = 'transparent';
                     $(el).css(nameAttrEl, valAttr);
@@ -1419,7 +1576,7 @@ function styleClick(el) {
 
                 toDel.fadeOut(500, function() {
 
-                    randomEl = $(this).closest('div#wrap').find('*:first');
+                    randomEl = $(this).closest('div.wrap').find('*:first');
 
                     toDel.remove();
 
@@ -1568,18 +1725,52 @@ function styleClick(el) {
     //reset button
     $('button#resetStyleButton').unbind('click').bind('click', function() {
 
-        pos = $(el).css("position");
-        if ($(el).closest('div#wrap').width() != $(el).width()) {
+        pos = 'relative';
+        if ($(el).prop('tagName') == 'IMG') {
 
-            $(el).attr('style', '').css({'outline': '3px dotted red', 'cursor': 'pointer'})
+            if ($(el).hasClass('pf')) {
+                $(el).parents('li.drag:first').attr('style', '');
+            }
+            $(el).parents('div.drag:first').attr('style', '');
+            $(el).parents('div.drag:first').attr('style', 'display: inline-block;');
 
-        } else {
+            if ($(el).parents().hasClass('navbar-brand')) {
+                $(el).parents('span:first').attr('style', '');
+            }
+            $(el).parents('div.drag:first').css("position", pos);
+            if ($(el).hasClass('ui-resizable')) {
+                $(el).resizable('destroy');
+            }
+        }
+        else if ($(el).hasClass('frameCover')) {
 
-            $(el).attr('style', '').css({'outline': '3px dotted red', 'outline-offset': '-3px', 'cursor': 'pointer'})
+            if ($(el).hasClass('pf')) {
+                $(el).parents('li.drag:first').attr('style', '');
+            }
+            pos = $(el).parents('div.drag:first').css("position");
+            $(el).parents('div.drag:first').attr('style', '');
+            $(el).parents('div.drag:first').css("position", pos);
 
+            if ($(el).hasClass('ui-resizable')) {
+                $(el).resizable('destroy');
+            }
+        }
+        else if ($(el).hasClass('navbar-brand')) {
+            $(el).find('span').attr('style', '');
+            $(el).find('span').css('position', 'relative');
+        }
+        /*else if ($(el).attr('data-selector') == 'nav a') {
+         $(el).parents('li.drag:first').attr('style', '');
+         }*/
+        else if (!($(el).hasClass('drag'))) {
+            pos = $(el).css("position");
+            $(el).parents('.drag:first').attr('style', '');
         }
 
+        $(el).attr('style', '');
         $(el).css("position", pos);
+        $(el).parents('.drag:first').css('position', 'relative');
+
         $('#styleEditor form#stylingForm').height($('#styleEditor form#stylingForm').height() + "px");
 
         $('#styleEditor form#stylingForm .form-group:not(#styleElTemplate)').fadeOut(500, function() {
@@ -1587,6 +1778,10 @@ function styleClick(el) {
             $(this).remove();
 
         });
+
+        if ($(el).hasClass('frameCover')) {
+            $(el).css("position", 'absolute');
+        }
 
         //reset icon
 
@@ -1661,7 +1856,7 @@ function activeStyling() {
             $(this).find(key).hover(function(e) {
 
                 e.stopPropagation();
-                if ($(this).closest('div#wrap').width() != $(this).width()) {
+                if ($(this).closest('div.wrap').width() != $(this).width()) {
                     $(this).css({'outline': '3px dotted red', 'cursor': 'pointer'});
 
                     if (($(this).prop('tagName') == 'IMG') && ($(this).hasClass('pf'))) {
@@ -1856,15 +2051,67 @@ $(function() {
         });
 
     });
+    /* HTML BLOGS */
+    for (var key in _HtmlElements.elements) {
 
+        niceKey = key.toLowerCase().replace(" ", "_");
+
+        if (niceKey == 'templates') {
+
+            $('<li><a href="" id="' + niceKey + '"><span class="fa fa-newspaper-o"></span> ' + key + '</a></li>').appendTo('#menu #main ul#htmltemplates');
+
+            for (x = 0; x < _HtmlElements.elements[key].length; x++) {
+
+                // determines the order of the template
+                order = ' order="' + x + '" ';
+
+                if (_HtmlElements.elements[key][x].thumbnail == null) { //we'll need an section
+
+                    //build us some sections!
+
+                    newItem = $('<li ' + order + 'class="element ' + niceKey + '"><section src="about:blank" scrolling="no"></section></li>');
+
+                    newItem.find('section').uniqueId();
+                    newItem.find('section').attr('src', _HtmlElements.elements[key][x].url);
+
+                } else { //we've got a thumbnail
+
+                    newItem = $('<li ' + order + 'class="element ' + niceKey + '"><img  src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="' + baseUrl + _HtmlElements.elements[key][x].thumbnail + '" data-srcc="' + baseUrl + _HtmlElements.elements[key][x].url + '"></li>')
+
+                }
+
+                newItem.appendTo('#menu #second ul#htmltemplates');
+
+                // Zoomer works
+
+                if (_HtmlElements.elements[key][x].height) {
+                    theHeight = _HtmlElements.elements[key][x].height * 0.25;
+                } else {
+                    theHeight = 'auto';
+                }
+
+                newItem.find('section').zoomer({
+                    zoom: 0.25,
+                    width: 270,
+                    height: theHeight,
+                    message: "Drag&Drop Me!"
+                });
+            }
+
+            // Draggables
+            makeDraggable('#page1');
+        }
+
+    }
+    /* Elements BLOGS */
     for (var key in _Elements.elements) {
 
         niceKey = key.toLowerCase().replace(" ", "_");
 
         if (niceKey == "ecommerce_tables" && display_ecom == 'yes') {
-            $('<li><a href="" id="' + niceKey + '">' + key + '</a></li>').appendTo('#menu #main ul#elements');
+            $('<li><a href="" id="' + niceKey + '"><span class="fa fa-bars"></span> ' + key + '</a></li>').appendTo('#menu #main ul#elements');
         } else if (niceKey != "ecommerce_tables") {
-            $('<li><a href="" id="' + niceKey + '">' + key + '</a></li>').appendTo('#menu #main ul#elements');
+            $('<li><a href="" id="' + niceKey + '"><span class="fa fa-bars"></span> ' + key + '</a></li>').appendTo('#menu #main ul#elements');
         }
 
         for (x = 0; x < _Elements.elements[key].length; x++) {
@@ -1888,7 +2135,7 @@ $(function() {
 
             }
 
-            newItem.appendTo('#menu #second ul');
+            newItem.appendTo('#menu #second ul#elements');
 
             //zoomer works
 
@@ -1945,6 +2192,26 @@ $(function() {
 
             $('#menu #second ul li').show();
 
+        }
+
+        $('.menu .second').css('display', 'block').stop().animate({
+            width: secondMenuWidth
+        }, 500);
+
+    });
+
+    $('#menu #main #htmltemplates').on('click', 'a:not(.btn)', function() {
+
+        $('#menu #main a').removeClass('active');
+        $(this).addClass('active');
+
+        // Show only the right elements
+        $('#menu #second ul#htmltemplates li').hide();
+        $('#menu #second ul#elements li').hide();
+        $('#menu #second ul#htmltemplates li.' + $(this).attr('id')).show();
+
+        if ($(this).attr('id') == 'all') {
+            $('#menu #second ul#htmltemplates li').show();
         }
 
         $('.menu .second').css('display', 'block').stop().animate({
@@ -2083,7 +2350,7 @@ $(function() {
 
                         //for the elements below, we'll use a simplyfied editor, only direct text can be done through this one
                         if ($(this).hasClass('pprice')) {
-                            $("#editContentModal #contentToEdit").on('keypress',function(e) {
+                            $("#editContentModal #contentToEdit").on('keypress', function(e) {
                                 //if the letter is not digit then don't type anything
                                 if (e.which != 8 && e.which != 0 && e.which != 46 && e.which > 31 && (e.which < 48 || e.which > 57)) {
                                     return false;
@@ -2100,6 +2367,7 @@ $(function() {
                                 paragraphize: false,
                                 linebreaks: true,
                                 enterKey: false,
+                                toolbarFixed: false,
                                 activeButtonsStates: {
                                     b: 'bold',
                                     i: 'italic',
@@ -2120,6 +2388,8 @@ $(function() {
                                 buttonSource: true,
                                 paragraphize: false,
                                 linebreaks: true,
+                                toolbarFixed: false,
+                                replaceDivs: false
 //                                deniedTags: ['br'],
                             });
                         }
@@ -2251,17 +2521,17 @@ $(function() {
             }
             elToUpdate.html(text1).css({'outline': '', 'cursor': ''});
             $('#editContentModal #contentToEdit').val('');
-        }else{
+        } else {
             elToUpdate.html($('#editContentModal #contentToEdit').redactor('code.get')).css({'outline': '', 'cursor': ''});
             $('#editContentModal textarea').each(function() {
-                $(this).redactor('core.destroy');
+//                $(this).redactor('core.destroy');
                 $(this).val('');
             });
         }
         if (elToUpdate.has("table")) {
             elToUpdate.find("table").addClass("table table-bordered");
         }
-        
+
         var text = elToUpdate.text();
 
         if (elToUpdate.hasClass('createproduct') == true)
@@ -2269,16 +2539,32 @@ $(function() {
             //function to set values for product form 1
             updateproductinfo(elToUpdate, text);
         }
-        
+
         $('#editContentModal').modal('hide');
 
-        $(this).closest('div#wrap').removeClass('modal-open').attr('style', '');
-
+        $(this).closest('div.wrap').removeClass('modal-open').attr('style', '');
+        bootbox.confirm("Do you want to save updated text in database?", function(result) {
+            // var text_data = $('#editContentModal #contentToEdit').redactor('code.get');
+            if (result == true) {
+                $.blockUI();
+                $.ajax({
+                    url: siteUrl + "sites/insert_block_content/",
+                    type: "POST",
+                    dataType: "json",
+                    data: 'site_id=' + siteID + '&content=' + text,
+                }).done(function(response) {
+                    $.unblockUI();
+                    if (response.responseCode == 1) {
+                        $('#editContentModal #load_content').html($(response.responseHTML));
+                        readmoreContent();
+                    }
+                });
+            }
+        });
         //element was deleted, so we've got pending changes
         setPendingChanges(true);
 
     });
-
     //set value for product no.1 //..............shubhangee
     function updateproductinfo(elToUpdate, text)
     {
@@ -2591,6 +2877,128 @@ $(function() {
 
     });
 
+    $("#take_template").validate({
+        onfocusout: false,
+        onkeyup: false,
+        rules: {
+            template_name: {
+                required: true
+            },
+            cate_select: {
+                required: true
+            }
+        },
+        errorPlacement: function(error, element) {
+            error.appendTo(element.closest("form"));
+        },
+        messages: {
+            template_name: {
+                required: "We need template Name",
+                template_name: "Please, enter a valid name"
+
+            },
+            cate_select: {
+                required: "We need Category",
+                category_name: "Please, enter a valid Category"
+
+            }
+
+        },
+        highlight: function(element) {
+            $(element)
+        },
+        success: function(element) {
+            element.text('').addClass('valid');
+
+        }
+
+    });
+
+    //save as template
+    $('#savetemplate').click(function(e) {
+
+        $('#savetemplate').attr('disabled', true);
+
+        if ($('#take_template').valid()) {
+            $('input:radio[name=mode]#modeBlock').trigger('click');
+
+            closeStyleEditor();
+            //disable button
+            $("a#savePage").addClass('disabled');
+
+            //remove old alerts
+            $('#massageDialog .modal-body > *').each(function() {
+                $(this).remove();
+            });
+            thePages = prepPagesforSave();
+            $('#temp_error').empty();
+            var template_name = $('input[name="template_name"]').val();
+            var category_id = $("#cate_select option:selected").val();
+            $('#myModal_temp .loader').show();
+            $.ajax({
+                url: siteUrl + "sites/check_template_name",
+                type: "POST",
+                dataType: "json",
+                encode: true,
+                data: {'template_name': template_name, 'category_id': category_id}
+            }).done(function(data_res) {
+                $('#myModal_temp .loader').hide();
+                if (data_res.responseCode == 0) {
+                    //if template name and catgory both present in db ask for new template name
+                    $('#temp_error').append(data_res.responseMSG);
+                    $('#myform_template_category').removeClass('help.block').addClass('has-error');
+                    return false;
+                } else {
+                    $('#temp_error').empty();
+
+                    if (typeof pagesData !== 'undefined') {
+
+                        theData = {template_element: thePages, siteName: $('#siteTitle').text(), siteID: siteID, template_name: template_name, category_id: category_id, pagesData: pagesData, img_url: $('#img_val').val()};
+                    } else {
+
+                        theData = {template_element: thePages, siteName: $('#siteTitle').text(), siteID: siteID, template_name: template_name, category_id: category_id, img_url: $('#img_val').val()};
+
+                    }
+                    $('#myModal_temp .loader').show();
+
+                    $.ajax({
+                        url: siteUrl + "sites/save_template",
+                        type: "POST",
+                        dataType: "json",
+                        data: theData,
+                    }).done(function(res) {
+                        $('#savetemplate').attr('disabled', false);
+                        $('#myModal_temp .loader').hide();
+                        //enable button
+                        $("a#savePage").removeClass('disabled');
+                        $('#myModal_temp').modal('hide');
+                        if (res.responseCode == 0) {
+
+                            $('#massageDialog .modal-body').append($(res.responseHTML));
+
+                            $('#massageDialog').modal('show');
+
+                        } else if (res.responseCode == 1) {
+
+                            $('#massageDialog .modal-body').append($(res.responseHTML));
+
+                            $('#massageDialog').modal('show');
+                            setPendingChanges(false);
+                            setTimeout(function() {
+                                window.location.assign(siteUrl + 'sites/templates');
+                            }, 100);
+
+                        }
+                    });
+                }
+            });
+        } else
+        {
+            e.preventDefault();
+            return false;
+        }
+
+    });
 
 
     //preview
@@ -2900,7 +3308,6 @@ $(function() {
 
         $('ul#pages').append(newPageLI);
 
-
         theInput = newPageLI.find('input');
 
         theInput.focus();
@@ -2923,6 +3330,7 @@ $(function() {
         var footerStart = '<li class="element footer " style="display: list-item; height: auto;">';
         var footerEnd = '</li>';
         var footer = '';
+        
         //Copy navigation elements
         $('#pageList ul:first > li').each(function() {
             if ($(this).hasClass('navigation')) {
@@ -3496,6 +3904,7 @@ $(function() {
 
                     //append my images
                     $('#myImagesTab > #myImages').remove();
+                    $('#myImagesTab .alert').remove();
                     $('#myImagesTab').append($(ret.myImages));
 
                     $('#imageModal .modal-alerts').append($(ret.responseHTML));
@@ -3780,36 +4189,75 @@ function publishAsset() {
     };
 
 //Show-Hide the builder's Elements Menu
-    var f = true;
-
     $("#menu_bar").click(function() {
 
-        if (f) {
+        var f = $("#menu div.main").css("width");
 
-            $("#mn").css("left", "-210px");
-
-            $("#scr").css("margin-left", "5px");
-
-            f = !f;
-
+        if ($("div.float-right").css("width") == "140px") {
+            $("div.float-right").css("display", "none");
         }
 
-        else {
+        if (f == '210px') {
+            $("#menu div.main").css("width", "40px");
+            $("#menu div.second").css("left", "40px");
+            $("#mn").css("width", "40px");
+            $("#menu div.main *").css("font-size", "0px");
+            $("#menu div.main span").css("font-size", "16px");
+            $("#menu div.main").css("padding-top", "40px");
+            $("#menu_bar").css("left", "0px");
+            $("#pages *").css("font-size","0px");
+            $("#addPage").css("display","none");
+            $("#main h3:nth-child(3)").css("display","none");
 
-            $("#mn").css("left", "0px");
-
-            $("#scr").css("margin-left", "215px");
-
-            f = !f;
-
+        } else {
+            $("#menu div.main").css("width", "210px");
+            $("#menu div.second").css("left", "210px");
+            $("#mn").css("width", "210px");
+            $("#menu div.main *").css("font-size", "16px");
+            $("#menu div.main span").css("font-size", "16px");
+            $("#menu div.main").css("padding-top", "20px");
+            $("#menu_bar").css("left", "170px");
+            $("#pages *").css("font-size", "16px");
+            $("#addPage").css("display","block");
+            $("#main h3:nth-child(3)").css("display","block");
         }
+    });
 
-    }
-
-    );
+    $("a#options").click(function() {
+        $("div.float-right").toggle();
+        $("#menu div.main").css("width", "40px");
+        $("#menu div.second").css("left", "40px");
+        $("#mn").css("width", "40px");
+        $("#menu div.main *").css("font-size", "0px");
+        $("#menu div.main span").css("font-size", "16px");
+        $("#menu div.main").css("padding-top", "40px");
+        $("#menu_bar").css("left", "0px");
+    });
 
 })(jQuery);
 
 document.addEventListener("DOMContentLoaded", function(event) {
     $('#savePage').addClass('disabled');
 });
+
+function deletectext(content_id) {
+    $.blockUI();
+    $.ajax({
+        url: siteUrl + "sites/delete_block_content/",
+        type: "POST",
+        dataType: "json",
+        data: 'content_id=' + content_id + '&site_id=' + siteID,
+    }).done(function(response) {
+        $.unblockUI();
+        if (response.responseCode == 1) {
+            $('#editContentModal #load_content').html($(response.responseHTML));
+
+        }
+
+    });
+}
+function insertctext(el) {
+
+    var updatedata = $(el).parent().find('p').text();
+    $('#editContentModal #contentToEdit').redactor('code.set', updatedata);
+}

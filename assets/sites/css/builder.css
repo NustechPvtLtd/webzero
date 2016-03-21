@@ -3,7 +3,6 @@ body {
 }
 
 body #builder > .container {
-    width: 100%;
     margin-top: 0px;
     position: relative;
 }
@@ -423,12 +422,12 @@ body .sp-input {
     -moz-transition: color 0.5s;
     transition: color 0.5s;
     font-size: 16px;
-    padding-left: 30px;
+    padding-left: 10px;
 }
 
 .menu .main > ul#elements > li > a:hover, .menu .main > ul#elements > li > a.active {
     color: #fff;
-    background: #1f2e3c;
+    background:  #111;
 }
 
 .main > .sideButtons {
@@ -544,7 +543,7 @@ body .sp-input {
     display: block;
     background: #34495E;
     padding: 10px 20px;
-    width: 450px;
+    width: 40%;
     color: #fff;
     font-size: 13px;
     text-transform: uppercase;
@@ -680,6 +679,6 @@ body .sp-input {
     clear: both;
     margin-left: 10px;
 }
-li.element.content{
+.menu .second ul li.element.content{
     background: #111 none repeat scroll 0 0;
 } 

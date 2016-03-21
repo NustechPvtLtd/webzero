@@ -60,6 +60,7 @@
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/blitzer/jquery-ui.css">
 
         <link href="<?php echo base_url('assets/sites'); ?>/css/new_builder.css" rel="stylesheet">
+        <link href="<?php echo base_url('assets/sites'); ?>/css/builder_mbl.css" rel="stylesheet">
         <!--CUSTOM-JS-->
 
     </head>
@@ -145,11 +146,11 @@
             </nav>
         </div>
         <div class="container">
-            <header class="clearfix" data-spy="affix" data-offset-top="40" >
+            <header class="clearfix" data-spy="affix" data-offset-top="40" style="height: 56px; padding-top: 5px;">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-4">
+                        <div class="col-xs-12" style="padding: 0px;">
+                            <div class="col-sm-4 col-xs-5" style="padding: 0px;">
                                 <div class="modes">
                                     <b>Building mode:</b>
                                     <label class="radio primary first">
@@ -166,15 +167,16 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-md-8 float-right">
-                                <a href="#" id="savePage" class="btn btn-primary disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Nothing new to save</span></a>
-                                <a href="#" id="publishPage" class="btn btn-primary disabled actionButtons" data-siteid="<?php echo $siteData['site']->sites_id; ?>" <?php if ($siteData['site']->domain_ok == 0): ?>data-toggle="tooltip"<?php endif; ?> data-placement="bottom" title="You can not publish your site right now. Please update your url details from settings menu." ><span class="fui-export"></span> <?php echo $this->lang->line('actionbuttons_publish') ?> <span class="fui-alert text-danger" <?php if ($siteData['site']->domain_ok == 1): ?>style="display:none"<?php endif; ?>></span></a>
-                                <a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-primary disabled actionButtons" ><span class="fui-window"></span> Preview</a>
-                                <a href="#" id="clearScreen" class="btn btn-danger disabled actionButtons"><span class="fui-trash"></span> Empty Page</a>
+                            <a id="options"><i class="fa fa-bars"></i></a>
+                            <div class="col-sm-8 col-xs-5 float-right" style="padding: 0px;">
+                                <a href="#" id="savePage" class="btn btn-primary disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Nothing to save</span></a>
+                                <a href="#" id="publishPage" class="btn btn-primary disabled actionButtons" data-siteid="<?php echo $siteData['site']->sites_id; ?>" <?php if ($siteData['site']->domain_ok == 0): ?>data-toggle="tooltip"<?php endif; ?> data-placement="bottom" title="You can not publish your site right now. Please update your url details from settings menu." ><span class="fui-export"></span> <span> Publish</span><span class="fui-alert text-danger" <?php if ($siteData['site']->domain_ok == 1): ?>style="display:none"<?php endif; ?>></span></a>
+                                <a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-primary disabled actionButtons" ><span class="fui-window"></span><span> Preview</span></a>
+                                <a href="#" id="clearScreen" class="btn btn-danger disabled actionButtons"><span class="fui-trash"></span><span> Empty Page</span></a>
 
                                 <div class="btn-group actionButtons">           
                                     <button class="btn btn-default btn-embossed dropdown-toggle" data-toggle="dropdown">
-                                        <span class="fui-gear"></span> Settings<span class="caret"></span>
+                                        <span class="fui-gear"></span><span> Settings</span><span class="caret"></span>
                                     </button>
                                     <span class="dropdown-arrow dropdown-arrow-inverse"></span>
                                     <ul class="dropdown-menu dropdown-inverse">
@@ -194,11 +196,16 @@
                     <a id="menu_bar" class="toggle"><span class="list-icon"><i></i><i></i><i></i></span></a>
 
                     <div class="main scrollbar-inner" id="main">
+                        <h3>HTMLS</h3>
 
+                        <ul id="htmltemplates">
+
+                        </ul>
+                        <hr>
                         <h3>Blocks</h3>
 
                         <ul id="elements">
-                            <li><a href="#" id="all">All Blocks</a></li>
+                            <li><a href="#" id="all"><span class="fa fa-bars"></span> All Blocks</a></li>
                         </ul>
 
                         <hr>
@@ -255,7 +262,9 @@
                         <ul id="elements">
 
                         </ul>
+                        <ul id="htmltemplates">
 
+                        </ul>
                     </div><!-- /.secondSide -->
 
                 </div><!-- /.menu -->
@@ -290,7 +299,7 @@
                 <button type="button" class="btn btn-warning  btn-xs" id="resetStyleButton"><i class="fa fa-refresh"></i> Reset</button>
                 <button type="button" class="btn btn-danger  btn-xs" id="removeElementButton"><span class="fui-cross-inverted"></span> Remove</button>
             </div>
-            
+
             <ul class="nav nav-tabs" id="detailTabs">
                 <li class="active"><a href="#tab1"><span class="fui-new"></span> Style</a></li>
                 <li style="display: none;"><a href="#link_Tab" id="link_Link"><span class="fui-clip"></span> Link</a></li>
@@ -579,7 +588,10 @@
                     </div><!-- /.modal-body -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel & Close</button>
-                        <button type="button" class="btn btn-primary" id="updateContentInFrameSubmit">Save Content</button>
+                        <button type="button" class="btn btn-primary" id="updateContentInFrameSubmit">Insert Content</button>
+                    </div>
+                    <div id="load_content" style="max-height: 200px; overflow-y:auto; margin-top: 15px;">
+                        <?php echo $this->load->view('partials/loadcontent.php', $block_content); ?>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -703,7 +715,7 @@
                                             </tbody>
                                         </table>
                                     </div><!-- /.table-responsive -->
-                                    <div class=""><small>Note:-<mark>This may take few minutes to publish. Please have patients!</mark></small></div>
+                                    <div class=""><small>Note:-<mark>This may take few minutes to publish. Please have patience!</mark></small></div>
                                 </div><!-- /.optionPane -->
                             </div>
 
@@ -719,7 +731,7 @@
 
         </div><!-- /.modal -->
 
-        <?php $this->load->view("shared/modal_imagegallery.php", array('site' => $siteData['site'])); ?>
+        <?php $this->load->view("shared/modal_imagegallery.php"); ?>
 
         <!-- Video Gallery Modal -->
         <div class="modal fade " id="videoModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -835,11 +847,12 @@
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/bufferButtons.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/video.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/src-min-noconflict/ace.js"></script>
-        <?php if($this->ion_auth->in_group(array('individuals','employer'))):?>
-        <script src="<?php echo base_url(); ?>elements.json"></script>
-        <?php else:?>
-        <script src="<?php echo base_url(); ?>ecomelements.json"></script>
-        <?php endif;?>
+        <?php if ($this->ion_auth->in_group(array('business', 'employer', 'designer'))): ?>
+            <script src="<?php echo base_url(); ?>elements.json"></script>
+        <?php else: ?>
+            <script src="<?php echo base_url(); ?>ecomelements.json"></script>
+        <?php endif; ?>
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.blockUI.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/builder.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/jquery.form.min.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/scrollbar/jquery.nicescroll.min.js"></script>
@@ -848,8 +861,6 @@
         <script src="<?php echo base_url('elements/scripts/html5gallery.js'); ?>" type="text/javascript" ></script>
 
         <!-- Loading Elements JS -->
-<!--        <script src="<?php // echo base_url('elements/scripts/jquery-1.11.2.min.js');          ?>"></script> 
-        <script src="<?php // echo base_url('elements/scripts/bootstrap.min.js');          ?>"></script> -->
         <script src="<?php echo base_url('elements/scripts/jquery.validate.min.js'); ?>"></script>
         <!--<script src="<?php echo base_url('elements/scripts/smoothscroll.js'); ?>"></script>--> 
         <script src="<?php echo base_url('elements/scripts/jquery.smooth-scroll.min.js'); ?>"></script> 
@@ -864,12 +875,15 @@
         <script src="<?php echo base_url('elements/scripts/bootstrap-datepicker.min.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/custom.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/autoNumeric.js'); ?>"></script>
-
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/readmore.min.js"></script>
+        <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
+        <?php if (isset($js)) echo implode("\n", $js) . "\n"; ?>
         <script>
             var baseUrl = "<?php echo base_url(); ?>";
             var siteUrl = "<?php echo site_url('/'); ?>";
             var domain_ok = "<?php echo ($siteData['site']->domain_ok == 1) ? 1 : 0; ?>";
             var display_ecom = '<?php echo (userdata('eccommerce') == 'inactive') ? 'no' : 'yes'; ?>';
+            var plan = '<?php echo userdata('plan_id') ?>';
 <?php if (isset($siteData)): ?>
                 var siteID = <?php echo $siteData['site']->sites_id; ?>;
 <?php else: ?>
@@ -879,6 +893,7 @@
 <?php if (isset($pagesData)): ?>
                 var pagesData = <?php echo json_encode($pagesData); ?>;
 <?php endif; ?>
+            var _HtmlElements = <?php echo $all_templates_data; ?>;
             var userImageLoaded = false;
             $(function() {
 
@@ -1044,6 +1059,7 @@
 
                             //append my images
                             $('#myImagesTab > #myImages').remove();
+                            $('#myImagesTab .alert').remove();
                             $('#myImagesTab').append($(ret.myImages));
 
                             $('#imageModal .modal-alerts').append($(ret.responseHTML));
@@ -1125,6 +1141,10 @@
                     }
                 });
             });
+            $("#publishConfirm").on('click', function() {
+                $("#publishPage").trigger('click');
+                $("#confirmPublish").modal("hide");
+            });
         </script>
         <script>
             function init() {
@@ -1136,6 +1156,51 @@
                 }
             }
             window.onload = init;
+        </script>
+        <script>
+            function readmoreContent() {
+                var opts = {
+                    speed: 75,
+                    maxHeight: 0,
+                    collapsedHeight: 55,
+                    moreLink: '<a href="#" class="pull-left btn btn-xs">Read More</a>',
+                    lessLink: '<a href="#" class="pull-left btn btn-xs">Less</a>',
+                    startOpen: false,
+                    embedCSS: false,
+                    blockCSS: 'display: inline-block;'
+                };
+
+                $('.blockbody').readmore(opts);
+
+                $('#editContentModal').one('show.bs.modal', function() {
+                    //for styling purpose only
+                    $(this).find('.blockbody').css({overflow: "hidden", maxHeight: opts.maxHeight});
+                }).one('shown.bs.modal', function() {
+                    //initialize plugin once modal shown
+                    $(this).find('.blockbody').readmore(opts);
+                });
+            }
+            readmoreContent();
+            $(window).load(function() {
+                $("ul#elements li a").mouseover(function() {
+                    if ($("#menu div.main").css("width") == '40px') {
+                        $(this).parent().prop('style', 'position:fixed;');
+                    }
+                }).mouseout(function() {
+                    if ($("#menu div.main").css("width") == '40px') {
+                        $(this).parent().prop('style', 'position:initial;');
+                    }
+                });
+                $("ul#htmltemplates li a").mouseover(function() {
+                    if ($("#menu div.main").css("width") == '40px') {
+                        $(this).parent().css("position", "fixed");
+                    }
+                }).mouseout(function() {
+                    if ($("#menu div.main").css("width") == '40px') {
+                        $(this).parent().css("position", "initial");
+                    }
+                });
+            });
         </script> 
     </body>
 </html>

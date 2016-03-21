@@ -256,7 +256,7 @@ WHERE sites.sites_id = {$siteID} AND (users_domains.active=1 OR ISNULL(users_dom
 
         $siteArray = [];
         $siteArray['site'] = $site;
-        
+
         //get the pages + frames
 
         $query = $this->db->from('pages')->where('sites_id', $site->sites_id)->where('pages_trashed', 0)->get();
@@ -276,28 +276,29 @@ WHERE sites.sites_id = {$siteID} AND (users_domains.active=1 OR ISNULL(users_dom
         }
 
         $siteArray['pages'] = $pageFrames;
-/*
+        /*
 
-        //grab the assets folders as well
-        $this->load->helper('directory');
+          //grab the assets folders as well
+          $this->load->helper('directory');
 
-        $folderContent = directory_map($this->config->item('elements_dir'), 2);
+          $folderContent = directory_map($this->config->item('elements_dir'), 2);
 
-        $assetFolders = [];
+          $assetFolders = [];
 
-        foreach ($folderContent as $key => $item) {
+          foreach ($folderContent as $key => $item) {
 
-            if (is_array($item)) {
+          if (is_array($item)) {
 
-                array_push($assetFolders, $key);
-            }
-        }
+          array_push($assetFolders, $key);
+          }
+          }
 
 
-        $siteArray['assetFolders'] = $assetFolders;
-*/
+          $siteArray['assetFolders'] = $assetFolders;
+         */
         return $siteArray;
     }
+
     public function getSiteData($siteID)
     {
 
@@ -316,7 +317,7 @@ WHERE sites.sites_id = {$siteID} AND (users_domains.active=1 OR ISNULL(users_dom
 
         $siteArray = [];
         $siteArray['site'] = $site;
-        
+
         $query1 = $this->db->from('users_domains')->where('site_id', $siteID)->get();
         $res1 = $query1->result();
         $domains = [];
@@ -324,7 +325,6 @@ WHERE sites.sites_id = {$siteID} AND (users_domains.active=1 OR ISNULL(users_dom
             $domains[$value->url_option]['domain'] = $value->domain;
             $domains[$value->url_option]['domain_publish'] = $value->domain_publish;
             $domains[$value->url_option]['active'] = $value->active;
-            
         }
         $siteArray['domains'] = $domains;
 
@@ -939,60 +939,94 @@ WHERE sites.sites_id = {$siteID} AND (users_domains.active=1 OR ISNULL(users_dom
         $res = $query->result();
 
         $site = $res[0];
-        $userName = (empty($site->first_name))?$site->email: ucfirst($site->first_name).' '.ucfirst($site->last_name);
+        $userName = (empty($site->first_name)) ? $site->email : ucfirst($site->first_name) . ' ' . ucfirst($site->last_name);
         return $userName;
     }
-	/* 
-		Send mail for sharing your profile 
-	*/
-	public function shareProfileEmail($ids="",$cnt="",$sub="")
-	{
-		 $allids	= isset($ids)?$ids:$_POST['allids'];
-		 $emailcnt	= isset($cnt)?$cnt:$_POST['emailcnt'];
-		 $emailsub	= isset($sub)?$sub:$_POST['emailsub'];
-		 
-		 $pids=explode(',',$allids);
-        $sender_email= userdata('email');
-        $username = $this->getUserByUserId(userdata('user_id'));
-		 $allemail=array();
-		 foreach($pids as $pid)
-		 {
-			  array_push($allemail, $pid);
-		 }
-		 if(!empty($allemail))
-		 {
-			$newarr=array_unique($allemail);
-			   
-			$subject = $emailsub;
-			  
-			$mail_body =$emailcnt;
 
-			$headers  = "MIME-Version: 1.0" . "\r\n";
-			$headers .= "Content-type: text/html; charset=iso-8859-1" . "\r\n";
-			$headers .= "From: {$username}<{$sender_email}>\r\n";
-			$headers .= "Reply-To: {$sender_email}\r\n";
-			$headers .= "X-Mailer: PHP/" . phpversion();
-			$headers .= "X-Priority: 1" . "\r\n"; 	
-			
-			$sendResult = array();
-			foreach($newarr as $res)
-			{
-				$temp = array();
-				$to	  = $res;
-				$send = mail($to, $subject, $mail_body, $headers, "-f " . $sender_email);
-				//$receiver_id=$this->getidusingemail($to);
-				if($send)   {
-					//$this->db->query("insert into jobseeker_email(sender_id,receiver_id,email_contents,email_subject)values('".$sender_id."','".$receiver_id."',".$this->db->escape($mail_body).",".$this->db->escape($emailsub).")");
-					$temp['status']  = "True";
-					$temp['address'] = $to;
-					
-				} else {
-					$temp['status']  = "False";
-					$temp['address'] = $to;						
-				}
-				$sendResult[] = $temp;
-			}
-			return json_encode($sendResult);
-		 }
-	}
+    /*
+      Send mail for sharing your profile
+     */
+
+    public function shareProfileEmail($ids = "", $cnt = "", $sub = "")
+    {
+        $allids = isset($ids) ? $ids : $_POST['allids'];
+        $emailcnt = isset($cnt) ? $cnt : $_POST['emailcnt'];
+        $emailsub = isset($sub) ? $sub : $_POST['emailsub'];
+
+        $pids = explode(',', $allids);
+        $sender_email = userdata('email');
+        $username = $this->getUserByUserId(userdata('user_id'));
+        $allemail = array();
+        foreach ($pids as $pid) {
+            array_push($allemail, $pid);
+        }
+        if (!empty($allemail)) {
+            $newarr = array_unique($allemail);
+
+            $subject = $emailsub;
+
+            $mail_body = $emailcnt;
+
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type: text/html; charset=iso-8859-1" . "\r\n";
+            $headers .= "From: {$username}<{$sender_email}>\r\n";
+            $headers .= "Reply-To: {$sender_email}\r\n";
+            $headers .= "X-Mailer: PHP/" . phpversion();
+            $headers .= "X-Priority: 1" . "\r\n";
+
+            $sendResult = array();
+            foreach ($newarr as $res) {
+                $temp = array();
+                $to = $res;
+                $send = mail($to, $subject, $mail_body, $headers, "-f " . $sender_email);
+                //$receiver_id=$this->getidusingemail($to);
+                if ($send) {
+                    //$this->db->query("insert into jobseeker_email(sender_id,receiver_id,email_contents,email_subject)values('".$sender_id."','".$receiver_id."',".$this->db->escape($mail_body).",".$this->db->escape($emailsub).")");
+                    $temp['status'] = "True";
+                    $temp['address'] = $to;
+                } else {
+                    $temp['status'] = "False";
+                    $temp['address'] = $to;
+                }
+                $sendResult[] = $temp;
+            }
+            return json_encode($sendResult);
+        }
+    }
+
+    public function inserblockcontent($_user_id, $_site_id, $content)
+    {
+        $data = array(
+            'site_id' => $_site_id,
+            'user_id' => $_user_id,
+            'content' => $content
+        );
+        $inserted = $this->db->insert('site_content', $data);
+        return $inserted;
+    }
+
+    public function get_block_content($_site_id, $_user_id)
+    {
+        $this->db->where('site_id', $_site_id);
+        $this->db->where('user_id', $_user_id);
+        $this->db->order_by("timestamp", "desc");
+        $query = $this->db->get('site_content');
+        if ($query->num_rows() == 0) {
+            return false;
+        } else {
+            return $query->result();
+        }
+    }
+
+    public function deleteblockcontent($content_id)
+    {
+        $this->db->where('content_id', $content_id);
+        $this->db->delete('site_content');
+        if ($this->db->affected_rows() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
 }

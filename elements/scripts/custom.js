@@ -188,29 +188,33 @@ $(document).ready(function() {
         if ($(this).valid()) {
             $('#subscribe_submit').button('loading');
             var action = $('#subscribe-url').data("content");
-            $.ajax({
-                url: action,
-                type: 'POST',
-                data: {
-                    newsletter_email: $('#subscribe_email').val()
-                },
-                success: function(data) {
-                    $('#subscribe_submit').button('reset');
 
-                    //Use modal popups to display messages
-                    $('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>' + data);
-                    $('#modalMessage').modal('show');
+            if (typeof (action) !== 'undefined') {
+                $.ajax({
+                    url: action,
+                    type: 'POST',
+                    data: {
+                        newsletter_email: $('#subscribe_email').val()
+                    },
+                    success: function(data) {
+                        $('#subscribe_submit').button('reset');
 
-                },
-                error: function() {
-                    $('#subscribe_submit').button('reset');
+                        //Use modal popups to display messages
+                        $('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>' + data);
+                        $('#modalMessage').modal('show');
 
-                    //Use modal popups to display messages
-                    $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
-                    $('#modalMessage').modal('show');
+                    },
+                    error: function() {
+                        $('#subscribe_submit').button('reset');
 
-                }
-            });
+                        //Use modal popups to display messages
+                        $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
+                        $('#modalMessage').modal('show');
+
+                    }
+                });
+            }
+            return false;
         }
         return false;
     });
@@ -263,30 +267,32 @@ $(document).ready(function() {
         if ($(this).valid()) {
             $('#subscribe_submit_2').button('loading');
             var action = $('#subscribe-url').data("content");
-            $.ajax({
-                url: action,
-                type: 'POST',
-                data: {
-                    newsletter_email: $('#subscribe_email_2').val(),
-                    newsletter_name: $('#subscribe_name_2').val()
-                },
-                success: function(data) {
-                    $('#subscribe_submit_2').button('reset');
+            if (typeof (action) !== 'undefined') {
+                $.ajax({
+                    url: action,
+                    type: 'POST',
+                    data: {
+                        newsletter_email: $('#subscribe_email_2').val(),
+                        newsletter_name: $('#subscribe_name_2').val()
+                    },
+                    success: function(data) {
+                        $('#subscribe_submit_2').button('reset');
 
-                    //Use modal popups to display messages
-                    $('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>' + data);
-                    $('#modalMessage').modal('show');
+                        //Use modal popups to display messages
+                        $('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>' + data);
+                        $('#modalMessage').modal('show');
 
-                },
-                error: function() {
-                    $('#subscribe_submit').button('reset');
+                    },
+                    error: function() {
+                        $('#subscribe_submit').button('reset');
 
-                    //Use modal popups to display messages
-                    $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
-                    $('#modalMessage').modal('show');
+                        //Use modal popups to display messages
+                        $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
+                        $('#modalMessage').modal('show');
 
-                }
-            });
+                    }
+                });
+            }
         }
         return false;
     });
@@ -342,32 +348,34 @@ $(document).ready(function() {
             $('#contact_submit').button('loading');
 //            var action = $(this).attr('action');
             var action = $('#contact-url').data("content");
-            $.ajax({
-                url: action,
-                type: 'POST',
-                data: {
-                    name: $('#contact_name').val(),
-                    email: $('#contact_email').val(),
-                    message: $('#contact_message').val(),
-                    formname: 'contact2'
-                },
-                success: function() {
-                    $('#contact_submit').button('reset');
-                    $('#modalContact').modal('hide');
+            if (typeof (action) !== 'undefined') {
+                $.ajax({
+                    url: action,
+                    type: 'POST',
+                    data: {
+                        name: $('#contact_name').val(),
+                        email: $('#contact_email').val(),
+                        message: $('#contact_message').val(),
+                        formname: 'contact2'
+                    },
+                    success: function() {
+                        $('#contact_submit').button('reset');
+                        $('#modalContact').modal('hide');
 
-                    //Use modal popups to display messages
-                    $('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>Well done!<br>Your message has been successfully sent!');
-                    $('#modalMessage').modal('show');
-                },
-                error: function() {
-                    $('#contact_submit').button('reset');
-                    $('#modalContact').modal('hide');
+                        //Use modal popups to display messages
+                        $('#modalMessage .modal-title').html('<i class="icon icon-envelope-open"></i>Well done!<br>Your message has been successfully sent!');
+                        $('#modalMessage').modal('show');
+                    },
+                    error: function() {
+                        $('#contact_submit').button('reset');
+                        $('#modalContact').modal('hide');
 
-                    //Use modal popups to display messages
-                    $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
-                    $('#modalMessage').modal('show');
-                }
-            });
+                        //Use modal popups to display messages
+                        $('#modalMessage .modal-title').html('<i class="icon icon-ban"></i>Oops!<br>Something went wrong!');
+                        $('#modalMessage').modal('show');
+                    }
+                });
+            }
         } else {
             $('#contact_submit').button('reset')
         }
@@ -543,12 +551,12 @@ $(document).ready(function() {
         return false;
     });
 
-//    if ($('.videoGallery').length) {
-//        $('.videoGallery').html5gallery();
-//    }
+    if ($('.videoGallery').length) {
+        $('.videoGallery').html5gallery();
+    }
     $('[class^="html5gallery-container"]').remove();
     $(".html5gallery").html5gallery();
-    
+
     $(".pprice").autoNumeric('init');
 });
 

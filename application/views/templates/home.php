@@ -9,7 +9,8 @@
         <link href="<?php echo base_url(); ?>assets/home/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/home/css/style.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url(); ?>assets/home/css/animate.min.css" rel="stylesheet">
-        <!--<link href="<?php // echo base_url();   ?>assets/home/css/font-awesome.min.css" rel="stylesheet">-->
+        <!--<link href="<?php // echo base_url();     ?>assets/home/css/font-awesome.min.css" rel="stylesheet">-->
+        <?php if (isset($css)) echo implode("\n", $css) . "\n"; ?>
         <script src="<?php echo base_url(); ?>assets/home/js/jquery-1.10.2.min.js" type="text/javascript" ></script>
 
         <title><?php echo $title; ?></title>
@@ -24,7 +25,7 @@
                                                                "sr-only">Toggle navigation</span> <span class=
                                                                "icon-bar"></span> <span class="icon-bar"></span> <span class=
                                                                "icon-bar"></span></button> <a class="navbar-brand" href=
-                                                   "#"><span><img class="img-responsive" src="<?php echo base_url(); ?>assets/home/img/logo.png"></span></a>
+                                                   "<?php echo site_url(); ?>"><span><img class="img-responsive" src="<?php echo base_url(); ?>assets/home/img/logo.png"></span></a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbar-ex-collapse">
@@ -124,7 +125,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="<?php echo site_url('privacy')?>">Privacy Policy</a>
+                                    <a href="<?php echo site_url('privacy') ?>">Privacy Policy</a>
                                 </li>
                             </ul>
                         </div>
@@ -149,7 +150,7 @@
                     <div class="footer_box col-md-4">
                         <div class="section_heading">
                             <h2>Have a Question? <span class=
-                                                        "white_colored_text"><br/><a href="#">Get Help
+                                                       "white_colored_text"><br/><a href="#">Get Help
                                         Now&gt;&gt;</a></span></h2>
                         </div>
                     </div>
@@ -160,8 +161,8 @@
                     <div class="copyrite">
                         <div class="col-md-7">
                             <p>Copyright 2015 Jadooweb. All rights reserved.
-                                <a href="<?php echo site_url('privacy')?>" >Privacy Policy</a>
-                                <span>|</span><a href="<?php echo site_url('terms-and-condition')?>" >Terms of Service</a></p>
+                                <a href="<?php echo site_url('privacy') ?>" >Privacy Policy</a>
+                                <span>|</span><a href="<?php echo site_url('terms-and-condition') ?>" >Terms of Service</a></p>
                         </div>
 
                         <div class="col-md-5 social">
@@ -183,7 +184,7 @@
         <script src="<?php echo base_url(); ?>assets/home/js/smooth-scroll.min.js" type="text/javascript" >
         </script> 
         <script src="<?php echo base_url(); ?>assets/home/js/script.js" type="text/javascript" ></script>
-        <script src="<?php echo base_url('elements/scripts/jquery.validate.min.js');?>" type="text/javascript" ></script>
+        <script src="<?php echo base_url('elements/scripts/jquery.validate.min.js'); ?>" type="text/javascript" ></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.maskedinput.js"></script>
         <script type="text/javascript" >
             $(document).ready(function() {
@@ -225,6 +226,18 @@
 
             });
         </script>
-        <!--<script type="text/javascript" src="/support_apps/livechat/php/app.php?widget-init.js" defer="defer"></script>-->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js">
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var tz = jstz.determine(); // Determines the time zone of the browser client
+                var timezone = tz.name(); //'Asia/Kolhata' for Indian Time.
+                $.post("<?php echo site_url(); ?>", {tz: timezone}, function(data) {
+                    //Preocess the timezone in the controller function and get
+                    //the confirmation value here. On success, refresh the page.
+                });
+            });
+        </script>
+                <!--<script type="text/javascript" src="/support_apps/livechat/php/app.php?widget-init.js" defer="defer"></script>-->
     </body>
 </html>

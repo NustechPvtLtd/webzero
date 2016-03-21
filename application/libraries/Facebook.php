@@ -123,7 +123,7 @@ Class Facebook {
         }
 
         // Create login url
-        $url = $this->helper->getLoginUrl($this->config->item('facebook_permissions'));
+        $url = $this->helper->getLoginUrl($this->config->item('facebook_permissions'),$this->config->item('facebook_graph_version'));
 
         // Return login url
         return $url;
@@ -232,7 +232,7 @@ Class Facebook {
             try
             {
                 // Get user details
-                $user = (new FacebookRequest($session, 'GET', '/me'))
+                $user = (new FacebookRequest($session, 'GET', '/me?fields=id,email,first_name,last_name'))
                     ->execute()
                     ->getGraphObject()
                     ->asArray();

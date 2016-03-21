@@ -196,7 +196,7 @@ class Assets extends MY_Controller {
 		
 	*/
 	
-	public function imageUploadAjax($siteID) {
+	public function imageUploadAjax() {
 
 		$user_id = userdata('user_id');
 			
@@ -246,8 +246,8 @@ class Assets extends MY_Controller {
                 $userImages = $this->s3->getBucket($bucket, $uri.'/Images');
 
                 if( $userImages ) {
-                    $siteData = $this->sitemodel->getSite($siteID);
-                    $return['myImages'] = $this->load->view('partials/myimages', array('userImages'=>$userImages,'siteData'=>$siteData, 'bucket'=>$bucket), true);
+//                    $siteData = $this->sitemodel->getSite($siteID);
+                    $return['myImages'] = $this->load->view('partials/myimages', array('userImages'=>$userImages, 'bucket'=>$bucket), true);
                 }
 
                 $return['responseCode'] = 1;
@@ -281,7 +281,7 @@ class Assets extends MY_Controller {
 		
 	*/
 	
-	public function imageUploadEditor($siteID) {
+	public function imageUploadEditor() {
 	
 		$user = $this->ion_auth->user()->row();
 			

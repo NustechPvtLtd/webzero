@@ -1,20 +1,20 @@
 <style>
-.select2-container .select2-choice {
-    border-radius: 0px;
-    height: 32px;
-    line-height: 32px;
-}
-.select2-container {
-    border:none;
-    padding: 0;
-}
-.select2-container .select2-choice .select2-arrow {
-    border-radius:0px;
-}
+    .select2-container .select2-choice {
+        border-radius: 0px;
+        height: 32px;
+        line-height: 32px;
+    }
+    .select2-container {
+        border:none;
+        padding: 0;
+    }
+    .select2-container .select2-choice .select2-arrow {
+        border-radius:0px;
+    }
 </style>
 <section class="content">
-    <div id="notify-container">
-        <?php echo $message; ?>
+    <div id="notify-container alert alert-info">
+        <?php echo (isset($message))?$message:$this->session->flashdata('message'); ?>
     </div>
     <div class="tabs-container">
         <?php echo form_open(uri_string()); ?>
@@ -48,52 +48,51 @@
                         <?php echo form_input($company); ?>
                     </div>
                     <div class="form-group">
-                        <?php echo lang('edit_blng_country_label', 'blng_country', 'required');?>
-                        <?php echo form_dropdown('blng_country', $country, $blng_country,'id="blng_country" class="form-control" onChange="get_state(this.value,this.id);"');?>
-                    </div>
-                    <div class="form-group">
                         <?php echo lang('edit_user_password_label', 'password'); ?>
                         <?php echo form_input($password); ?>
-                    </div>
-                    <?php if ($this->ion_auth->is_admin() && $user_id != $user->id): ?>
-                        <div class="form-group">
-                            <?php echo lang('edit_user_price_plan_label', 'price_plan_id', 'required'); ?>
-                            <?php echo form_dropdown('price_plan_id', $plans, $price_plan_id, ' class="form-control"'); ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <div class="form-group col-sm-5">
-                    <div class="form-group">
-                        <?php echo lang('edit_blng_street_label', 'blng_street', 'required');?>
-                        <?php echo form_input($blng_street);?>
-                    </div>
-                    <div class="form-group">
-                        <?php echo lang('edit_blng_city_label', 'blng_city', 'required');?>
-                        <?php echo form_input($blng_city);?>
-                    </div>
-                    <div class="form-group">
-                        <?php echo lang('edit_blng_state_label', 'blng_state', 'required');?>
-                        <?php echo form_dropdown('blng_state', $states, $blng_state, 'id="blng_state" class="form-control"');?>
-                    </div>
-                    <div class="form-group">
-                        <?php echo lang('edit_blng_zipcode_label', 'blng_zipcode', 'required');?>
-                        <?php echo form_input($blng_zipcode);?>
-                    </div>
-                    <div class="form-group">
-                        <?php echo lang('edit_user_phone_label', 'phone', 'required'); ?>
-                        <?php echo form_input($phone); ?>
                     </div>
                     <div class="form-group">
                         <?php echo lang('edit_user_password_confirm_label', 'password_confirm'); ?>
                         <?php echo form_input($password_confirm); ?>
                     </div>
-                    <?php if ($this->ion_auth->is_admin() && $user_id != $user->id): ?>
-                        <div class="form-group">
-                            <label for="notes">Notes:(For User plan)</label>
-                            <?php echo form_input($notes); ?>
-                        </div>
-                    <?php endif; ?>
                 </div>
+                <div class="form-group col-sm-5">
+                    <div class="form-group">
+                        <?php echo lang('edit_blng_country_label', 'blng_country', 'required'); ?>
+                        <?php echo form_dropdown('blng_country', $country, $blng_country, 'id="blng_country" class="form-control" onChange="get_state(this.value,this.id);"'); ?>
+                    </div>
+                    <div class="form-group">
+                        <?php echo lang('edit_blng_state_label', 'blng_state', 'required'); ?>
+                        <?php echo form_dropdown('blng_state', $states, $blng_state, 'id="blng_state" class="form-control"'); ?>
+                    </div>
+                    <div class="form-group">
+                        <?php echo lang('edit_blng_city_label', 'blng_city', 'required'); ?>
+                        <?php echo form_input($blng_city); ?>
+                    </div>
+                    <div class="form-group">
+                        <?php echo lang('edit_blng_street_label', 'blng_street', 'required'); ?>
+                        <?php echo form_input($blng_street); ?>
+                    </div>
+                    <div class="form-group">
+                        <?php echo lang('edit_blng_zipcode_label', 'blng_zipcode', 'required'); ?>
+                        <?php echo form_input($blng_zipcode); ?>
+                    </div>
+                    <div class="form-group">
+                        <?php echo lang('edit_user_phone_label', 'phone', 'required'); ?>
+                        <?php echo form_input($phone); ?>
+                    </div>
+                </div>
+                <?php if ($this->ion_auth->is_admin() && $user_id != $user->id): ?>
+                    <div class="form-group col-sm-2"></div>
+                    <div class="form-group col-sm-5">
+                        <?php echo lang('edit_user_price_plan_label', 'price_plan_id', 'required'); ?>
+                        <?php echo form_dropdown('price_plan_id', $plans, $price_plan_id, ' class="form-control"'); ?>
+                    </div>
+                    <div class="form-group col-sm-5">
+                        <label for="notes">Notes:(For User plan)</label>
+                        <?php echo form_input($notes); ?>
+                    </div>
+                <?php endif; ?>
             </div>
             <div class="clearfix"><!-- --></div>
             <div class="box-footer">
@@ -125,7 +124,6 @@
                     }
                 },
                 onComplete: function(file, response) {
-                    console.log(response);
                     var obj = JSON.parse(response);
                     status.text('Photo Uploaded Sucessfully!');
                     if (obj.status === "error") {
@@ -143,37 +141,38 @@
 
                 }
             });
-            $.mask.definitions['9'] = '';
-            $.mask.definitions['d'] = '[0-9]';
-//            $.mask.definitions['x'] = '[A-Z0-9]';
-            $('#phone').mask("ddd ddd dddd");
-            $('#blng_zipcode').mask("*** ***");
-            $(".city").bind("keyup", function(event) {
-                var regex = /^[a-zA-Z\s]+$/;
-                if (!regex.test($(this).val())) {
-                    $(this).val('');
-                } 
-            });
-            $('select').select2();
         });
 <?php endif; ?>
-
-    function get_state(value,id){
-        if(value!==''){
-            var post_url = "<?php echo site_url('account/get_state');?>/"+value;
+    $(function() {
+        $.mask.definitions['9'] = '';
+        $.mask.definitions['d'] = '[0-9]';
+        //            $.mask.definitions['x'] = '[A-Z0-9]';
+        $('#phone').mask("ddd ddd dddd");
+        $('#blng_zipcode').mask("*** ***");
+        $(".city").bind("keyup", function(event) {
+            var regex = /^[a-zA-Z\s]+$/;
+            if (!regex.test($(this).val())) {
+                $(this).val('');
+            }
+        });
+        $('select').select2();
+    });
+    function get_state(value, id) {
+        if (value !== '') {
+            var post_url = "<?php echo site_url('account/get_state'); ?>/" + value;
             $.ajax({
                 type: "GET",
                 url: post_url,
                 success: function(states)
                 {
                     $('#blng_state').empty();
-                    $.each(states,function(id,state)
+                    $.each(states, function(id, state)
                     {
                         var opt = $('<option />');
                         opt.val(id);
                         opt.text(state);
                         $('#blng_state').append(opt);
-                    }); 
+                    });
                 }
             }); //end AJAX
         }

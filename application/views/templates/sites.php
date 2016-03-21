@@ -161,7 +161,7 @@
                     		?>
                     		<ul class="sidebar-menu">
                     		<?php 
-	                    		if ($this->ion_auth->in_group(array('individuals'))){
+	                    		if ($this->ion_auth->in_group(array('business'))){
 	                    			include_once 'user_menu.php';
 	                    		} elseif ($this->ion_auth->in_group(array('comp-admin'))){
 	                    			include_once 'user_menu.php';
@@ -181,7 +181,7 @@
                 <section class="content-header">
                     <h1><?php echo !empty($pageHeading) ? $pageHeading : '&nbsp;';?></h1>
                     <?php
-						echo create_breadcrumb();
+//						echo create_breadcrumb();
                     ?>
                 </section>
                 <section class="content">

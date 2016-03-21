@@ -331,6 +331,7 @@ table.text-center th {
 -------------------------------------------------
 */
 body > .header {
+  background-color: #1bbc9b;
   position: relative;
   max-height: 100px;
   z-index: 1030;
@@ -2462,7 +2463,4 @@ Component: timeline
 }
 .pace-inactive {
   display: none;
-}
-#frameWrapper .container {
-    width: 100%;
 }

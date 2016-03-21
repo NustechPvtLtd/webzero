@@ -28,25 +28,29 @@
     color: #ffffff;
 }
 
+.plan .table > thead > tr > th, plan .table > tbody > tr > th, .plan .table > tfoot > tr > th, .plan .table > thead > tr > td,  .plan .table > tbody > tr > td, .plan .table > tfoot > tr > td {
+    text-align:justify;
+    text-transform: capitalize;
+}
+
 .panel:hover { box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4), 0 1px 5px rgba(130, 130, 130, 0.35); }
 .panel-body
 {
     padding: 0px;
-    text-align: center;
 }
-.btn {
+.plan .btn {
     padding: 9px 12px 7px;
     border-width: 0px 1px 4px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
 }
-.btn-success {
+.plan .btn-success {
     color: #FFF;
     background-color: #28B62C;
     border-color: #23A127;
 }
-.btn {
+.plan .btn {
     display: inline-block;
     margin-bottom: 0px;
     font-weight: normal;
@@ -76,6 +80,8 @@
     padding: 0;
     margin: 0;
 }
+
+.table > tbody > tr.the-price > td{text-align: center;}
 
 .subscript
 {
@@ -153,4 +159,25 @@
     font-size: 0.95em;
     font-weight: bold;
     text-align: center;
+}
+
+/*Customise CSS for recommended Plan*/
+
+table, td, tr {
+    border: none !important;
+}
+.recommended .panel-heading
+{
+    background-color: #1bbc9b;
+}
+.recommended a.btn, .recommended a.btn:hover
+{
+    background-color: #1bbc9b;
+    border: none;
+}
+.recommended .panel
+{
+    -webkit-box-shadow: 0px 8px 20px 2px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 8px 20px 2px rgba(0,0,0,0.5);
+    box-shadow: 0px 8px 20px 2px rgba(0,0,0,0.5);
 }

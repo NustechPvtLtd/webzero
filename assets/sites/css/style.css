@@ -407,7 +407,7 @@ body .sp-input {
 
 .menu {
     position: absolute;
-    /*top: 50px;*/
+    top: 0px;
     left: 0px;
     height: 95%;
     z-index: 5;
@@ -521,7 +521,7 @@ div.affix {
     float: left;
     display: none;
     box-shadow: inset 2px 0px 5px rgba(0,0,0,0.3);
-    z-index: 5;
+    z-index: -1;
     overflow-y: hidden;
     position: absolute;
     left:210px;

@@ -16,7 +16,6 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/adminlte.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/skin-green.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/common.css" />
-        <?php if (isset($css)) echo implode("\n", $css) . "\n"; ?>
         <script src="<?php echo base_url(); ?>assets/sites/js/jquery-1.8.3.min.js"></script>
         <style>
             .modal-backdrop {
@@ -124,6 +123,7 @@
                 border:2px solid #f00;
             }
         </style>
+        <?php if (isset($css)) echo implode("\n", $css) . "\n"; ?>
     </head>
     <body class="skin-green">
         <header class="header">
@@ -178,11 +178,11 @@
                     </div>
                     <ul class="sidebar-menu">
                         <?php
-                        if ($this->ion_auth->in_group(array('individuals', 'students', 'ecommerce'))) {
+                        if ($this->ion_auth->in_group(array('business', 'students', 'ecommerce', 'designer'))) {
                             include_once 'user_menu.php';
                         } elseif ($this->ion_auth->in_group(array('employer'))) {
                             include_once 'recruiter_menu.php';
-                        }else {
+                        } elseif ($this->ion_auth->in_group(array('admin'))) {
                             include_once 'admin_menu.php';
                         }
                         ?>
@@ -201,13 +201,51 @@
                 <section class="content-header">
                     <h1><?php echo!empty($pageHeading) ? $pageHeading : '&nbsp;'; ?></h1>
                     <?php
-                    echo create_breadcrumb();
+//                    echo create_breadcrumb();
                     ?>
                 </section>
                 <section class="content">
                     <?php echo $body; ?>
                 </section>
             </aside>
+            <div class="modal fade" id="confirm-acc-upgrad" tabindex="-1" role="dialog" aria-labelledby="Recommendation" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="warning">Service Unavailable</h4>
+                        </div>
+                        <div class="modal-body">
+                            This service is unavailable. Please upgrade your account to avail this service
+                            <br>
+                            <br>
+                            Press <b>"Upgrade"</b> to upgrade your account!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-primary btn-upgrade">Upgrade</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="acct-upgrade-popup" tabindex="-1" role="dialog" aria-labelledby="Recommendation" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="warning">Service Expired</h4>
+        </div>
+                        <div class="modal-body">
+                            This service has expired. Please upgrade your account to avail this service
+                            <br>
+                            <br>
+                            Press <b>"Upgrade"</b> to upgrade your account!
+                        </div>
+                        <div class="modal-footer">   
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-primary btn-aact-upgrade" data-dismiss="modal">Upgrade</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <footer>
             <div class="clearfix"><!-- --></div>
@@ -217,12 +255,13 @@
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/notify.js"></script>
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/adminlte.js"></script>	
         <script src="<?php echo base_url('assets/sites'); ?>/js/jquery-ui.min.js"></script>
-        <!--<script type="text/javascript" src="<?php //echo base_url();      ?>customer/assets/js/app.js"></script>-->
+        <!--<script type="text/javascript" src="<?php //echo base_url();        ?>customer/assets/js/app.js"></script>-->
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/flot/jquery.flot.min.js"></script>
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/flot/jquery.flot.resize.min.js"></script>
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/flot/jquery.flot.categories.min.js"></script>
-<!--        <script type="text/javascript" defer="defer" src="/support_apps/livechat/php/app.php?widget-init.js"></script>-->
-        <?php if (isset($js)) echo implode("\n", $js) . "\n"; ?>
+        <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
+       
+        
         <?php if ($this->ion_auth->in_group('nogroup')): ?>
             <script type="text/javascript">
                 $(document).ready(function() {
@@ -249,5 +288,44 @@
                 }
             </script>
         <?php endif; ?>
+        <script>
+            $(document).ready(function() {
+                $('#confirm-acc-upgrad').on('show.bs.modal', function(e) {
+                    $(this).find('.btn-upgrade').attr('href', $(e.relatedTarget).data('href'));
+                });
+            });
+        </script>
+        <script>
+// Our countdown plugin takes a callback, a duration, and an optional message
+            $.fn.countdown = function(callback, duration, message) {
+                // If no message is provided, we use an empty string
+                message = message || "";
+                // Get reference to container, and set initial content
+                var container = $(this[0]).html(duration + message);
+                // Get reference to the interval doing the countdown
+                var countdown = setInterval(function() {
+                    // If seconds remain
+                    if (--duration) {
+                        // Update our container's message
+                        container.html(duration + message);
+                        // Otherwise
+                    } else {
+                        // Clear the countdown interval
+                        clearInterval(countdown);
+                        // And fire the callback passing our container as `this`
+                        callback.call(container);
+                    }
+                    // Run interval every 1000ms (1 second)
+                }, 1000);
+
+            };
+
+// Function to be called after 5 seconds
+            function redirect() {
+                this.html("Done counting, redirecting.");
+                window.location = "<?php echo site_url('services'); ?>";
+            }
+        </script>
+        <?php if (isset($js)) echo implode("\n", $js) . "\n"; ?>
     </body>
 </html>

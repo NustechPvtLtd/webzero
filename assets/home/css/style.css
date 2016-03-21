@@ -1,6 +1,6 @@
 body{font-family: 'Raleway', sans-serif !important;}
 .navbar-brand img{width:160px;}
-.navbar-header .navbar-brand{height: auto; padding: 5px 15px;}
+.navbar-header .navbar-brand{height: auto; padding: 15px;}
 .main_class .navbar_white{background-color:#fff; margin-bottom:0;}
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
     color: #1abc9c;
@@ -329,4 +329,14 @@ Media Queries
     }
     #browse_templates .img-responsive{margin:0 auto;}
     .dark_theme_section .social_btn_group{border-right:0;}
+}
+
+.row.plan {
+    margin-top: 80px;
+}
+
+@media(max-width:1200px){
+    a{
+        font-size: 11px;
+    }
 }

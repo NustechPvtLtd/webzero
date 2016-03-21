@@ -71,7 +71,6 @@
         </div>
     </div>
     
-
     <div class="clearfix"><!--clear Div--></div>
     <div class="col-sm-12">
         <div class="panel panel-default" id="premiumDomainOptionPane">
@@ -88,6 +87,12 @@
             <div class="panel-body">
                 <div class="product-purchased" id="domain-name">
                     <form class="form-horizontal" method="POST" name="quickbuy_domain" id="select-product" novalidate="novalidate">
+                        <div id="loader" style="display: none">
+                            <span>
+                                <img src="<?php echo base_url('assets/sites'); ?>/images/loading.gif" alt="Loading...">
+                                Jadooweb builder...
+                            </span>
+                        </div>
                         <input type="hidden" name="siteID" id="siteID" value="<?php echo $site->sites_id; ?>">
                         <input type="hidden" value="check_availability" name="action">
                         <div class="dca-search form-group">
@@ -106,8 +111,8 @@
                             <div class="tld-container col-sm-12">
                                 <div class="tld-container-primary" >
                                     <span class="inline-block col-1"><input type="checkbox" value="info" id="info" name="tlds[]" ><label class="inline-block" for="info">info</label></span>
-                                    <span class="inline-block col-1"><input type="checkbox" value="org" id="org" name="tlds[]" ><label class="inline-block" for="org">org</label></span>
-                                    <span class="inline-block col-1"><input type="checkbox" value="com" id="com" name="tlds[]" ><label class="inline-block" for="com">com</label></span>
+                                    <span class="inline-block col-1"><input type="checkbox" value="in" id="in" name="tlds[]" ><label class="inline-block" for="in">in</label></span>
+                                    <span class="inline-block col-1"><input type="checkbox" value="co.in" id="co.in" name="tlds[]" ><label class="inline-block" for="co.in">co.in</label></span>
                                 </div>
                             </div>
                         </div>
@@ -122,12 +127,42 @@
 						<div class="pull-right">
 							<button type="button" class="btn btn-primary btn-embossed" id="domainSubmittButton" disabled="disabled"><span class="fui-check"></span> <?php echo 'Use This Domain';//$this->lang->line('domainSubmittButton') ?></button>
 						</div>
-                    </div>
+                    </div>                   
                 </div>
             </div>
         </div>
     </div>
+    <div class="clearfix"><!--clear Div--></div>
+    <div class="col-sm-12">
+        <div class="panel panel-default" id="paidDomainOptionPane">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <label>Add Your Paid Domain</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="radio" name="radio1" <?php echo (isset($domains['paidDomain']) && $domains['paidDomain']['active']) ? 'checked' : ''; ?> class="switch-radio1" value="paidDomain">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form" id="paidDomainForm" action="<?php echo site_url('domain/add_paid_doamin/' . $site->sites_id); ?>">
+                    <div class="form-group">
+                        <label class="col-sm-3">Your Domain Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="siteSettings_paiddomain" name="siteSettings_paiddomain" placeholder="example.com" value="<?php echo (isset($domains['paidDomain']) && !empty($domains['paidDomain']['domain'])) ? $domains['paidDomain']['domain'] : ''; ?>" <?php echo (isset($domains['paidDomain']) && !empty($domains['paidDomain']['domain'])) ? 'readonly=""' : ''; ?>>
+                            <div class="clearfix"><!--Clear Div--></div>
+                            <span id="addonDomainURL"><?php echo (isset($domains['paidDomain']) && !empty($domains['paidDomain']['domain'])) ? 'Your web site url: ' . anchor('http://' . $domains['paidDomain']['domain'], 'http://' . $domains['paidDomain']['domain'], array("target" => "_blank")) : ''; ?></span>
     
+                        </div>
+                    </div>
+                </form>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-primary btn-embossed" id="addpaidDomainButton" ><span class="fui-check"></span> <?php echo 'Add your domain' ?></button>
+                </div>
+            </div>
+        </div>
+    </div>    
     <div class="clearfix"><!--clear Div--></div>
 </div>
 <!---->
@@ -186,6 +221,7 @@
         });
 
         $('#btn_check_availability').click(function() {
+            $('#loader').show();
             var checked = false;
             if ($("#select-product").valid()) {
                 $('.tld-container input[type=checkbox]').each(function() {
@@ -203,6 +239,7 @@
                     type: 'post',
                     data: $('#select-product').serialize(),
                     success: function(ret) {
+                        $('#loader').hide();
                         $('.search-results-container').html(ret);
                         $('#domain_result').show();
                         $('#domainSubmittButton').removeAttr('disabled');
@@ -211,7 +248,17 @@
             }
         });
         $('input[name="radio1"]').on('switchChange.bootstrapSwitch', function(event, state) {
-            disable($(this).val());
+            urlOption = $(this).val();
+            if(plan=='1' && urlOption!="freeUrl"){
+                var upgradAccount = window.confirm("Please upgrade your accout to avail this facility.?\nPress OK to upgrade or Press Cancel to continue with Free Url!");
+                $(this).bootstrapSwitch('state', false);
+                $('input[value="freeUrl"]').bootstrapSwitch('state', true);
+                if(upgradAccount){
+                    window.location = '<?php echo site_url("account/plans");?>';
+                }
+            }else{
+                disable($(this).val());
+            }
         });
 
         $('#addDomainButton').on('click', function() {
@@ -223,6 +270,28 @@
                 url: $('#addDomainForm').attr('action'),
                 type: 'POST',
                 data: $('#addDomainForm').serialize(),
+                dataType: 'json',
+                success: function(res) {
+                    $('#siteSettings .loader').fadeOut(500, function() {
+                        $('#siteSettings .modal-body-content > *').each(function() {
+                            $(this).remove();
+                        });
+                        $('#siteSettings .modal-body-content').append($(res.responseHTML));
+                    });
+                    $("#confirmPublish").modal('show');
+                    $("#siteSettings").modal('hide');
+                }
+            });
+        });
+        $('#addpaidDomainButton').on('click', function() {
+            //show loader, hide rest
+            $('#siteSettingsWrapper .loader').show();
+            $('#siteSettingsWrapper > *:not(.loader)').hide();
+
+            $.ajax({
+                url: $('#paidDomainForm').attr('action'),
+                type: 'POST',
+                data: $('#paidDomainForm').serialize(),
                 dataType: 'json',
                 success: function(res) {
                     $('#siteSettings .loader').fadeOut(500, function() {
@@ -319,7 +388,8 @@
                                 });
                             }
                         });
-                        
+                        $("#confirmPublish").modal('show');
+                        $("#siteSettings").modal('hide');
                     }
 
                 });
@@ -328,6 +398,8 @@
             }
         });
         $('#domainSubmittButton').click(function() {
+                        $("#confirmPublish").modal('show');
+                        $("#siteSettings").modal('hide');
 //            alert("click");
             if ($("input:radio[name='domain']").is(':checked')) {
                 $.ajax({
@@ -346,29 +418,48 @@
         });
     });
 
-    disable('<?php echo (isset($domains['premiumDomain']) && $domains['premiumDomain']['active']) ? 'premiumDomain' : (isset($domains['addonDomain']) && $domains['addonDomain']['active']) ? 'addonDomain' : 'freeUrl'; ?>');
+    disable('<?php echo (isset($domains['premiumDomain']) && $domains['premiumDomain']['active']) ? 'premiumDomain' : (isset($domains['addonDomain']) && $domains['addonDomain']['active']) ? 'addonDomain' : (isset($domains['paidDomain']) && $domains['paidDomain']['active']) ? 'paidDomain' : 'freeUrl'; ?>');
     function disable(url_option) {
         if (url_option == 'freeUrl') {
             $("#freeUrlOptionPane :input").attr("disabled", false);
             $("#addDomainOptionPane :input").attr("disabled", true);
             $("#premiumDomainOptionPane :input").attr("disabled", true);
+            $("paidDomainOptionPane:input").attr("disabled", true);
             $("#freeUrlOptionPane").removeClass('disabled');
             $("#addDomainOptionPane").addClass('disabled');
             $("#premiumDomainOptionPane").addClass('disabled');
+            $("#paidDomainOptionPane").addClass('disabled');
+            $('#addpaidDomainButton').addClass('disabled');
         } else if (url_option == 'addonDomain') {
+                $("#freeUrlOptionPane :input").attr("disabled", true);
+                $("#addDomainOptionPane :input").attr("disabled", false);
+                $("#premiumDomainOptionPane :input").attr("disabled", true);
+            $("paidDomainOptionPane:input").attr("disabled", true);
+            
+                $("#freeUrlOptionPane").addClass('disabled');
+                $("#addDomainOptionPane").removeClass('disabled');
+                $("#premiumDomainOptionPane").addClass('disabled');
+            $("#paidDomainOptionPane").addClass('disabled');
+        } else if (url_option == 'paidDomain') {
             $("#freeUrlOptionPane :input").attr("disabled", true);
-            $("#addDomainOptionPane :input").attr("disabled", false);
+            $("#addDomainOptionPane :input").attr("disabled", true);
             $("#premiumDomainOptionPane :input").attr("disabled", true);
+            $("paidDomainOptionPane:input").attr("disabled", false);            
             $("#freeUrlOptionPane").addClass('disabled');
-            $("#addDomainOptionPane").removeClass('disabled');
+            $("#addDomainOptionPane").addClass('disabled');
             $("#premiumDomainOptionPane").addClass('disabled');
-        } else {
+            $("#paidDomainOptionPane").removeClass('disabled');
+            $('#addpaidDomainButton').removeClass('disabled');
+        }
+        else {
             $("#freeUrlOptionPane :input").attr("disabled", true);
             $("#addDomainOptionPane :input").attr("disabled", true);
             $("#premiumDomainOptionPane :input").attr("disabled", false);
+            $("paidDomainOptionPane:input").attr("disabled", true);           
             $("#freeUrlOptionPane").addClass('disabled');
             $("#addDomainOptionPane").addClass('disabled');
             $("#premiumDomainOptionPane").removeClass('disabled');
+            $("#paidDomainOptionPane").addClass('disabled');
         }
     }
 </script>

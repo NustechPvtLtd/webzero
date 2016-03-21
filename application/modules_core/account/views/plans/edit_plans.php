@@ -8,13 +8,21 @@
                 <?php echo $message;?>
             </div>
             <div class="clearfix"><!-- --></div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-3">
                 <?php echo lang('plan_name', 'plan_name', 'required');?>
                 <?php echo form_input($plan_name);?>
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-3">
                 <?php echo lang('plan_price', 'plan_price', 'required');?>
                 <?php echo form_input($plan_price);?>
+            </div>
+            <div class="form-group col-lg-3">
+                <?php echo lang('plans_grp_name', 'plan_grps', 'required');?>
+                <?php echo form_dropdown('plan_grps', $group, $plan_grps, ' class="form-control"');?>
+            </div>
+            <div class="form-group col-lg-3">
+                <?php echo lang('plans_no_of_sites', 'plan_websites', 'required');?>
+                <?php echo form_input($plan_websites);?>
             </div>
             <div class="clearfix"><!-- --></div>
             <div class="form-group col-lg-3">
@@ -51,11 +59,10 @@
                 <?php echo lang('visitor_count', 'visitor_count');?>
                 <?php echo form_dropdown('visitor_count', array('active'=>'Active','inactive'=>'Inactive'), $visitor_count, 'class="form-control"');?>
             </div>
-            <div class="form-group col-lg-3">
-                <?php echo lang('eccommerce', 'eccommerce');?>
-                <?php echo form_dropdown('eccommerce', array('active'=>'Active','inactive'=>'Inactive'), $eccommerce, 'class="form-control"');?>
-            </div>
-            <div class="clearfix"><!-- --></div>
+<!--            <div class="form-group col-lg-3">
+                <?php // echo lang('eccommerce', 'eccommerce');?>
+                <?php // echo form_dropdown('eccommerce', array('active'=>'Active','inactive'=>'Inactive'), $eccommerce, 'class="form-control"');?>
+            </div>-->
             <div class="form-group col-lg-3">
                 <?php echo lang('premium_domain', 'premium_domain');?>
                 <?php echo form_dropdown('premium_domain', array('active'=>'Active','inactive'=>'Inactive'), $premium_domain, 'class="form-control"');?>
@@ -73,6 +80,25 @@
         </div>
     <?php echo form_close();?>
 </div>
+<div class="modal fade" id="confirm-recom" tabindex="-1" role="dialog" aria-labelledby="Recommendation" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Change Recommendation</h4>
+            </div>
+            <div class="modal-body">
+                If you change the recommendation of this plan, then previously recommended plan will not be recommended.
+                <br>
+                <br>
+                Are you sure want to change this?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary btn-ok" href="javascript:void(0);">Change</a>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function isNumberKey(evt){
         var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -86,6 +112,21 @@
 'unorderedlist', 'orderedlist', 'outdent', 'indent',
 'image', 'link', 'alignment', 'horizontalrule'],
            focus: true,
-       }); 
+       });
+       
+        $( "select[name='plan_recommends']" ).change(function () {
+            if($( "select[name='plan_recommends'] option:selected" ).val()=='yes'){
+                $('#confirm-recom').modal('show');
+            }
+            $( "select[name='plan_recommends'] option" ).removeAttr('selected');
+            $( "select[name='plan_recommends'] option[value='no']" ).attr('selected','selected');
+        });
+        $('#confirm-recom').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').on('click',function(){
+                $( "select[name='plan_recommends'] option" ).removeAttr('selected');
+                $( "select[name='plan_recommends'] option[value='yes']" ).attr('selected','selected');
+                $('#confirm-recom').modal('hide');
+            });
+        });
     });
 </script>

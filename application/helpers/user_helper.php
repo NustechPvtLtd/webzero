@@ -33,5 +33,3 @@ if ( ! function_exists('userdata'))
 }
 
 // ------------------------------------------------------------------------
-/* End of file language_helper.php */
-/* Location: ./system/helpers/language_helper.php */

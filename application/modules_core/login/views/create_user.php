@@ -35,6 +35,10 @@
 				<?php echo lang('create_user_company_label', 'company');?>
 				<?php echo form_input($company);?>
 			</div>
+            <div class="form-group col-lg-6">
+            <?php echo lang('create_user_group_label', 'group', 'required');?>
+            <?php echo form_dropdown('group', $group, '', 'class="form-control" ');?>
+			</div>
 			<div class="clearfix"><!-- --></div>
 		</div>
 		<div class="box-footer">

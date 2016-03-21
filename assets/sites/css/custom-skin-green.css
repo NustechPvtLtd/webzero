@@ -51,7 +51,7 @@
 .skin-green nav.navbar.navbar-static-top div.navbar-right ul.nav.navbar-nav li.dropdown.user.user-menu.open ul.dropdown-menu li.user-footer  a.btn.btn-default.btn-flat{
     padding: 10px 15px ;
 }
-.screen .frameCover button.btn-danger, .screen .frameCover button.btn-warning, .screen .frameCover button.btn-inverse {
+.screen .frameCover button.btn-danger, .screen .frameCover button.btn-warning, .screen .frameCover button.btn-inverse, .screen .frameCover .btn-success, .screen .frameCover button.btn-info, .deleteBlock, .resetBlock, .htmlBlock, .cloneBlock, .dragBlock{
     padding: 5px 12px;
 }
 /*.btn{
@@ -273,8 +273,12 @@ div#siteSettingsWrapper .row {
 .useImage, .deleteImage, .useVideo, .deleteVideo {
     display: inline-block;
     width: 48%;
-    margin-top: 2px;
-    padding: 5px;
+    margin-top: 2px !important;
+    padding: 5px !important;
+    position: inherit !important;
+}
+.useImage span, .deleteImage span, .useVideo span, .deleteVideo span{
+    position: inherit !important;
 }
 
 /*#domain-name .form-group input:focus{

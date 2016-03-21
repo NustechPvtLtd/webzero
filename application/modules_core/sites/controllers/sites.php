@@ -9,7 +9,7 @@ class Sites extends MY_Controller {
     public $pages = array();
     private $_hostName = 'www.jadooweb.com';
     private $_userName = 'jadoowe';
-    private $_password = 'greatpune123';
+    private $_password = '124essdfd';
 
     function __construct()
     {
@@ -18,15 +18,16 @@ class Sites extends MY_Controller {
         $this->load->model('sites/sitemodel');
         $this->load->model('sites/usermodel');
         $this->load->model('sites/pagemodel');
+        $this->load->model('sites/templatemodel');
         $this->load->model('domain/domainmodel');
         $this->load->model('domain/users_domains_model');
         $this->load->model('sites/media_storage_model');
         $this->load->library('s3');
 
         $this->data['pageTitle'] = "Jadooweb";
-        $this->data['title'] = $this->router->fetch_method();
+        $this->data['title'] = ucfirst($this->router->fetch_method());
         $this->data['pageMetaDescription'] = $this->router->fetch_class() . '|' . $this->router->fetch_method();
-
+        $this->load->library('image_lib');
         if (!$this->ion_auth->logged_in()) {
 
             redirect('/login');
@@ -43,7 +44,7 @@ class Sites extends MY_Controller {
 //        die();
         switch ($method) {
             case 'site': {
-                    if ($this->ion_auth->in_group(array('individuals','employer','ecommerce'))) {
+                    if ($this->ion_auth->in_group(array('business', 'employer', 'ecommerce', 'designer'))) {
                         $this->site_individual($args[0]);
                     } elseif ($this->ion_auth->in_group('students')) {
                         $this->site_student($args[0]);
@@ -57,15 +58,12 @@ class Sites extends MY_Controller {
                 } else {
                     $this->$method($args[0]);
                 }
-
                 break;
         }
     }
 
     /*
-
       lists all sites
-
      */
 
     public function index()
@@ -73,14 +71,15 @@ class Sites extends MY_Controller {
 
         //grab us some sites
         $this->data['sites'] = $this->sitemodel->all();
-        $sites_id = $this->sitemodel->getSiteId($this->ion_auth->get_user_id());
+
+//        $sites_id = $this->sitemodel->getSiteId($this->ion_auth->get_user_id());
         //get all users
         $this->data['users'] = $this->usermodel->getAll();
         if (!$this->ion_auth->is_admin()) {
             if (count($this->data['sites']) <= 0) {
                 redirect(site_url('sites/create'), 'location');
             } else {
-                redirect(site_url('sites/' . $sites_id));
+                $this->template->load('main', 'sites', 'sites/show_sites', $this->data);
             }
         } else {
             $this->data['page'] = "sites";
@@ -89,7 +88,8 @@ class Sites extends MY_Controller {
                 '<link href="' . base_url() . 'assets/sites/less/flat-ui.css" rel="stylesheet">'
             );
             $this->data['js'] = array(
-                '<script type="text/javascript" src="' . base_url() . 'assets/sites/js/sites.js"></script>'
+                '<script type="text/javascript" src="' . base_url() . 'assets/sites/js/sites.js"></script>',
+                '<script type="text/javascript" src="' . base_url() . '/assets/js/jquery.blockUI.js"></script>',
             );
             $this->template->load('main', 'sites', 'sites/sites', $this->data);
         }
@@ -186,6 +186,158 @@ class Sites extends MY_Controller {
         }
     }
 
+    public function check_template_name()
+    {
+        if ((isset($_POST['template_name']) || $_POST['template_name'] != '') && isset($_POST['category_id'])) {
+            $res = $this->templatemodel->check_category_template_name($_POST['template_name'], $_POST['category_id']);
+
+            $return = array();
+            if ($res) {
+                $return['responseCode'] = 0;
+                $return['responseMSG'] = "Please enter unique template name.";
+            } else {
+                $return['responseCode'] = 1;
+            }
+            die(json_encode($return));
+        }
+    }
+
+    public function get_all_template_elements()
+    {
+        $all_template = $this->template_model->get_all_template();
+        $this->data['all_templates_data'] = $all_template;
+    }
+
+    public function templates()
+    {
+        if (!$this->ion_auth->in_group('designer')) {//access for designer only
+            redirect('/sites');
+        }
+        $userID = userdata('user_id');
+        $this->data['user_template'] = $this->templatemodel->show_all_template($userID);
+        $this->template->load('main', 'sites', 'sites/show_templates', $this->data);
+    }
+
+    public function save_template()
+    {
+        if (!isset($_POST['template_element']) || $_POST['template_element'] == '') {
+
+            $return = array();
+
+            $temp = array();
+            $temp['header'] = "Template saving Error";
+            $temp['content'] = "Site giving error for Template saving.";
+
+            $return['responseCode'] = 0;
+            $return['responseHTML'] = $this->load->view('partials/error', array('data' => $temp), true);
+
+            die(json_encode($return));
+        }
+        $uploadPath = "";
+        if (!empty($_POST['img_url']) && preg_match('#data\:image\/png\;base64\,(.*)#', $_POST['img_url'], $match)) {
+            $image = $match[1];
+
+            $image = base64_decode($image);
+            $fileName = preg_replace('/\s+/', '_', $_POST['template_name']);
+            $profile = userdata('temp_profile');
+            if ($profile == 'student') {
+                $uploadPath = 'studentelements/template_preview/' . $fileName . '_cat' . $_POST['category_id'] . '.png';
+            } elseif ($profile == 'ecommerce') {
+                $uploadPath = 'elements/template_preview/' . $fileName . '_cat' . $_POST['category_id'] . '.png';
+            } else {
+                $uploadPath = 'elements/template_preview/' . $fileName . '_cat' . $_POST['category_id'] . '.png';
+            }
+
+            imagepng(imagecreatefromstring($image), $uploadPath, 8);
+            $img_url = base_url() . $uploadPath;
+
+//            list($width, $height) = getimagesize($img_url);            
+            $size = getimagesize($img_url);
+            $ratio = $size[0] / $size[1]; // width/height
+            if ($ratio > 1) {
+                $new_width = 400;
+                $new_height = 400 / $ratio;
+            } else {
+                $new_width = 400 * $ratio;
+                $new_height = 400;
+            }
+            $image = imagecreatefrompng($img_url);
+            $image_p = imagecreatetruecolor($new_width, $new_height);
+            imagesavealpha($image_p, true);
+            imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $size[0], $size[1]);
+            $image = imagepng($image_p, $uploadPath, 8);
+        }
+        $templateID = $this->templatemodel->create($_POST['template_name'], $_POST['category_id'], $uploadPath, $profile);
+        if ($templateID) {
+            $this->templatemodel->delete_template_element($templateID);
+            $this->templatemodel->create_template_element($templateID, $_POST['template_element']);
+        }
+        //clear browser cache
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+        //all went well
+        $return = array();
+
+        $temp = array();
+        $temp['header'] = "Template Saved";
+        $temp['content'] = "Site has saved template successfully";
+
+        $return['responseCode'] = 1;
+        $return['responseHTML'] = $this->load->view('partials/success', array('data' => $temp), true);
+
+        die(json_encode($return));
+        //}
+    }
+
+    public function create_new_template($profile)
+    {
+        if (!$this->ion_auth->in_group('designer')) {//access for designer only
+            redirect('/sites');
+        }
+        $userID = userdata('user_id');
+        $bucket = $this->media_storage_model->getBucket($userID);
+        if (!$bucket) {
+            $bucket = 'mumbaistreet';
+        } else {
+            $bucket = $bucket->bucket_name;
+        }
+        $uri = $this->media_storage_model->getUri($userID);
+        $userVideos = FALSE;
+
+        if ($uri) {
+            $uri = $uri->uri . '/' . 'Videos';
+            $connected = @fsockopen("www.jadooweb.com", 80);
+            $userVideos = ($connected) ? $this->s3->getBucket($bucket, $uri) : FALSE;
+        }
+
+        $this->data['userVideos'] = $userVideos;
+        $this->data['bucket'] = $bucket;
+        $this->data['js'] = array(
+            '<script type="text/javascript" src="' . base_url() . 'assets/js/html2canvas.min.js"></script>',
+            '<script type="text/javascript" src="' . base_url() . 'assets/js/html2canvas.svg.min.js"></script>',
+            '<script type="text/javascript" src="' . base_url() . 'assets/js/jquery.plugin.html2canvas.js"></script>');
+        $this->data['builder'] = true;
+        $this->data['page'] = "site";
+        $this->data['template_category'] = $this->templatemodel->get_all_category();
+        $this->data['all_templates_data'] = $this->templatemodel->get_all_template($profile);
+        switch ($profile) {
+            case 'student':
+                userdata('temp_profile', 'student');
+                $this->template->load('template_student', 'sites', 'sites/create_template_view', $this->data);
+                break;
+
+            case 'ecommerce':
+                userdata('temp_profile', 'ecommerce');
+                $this->template->load('template_ecom', 'sites', 'sites/create_template_view', $this->data);
+                break;
+
+            default:
+                userdata('temp_profile', 'business');
+                $this->template->load('template_business', 'sites', 'sites/create_template_view', $this->data);
+                break;
+        }
+    }
+
     /*
 
       get and retrieve single site data
@@ -244,12 +396,23 @@ class Sites extends MY_Controller {
                 $connected = @fsockopen("www.jadooweb.com", 80);
                 $userVideos = ($connected) ? $this->s3->getBucket($bucket, $uri) : FALSE;
             }
-
+            $block_content = $this->sitemodel->get_block_content($siteID, $userID);
+            if ($block_content) {
+                $this->data['block_content'] = $block_content;
+            } else {
+                $this->data['block_content'] = false;
+            }
             $this->data['userVideos'] = $userVideos;
             $this->data['bucket'] = $bucket;
 
             $this->data['builder'] = true;
             $this->data['page'] = "site";
+            if ($this->ion_auth->in_group(array('business', 'employer', 'designer'))) {
+                $profile = 'business';
+            } else {
+                $profile = 'ecommerce';
+            }
+            $this->data['all_templates_data'] = $this->templatemodel->get_all_template($profile);
 
             $this->template->load('builder', 'sites', 'sites/create', $this->data);
             //$this->load->view('', $this->data);
@@ -319,6 +482,13 @@ class Sites extends MY_Controller {
                 $userVideos = ($connected) ? $this->s3->getBucket($bucket, $uri) : FALSE;
             }
 
+            $block_content = $this->sitemodel->get_block_content($siteID, $userID);
+            if ($block_content) {
+                $this->data['block_content'] = $block_content;
+            } else {
+                $this->data['block_content'] = false;
+            }
+
             $this->data['userVideos'] = $userVideos;
 
             $this->data['bucket'] = $bucket;
@@ -326,6 +496,8 @@ class Sites extends MY_Controller {
             $this->data['page'] = "site";
             $this->data['js'] = array(
             );
+
+            $this->data['all_templates_data'] = $this->templatemodel->get_all_template('student');
             $this->template->load('resumebuilder', 'sites', 'sites/create', $this->data);
             //$this->load->view('', $this->data);
         }
@@ -493,6 +665,21 @@ class Sites extends MY_Controller {
         echo $frameContent;
     }
 
+    public function get_elements($elementsId)
+    {
+        $template = '<div class="">';
+        
+        $template .= $this->templatemodel->getSingleElement($elementsId) . "\r\n";
+        
+        $template .='</div>';
+        $DOM = new DOMDocument();
+        libxml_use_internal_errors(TRUE);
+        $DOM->loadHTML($template, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_use_internal_errors(FALSE);
+        echo $DOM->saveHTML();
+        unset($DOM);
+    }
+
     /*
       publishes a site
      */
@@ -631,7 +818,7 @@ class Sites extends MY_Controller {
         $pageContent = str_replace("<!-- site contact url div -->", '<div id="contact-url" data-content="' . site_url('login/site_contact/' . $this->encrypt->encode($_POST['siteID'])) . '"></div>', $pageContent);
 
         $pageContent = str_replace("<!-- site counter url div -->", '<div id="counter-url" data-content="' . site_url('login/visitor_counter/' . $this->encrypt->encode($_POST['siteID'])) . '"></div>', $pageContent);
-        
+
         $pageContent = str_replace("<!-- site subscribe url div -->", '<div id="subscribe-url" data-content="' . site_url('login/subscribe/' . $this->encrypt->encode($_POST['siteID'])) . '"></div>', $pageContent);
 
         $pageContent = str_replace("<!-- site url div -->", '<div id="site-url" data-content="' . base_url('elements') . '"></div>', $pageContent);
@@ -659,7 +846,7 @@ class Sites extends MY_Controller {
             $pageContent = str_replace('src="/elements/images', 'src="' . base_url('elements') . '/images', $pageContent);
         }
         if (strstr($pageContent, 'url(&quot;/elements/images')) {
-            $pageContent = str_replace('url(&quot;/elements/images', 'url(&quot;'.site_url('elements/images'), $pageContent);
+            $pageContent = str_replace('url(&quot;/elements/images', 'url(&quot;' . site_url('elements/images'), $pageContent);
         }
         if (stristr($pageContent, 'href="scripts')) {
             $pageContent = str_replace('href="scripts', 'href="' . base_url('elements') . '/scripts', $pageContent);
@@ -686,6 +873,19 @@ class Sites extends MY_Controller {
             $this->users_domains_model->domain_publish($_POST['siteID']);
         }
 
+        //delete directory subdomain and addons as if user change his domain except freeurl option
+        $inactive_domains = $this->users_domains_model->inative_domain($_POST['siteID']);
+        if (isset($inactive_domains) && is_array($inactive_domains)) {
+            foreach ($inactive_domains as $inact_dom) {
+                //delete sub domain 
+                if (userdata('plan_id') != 1) {
+                    $delAddon_result = $this->CPanelAddons->deladdondomain($inact_dom->domain, "jadooweb.com");
+                    $delSub_result = $this->CPanelAddons->delSub($inact_dom->domain, "jadooweb.com");
+                }
+                $delDir_result = $this->CPanelAddons->delDirectory($inact_dom->domain);
+            }
+        }
+
         //all went well
         $return = array();
 
@@ -700,12 +900,7 @@ class Sites extends MY_Controller {
 
     public function preview()
     {
-        //some error prevention first
-        $siteDetails = $this->sitemodel->getSite($_POST['siteID']);
 
-        if ($siteDetails == false) {
-            die("No details found");
-        }
         //do we have anythin to preview at all?
         if (!isset($_POST['page']) || $_POST['page'] == '') {
             die("No page found");
@@ -718,24 +913,36 @@ class Sites extends MY_Controller {
         $filename = "temp/preview_" . $this->generateRandomString(20) . ".html";
         $previewFile = fopen($filename, "w");
 
-        $pageMeta = $this->pagemodel->getSinglePage($_POST['siteID'], 'index');
+        if (isset($_POST['siteID']) && !empty($_POST['siteID'])) {
+            $siteDetails = $this->sitemodel->getSite($_POST['siteID']);
 
-        if (!empty($pageMeta->pages_title)) {
-            //insert title, meta keywords and meta description
-            $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
-            $meta_description = '<meta name="description" content="' . $pageMeta->pages_meta_description . '">';
-            $meta_keyword = '<meta name="keywords" content="' . $pageMeta->pages_meta_keywords . '">';
-            $header_includes = $pageMeta->pages_header_includes;
+            if ($siteDetails == false) {
+                die("No details found");
+            }
 
-            $pageContent = str_replace('<!--pageTitle-->', $title, $_POST['page']);
-            $pageContent = str_replace('<!--META-DESCRIPTION-->', $meta_description, $pageContent);
-            $pageContent = str_replace('<!--META-KEYWORDS-->', $meta_keyword, $pageContent);
+            $pageMeta = $this->pagemodel->getSinglePage($_POST['siteID'], 'index');
 
-            //insert header includes;
-            $pageContent = str_replace("<!--headerIncludes-->", $header_includes, $pageContent);
+            if (!empty($pageMeta->pages_title)) {
+                //insert title, meta keywords and meta description
+                $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
+                $meta_description = '<meta name="description" content="' . $pageMeta->pages_meta_description . '">';
+                $meta_keyword = '<meta name="keywords" content="' . $pageMeta->pages_meta_keywords . '">';
+                $header_includes = $pageMeta->pages_header_includes;
+
+                $pageContent = str_replace('<!--pageTitle-->', $title, $_POST['page']);
+                $pageContent = str_replace('<!--META-DESCRIPTION-->', $meta_description, $pageContent);
+                $pageContent = str_replace('<!--META-KEYWORDS-->', $meta_keyword, $pageContent);
+
+                //insert header includes;
+                $pageContent = str_replace("<!--headerIncludes-->", $header_includes, $pageContent);
+            } else {
+                //insert title
+                $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
+
+                $pageContent = str_replace('<!--pageTitle-->', $title, $_POST['page']);
+            }
         } else {
-            //insert title
-            $title = '<title>' . $siteDetails['site']->sites_name . '</title>';
+            $title = '<title>Template Preview</title>';
 
             $pageContent = str_replace('<!--pageTitle-->', $title, $_POST['page']);
         }
@@ -935,7 +1142,7 @@ class Sites extends MY_Controller {
         return $randomString;
     }
 
-    public function getUserImage($site_id)
+    public function getUserImage()
     {
         $userID = userdata('user_id');
         $type = 'image';
@@ -958,7 +1165,7 @@ class Sites extends MY_Controller {
         echo json_encode($return);
     }
 
-    public function getAdminImage($site_id)
+    public function getAdminImage()
     {
         $adminImages = $this->sitemodel->adminImages();
 
@@ -1516,10 +1723,10 @@ EOD;
             $pageContent = str_replace('src="/elements/images', 'src="' . $base_url_all . '/images', $pageContent);
         }
         if (strstr($pageContent, 'url(&quot;/elements/images')) {
-            $pageContent = str_replace('url(&quot;/elements/images', 'url(&quot;'.site_url('elements/images'), $pageContent);
+            $pageContent = str_replace('url(&quot;/elements/images', 'url(&quot;' . site_url('elements/images'), $pageContent);
         }
         if (strstr($pageContent, 'url(&quot;/studentelements/images')) {
-            $pageContent = str_replace('url(&quot;/studentelements/images', 'url(&quot;'.site_url('studentelements/images'), $pageContent);
+            $pageContent = str_replace('url(&quot;/studentelements/images', 'url(&quot;' . site_url('studentelements/images'), $pageContent);
         }
         if (strstr($pageContent, 'src="/studentelements/images')) {
             $pageContent = str_replace('src="/studentelements/images', 'src="' . $base_url_all . '/images', $pageContent);
@@ -1537,7 +1744,7 @@ EOD;
             $pageContent = str_replace('src="./images', 'src="' . $base_url_all . '/images', $pageContent);
         }
         if (stristr($pageContent, 'src="../elements/scripts')) {
-            $pageContent = str_replace('src="../elements/scripts', 'src="' . site_url('/elements/scripts') , $pageContent);
+            $pageContent = str_replace('src="../elements/scripts', 'src="' . site_url('/elements/scripts'), $pageContent);
         }
         if (stristr($pageContent, 'href="./images')) {
             $pageContent = str_replace('href="./images', 'href="' . $base_url_all . '/images', $pageContent);
@@ -1753,32 +1960,61 @@ EOD;
             }
         }
     }
-    
+
+    public function getTempElements()
+    {
+        if (isset($_POST) && !empty($_POST) && count($_POST) > 0) {
+            $posts = json_decode(stripslashes($_POST['posts']));
+            if (count($posts) > 0) {
+                $template = '<div class="">';
+                foreach ($posts as $a) {
+                    $template .= $this->templatemodel->getSingleElement($a->id) . "\r\n";
+                }
+                $template .='</div>';
+                $DOM = new DOMDocument();
+                libxml_use_internal_errors(TRUE);
+                $DOM->loadHTML($template, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                libxml_use_internal_errors(FALSE);
+                echo $DOM->saveHTML();
+                unset($DOM);
+            }
+        }
+    }
+
     public function preview_profile($id)
     {
         $site_id = $this->encrypt->decode($id);
         $siteDetails = $this->sitemodel->getSite($site_id);
         $remote_url = '';
-        
+
         if ($siteDetails == false) {
             die("No details found");
         }
-        
+
         if ($siteDetails['site']->url_option == 'freeUrl') {
             $remote_url = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $siteDetails['site']->domain;
         } else {
             $remote_url = 'http://' . $siteDetails['site']->domain;
         }
-        
+
         $pageContent = '';
-        if(!empty($siteDetails['pages']['index'])){
+        if (!empty($siteDetails['pages']['index'])) {
             foreach ($siteDetails['pages']['index'] as $value) {
-                $pageContent .=$value->frames_content. "\r\n";
+                $pageContent .=$value->frames_content . "\r\n";
             }
         }
         $pageMeta = $this->pagemodel->getSinglePage($site_id, 'index');
-        $base_url = base_url('studentelements');
-        
+        $base_url = base_url('elements');
+
+        if ($this->ion_auth->in_group('business')) {
+            $profile = 'business';
+        } elseif ($this->ion_auth->in_group('students')) {
+            $profile = 'student';
+            $base_url = base_url('studentelements');
+        } else {
+            $profile = 'ecommerce';
+        }
+        $this->data['base_url'] = $base_url;
         $this->data['pageTitle'] = $siteDetails['site']->sites_name;
 
         if (stristr($pageContent, 'href="css')) {
@@ -1805,17 +2041,202 @@ EOD;
         if (stristr($pageContent, 'href="./images')) {
             $pageContent = str_replace('href="./images', 'href="' . $base_url . '/images', $pageContent);
         }
-
-        $this->data['site_url'] = '<div id="site-url" data-content="' . $base_url . '"></div>';
-        $this->data['contact_url'] = '<div id="contact-url" data-content="' . site_url('login/site_contact/' . $this->encrypt->encode($site_id)) . '"></div>';
-        $this->data['counter_url'] = '<div id="counter-url" data-content="' . site_url('login/visitor_counter/' . $this->encrypt->encode($site_id)) . '"></div>';
-        $this->data['page_id'] = '<div id="page-id" data-content="' . $pageMeta->pages_id . '"></div>';
-        $this->data['page_url'] = '<div id="page-url" data-content="' . $remote_url . '/index.php"></div>';
-        $this->data['siteurl'] = '<input type="hidden" class="siteurl" name="siteurl" value="'.site_url().'">';
-        $this->data['siteId'] = '<input type="hidden" class="siteId" name="siteId" value="'.  base64_encode($site_id).'">';
+        /*
+          $this->data['site_url'] = '<div id="site-url" data-content="' . $base_url . '"></div>';
+          $this->data['contact_url'] = '<div id="contact-url" data-content="' . site_url('login/site_contact/' . $this->encrypt->encode($site_id)) . '"></div>';
+          $this->data['counter_url'] = '<div id="counter-url" data-content="' . site_url('login/visitor_counter/' . $this->encrypt->encode($site_id)) . '"></div>';
+          $this->data['page_id'] = '<div id="page-id" data-content="' . $pageMeta->pages_id . '"></div>';
+          $this->data['page_url'] = '<div id="page-url" data-content="' . $remote_url . '/index.php"></div>';
+          $this->data['siteurl'] = '<input type="hidden" class="siteurl" name="siteurl" value="' . site_url() . '">';
+          $this->data['siteId'] = '<input type="hidden" class="siteId" name="siteId" value="' . base64_encode($site_id) . '">'; */
         $this->data['pageContent'] = $pageContent;
-        $this->template->load('resume_preview', 'sites', 'sites/preview_resume', $this->data);
+
+        if ($profile == 'student') {
+            $this->template->load('template_preview_student', 'sites', 'sites/preview_resume', $this->data);
+        } else {
+            $this->template->load('template_preview_business', 'sites', 'sites/preview_resume', $this->data);
+        }
+//        $this->template->load('resume_preview', 'sites', 'sites/preview_resume', $this->data);
     }
+
+    public function resumeSearchSettings()
+    {
+        if (!$this->ion_auth->in_group('students')) {
+            redirect('/services');
+        }
+        $userID = userdata('user_id');
+        $siteID = $this->sitemodel->getSiteId($userID);
+
+        if (!$siteID) {
+            redirect(site_url('sites/create'), 'location');
+        }
+
+        $siteData = $this->sitemodel->getSite($siteID);
+
+        if ($siteData == false) {
+
+            //site could not be loaded, redirect to /sites, with error message
+
+            $this->session->set_flashdata('error', $this->lang->line('sites_site_error1'));
+
+            redirect('/sites/', 'refresh');
+        } else {
+
+            $this->data['siteData'] = $siteData['site'];
+
+            //get page data
+            $pagesData = $this->pagemodel->getPageData($siteID);
+
+            if ($pagesData) {
+
+                $this->data['pagesData'] = $pagesData;
+            }
+
+            // Get the resume Setting Data 
+            $page_id = 0;
+            if (isset($pagesData['index'])) {
+                $page_id = $pagesData['index']->pages_id;
+            }
+            $resumeData = $this->sitemodel->getResumeData($siteID, $userID, $page_id);
+
+            if ($resumeData) {
+                $this->data['resumeData'] = $resumeData;
+            } else {
+                $this->data['resumeData'] = array();
+            }
+
+            $this->data['css'] = array(
+                '<style> #saveSkills, #saveLanguages, #addEducation {
+    height: 33px;
+    width: 100%;
+}
+ #nextSkills, #endSettings, #nextEducation, #saveBasicDetails {
+    margin: 0;
+    width: 140px;
+}
+ .title {
+    border-bottom: 2px solid #e5e5e5;
+    border-top: 2px solid #e5e5e5;
+    margin-top: 10px;
+    text-align: center;
+}
+ .col-sm-12, .col-sm-12.inputpanel {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 0;
+}
+ .control-label, .title {
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0 !important;
+}
+.tab-content {
+    ackground-color: #fff;
+    padding: 35px 25px;
+    padding-bottom: 0 !important;
+    padding-top: 25px !important;
+    margin: 0;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    position: relative;
+    z-index: 1;
+}
+
+.modal-footer-btn {
+    background-color: white;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 10px;
+    padding: 10px 0;
+}
+.optionPane {
+    padding: 20px;
+}
+.optionPane {
+    background: #eee none repeat scroll 0 0;
+    border: 2px dashed #ddd;
+    margin-bottom: 15px;
+}</style>'
+            );
+
+            $this->template->load('main', 'sites', 'partials/searchsettings', $this->data);
+        }
+    }
+
+    /*
+     * Insert block contet which is get updated
+     * 
+     */
+
+    public function insert_block_content()
+    {
+        $userID = userdata('user_id');
+        if (isset($_POST['site_id']) && $_POST['content'] != '') {
+            if ($this->sitemodel->inserblockcontent($userID, $_POST['site_id'], $_POST['content'])) {
+                $block_data = $this->sitemodel->get_block_content($_POST['site_id'], $userID);
+                $return = array();
+                $return['responseCode'] = 1;
+                $return['responseHTML'] = $this->load->view('partials/loadcontent', array('block_content' => $block_data), true);
+                die(json_encode($return));
+            } else {
+                return FALSE;
+            }
+        }
+    }
+
+    public function delete_block_content()
+    {
+        $userID = userdata('user_id');
+        if (isset($_POST['content_id'])) {
+            if ($this->sitemodel->deleteblockcontent($_POST['content_id'])) {
+                $block_data = $this->sitemodel->get_block_content($_POST['site_id'], $userID);
+                $return = array();
+                $return['responseCode'] = 1;
+                $return['responseHTML'] = $this->load->view('partials/loadcontent', array('block_content' => $block_data), true);
+                die(json_encode($return));
+            } else {
+                return FALSE;
+            }
+        }
+    }
+
+    private function qr_code_generator($param)
+    {
+        $this->load->library('ci_qr_code');
+        $this->config->load('qr_code');
+        $qr_code_config = array();
+        $qr_code_config['cacheable'] = $this->config->item('cacheable');
+        $qr_code_config['cachedir'] = $this->config->item('cachedir');
+        $qr_code_config['imagedir'] = $this->config->item('imagedir');
+        $qr_code_config['errorlog'] = $this->config->item('errorlog');
+        $qr_code_config['ciqrcodelib'] = $this->config->item('ciqrcodelib');
+        $qr_code_config['quality'] = $this->config->item('quality');
+        $qr_code_config['size'] = $this->config->item('size');
+        $qr_code_config['black'] = $this->config->item('black');
+        $qr_code_config['white'] = $this->config->item('white');
+
+        $this->ci_qr_code->initialize($qr_code_config);
+
+        $image_name = 'qr_code_test.png';
+
+        $params['data'] = 'This QR Code was generated at ' . site_url() . $this->_method_url;
+        $params['level'] = 'H';
+        $params['size'] = 10;
+
+        if ($this->input->post('display_format') == 'image') {
+            $params['savename'] = BASEPATH . $qr_code_config['imagedir'] . $image_name;
+            $this->ci_qr_code->generate($params);
+            $this->data['qr_code_image_url'] = base_url() . $qr_code_config['imagedir'] . $image_name;
+            // Display the QR Code here on browser uncomment the below line
+            //echo '<img src="'.base_url().$qr_code_config['imagedir'].$image_name.'" />'; 
+            $this->load->view('qr_code', $this->data);
+        } else {
+            header("Content-Type: image/png");
+            $this->ci_qr_code->generate($params);
+        }
+    }
+
 }
 
 /* End of file sites.php */
