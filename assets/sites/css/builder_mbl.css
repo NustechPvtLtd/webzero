@@ -1,198 +1,1 @@
-/*CSS for builder in mobile veiw*/
-
-body > div.container > header div.float-right {
-    float: right;
-}
-.dropdown-menu {
-    min-width: 140px;
-}
-#mn, #main {
-    width: 40px;
-}
-#menu div.main * {
-    font-size: 0px;
-}
-/*#menu div.main #pages * {
-    font-size: 0px;
-}*/
-#menu div.main li span {
-    font-size: 16px;
-}
-#menu_bar {
-    left: 0px;
-}
-#main {
-    padding-top: 40px;
-}
-#addPage {
-    display: none;
-}
-#main h3:nth-child(3) {
-    display: none;
-}
-aside.left-side {
-    top: 108px;
-}
-.skin-green > a.mbl {
-    display: none;
-}
-#main #htmltemplates li:hover, #main  #elements li:hover {
-    font-size: 16px !important;
-    width: 150px  !important;
-    z-index: 10;
-}
-#main #htmltemplates li:hover a, #main #elements li:hover a {
-    font-size: 16px  !important;
-}
-#main {
-    overflow: visible;
-}
-.menu .main > ul#htmltemplates > li > a:hover, .menu .main > ul#htmltemplates > li > a.active {
-    color: #fff;
-    background: #111;
-}
-#menu div.second {
-    left: 40px;
-}
-
-
-@media screen and (max-width: 991px) {
-    body > .header .logo {
-        display: none;
-    }
-    .skin-green > a.mbl {
-        display: block;
-    }
-    body > .header {
-        height: 52px;
-    }
-    body > .header .logo {
-        width: 50px;
-        height: 45px;
-    }
-    .skin-green .navbar, .skin-green .navbar .navbar .nav li a {
-        min-height: 45px !important;
-        max-height: 45px !important;
-        height: 45px !important;
-    }
-    .skin-green nav.navbar div.navbar-right ul.nav {
-        padding: 0px;
-    }
-    body > .header .navbar {
-        width: 70px;
-        float: right;
-    }
-    .skin-green .dropdown-toggle span, .skin-green .navbar-static-top > ul, header .modes b {
-        display: none;
-    }
-    div.float-right a  > *, div.actionButtons .dropdown-toggle > * {
-        font-size: 0;
-    }
-    div.float-right a span[class^="fui"], div.actionButtons .dropdown-toggle span[class^="fui"] {
-        font-size: 15px;
-    }
-    div.float-right {
-        display: block;
-    }
-    #main {
-        text-align: left;
-        width: 40px;
-        left: 0px;
-    }
-    #menu div.main * {
-        font-size: 0px;
-    }
-    #menu div.main li span {
-        font-size: 16px;
-    }
-    #menu div.main {
-        width: 40px;
-        padding-top: 40px;
-    }
-    .menu .main > ul > li > a {
-        padding-left: 10px;
-    }
-    #menu_bar {
-        left: 0px;
-    }
-    div.float-right ul.dropdown-menu {
-        left: -90px;
-    }
-}
-
-@media screen and (max-width: 560px) {
-    body > .header .logo {
-        float: left;
-    }
-    body > div.container > header div.col-sm-4 {
-        width: 100%;
-        text-align: center;
-    }
-    body > div.container > header div.col-sm-4 .modes{
-        width: 100%;
-    }
-    div.float-right {
-        display: none;
-        position: absolute;
-        padding: 0px;
-        float: right;
-        right: -13px;
-        width: 140px;
-        top: 50px;
-        z-index: 11;
-    }
-    div.float-right a, div.actionButtons, div.actionButtons .dropdown-toggle{
-        width: 100%
-    }
-    div.float-right a span, div.actionButtons .dropdown-toggle span {
-        font-size: 16px;
-    }
-    a#options {
-        display: block;
-        position: absolute;
-        background-color: black;
-        color: white;
-        width: 50px;
-        height: 55px;
-        padding: 14px 11px;
-        border-radius: 3px;
-        border: 1px solid transparent;
-        right: -16px;
-        top: -13px;
-    }
-    a#options i {
-        font-size: 24px;
-    }
-    div.float-right ul.dropdown-menu {
-        left: 0px;
-    }
-    #menu {
-        top: -56px;
-    }
-    #menu.affix  {
-        top: 0px;
-    }
-    .menu {
-        height: 100%;
-    }
-    div.container > header.affix {
-        padding-left: 0px;
-    }
-    body header > .container-fluid {
-        padding-left: 0px;
-    }
-    header .modes > label {
-        margin-right: 0px;
-    }
-
-}
-@media screen and (min-width: 561px) {
-    a#options {
-        display: none;
-    }
-}
-@media screen and (min-width: 992px) {
-    div.float-right ul.dropdown-menu {
-        left: -35px;
-    }
-}
+/*CSS for builder in mobile veiw*/body > div.container > header div.float-right {    float: right;}.dropdown-menu {    min-width: 140px;}#mn, #main {    width: 40px;}#menu div.main * {    font-size: 0px;}/*#menu div.main #pages * {    font-size: 0px;}*/#menu div.main li span {    font-size: 16px;}#menu_bar {    left: 0px;}#main {    padding-top: 40px;}#addPage {    display: none;}#main h3:nth-child(3) {    display: none;}aside.left-side {    top: 108px;}.skin-green > a.mbl {    display: none;}#main #htmltemplates li:hover, #main  #elements li:hover {    font-size: 16px !important;    width: 170px  !important;    z-index: 10;}#main #htmltemplates li:hover a, #main #elements li:hover a {    font-size: 16px  !important;}#main {    overflow: visible;}.menu .main > ul#htmltemplates > li > a:hover, .menu .main > ul#htmltemplates > li > a.active {    color: #fff;    background: #111;}#menu div.second {    left: 40px;}@media screen and (max-width: 991px) {    body > .header .logo {        display: none;    }    .skin-green > a.mbl {        display: block;    }    body > .header {        height: 52px;    }    body > .header .logo {        width: 50px;        height: 45px;    }    .skin-green .navbar, .skin-green .navbar .navbar .nav li a {        min-height: 45px !important;        max-height: 45px !important;        height: 45px !important;    }    .skin-green nav.navbar div.navbar-right ul.nav {        padding: 0px;    }    body > .header .navbar {        width: 70px;        float: right;    }    .skin-green .dropdown-toggle span, .skin-green .navbar-static-top > ul, header .modes b {        display: none;    }    div.float-right a  > *, div.actionButtons .dropdown-toggle > * {        font-size: 0;    }    div.float-right a span[class^="fui"], div.actionButtons .dropdown-toggle span[class^="fui"] {        font-size: 15px;    }    div.float-right {        display: block;    }    #main {        text-align: left;        width: 40px;        left: 0px;    }    #menu div.main * {        font-size: 0px;    }    #menu div.main li span {        font-size: 16px;    }    #menu div.main {        width: 40px;        padding-top: 40px;    }    .menu .main > ul > li > a {        padding-left: 10px;    }    #menu_bar {        left: 0px;    }    div.float-right ul.dropdown-menu {        left: -90px;    }}@media screen and (max-width: 560px) {    body > .header .logo {        float: left;    }    body > div.container > header div.col-sm-4 {        width: 100%;        text-align: center;    }    body > div.container > header div.col-sm-4 .modes{        width: 100%;    }    div.float-right {        display: none;        position: absolute;        padding: 0px;        float: right;        right: -13px;        width: 140px;        top: 50px;        z-index: 11;    }    div.float-right a, div.actionButtons, div.actionButtons .dropdown-toggle{        width: 100%    }    div.float-right a span, div.actionButtons .dropdown-toggle span {        font-size: 16px;    }    a#options {        display: block;        position: absolute;        background-color: black;        color: white;        width: 50px;        height: 55px;        padding: 14px 11px;        border-radius: 3px;        border: 1px solid transparent;        right: -16px;        top: -13px;    }    a#options i {        font-size: 24px;    }    div.float-right ul.dropdown-menu {        left: 0px;    }    #menu {        top: -56px;    }    #menu.affix  {        top: 0px;    }    .menu {        height: 100%;    }    div.container > header.affix {        padding-left: 0px;    }    body header > .container-fluid {        padding-left: 0px;    }    header .modes > label {        margin-right: 0px;    }}@media screen and (min-width: 561px) {    a#options {        display: none;    }}@media screen and (min-width: 992px) {    div.float-right ul.dropdown-menu {        left: -35px;    }}@media screen and (min-width: 992px) {	.scale {		transform-origin: right top;		transform: scale(0.86, 1);	}}@media screen and (min-width: 992px) {	.scale {		transform-origin: right top;		transform: scale(0.88, 1);	}}@media screen and (min-width: 1199px) {	.scale {		transform-origin: right top;		transform: scale(0.91, 1);	}}

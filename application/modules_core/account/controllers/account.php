@@ -53,8 +53,8 @@ class Account extends MY_Controller {
                             'type' => "billing",
                             'user_id' => $this->ion_auth->get_user_id()
                         ),
-                        array(
-                            'id' => $address['spng_id'],
+                            array(
+                            'id' => (isset($address['spng_id']))?$address['spng_id']:'',
                             'street' => $this->input->post('spng_street'),
                             'city' => $this->input->post('spng_city'),
                             'state' => $this->input->post('spng_state'),

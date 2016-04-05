@@ -34,3 +34,8 @@
     opacity: 1;
 }
 /* End Front Page css*/
+
+/*show skill percentage value*/
+.skillper {
+	display: inline !important;
+}

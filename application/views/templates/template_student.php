@@ -95,11 +95,7 @@
                                 <div class="modes">
                                     <b>Building mode:</b>
                                     <label class="radio primary first">
-                                        <input type="radio" name="mode" id="modeBlock" value="block" data-toggle="radio" disabled="" checked="">
-                                        Blocks
-                                    </label>
-                                    <label class="radio primary first">
-                                        <input type="radio" name="mode" id="modeContent" value="content" data-toggle="radio" disabled="">
+                                        <input type="radio" name="mode" id="modeContent" value="content" data-toggle="radio" disabled="" checked="">
                                         Edit
                                     </label>
                                     <label class="radio primary first">
@@ -110,7 +106,8 @@
                             </div>
                             <a id="options"><i class="fa fa-bars"></i></a>
                             <div class="col-sm-8 col-xs-5 float-right" style="padding: 0px;">
-                                <a href="#" id="saveAs" class="btn btn-primary disabled actionButtons" data-toggle="modal" data-target="#confirm-save-temp"><span class="fui-check"></span> <span class="bLabel">Save Template</span></a>
+                                <!-- <a href="#" id="saveAs" class="btn btn-primary disabled actionButtons" data-toggle="modal" data-target="#confirm-save-temp"><span class="fui-check"></span> <span class="bLabel">Save Template</span></a> -->                                
+                                <a href="#" id="saveAs" class=" btn btn-primary disabled actionButtons tempSavecls" data-toggle="modal" data-target="#myModal_temp"><span class="fui-check"></span> <span class="bLabel">Nothing to save</span></a>
                                 <a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-primary disabled actionButtons" ><span class="fui-window"></span><span> Preview</span></a>
                                 <a href="#" id="clearScreen" class="btn btn-danger disabled actionButtons"><span class="fui-trash"></span><span> Empty Page</span></a>
                             </div>
@@ -217,85 +214,59 @@
             </ul><!-- /tabs -->
 
             <div class="tab-content">
-
                 <div class="tab-pane active" id="tab1">
-
                     <form class="" role="form" id="stylingForm">
-
                         <div id="styleElements">
-
                             <div class="form-group clearfix" style="display: none;" id="styleElTemplate">
                                 <label for="" class="control-label"></label>
                                 <input type="text" class="form-control input-sm" id="" placeholder="">
                             </div>
-
                         </div>
-
                     </form>
-
                 </div>
 
                 <!-- /tabs -->
                 <div class="tab-pane link_Tab" id="link_Tab">
-
                     <select id="internalLinksDropdown">
                         <option value="#">Choose a page</option>
                         <option value="index.html">index</option>
                     </select>
-
                     <p class="text-center or">
                         <span>OR</span>
                     </p>
-
                     <select id="pageLinksDropdown">
                         <option value="#">Choose a block (one page sites)</option>
                     </select>
-
                     <p class="text-center or">
                         <span>OR</span>
                     </p>
-
                     <input type="text" class="form-control" id="internalLinksCustom" placeholder="http://somewhere.com/somepage" value="">
-
                 </div>
 
                 <!-- /tabs -->
                 <div class="tab-pane imageFileTab" id="image_Tab">
-
                     <label>Enter image path:</label>
-
                     <input type="text" class="form-control" id="imageURL" placeholder="Enter an image URL" value="">
-
                     <p class="text-center or">
                         <span>OR</span>
                     </p>
-
                     <a href="#imageModal" data-toggle="modal" type="button" class="btn btn-default btn-embossed btn-block margin-bottom-20"><span class="fui-image"></span> Use Image Library</a>
-
                 </div><!-- /.tab-pane -->
 
                 <!-- /tabs -->
                 <div class="tab-pane iconTab" id="icon_Tab">
-
                     <label>Choose an icon below: </label>
-
                     <?php $this->load->view("partials/icon_dropdown.php"); ?>
-
                 </div><!-- /.tab-pane -->
 
                 <!-- /tabs -->
                 <div class="tab-pane videoTab" id="video_Tab">
-
                     <label>Youtube video ID:</label>
-
                     <input type="text" class="form-control margin-bottom-20" id="youtubeID" placeholder="Enter a Youtube video ID" value="">
-
                     <p class="text-center or">
                         <span>OR</span>
                     </p>
-
                     <label>Vimeo video ID:</label>
-
                     <input type="text" class="form-control margin-bottom-20" id="vimeoID" placeholder="Enter a Vimeo video ID" value="">
                     <p class="text-center or">
                         <span>OR</span>
@@ -316,11 +287,8 @@
 
         <!-- preview HTML popup -->
         <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-hidden="true">
-
             <form action="<?php echo site_url('sites/preview_student'); ?>" target="_blank" id="markupPreviewForm" method="post" class="form-horizontal">
-
                 <input type="hidden" name="markup" value="" id="markupField">
-
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -328,11 +296,9 @@
                             <h4 class="modal-title" id="myModalLabel"><span class="fui-window"></span> Preview Page</h4>
                         </div>
                         <div class="modal-body">
-
                             <p>
                                 <b>Please note:</b> you can only preview a single page; links to other pages won't work. When you make changes to your page, reloading the preview won't work, instead you'll have to use the "Preview" button again.
                             </p>
-
                         </div><!-- /.modal-body -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default " data-dismiss="modal" id="previewCancel">Cancel & Close</button>
@@ -340,21 +306,15 @@
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
-
             </form>
-
         </div><!-- /.modal -->
-
 
         <!-- delete single block popup -->
         <div class="modal fade small-modal" id="deleteBlock" tabindex="-1" role="dialog" aria-hidden="true">
-
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-
                         Are you sure you want to delete this block?
-
                     </div><!-- /.modal-body -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default " data-dismiss="modal">Cancel & Close</button>
@@ -362,24 +322,20 @@
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-
         </div><!-- /.modal -->
 
 
         <!-- reset block popup -->
         <div class="modal fade small-modal" id="resetBlock" tabindex="-1" role="dialog" aria-hidden="true">
-
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-
                         <p>
                             Are you sure you want to reset this block?
                         </p>
                         <p>
                             All changes made to the content will be destroyed.
                         </p>
-
                     </div><!-- /.modal-body -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default " data-dismiss="modal">Cancel & Close</button>
@@ -387,9 +343,21 @@
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-
         </div><!-- /.modal -->
-
+         <!-- Block html source code popup -->
+        <div class="modal fade" id="htmlBlock" tabindex="-1" role="dialog" aria-hidden="true" style="border-radius: 5px;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body" style="padding: 0px !important; overflow: hidden;">
+                        <div id="txtHtml" class="inptxt" style="width: 100%; border: none; height: 500px; font-size: 14px; font-family: monospace; color: #000;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default " data-dismiss="modal">Cancel & Close</button>
+                        <button type="button" class="btn btn-primary " id="htmlBlockConfirm">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal -->
         <!-- delete all blocks before import project-->
         <div class="modal fade" id="deleteAllPages" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -413,13 +381,10 @@
 
         <!-- delete all blocks popup -->
         <div class="modal fade small-modal" id="deleteAll" tabindex="-1" role="dialog" aria-hidden="true">
-
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-
                         Are you sure you want to remove this page?
-
                     </div><!-- /.modal-body -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default " data-dismiss="modal">Cancel & Close</button>
@@ -427,7 +392,6 @@
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-
         </div><!-- /.modal -->
 
         <!-- delete page popup -->
@@ -435,17 +399,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-
                         Are you sure you want to delete this entire page?
-
                     </div><!-- /.modal-body -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default " data-dismiss="modal" id="deletePageCancel">Cancel & Close</button>
+                        <button type="button" class="btn btn-default " data-dismiss="modal" id="deletePageCancel" onclick="$('#deletePage').modal('hide');">Cancel & Close</button>
                         <button type="button" class="btn btn-primary " id="deletePageConfirm">Delete</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-
         </div><!-- /.modal -->
 
         <!-- delete elemnent popup -->
@@ -453,9 +414,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-
                         Are you sure you want to delete this element? Once deleted, it can not be restored.
-
                     </div><!-- /.modal-body -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default " data-dismiss="modal" id="deletePageCancel">Cancel & Close</button>
@@ -463,7 +422,6 @@
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-
         </div><!-- /.modal -->
 
         <!-- edit content popup -->
@@ -512,47 +470,32 @@
                         <h4 class="modal-title" id="myModalLabel"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_videolibrary_heading') ?></h4>
                     </div>
                     <div class="modal-body">
-
                         <div class="loader" style="display: none;">
                             <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
                             <?php echo $this->lang->line('modal_videolibrary_loadertext') ?>
                         </div>
-
                         <div class="modal-alerts">
 
                         </div>
-
                         <div class="modal-body-content">
-
                             <ul class="nav nav-tabs nav-append-content">
                                 <li class="active"><a href="#myVideosTab"><?php echo $this->lang->line('modal_videolibrary_tab_myvideos') ?></a></li>
                                 <li id="uploadTabLI"><a href="#uploadVideoTab"><?php echo $this->lang->line('modal_videolibrary_tab_uploadvideo') ?></a></li>
                             </ul> <!-- /tabs -->
-
                             <div class="tab-content">
-
                                 <div class="tab-pane active" id="myVideosTab">
-
                                     <?php if (isset($userVideos)): ?>
-
                                         <?php $this->load->view("partials/myvideos.php", array('userVideos' => $userVideos, 'bucket' => $bucket)); ?>
-
                                     <?php else: ?>
-
                                         <!-- Alert Info -->
                                         <div class="alert alert-info">
                                             <button type="button" class="close fui-cross" data-dismiss="alert"></button>
                                             <?php echo $this->lang->line('modal_videolibrary_message_novideos'); ?>
                                         </div>
-
                                     <?php endif; ?>
-
                                 </div><!-- /.tab-pane -->
-
                                 <div class="tab-pane" id="uploadVideoTab">
-
                                     <form id="videoUploadForm" action="<?php echo site_url('sites/amazon_services/videoUploadAjax/' . $siteData['site']->sites_id); ?>">
-
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <div id="videoinput-preview" class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
                                             <div>
@@ -564,27 +507,19 @@
                                                 <a href="#" class="btn btn-primary btn-embossed fileinput-exists exists" data-dismiss="fileinput"><span class="fui-trash"></span>&nbsp;&nbsp;<?php echo $this->lang->line('modal_videolibrary_button_remove') ?></a>
                                             </div>
                                         </div>
-
                                     </form>
-
                                     <hr>
-
                                     <button type="button" class="btn btn-primary btn-embossed btn-wide upload btn-block disabled" id="uploadVideoButton"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_videolibrary_button_upload') ?></button>
                                     <button type="button" class="btn btn-primary btn-embossed btn-wide upload btn-block disabled" id="uploadVideoButtonDrop"><span class="fui-upload"></span> <?php echo $this->lang->line('modal_videolibrary_button_upload') ?></button>
-
                                 </div><!-- /.tab-pane -->
-
                             </div> <!-- /tab-content -->
-
                         </div>
-
                     </div><!-- /.modal-body -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal"><?php echo $this->lang->line('modal_cancelclose') ?></button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-
         </div><!-- /.modal -->
 
         <div class="modal fade" id="confirm-save-temp" tabindex="-1" role="dialog" aria-labelledby="Recommendation" aria-hidden="true">
@@ -630,6 +565,9 @@
         <script src="<?php echo base_url('assets/sites'); ?>/js/spectrum.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/chosen.jquery.min.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/redactor.js"></script>
+        <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/fontcolor.js"></script>
+        <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/fontfamily.js"></script>
+        <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/fontsize.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/table.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/bufferButtons.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/redactor/video.js"></script>
@@ -652,7 +590,12 @@
         <script type="text/javascript" src="<?php echo base_url('studentelements'); ?>/scripts/isotope.pkgd.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url('elements/scripts/html5gallery.js'); ?>"></script>	
         <script type="text/javascript" src="<?php echo base_url('studentelements'); ?>/scripts/student-scripts.js"></script>	
-        <?php if (isset($js)) echo implode("\n", $js) . "\n"; ?>
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/readmore.min.js"></script>
+        <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
+            
+           
+
+ <?php if (isset($js)) echo implode("\n", $js) . "\n"; ?>
         <!-- End Student Resume JS -->
 
         <script>
@@ -660,9 +603,13 @@
             var siteUrl = "<?php echo site_url('/'); ?>";
 
 <?php if (isset($siteData)): ?>
-                var siteID = <?php echo $siteData['site']->sites_id; ?>;
+                var siteID = <?php if(isset($siteData['site']->sites_id))echo $siteData['site']->sites_id; else echo"0"; ?>;
+                var templateID = <?php if(isset($siteData['site']->template_id)) echo $siteData['site']->template_id; else echo"0"; ?>;
+
 <?php else: ?>
                 var siteID = 0;
+                var templateID=0;
+               
 <?php endif; ?>
 
 <?php if (isset($pagesData)): ?>
@@ -676,25 +623,7 @@
                 var ua = window.navigator.userAgent;
                 var msie = ua.indexOf("MSIE ");
 
-                /*if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
-                 
-                 $('.modes #modeContent').parent().hide();
-                 
-                 } else {
-                 
-                 $('.modes #modeContent').parent().show();
-                 
-                 }*/
-
 <?php if (isset($siteData)): ?>
-
-                    //make sortable
-
-                    //                    $('#pageList > ul').each(function() {
-                    //
-                    //                        makeSortable($(this));
-                    //
-                    //                    });
 
                     $('#pageList li > section').each(function() {
 
@@ -702,31 +631,30 @@
                         //add height to frames array
                         $(this).css('height', theHeight + "px");
 
-                        //                        $(this).css('background', '#ffffff url(<?php echo base_url('assets/sites/images/loading.gif'); ?>) 50% 50% no-repeat');
                         $(this).css('padding', '0px');
                         $(this).css('z-index', '0');
-                        //                        $(this).load(function() {
                         heightAdjustment($(this).attr('id'), true);
-                        //                        });
 
                         //add a delete button
                         delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> remove</button>');
                         resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> reset</button>');
                         htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> source</button>');
+                        cloneButton = $('<button type="button" class="btn btn-info cloneBlock"><i class="fa fa-copy"></i> Clone</button>');
+                        dragButton = $('<div type="button" class="btn btn-success dragBlock"><i class="fa fa-arrows"></i> Drag</div>');
 
                         frameCover = $('<div class="frameCover"></div>');
 
                         frameCover.append(delButton);
                         frameCover.append(resetButton);
                         frameCover.append(htmlButton);
+                        frameCover.append(cloneButton);
+                        frameCover.append(dragButton);
 
                         $(this).closest('li').append(frameCover);
 
                     });
 
-
                     allEmpty();
-
 <?php endif; ?>
 
             });
@@ -746,7 +674,6 @@
                     e.preventDefault();
                     e.target.className = (e.type == "dragover" ? "hover fileinput-preview thumbnail" : "fileinput-preview thumbnail");
                 }
-
 
                 // file selection
                 function FileSelectHandler(e) {
@@ -846,21 +773,15 @@
 
                     });
 
-
                     $("#fileinput-preview").html('<img src="" />');
                     $("#uploadImageButton").show();
                     $("#uploadImageButtonDrop").css("display", "none");
                     $(".new").css("display", "inline");
                     $(".exists").css("display", "none");
-
-
-
                 }
-
 
                 // output file information
                 function ParseFile(file) {
-
                     // display an image
                     if (file.type.indexOf("image") == 0) {
                         var reader = new FileReader();
@@ -868,9 +789,7 @@
                             $("#fileinput-preview").html('<img src="' + e.target.result + '" />');
                             //$('#imageFile').prop("files", e.originalEvent.dataTransfer.files);
                         };
-
                         $('button#uploadImageButtonDrop').removeClass('disabled');
-
                         reader.readAsDataURL(file);
                     }
                 }
@@ -882,19 +801,14 @@
                     var fileselect = document.getElementById("imageFile");
                     var filedrag = document.getElementById("fileinput-preview");
 
-                    // file select
-                    //  fileselect.addEventListener("change", FileSelectHandler, true);
-
                     // is XHR2 available?
                     var xhr = new XMLHttpRequest();
                     if (xhr.upload) {
-
                         // file drop
                         filedrag.addEventListener("dragover", FileDragHover, false);
                         filedrag.addEventListener("dragleave", FileDragHover, false);
                         filedrag.addEventListener("drop", FileSelectHandler, false);
                         //filedrag.style.display = "block";
-
                     }
 
                 }
@@ -903,7 +817,6 @@
                 if (window.File && window.FileList && window.FileReader) {
                     Init();
                 }
-
 
             })();
 

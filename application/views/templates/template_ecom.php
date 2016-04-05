@@ -124,8 +124,8 @@
                                 </div>
                             </div>
                             <div class="col-md-8 float-right">
-
-                                <a href="#" id="saveAs" class="btn btn-primary disabled actionButtons" data-toggle="modal" data-target="#confirm-save-temp"><span class="fui-check"></span> <span class="bLabel">Save Template</span></a>
+                                <a href="#" id="saveAs" class=" btn btn-primary disabled actionButtons tempSavecls" data-toggle="modal" data-target="#myModal_temp"><span class="fui-check"></span> <span class="bLabel">Nothing to save</span></a>
+                               <!-- <a href="#" id="saveAs" class="btn btn-primary disabled actionButtons" data-toggle="modal" data-target="#confirm-save-temp"><span class="fui-check"></span> <span class="bLabel">Save Template</span></a> -->
                                 <!--<span class="fui-check"></span> <span class="bLabel">Nothing new to save</span> -->                                
 
                                 <a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-primary disabled actionButtons" ><span class="fui-window"></span> Preview</a>
@@ -446,7 +446,7 @@
 
                     </div><!-- /.modal-body -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default " data-dismiss="modal" id="deletePageCancel">Cancel & Close</button>
+                        <button type="button" class="btn btn-default " data-dismiss="modal" id="deletePageCancel"  onclick="$('#deletePage').modal('hide');">Cancel & Close</button>
                         <button type="button" class="btn btn-primary " id="deletePageConfirm">Delete</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -665,6 +665,7 @@
         <script src="<?php echo base_url('elements/scripts/bootstrap-datepicker.min.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/custom.js'); ?>"></script>
         <script src="<?php echo base_url('elements/scripts/autoNumeric.js'); ?>"></script>
+        <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
         <?php if (isset($js)) echo implode("\n", $js) . "\n"; ?>
         <script>
 
@@ -673,9 +674,13 @@
 
             var display_ecom = '<?php echo (userdata('eccommerce') == 'inactive') ? 'no' : 'yes'; ?>';
 <?php if (isset($siteData)): ?>
-                var siteID = <?php echo $siteData['site']->sites_id; ?>;
+                var siteID = <?php if(isset($siteData['site']->sites_id))echo $siteData['site']->sites_id; else echo"0"; ?>;
+                var templateID = <?php if(isset($siteData['site']->template_id)) echo $siteData['site']->template_id; else echo"0"; ?>;
+
 <?php else: ?>
                 var siteID = 0;
+                var templateID=0;
+               
 <?php endif; ?>
 
 <?php if (isset($pagesData)): ?>
@@ -701,6 +706,43 @@
                  $('.btn-save-temp').on('click',function(){
                     $("#confirm-save-temp").modal('hide'); 
                  });
+                 <?php if (isset($siteData)): ?>
+
+                    //make sortable
+
+                    $('#pageList > ul').each(function() {
+                        makeSortable($(this));
+            });
+
+                    $('#pageList li > section').each(function() {
+
+                        theHeight = $(this).attr('data-height');
+                        //add height to frames array
+                        $(this).css('height', theHeight + "px");
+
+                        $(this).css('padding', '0px');
+                        $(this).css('z-index', '0');
+                        heightAdjustment($(this).attr('id'), true);
+
+                        //add a delete button
+                        delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> remove</button>');
+                        resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> reset</button>');
+                        htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> source</button>');
+
+                        frameCover = $('<div class="frameCover"></div>');
+
+                        frameCover.append(delButton);
+                        frameCover.append(resetButton);
+                        frameCover.append(htmlButton);
+
+                        $(this).closest('li').append(frameCover);
+
+                    });
+
+
+                    allEmpty();
+
+<?php endif; ?>
 
             });
 

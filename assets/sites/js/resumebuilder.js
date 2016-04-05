@@ -56,6 +56,8 @@ editableItems['.opacitydiv'] = ['background-color', 'opacity'];
 editableItems['.backgroundformat'] = ['background-color', 'background-image'];
 editableItems['.wrapper1'] = ['background-color'];
 editableItems['.wrapper1 header,.wrapper1 footer'] = ['background-color'];
+editableItems['.progress-line'] = ['width', 'color'];
+editableItems['.pie_progress__number'] = ['percentage', 'color'];
 
 var editableItemOptions = new Array();
 
@@ -95,9 +97,8 @@ editableItemOptions['.container-half : background-size'] = ['cover', 'contain', 
 editableItemOptions['.container-half : background-attachment'] = ['fixed', 'scroll'];
 editableItemOptions['.container-half : background-position'] = ['top', 'right', 'bottom', 'left', 'left top', 'right top', 'right bottom', 'left bottom'];
 
-var editableContent = ['.styler', '.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'button#contact_submit span', 'a.btn', 'a.download-btn', '.footer a:not(.icon)', '.tableWrapper', '.item-list-left li', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a'];
-
-var editContForAnim = ['.styler', 'section', '.icon', 'img', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a.btn, a.download-btn, button.btn, a.goto', '.num-icon', '.countdown', '.item-list-right li, .item-list-left li, .item-list-center li', '#testimonials-grid .quote, .pricing-table, .pricing-table .stamp, .post, .panel, .panel-heading, .form-container, .post-content .price-circle', '.step-left-block li, .step-center-block li, .step-path-block li', '.diagram .column span', '.diagram-horizontal .column span', '.item-list-border li', '.border-block'];
+var editableContent = ['.styler', '.editContent', '.content', '.post-desc', '.post-info', '.slogan', '.panel-body', 'h1', 'h2', 'h3', 'h4', 'h5', '.tableWrapper', '.navbar a', 'button', 'button#contact_submit span', 'a.btn', 'a.download-btn', '.footer a:not(.icon)', '.tableWrapper', '.item-list-left li', '.item-list-right li', '.item-list-center li', '.item-list-border li', '.portfolio-list .name', '.portfolio-list .price', '.portfolio-list .label', '.pricing-table span', '.pricing-table .benefits-list', '.widget ul', 'ul.tags li', '.links-list', '.step-text', '.step-num', '.diagram .column span', '.diagram .name', '.diagram-horizontal .column span', '.diagram-horizontal .name', '.nav-tabs li a', '.nav-tabs-round li a', '.current', '.pie_progress__number'];
+var editContForAnim = ['.styler', 'section', '.icon', 'img', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'p', 'a.btn, a.download-btn, button.btn, a.goto', '.num-icon', '.countdown', '.item-list-right li, .item-list-left li, .item-list-center li', '#testimonials-grid .quote, .pricing-table, .pricing-table .stamp, .post, .panel, .panel-heading, .form-container, .post-content .price-circle', '.step-left-block li, .step-center-block li, .step-path-block li', '.diagram .column span', '.diagram-horizontal .column span', '.item-list-border li', '.border-block', '.current', '.pie_progress__number'];
 
 for (var i = 0; i < editContForAnim.length; i++) {
     editableItemOptions[editContForAnim[i] + ' : animation'] = [
@@ -134,7 +135,7 @@ $(function() {
 /* END SETTINGS */
 
 var mainMenuWidth = 230;
-var secondMenuWidth = 200;
+var secondMenuWidth = 400;
 
 //local storage check
 if (typeof (Storage) !== "undefined") {
@@ -214,6 +215,11 @@ function setPendingChanges(v) {
         $('#savePage .bLabel').text("Save changes (!)");
         $('#savePage').removeClass('btn-primary');
         $('#savePage').addClass('btn-success');
+
+        $('#saveAs').removeClass('disabled');
+        $('#saveAs .bLabel').text("Save changes (!)");
+        $('#saveAs').removeClass('btn-primary');
+        $('#saveAs').addClass('btn-success');
         pendingChanges = true;
 
     } else {
@@ -221,6 +227,12 @@ function setPendingChanges(v) {
         $('#savePage .bLabel').text("Nothing to save");
         $('#savePage').removeClass('btn-success');
         $('#savePage').addClass('btn-primary');
+
+        $('#saveAs').addClass('disabled');
+        $('#saveAs .bLabel').text("Nothing to save");
+        $('#saveAs').removeClass('btn-success');
+        $('#saveAs').addClass('btn-primary');
+
         pendingChanges = false;
 
     }
@@ -881,8 +893,17 @@ function buildeStyleElements(el, theSelector) {
                     ]
                 });
 
-            }
-            else if (editableItems[theSelector][x] == 'opacity') {
+            } else if (editableItems[theSelector][x] == 'width') {
+
+                var width = Math.round(100 * parseFloat($(el).find('.current').css('width')) / parseFloat($(el).find('.current').parent().css('width'))) + '%';
+                newStyleEl.find('input').val(width).attr('name', editableItems[theSelector][x]);
+
+            } else if (editableItems[theSelector][x] == 'percentage') {
+
+                var percentage = $(el).parent().attr('data-goal');
+                newStyleEl.find('input').val(percentage + '%').attr('name', editableItems[theSelector][x]);
+
+            } else if (editableItems[theSelector][x] == 'opacity') {
                 // console.log(CssElement);
                 if (CssElement != 'transparent' && CssElement != 'none' && CssElement != '') {
                     newStyleEl.val($(el).css(editableItems[theSelector][x]))
@@ -1218,6 +1239,14 @@ function styleClick(el) {
             if (disabled != 'disabled') {
                 if (nameAttrEl == 'data-wow-duration' || nameAttrEl == 'data-wow-delay') {
                     $(el).attr(nameAttrEl, valAttr);
+                } else if (nameAttrEl == 'width') {
+                    var valAttr = parseInt(valAttr);
+                    $(el).find('.current').css(nameAttrEl, valAttr + '%');
+                    $(el).find('.skillper').text(valAttr + '%');
+                } else if (nameAttrEl == 'percentage') {
+                    var valAttr = parseInt(valAttr);
+                    $(el).parent().attr('data-goal', valAttr);
+                    $(el).find('.spin-content').text(valAttr);
                 } else if ((nameAttrEl == 'background-color') && (valAttr == '')) {
                     valAttr = 'transparent';
                     $(el).css(nameAttrEl, valAttr);
@@ -1316,6 +1345,15 @@ function styleClick(el) {
         heightAdjustment(el);
         setPendingChanges(true);
     });
+
+	//Apply styling on Enter key
+	$("#styleElements").keydown(function(event){
+		if(event.keyCode == 13){
+			//console.log('y');
+			event.preventDefault();
+			$("#saveStyling").click();
+		}
+	});
 
     //delete button
     $('button#removeElementButton').unbind('click').bind('click', function() {
@@ -1621,6 +1659,9 @@ function activateEditMode() {
     // Close style editor
     closeStyleEditor();
 
+    //hide skill percentage value in edit mode
+    $('.skillper').hide();
+
     // Destroy the image resizable.
     $('.frameWrapper img').each(function() {
         if ($(this).hasClass('ui-resizable')) {
@@ -1659,14 +1700,14 @@ function activateEditMode() {
             }
         }
         this.designMode = "off";
-        $(this).mouseenter(function(){
+        $(this).mouseenter(function() {
             $(this).next().show();
-        }).mouseleave(function(){
+        }).mouseleave(function() {
             $(this).next().hide();
         });
-        $(this).next().mouseenter(function(){
+        $(this).next().mouseenter(function() {
             $(this).show();
-        }).mouseleave(function(){
+        }).mouseleave(function() {
             $(this).hide();
         });
     });
@@ -1680,6 +1721,7 @@ function activateEditMode() {
             $('span.redactor-toolbar-tooltip').remove();
 
             $(this).redactor({
+                buttons: ['formatting', 'bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'outdent', 'indent', 'image', 'file', 'link', 'alignment', 'horizontalrule'],
                 imageUpload: siteUrl + 'assets/imageUploadEditor/' + siteID,
                 clipboardUploadUrl: siteUrl + 'assets/imageUploadEditor' + siteID,
                 focus: true,
@@ -1691,13 +1733,13 @@ function activateEditMode() {
                 toolbarFixedTarget: '#screen',
                 toolbarFixedTopOffset: 0,
                 /*keyupCallback: function(e)
-                {
-                    setPendingChanges(true);
-                },*/
-                changeCallback: function(){
+                 {
+                 setPendingChanges(true);
+                 },*/
+                changeCallback: function() {
                     setPendingChanges(true);
                 },
-                codeKeyupCallback: function(e){
+                codeKeyupCallback: function(e) {
                     setPendingChanges(true);
                 }
             });
@@ -1717,12 +1759,16 @@ function activateStylingMode() {
         $(this).hide();
     });
 
+    //show percentage value instyle mode
+    $('.skillper').show();
+
+
     // Remove old events
     $('#pageList ul li section').each(function() {
         for (i = 0; i < editableContent.length; ++i) {
             $(this).find(editableContent[i]).unbind('click').unbind('hover');
         }
-        $(this).hover(function(){
+        $(this).hover(function() {
             $(this).next().hide();
         });
     });
@@ -1834,7 +1880,7 @@ $(function() {
     /* HTML BLOGS */
     for (var key in _HtmlElements.elements) {
         niceKey = key.toLowerCase().replace(" ", "_");
-        $('<li><a href="" id="' + niceKey + '"><span class="fa fa-bars"></span> ' + key + '</a></li>').appendTo('#menu #main ul#htmltemplates');
+        $('<li><a href="" id="' + niceKey + '"><span class="fa fa-newspaper-o"></span> ' + key + '</a></li>').appendTo('#menu #main ul#htmltemplates');
         for (x = 0; x < _HtmlElements.elements[key].length; x++) {
             // determines the order of the template
             order = ' order="' + x + '" ';
@@ -1881,7 +1927,40 @@ $(function() {
     /* ELEMNTS BLOGS */
     for (var key in _Elements.elements) {
         niceKey = key.toLowerCase().replace(" ", "_");
-        $('<li><a href="" id="' + niceKey + '"><span class="fa fa-bars"></span> ' + key + '</a></li>').appendTo('#menu #main ul#elements');
+        icon = '';
+        switch (niceKey) {
+            case 'all':
+                icon = '<span class="fa fa-list"></span>';
+                break;
+            case 'navigation':
+                icon = '<span class="fa fa-location-arrow"></span>';
+                break;
+            case 'headers':
+                icon = '<span class="fa fa-h-square"></span>';
+                break;
+            case 'intro':
+                icon = '<span class="fa fa-info-circle"></span>';
+                break;
+            case 'works':
+                icon = '<span class="fa fa-briefcase"></span>';
+                break;
+            case 'additional':
+                icon = '<span class="fa fa-plus-square-o"></span>';
+                break;
+            case 'skills':
+                icon = '<span class="fa fa-lightbulb-o"></span>';
+                break;
+            case 'video':
+                icon = '<span class="fa fa-file-video-o"></span>';
+                break;
+            case 'footer':
+                icon = '<span class="fa fa-ellipsis-h"></span>';
+                break;
+            default:
+                icon = '<span class="fa fa-bars"></span>';
+        }
+
+        $('<li><a href="" id="' + niceKey + '">' + icon + ' ' + key + '</a></li>').appendTo('#menu #main ul#elements');
         for (x = 0; x < _Elements.elements[key].length; x++) {
             // determines the order of the template
             order = ' order="' + x + '" ';
@@ -2174,7 +2253,7 @@ $(function() {
                     frameToReset.find(".videoGallery").html5gallery();
                     $('.frameCover').hide();
                 }
-            }).done(function(){
+            }).done(function() {
                 activateEditMode();
             });
         });
@@ -2207,17 +2286,42 @@ $(function() {
     });
 
     $('#htmlBlockConfirm').click(function() {
-        var newHtml = aceEditors.getValue(); 
+        var newHtml = aceEditors.getValue();
         $('#htmlBlock').modal('hide');
         htmlToChange.closest('li').find('.wrap').html(newHtml);
         $('#txtHtml').html('');
         aceEditors.destroy();
         setPendingChanges(true);
     });
-
+    function ajaxSave_op(theData) {
+        $.blockUI();
+        $.ajax({
+            url: siteUrl + "sites/save",
+            type: "POST",
+            dataType: "json",
+            data: theData,
+        }).done(function(res) {
+            $.unblockUI();
+            // Enable button
+            $("a#savePage").removeClass('disabled');
+            if (res.responseCode == 0) {
+                $('#massageDialog .modal-body').append($(res.responseHTML));
+                $('#massageDialog').modal('show');
+            } else if (res.responseCode == 1) {
+                $('#massageDialog .modal-body').append($(res.responseHTML));
+                $('#massageDialog').modal('show');
+                siteID = res.siteID;
+                if (res.path_pdf) {
+                    $('#pdf_path_flag').remove();
+                    $('#pdfs').append('<a href="' + res.path_pdf + '" id="pdf_path_flag" target="_blank">Click here for Previous Content</a>');
+                }
+                // No more pending changes
+                setPendingChanges(false);
+            }
+        });
+    }
     // Save page
     $('#savePage').click(function(e) {
-
         // Destroy the image resizable.
         $('.frameWrapper img').each(function() {
             //console.log($(this));
@@ -2225,9 +2329,7 @@ $(function() {
                 $(this).resizable("destroy");
             }
         });
-
         // Make the available items UN-draggable.
-
         $(".drag").each(function() {
             $(this).unbind('click').unbind('hover');
 
@@ -2275,27 +2377,17 @@ $(function() {
                 siteID: siteID
             };
         }
-
-        $.ajax({
-            url: siteUrl + "sites/save",
-            type: "POST",
-            dataType: "json",
-            data: theData,
-        }).done(function(res) {
-
-            // Enable button
-            $("a#savePage").removeClass('disabled');
-            if (res.responseCode == 0) {
-                $('#massageDialog .modal-body').append($(res.responseHTML));
-                $('#massageDialog').modal('show');
-            } else if (res.responseCode == 1) {
-                $('#massageDialog .modal-body').append($(res.responseHTML));
-                $('#massageDialog').modal('show');
-                siteID = res.siteID;
-                // No more pending changes
-                setPendingChanges(false);
-            }
-        });
+        // Console.log(theData);
+        if (pdf_flag == 0) {
+            ajaxSave_op(theData);
+        } else {
+            bootbox.confirm("Do you want to save? If you press Ok your old pdf content Will be Deleted.", function(result) {
+                // var text_data = $('#editContentModal #contentToEdit').redactor('code.get');
+                if (result == true) {
+                    ajaxSave_op(theData);
+                }
+            });
+        }
     });
 
     // update site password.
@@ -2371,72 +2463,89 @@ $(function() {
             element.text('').addClass('valid');
         }
     });
+    function ajax_saveTemplate(theData) {
+        $.ajax({
+            url: siteUrl + "sites/save_template",
+            type: "POST",
+            dataType: "json",
+            data: theData,
+        }).done(function(res) {
+            $('#savetemplate').attr('disabled', false);
+            $('#myModal_temp .loader').hide();
+            //enable button
+            $("a#savetemplate").removeClass('disabled');
+            $('#myModal_temp').modal('hide');
+            if (res.responseCode == 0) {
+                $('#massageDialog .modal-body').append($(res.responseHTML));
+                $('#massageDialog').modal('show');
+            } else if (res.responseCode == 1) {
 
+                $('#massageDialog .modal-body').append($(res.responseHTML));
+                $('#massageDialog').modal('show');
+                setPendingChanges(false);
+//                setTimeout(function() {
+//                    window.location.assign(siteUrl + 'sites/templates');
+//                }, 100);
+            }
+        });
+    }
     //save as template
     $('#savetemplate').click(function(e) {
         $('#savetemplate').attr('disabled', true);
+        thePages = prepPagesforSave();
         if ($('#take_template').valid()) {
             $(".modes label:first").click();
-
             closeStyleEditor();
             //disable button
-            $("a#savePage").addClass('disabled');
+            $("a#savetemplate").addClass('disabled');
             //remove old alerts
             $('#massageDialog .modal-body > *').each(function() {
                 $(this).remove();
             });
-            thePages = prepPagesforSave();
+
             $('#temp_error').empty();
             var template_name = $('input[name="template_name"]').val();
             var category_id = $("#cate_select option:selected").val();
             $('#myModal_temp .loader').show();
-            $.ajax({
-                url: siteUrl + "sites/check_template_name",
-                type: "POST",
-                dataType: "json",
-                encode: true,
-                data: {'template_name': template_name, 'category_id': category_id}
-            }).done(function(data_res) {
-                $('#myModal_temp .loader').hide();
-                if (data_res.responseCode == 0) {
-                    //if template name and catgory both present in db ask for new template name
-                    $('#temp_error').append(data_res.responseMSG);
-                    $('#myform_template_category').removeClass('help.block').addClass('has-error');
-                    return false;
-                } else {
-                    $('#temp_error').empty();
-                    if (typeof pagesData !== 'undefined') {
-                        theData = {template_element: thePages, siteName: $('#siteTitle').text(), siteID: siteID, template_name: template_name, category_id: category_id, pagesData: pagesData, img_url: $('#img_val').val()};
+            if (templateID == null || templateID == 'undefined' || templateID == '') {
+                $.ajax({
+                    url: siteUrl + "sites/check_template_name",
+                    type: "POST",
+                    dataType: "json",
+                    encode: true,
+                    data: {'template_name': template_name, 'category_id': category_id}
+                }).done(function(data_res) {
+                    $('#myModal_temp .loader').hide();
+                    if (data_res.responseCode == 0) {
+                        //if template name and catgory both present in db ask for new template name
+                        $('#temp_error').append(data_res.responseMSG);
+                        $('#myform_template_category').removeClass('help.block').addClass('has-error');
+                        return false;
                     } else {
-                        theData = {template_element: thePages, siteName: $('#siteTitle').text(), siteID: siteID, template_name: template_name, category_id: category_id, img_url: $('#img_val').val()};
-                    }
-                    $('#myModal_temp .loader').show();
-                    $.ajax({
-                        url: siteUrl + "sites/save_template",
-                        type: "POST",
-                        dataType: "json",
-                        data: theData,
-                    }).done(function(res) {
-                        $('#savetemplate').attr('disabled', false);
-                        $('#myModal_temp .loader').hide();
-                        //enable button
-                        $("a#savePage").removeClass('disabled');
-                        $('#myModal_temp').modal('hide');
-                        if (res.responseCode == 0) {
-                            $('#massageDialog .modal-body').append($(res.responseHTML));
-                            $('#massageDialog').modal('show');
-                        } else if (res.responseCode == 1) {
-                            $('#massageDialog .modal-body').append($(res.responseHTML));
-                            $('#massageDialog').modal('show');
-                            setPendingChanges(false);
-                            setTimeout(function() {
-                                window.location.assign(siteUrl + 'sites/templates');
-                            }, 100);
+                        $('#temp_error').empty();
+                        if (typeof pagesData !== 'undefined') {
+                            theData = {template_element: thePages, template_name: template_name, category_id: category_id, pagesData: pagesData, img_url: $('#img_val').val()};
+                        } else {
+                            theData = {template_element: thePages, template_name: template_name, category_id: category_id, img_url: $('#img_val').val()};
                         }
-                    });
+                        $('#myModal_temp .loader').show();
+                        ajax_saveTemplate(theData);
+                    }
+                });
+            } else {
+                $('#temp_error').empty();
+                if (typeof pagesData !== 'undefined') {
+
+                    theData = {templateID: templateID, template_element: thePages, template_name: template_name, category_id: category_id, pagesData: pagesData, img_url: $('#img_val').val()};
+                } else {
+
+                    theData = {templateID: templateID, template_element: thePages, template_name: template_name, category_id: category_id, img_url: $('#img_val').val()};
                 }
-            });
-        } else
+                $('#myModal_temp .loader').show();
+                ajax_saveTemplate(theData);
+            }
+        }
+        else
         {
             e.preventDefault();
             return false;
@@ -2478,10 +2587,11 @@ $(function() {
 
         // Change Mode to Element Mode.
         $(".modes label:first").click();
+		
         $('#previewModal > form #showPreview').show('');
         $('#previewModal > form #previewCancel').text('Cancel & Close');
         closeStyleEditor();
-    });
+	});
 
     $('#previewModal').on('shown.bs.modal', function(e) {
         $('#previewModal form input[type="hidden"]').remove();
@@ -2546,7 +2656,7 @@ $(function() {
             newInput.val("<!DOCTYPE html><html>" + $('iframe#skeleton').contents().find('html').html() + "</html>");
             siteInput.val(siteID);
         });
-    });
+	});
 
     $('#previewModal > form').submit(function() {
         $('#previewModal > form #showPreview').hide('');
@@ -2695,12 +2805,13 @@ $(function() {
                 menuStyle: 'dropdown-inverse'
             });
             $(this).remove();
+            $("#menu div.main #pages *").css("font-size", "16px");
         }
     });
 
     $('#addPage').click(function(e) {
         e.preventDefault();
-        
+
         // Turn inputs into links
         $('#pages li.active').each(function() {
             if ($(this).find('input').size() > 0) {
@@ -2715,7 +2826,7 @@ $(function() {
         var footerStart = '<li class="element footer " style="display: list-item; height: auto;">';
         var footerEnd = '</li>';
         var footer = '';
-         //Copy navigation elements
+        //Copy navigation elements
         $('div#pageList ul').first().find('li').each(function() {
             if ($(this).hasClass('navigation')) {
                 navigation = navigationStart + $(this).html() + navigationEnd;
@@ -2724,7 +2835,7 @@ $(function() {
                 footer = footerStart + $(this).html() + footerEnd;
             }
         });
-        
+
         $('#pages li').removeClass('active');
         newPageLI = $('#newPageLI').clone();
         newPageLI.css('display', 'block');
@@ -2740,7 +2851,7 @@ $(function() {
             $('#pageTitle span span').text($(this).val());
         });
         newPageLI.addClass('active').addClass('edit');
-       
+
         // Create the page structure
         newPageList = $('<ul>' + navigation + footer + '</ul>');
         newPageList.css('display', 'block');
@@ -2779,7 +2890,7 @@ $(function() {
     });
 
     $('#pages').on('click', 'li.active .fileSave', function() {
-        
+
         // Do something
         theLI = $(this).closest('li');
 
@@ -2813,6 +2924,7 @@ $(function() {
         theLI.addClass('edit');
         // Changed page title, we've got pending changes
         setPendingChanges(true);
+        $("#menu div.main #pages *").css("font-size", "16px");
     });
 
     var theLIIndex;
@@ -2865,6 +2977,7 @@ $(function() {
         str1 = str.slice(0, -5);
         $('#copy:text').val(str1);
         theLI.addClass('edit');
+        $("#menu div.main #pages *").css("font-size", "16px");
         alert("URL Copied !");
     });
 
@@ -2963,7 +3076,7 @@ $(function() {
             $('#publishSubmit').addClass('disabled');
         }
         $('#publishModal').modal('show');
-    });
+	});
 
     // Save site before publishing
     $('#publishModal #publishPendingChangesMessage .btn.save').click(function() {
@@ -3363,7 +3476,7 @@ function publishAsset() {
         if ($("div.float-right").css("width") == "140px") {
             $("div.float-right").css("display", "none");
         }
-        if (f == '210px') {
+        if (f == '170px') {
             $("#menu div.main").css("width", "40px");
             $("#menu div.second").css("left", "40px");
             $("#mn").css("width", "40px");
@@ -3371,22 +3484,26 @@ function publishAsset() {
             $("#menu div.main span").css("font-size", "16px");
             $("#menu div.main").css("padding-top", "40px");
             $("#menu_bar").css("left", "0px");
+            $("#menu_bar").css("z-index", "1");
             $("#pages *").css("font-size", "0px");
             $("#addPage").css("display", "none");
             $("#main h3:nth-child(3)").css("display", "none");
+            $("#scr").removeClass('scale');
         }
         else {
-            $("#menu div.main").css("width", "210px");
-            $("#menu div.second").css("left", "210px");
-            $("#mn").css("width", "210px");
+            $("#menu div.main").css("width", "170px");
+            $("#menu div.second").css("left", "170px");
+            $("#mn").css("width", "170px");
             $("#menu div.main *").css("font-size", "16px");
             $("#menu div.main span").css("font-size", "16px");
             $("#menu div.main").css("padding-top", "20px");
             $("#menu_bar").css("left", "170px");
+            $("#menu_bar").css("z-index", "-2");
             $("#pages *").css("font-size", "16px");
             $(".menu .main > ul > li > a").css("font-size", "16px");
             $("#addPage").css("display", "block");
             $("#main h3:nth-child(3)").css("display", "block");
+			$("#scr").addClass('scale');
         }
     });
 
@@ -3402,6 +3519,7 @@ function publishAsset() {
     });
     // End of the code for toggling the side menu	
 })(jQuery);
+
 /* Loaded after DOM READY EVENT IS CALLED */
 document.addEventListener('DOMContentLoaded', function() {
     setPendingChanges(false);

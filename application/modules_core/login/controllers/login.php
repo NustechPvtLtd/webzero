@@ -908,6 +908,18 @@ class login extends MX_Controller {
                 $data['price_plan_id'] = $_POST['plan_id'];
                 $data['upgrade_by'] = 'self';
                 $data['group_id'] = 7;
+                $plan_info = $this->plans_model->get_plans_by_id($_POST['plan_id']);
+                $expiration_format = $plan_info->expiration_type;
+                if ($expiration_format == "months") {
+                    $expiration_format = "month";
+                }
+                $expiration = $plan_info->expiration;
+                if ($expiration != 0) {
+                    $expiry_date = strtotime(date('Y-m-d', strtotime("+$expiration $expiration_format")));
+                } else {
+                    $expiry_date = 0;
+                }
+                $data['expiry_date'] = $expiry_date;
                 $this->ion_auth_model->update($_POST['user_id'], $data);
                 if (empty($user[0]->social_account)) {
                     $this->ion_auth->send_account_activation($_POST['user_id']);
@@ -959,16 +971,16 @@ class login extends MX_Controller {
             'date_added' => date("Y-m-d H:i:s")
         );
         //calculate expiry date
-        $plan_info=$this->plans_model->get_plans_by_id($plan_id); 
-        $expiration_format=$plan_info->expiration_type;
-        if($expiration_format=="months"){
-            $expiration_format="month";
+        $plan_info = $this->plans_model->get_plans_by_id($plan_id);
+        $expiration_format = $plan_info->expiration_type;
+        if ($expiration_format == "months") {
+            $expiration_format = "month";
         }
-        $expiration=$plan_info->expiration;
-        if($expiration!=0){
-            $expiry_date=strtotime(date('Y-m-d', strtotime("+$expiration $expiration_format")));
-        }else{
-            $expiry_date=0;
+        $expiration = $plan_info->expiration;
+        if ($expiration != 0) {
+            $expiry_date = strtotime(date('Y-m-d', strtotime("+$expiration $expiration_format")));
+        } else {
+            $expiry_date = 0;
         }
         if ($hash != $posted_hash) {
             $account_upgrade = array(
@@ -978,7 +990,7 @@ class login extends MX_Controller {
                 'upgrade_from' => $user[0]->price_plan_id,
                 'upgrade_to' => $plan_id,
                 'date' => time(),
-                'expiry_date'=> $expiry_date
+                'expiry_date' => $expiry_date
             );
             $plan_transaction_data['status'] = 'invalid';
             $this->data['error'] = "Invalid Transaction. Please try again";
@@ -994,7 +1006,7 @@ class login extends MX_Controller {
                 'upgrade_from' => $user[0]->price_plan_id,
                 'upgrade_to' => $plan_id,
                 'date' => time(),
-                'expiry_date'=> $expiry_date
+                'expiry_date' => $expiry_date
             );
             $data['price_plan_id'] = $plan_id;
             $data['upgrade_by'] = 'self';
@@ -1075,17 +1087,17 @@ class login extends MX_Controller {
             'payment_gateway_response' => $status,
             'date_added' => date("Y-m-d H:i:s")
         );
-          //calculate expiry date
-        $plan_info=$this->plans_model->get_plans_by_id($plan_id); 
-        echo $expiration_format=$plan_info->expiration_type;
-        if($expiration_format=="months"){
-            echo $expiration_format="month";
+        //calculate expiry date
+        $plan_info = $this->plans_model->get_plans_by_id($plan_id);
+        echo $expiration_format = $plan_info->expiration_type;
+        if ($expiration_format == "months") {
+            echo $expiration_format = "month";
         }
-        echo $expiration=$plan_info->expiration;
-        if($expiration!=0){
-            $expiry_date=0;
-        }else{
-            $expiry_date=strtotime(date('Y-m-d', strtotime("+$expiration $expiration_format")));
+        echo $expiration = $plan_info->expiration;
+        if ($expiration != 0) {
+            $expiry_date = 0;
+        } else {
+            $expiry_date = strtotime(date('Y-m-d', strtotime("+$expiration $expiration_format")));
             echo $expiry_date;
         }
         die();

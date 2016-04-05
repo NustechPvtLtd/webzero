@@ -432,13 +432,12 @@ body .sp-input {
 
 .main > .sideButtons {
     margin-left: 30px;
-    width: 150px;
     margin-bottom: 30px;
 }
 
 .main > .sideButtons > * {
     margin: 0px;
-    width: 100%;
+    width: 50%;
 }
 
 .menu .main ul#pages {

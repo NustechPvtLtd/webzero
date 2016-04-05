@@ -245,10 +245,10 @@ startOpen: false,
         );
 
         $this->data['css'] = array(
-            '<link href="' . base_url() . 'assets/redactor/redactor.css" type="text/css" rel="stylesheet">',
+            '<link href="' . base_url() . 'assets/sites/js/redactor/redactor.css" type="text/css" rel="stylesheet">',
         );
         $this->data['js'] = array(
-            '<script type="text/javascript" src="' . base_url() . 'assets/redactor/redactor.min.js"></script>',
+            '<script type="text/javascript" src="' . base_url() . 'assets/sites/js/redactor/redactor.min.js"></script>',
         );
         $this->template->load('main', 'account', 'plans/edit_plans', $this->data);
     }

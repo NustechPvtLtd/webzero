@@ -15,7 +15,7 @@ class Domainmodel extends CI_Model {
     
     */
     
-    public function create($siteId, $domainname, $domainData) {
+    public function create($domainname, $domainData, $siteId=FALSE) {
     	$data = array(
     		'domainname' => $domainname,
     		'orderid' => (isset($domainData->entityid))?$domainData->entityid:'',
@@ -29,7 +29,7 @@ class Domainmodel extends CI_Model {
     	   	'sellingamount' => (isset($domainData->sellingamount))?strip_tags($domainData->sellingamount):'',
     	   	'unutilisedsellingamount' => (isset($domainData->unutilisedsellingamount))?strip_tags($domainData->unutilisedsellingamount):'',
     	   	'customerid' => (isset($domainData->customerid))?$domainData->customerid:'',
-    	   	'siteid' => $siteId
+    	   	'siteid' => ($siteId)?$siteId:NULL
     	);
     	
     	$this->db->insert('premium_domain', $data); 

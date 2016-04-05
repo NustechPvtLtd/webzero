@@ -2575,6 +2575,12 @@ footer .social .icon {
 .col-sm-5.col-xs-12.col-sm-push-7 {
     margin-top: 120px;
 }
+
+@media only screen and (max-width: 768px) {
+	.col-sm-5.col-xs-12.col-sm-push-7 {
+		margin-top: 0px;
+	}
+}
 /*----------------------------------------------------------------------------------------
                                                 SOCIAL ICONS STYLES
 ----------------------------------------------------------------------------------------*/
@@ -2986,7 +2992,7 @@ button#uploadImageButtonDrop{
     padding: 4px;
 }
 .modal .fileinput .btn.btn-primary.fileinput-exists {
-    padding: 7px 15px;
+    padding: 9px 15px;
 }
 #header4 .col-sm-5.col-xs-12.col-sm-push-7 {
     margin-top: 100px;

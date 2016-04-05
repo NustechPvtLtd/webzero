@@ -45,12 +45,13 @@ class Domain extends MY_Controller {
                 redirect(site_url('account/plans'));
             }
         }
+        $this->data['pageHeading'] = 'Premium Domain';
+        $this->data['pageMetaDescription'] = $this->router->fetch_class();
     }
 
     public function index($site_id = FALSE)
     {
-        $this->data['pageHeading'] = 'Premium Domain';
-        $this->data['pageMetaDescription'] = $this->router->fetch_class();
+        
         $site_id = $this->sitemodel->getSiteId($this->ion_auth->get_user_id());
 
         if ($site_id) {
@@ -84,7 +85,7 @@ class Domain extends MY_Controller {
 
     public function checkDomainAvalability()
     {
-        if (!empty($_POST['siteID']) && !empty($_POST['domainname']) && !empty($_POST['tlds'])) {
+        if (!empty($_POST['domainname']) && !empty($_POST['tlds'])) {
             $tld = "";
             foreach ($_POST['tlds'] as $key => $value) {
                 $tld.='&tlds=' . $value;
@@ -101,7 +102,7 @@ class Domain extends MY_Controller {
                         $classkey = $value['classkey'];
                         if (array_key_exists($classkey, $priceArray) && isset($_POST['main_domain_page'])) {
                             $table[] = array_merge(
-                                    array(form_radio('domain', $key), 'name' => $key), array(
+                                    array(form_radio('domain', htmlspecialchars(json_encode(array('domainName'=>$key,'price'=>$priceArray[$classkey]['addnewdomain'][1])))), 'name' => $key), array(
                                 $value['status'],
                                 '<i class="fa fa-inr"></i> ' . $priceArray[$classkey]['addnewdomain'][1]
                                     )
@@ -161,7 +162,7 @@ class Domain extends MY_Controller {
             $user_id = userdata('user_id');
             $data = json_decode($data);
             if ($data->status == 'Success') {
-                if ($this->domainmodel->create($site_id, $_POST['domain'], $data)) {
+                if ($this->domainmodel->create($_POST['domain'], $data, $site_id)) {
                     $domainOk = $this->users_domains_model->create($site_id, $user_id, $_POST['domain'], 'premiumDomain');
                     echo $data->actionstatusdesc . ' for ' . $data->actiontypedesc;
                 }
@@ -171,98 +172,54 @@ class Domain extends MY_Controller {
         }
     }
 
-    public function add_domain($site_id)
+    public function buy_domain()
     {
         $this->load->config('payu_money', TRUE);
         $this->_salt = $this->config->item('SALT', 'payu_money');
         $this->_url = $this->config->item('PAYU_BASE_URL', 'payu_money');
 
-        if (isset($_POST['siteSettings_adddomain'])) {
+        if (isset($_POST['domain'])) {
             $user_id = userdata('user_id');
-            $plan_id = userdata('plan_id');
-            //if plan is basic
-            if ($plan_id == 1) {
-                $user = $this->ion_auth_model->user($user_id)->result();
-                $this->data['key'] = $this->config->item('MERCHANT_KEY', 'payu_money');
-                $this->data['surl'] = site_url('domain/addon_success');
-                $this->data['furl'] = site_url('domain/addon_failed');
-                $this->data['service_provider'] = 'payu_paisa';
-                $this->data['txnid'] = $this->_genrate_txnid();
-                $this->data['amount'] = floatval(1000);
-                $this->data['firstname'] = $user[0]->first_name;
-                $this->data['lastname'] = $user[0]->last_name;
-                $this->data['email'] = $user[0]->email;
-                $this->data['phone'] = $user[0]->phone;
-                $this->data['productinfo'] = $_POST['siteSettings_adddomain'];
-                $this->data['hash'] = $this->_genrate_hash($this->data);
-                $this->data['action'] = $this->_url . '_payment';
+            $domainDetails = json_decode(htmlspecialchars_decode($_POST['domain']));
 
-                $domain_order_data = array(
-                    'customer_id' => $user[0]->id,
-                    'addon_domain' => $_POST['siteSettings_adddomain'],
-                    'subtotal' => floatval(1000),
-                    'total' => floatval(1000),
-                    'status' => 'pending',
-                    'date_added' => date("Y-m-d H:i:s"),
-                    'last_updated' => date("Y-m-d H:i:s")
-                );
+            $user = $this->ion_auth_model->user($user_id)->result();
+            $this->data['key'] = $this->config->item('MERCHANT_KEY', 'payu_money');
+            $this->data['surl'] = site_url('domain/buy_success');
+            $this->data['furl'] = site_url('domain/buy_failed');
+            $this->data['service_provider'] = 'payu_paisa';
+            $this->data['txnid'] = $this->_genrate_txnid();
+            $this->data['amount'] = floatval($domainDetails->price);
+            $this->data['firstname'] = $user[0]->first_name;
+            $this->data['lastname'] = $user[0]->last_name;
+            $this->data['email'] = $user[0]->email;
+            $this->data['phone'] = $user[0]->phone;
+            $this->data['productinfo'] = $domainDetails->domainName;
+            $this->data['hash'] = $this->_genrate_hash($this->data);
+            $this->data['action'] = $this->_url . '_payment';
 
-                $order_id = $this->addon_domain_order_model->create_domain_orders($domain_order_data);
-                userdata('domain_order_id', $order_id);
-                userdata('site_id', $site_id);
-                $return['responseCode'] = 1;
-                $return['responseHTML'] = $this->load->view('adddomain', $this->data, true); //
-            } else {
-                $domainId = $this->users_domains_model->create($site_id, $user_id, $_POST['siteSettings_adddomain'], 'addonDomain');
-                if ($domainId) {
-                    //            $return['responseHTML'] = $this->load->view('adddomain', $this->data, true);                
+            $domain_order_data = array(
+                'customer_id' => $user[0]->id,
+                'addon_domain' => $domainDetails->domainName,
+                'subtotal' => floatval($domainDetails->price),
+                'total' => floatval($domainDetails->price),
+                'status' => 'pending',
+                'date_added' => date("Y-m-d H:i:s"),
+                'last_updated' => date("Y-m-d H:i:s")
+            );
 
-                    $return['responseCode'] = 1;
-                    $return['responseHTML'] = '<p>Publish your page again to see the changes.</p><br><table width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td bgcolor="#ececec" height="1" colspan="6"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign="middle" height="31">NS1: ns1.artwork.mysitehosted.com</td>
-                                                        <td width="1" bgcolor="#ececec"></td>
-                                                        <td width="7" bgcolor=""></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td bgcolor="#e9e9e9" height="1" colspan="7"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign="middle" height="31">NS2: ns2.artwork.mysitehosted.com</td>
-                                                    </tr>                            
-                                                    <tr>
-                                                        <td bgcolor="#ececec" height="1" colspan="6"></td>
-                                                    </tr>
-                                                </tbody></table>';
-                } else {
-                    $temp['header'] = "Add Your Personal Domain";
-                    $temp['content'] = "Somthing wrong happen, please try again later";
-                    $return['responseCode'] = 0;
-                    $return['responseHTML'] = $this->load->view('error', array('data' => $temp), true);
-                }
-            }
-        } else {
-            $temp['header'] = "Add Your Personal Domain";
-            $temp['content'] = "Somthing wrong happen, please try again later";
-            $return['responseCode'] = 0;
-            $return['responseHTML'] = $this->load->view('error', array('data' => $temp), true);
+            $order_id = $this->addon_domain_order_model->create_domain_orders($domain_order_data);
+            userdata('domain_order_id', $order_id);
+//            $this->load->view('adddomain', $this->data, true); //
+            $this->template->load('main', 'domain', 'adddomain', $this->data);
         }
-        echo json_encode($return);
     }
 
-    public function addon_success()
+    public function buy_success()
     {
         if (!isset($_POST["txnid"])) {
             redirect('/', 'location');
         }
         $this->load->config('payu_money', TRUE);
-        $this->data['pageHeading'] = 'Add-on Domain';
-        $this->data['pageMetaDescription'] = $this->router->fetch_class();
         $user_id = userdata('user_id');
         $user = $this->ion_auth_model->user($user_id)->result();
         $status = $_POST["status"];
@@ -276,7 +233,6 @@ class Domain extends MY_Controller {
         $salt = $this->config->item('SALT', 'payu_money');
         $this->data['name'] = $user[0]->first_name . ' ' . $user[0]->last_name;
         $order_id = $this->session->userdata['domain_order_id'];
-        $site_id = $this->session->userdata['site_id'];
 
         If (isset($_POST["additionalCharges"])) {
             $additionalCharges = $_POST["additionalCharges"];
@@ -296,27 +252,38 @@ class Domain extends MY_Controller {
         if ($hash != $posted_hash) {
             $domain_transaction_data['status'] = 'invalid';
             $this->data['error'] = "Invalid Transaction. Please try again";
+            $this->addon_domain_transaction_model->create_domain_transaction($domain_transaction_data);
+            $this->template->load('main', 'domain', 'failure', $this->data);
         } else {
-
             $this->data['status'] = $status;
             $this->data['txnid'] = $txnid;
             $this->data['amount'] = $amount;
             $domain_transaction_data['status'] = 'success';
-
-            $domainId = $this->users_domains_model->create($site_id, $user_id, $productinfo, 'addonDomain');
+            
+            $this->addon_domain_transaction_model->create_domain_transaction($domain_transaction_data);
+            
+            $this->getContact();
+            $url = "https://test.httpapi.com/api/domains/register.json?auth-userid={$this->auth_userid}&api-key={$this->api_key}&domain-name={$productinfo}&years=1&ns={$this->ns1}&ns={$this->ns2}&customer-id={$this->customer_id}&reg-contact-id={$this->reg_contact_id}&admin-contact-id={$this->admin_contact_id}&tech-contact-id={$this->tech_contact_id}&billing-contact-id={$this->billing_contact_id}&invoice-option=PayInvoice";
+            $data = $this->_domainCallAPI('GET', $url);
+            $data = json_decode($data);
+            if ($data->status == 'Success') {
+                if ($this->domainmodel->create($productinfo, $data)) {
+                    $this->data['message'] = $data->actionstatusdesc . ' for ' . $data->actiontypedesc;
+                }
+                $this->template->load('main', 'domain', 'success', $this->data);
+            } else {
+                $this->data['message'] = 'Domain not booked, please try again latter!';
+                $this->template->load('main', 'domain', 'failure', $this->data);
+            }
         }
-        $this->addon_domain_transaction_model->create_domain_transaction($domain_transaction_data);
-        $this->template->load('main', 'domain', 'success', $this->data);
     }
 
-    public function addon_failed()
+    public function buy_failed()
     {
         if (!isset($_POST["txnid"])) {
             redirect('/', 'location');
         }
         $this->load->config('payu_money', TRUE);
-        $this->data['pageHeading'] = 'Add-on Domain';
-        $this->data['pageMetaDescription'] = $this->router->fetch_class();
         $status = $_POST["status"];
         $firstname = $_POST["firstname"];
         $amount = $_POST["amount"];
@@ -330,13 +297,11 @@ class Domain extends MY_Controller {
         $salt = $this->config->item('SALT', 'payu_money');
         $this->data['name'] = $user[0]->first_name . ' ' . $user[0]->last_name;
         $order_id = $this->session->userdata['domain_order_id'];
-        $site_id = $this->session->userdata['site_id'];
 
         If (isset($_POST["additionalCharges"])) {
             $additionalCharges = $_POST["additionalCharges"];
             $retHashSeq = $additionalCharges . '|' . $salt . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
         } else {
-
             $retHashSeq = $salt . '|' . $status . '|||||||||||' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
         }
         $hash = hash("sha512", $retHashSeq);

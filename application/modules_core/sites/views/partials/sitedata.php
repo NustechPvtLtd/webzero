@@ -133,6 +133,7 @@
         </div>
     </div>
     <div class="clearfix"><!--clear Div--></div>
+    <?php if(isset($domains['paidDomain'])): ?>
     <div class="col-sm-12">
         <div class="panel panel-default" id="paidDomainOptionPane">
             <div class="panel-heading">
@@ -164,6 +165,7 @@
         </div>
     </div>    
     <div class="clearfix"><!--clear Div--></div>
+    <?php endif;?>
 </div>
 <!---->
 

@@ -202,7 +202,19 @@ WHERE `users`.`id` <> {$userID} AND `users`.`parent_id` = {$userID}";
                 if ($this->input->post('notes')) {
                     $data['notes'] = $this->input->post('notes');
                 }
-
+                
+                $plan_info = $this->plans_model->get_plans_by_id($data['price_plan_id']);
+                $expiration_format = $plan_info->expiration_type;
+                if ($expiration_format == "months") {
+                    $expiration_format = "month";
+                }
+                $expiration = $plan_info->expiration;
+                if ($expiration != 0) {
+                    $expiry_date = strtotime(date('Y-m-d', strtotime("+$expiration $expiration_format")));
+                } else {
+                    $expiry_date = 0;
+                }
+                $data['expiry_date'] = $expiry_date;
                 //check to see if we are updating the user
                 if ($this->ion_auth->update($user->id, $data)) {
                     //redirect them back to the admin page if admin, or to the base url if non admin

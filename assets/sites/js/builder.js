@@ -227,6 +227,10 @@ function setPendingChanges(v) {
         $('#savePage').removeClass('disabled');
         $('#savePage').addClass('btn-success');
 
+        $('.tempSavecls .bLabel').text("Save changes (!)");
+        $('.tempSavecls').removeClass('btn-primary');
+        $('.tempSavecls').removeClass('disabled');
+        $('.tempSavecls').addClass('btn-success');
         pendingChanges = true;
 
     } else {
@@ -235,6 +239,12 @@ function setPendingChanges(v) {
         $('#savePage').removeClass('btn-success');
         $('#savePage').addClass('btn-primary');
         $('#savePage').addClass('disabled');
+
+        $('.tempSavecls .bLabel').text("Nothing to save");
+        $('.tempSavecls').removeClass('btn-success');
+        $('.tempSavecls').addClass('btn-primary');
+        $('.tempSavecls').addClass('disabled');
+
         pendingChanges = false;
 
     }
@@ -446,7 +456,6 @@ function makeDraggable(theID) {
     $('#elements li a').each(function() {
 
         $(this).unbind('click').bind('click', function(e) {
-
             e.preventDefault();
 
         });
@@ -483,6 +492,7 @@ function makeSortable(el) {
                             $("#pageList").css('background-repeat', 'no-repeat');
                         },
                         success: function(data) {
+
                             $("#pageList").css('background-image', 'none');
                             var i = 0;
 
@@ -519,6 +529,7 @@ function makeSortable(el) {
 
                                 el.find('.videoGallery').html5gallery();
                                 $('#pageList > ul:visible').append(el);
+
                                 heightAdjustment(el.find('section').attr('id'), true);
 
                                 i++;
@@ -610,9 +621,7 @@ function makeSortable(el) {
 $('#second #elements').on('click', 'li', function() {
     ui = $(this);
     var el = ui.clone();
-
     theHeight = ui.find('img').attr('data-height');
-
     el.html('<section src="' + ui.find('img').attr('data-srcc') + '" scrolling="no" data-originalurl="' + ui.find('img').attr('data-srcc') + '" frameborder="0"></section>');
 
     $.ajax({
@@ -976,15 +985,13 @@ function heightAdjustment(el, par) {
         theFrame = document.getElementById(frameID);
 
     } else {
-
         theFrame = document.getElementById(el);
-
     }
 
     //realHeight = theFrame.contentWindow.document.body.offsetHeight;
 
-    realHeight = theFrame.offsetHeight;
-
+    //realHeight = theFrame.offsetHeight;
+//alert(realHeight);
     //alert(theFrame.contentWindow.document.body.offsetHeight)
 
     $(theFrame).height("auto");
@@ -2814,67 +2821,75 @@ $(function() {
 
     });
 
-
-
-    //save page
-    $('#savePage').click(function(e) {
-
-        $('input:radio[name=mode]#modeBlock').trigger('click');
-
-//        savePage(e);
-        closeStyleEditor();
-        //disable button
-        $("a#savePage").addClass('disabled');
-
-        //remove old alerts
-        $('#massageDialog .modal-body > *').each(function() {
-            $(this).remove();
-        });
-
-        thePages = prepPagesforSave();
-
-        if (typeof pagesData !== 'undefined') {
-
-            theData = {pageData: thePages, siteName: $('#siteTitle').text(), siteID: siteID, pagesData: pagesData};
-
-        } else {
-
-            theData = {pageData: thePages, siteName: $('#siteTitle').text(), siteID: siteID};
-
-        }
-//        console.log(theData);
-
+    function ajaxSave_op(theData) {
+        $.blockUI();
         $.ajax({
             url: siteUrl + "sites/save",
             type: "POST",
             dataType: "json",
             data: theData,
         }).done(function(res) {
-
+            $.unblockUI();
             //enable button
             $("a#savePage").removeClass('disabled');
-
             if (res.responseCode == 0) {
-
                 $('#massageDialog .modal-body').append($(res.responseHTML));
-
                 $('#massageDialog').modal('show');
 
             } else if (res.responseCode == 1) {
-
                 $('#massageDialog .modal-body').append($(res.responseHTML));
-
                 $('#massageDialog').modal('show');
-
                 siteID = res.siteID;
-
+                if (res.path_pdf) {
+                    $('#pdf_path_flag').remove();
+                    $('#pdfs').append('<a href="' + res.path_pdf + '" id="pdf_path_flag" target="_blank">Click here for Previous Content</a>');
+                }
                 //no more pending changes
                 setPendingChanges(false);
-
             }
 
         });
+    }
 
+    //save page
+    $('#savePage').click(function(e) {
+
+        $('input:radio[name=mode]#modeBlock').trigger('click');
+//        savePage(e);
+        closeStyleEditor();
+        //disable button
+        $("a#savePage").addClass('disabled');
+        //remove old alerts
+        $('#massageDialog .modal-body > *').each(function() {
+            $(this).remove();
+        });
+        thePages = prepPagesforSave();
+        if (typeof pagesData !== 'undefined') {
+            theData = {
+                pageData: thePages,
+                siteName: $('#siteTitle').text(),
+                siteID: siteID,
+                pagesData: pagesData
+            };
+        } else {
+            theData = {
+                pageData: thePages,
+                siteName: $('#siteTitle').text(),
+                siteID: siteID
+            };
+
+        }
+//        console.log(theData);
+        if (pdf_flag == 0) {
+            ajaxSave_op(theData);
+        } else {
+            bootbox.confirm("Do you want to save? If you press Ok your old pdf content Will be Deleted.", function(result) {
+                // var text_data = $('#editContentModal #contentToEdit').redactor('code.get');
+                if (result == true) {
+                    ajaxSave_op(theData);
+                }
+            });
+        }
     });
 
     $("#take_template").validate({
@@ -2913,91 +2928,94 @@ $(function() {
         }
 
     });
+    function ajax_saveTemplate(theData) {
 
+        $.ajax({
+            url: siteUrl + "sites/save_template",
+            type: "POST",
+            dataType: "json",
+            data: theData,
+        }).done(function(res) {
+            $('#savetemplate').attr('disabled', false);
+            $('#myModal_temp .loader').hide();
+            //enable button
+            $("a#savetemplate").removeClass('disabled');
+            $('#myModal_temp').modal('hide');
+            if (res.responseCode == 0) {
+                $('#massageDialog .modal-body').append($(res.responseHTML));
+                $('#massageDialog').modal('show');
+            } else if (res.responseCode == 1) {
+
+                $('#massageDialog .modal-body').append($(res.responseHTML));
+                $('#massageDialog').modal('show');
+                setPendingChanges(false);
+//                setTimeout(function() {
+//                    window.location.assign(siteUrl + 'sites/templates');
+//                }, 100);
+            }
+        });
+    }
     //save as template
     $('#savetemplate').click(function(e) {
-
         $('#savetemplate').attr('disabled', true);
-
+        thePages = prepPagesforSave();
         if ($('#take_template').valid()) {
             $('input:radio[name=mode]#modeBlock').trigger('click');
-
             closeStyleEditor();
             //disable button
-            $("a#savePage").addClass('disabled');
-
+            $("a#savetemplate").addClass('disabled');
             //remove old alerts
             $('#massageDialog .modal-body > *').each(function() {
                 $(this).remove();
             });
-            thePages = prepPagesforSave();
             $('#temp_error').empty();
             var template_name = $('input[name="template_name"]').val();
             var category_id = $("#cate_select option:selected").val();
             $('#myModal_temp .loader').show();
-            $.ajax({
-                url: siteUrl + "sites/check_template_name",
-                type: "POST",
-                dataType: "json",
-                encode: true,
-                data: {'template_name': template_name, 'category_id': category_id}
-            }).done(function(data_res) {
-                $('#myModal_temp .loader').hide();
-                if (data_res.responseCode == 0) {
-                    //if template name and catgory both present in db ask for new template name
-                    $('#temp_error').append(data_res.responseMSG);
-                    $('#myform_template_category').removeClass('help.block').addClass('has-error');
-                    return false;
-                } else {
-                    $('#temp_error').empty();
-
-                    if (typeof pagesData !== 'undefined') {
-
-                        theData = {template_element: thePages, siteName: $('#siteTitle').text(), siteID: siteID, template_name: template_name, category_id: category_id, pagesData: pagesData, img_url: $('#img_val').val()};
+            if (templateID == null || templateID == 'undefined' || templateID == '') {
+                $.ajax({
+                    url: siteUrl + "sites/check_template_name",
+                    type: "POST",
+                    dataType: "json",
+                    encode: true,
+                    data: {'template_name': template_name, 'category_id': category_id}
+                }).done(function(data_res) {
+                    $('#myModal_temp .loader').hide();
+                    if (data_res.responseCode == 0) {
+                        //if template name and catgory both present in db ask for new template name
+                        $('#temp_error').append(data_res.responseMSG);
+                        $('#myform_template_category').removeClass('help.block').addClass('has-error');
+                        return false;
                     } else {
+                        $('#temp_error').empty();
+                        if (typeof pagesData !== 'undefined') {
 
-                        theData = {template_element: thePages, siteName: $('#siteTitle').text(), siteID: siteID, template_name: template_name, category_id: category_id, img_url: $('#img_val').val()};
+                            theData = {template_element: thePages, template_name: template_name, category_id: category_id, pagesData: pagesData, img_url: $('#img_val').val()};
+                        } else {
 
-                    }
-                    $('#myModal_temp .loader').show();
-
-                    $.ajax({
-                        url: siteUrl + "sites/save_template",
-                        type: "POST",
-                        dataType: "json",
-                        data: theData,
-                    }).done(function(res) {
-                        $('#savetemplate').attr('disabled', false);
-                        $('#myModal_temp .loader').hide();
-                        //enable button
-                        $("a#savePage").removeClass('disabled');
-                        $('#myModal_temp').modal('hide');
-                        if (res.responseCode == 0) {
-
-                            $('#massageDialog .modal-body').append($(res.responseHTML));
-
-                            $('#massageDialog').modal('show');
-
-                        } else if (res.responseCode == 1) {
-
-                            $('#massageDialog .modal-body').append($(res.responseHTML));
-
-                            $('#massageDialog').modal('show');
-                            setPendingChanges(false);
-                            setTimeout(function() {
-                                window.location.assign(siteUrl + 'sites/templates');
-                            }, 100);
-
+                            theData = {template_element: thePages, template_name: template_name, category_id: category_id, img_url: $('#img_val').val()};
                         }
-                    });
+                        $('#myModal_temp .loader').show();
+                        ajax_saveTemplate(theData);
+                    }
+                });
+            } else {
+                $('#temp_error').empty();
+                if (typeof pagesData !== 'undefined') {
+
+                    theData = {templateID: templateID, template_element: thePages, template_name: template_name, category_id: category_id, pagesData: pagesData, img_url: $('#img_val').val()};
+                } else {
+
+                    theData = {templateID: templateID, template_element: thePages, template_name: template_name, category_id: category_id, img_url: $('#img_val').val()};
                 }
-            });
-        } else
-        {
+                $('#myModal_temp .loader').show();
+                ajax_saveTemplate(theData);
+            }
+
+        } else {
             e.preventDefault();
             return false;
         }
-
     });
 
 
@@ -3330,7 +3348,7 @@ $(function() {
         var footerStart = '<li class="element footer " style="display: list-item; height: auto;">';
         var footerEnd = '</li>';
         var footer = '';
-        
+
         //Copy navigation elements
         $('#pageList ul:first > li').each(function() {
             if ($(this).hasClass('navigation')) {
@@ -4197,7 +4215,7 @@ function publishAsset() {
             $("div.float-right").css("display", "none");
         }
 
-        if (f == '210px') {
+        if (f == '170px') {
             $("#menu div.main").css("width", "40px");
             $("#menu div.second").css("left", "40px");
             $("#mn").css("width", "40px");
@@ -4205,21 +4223,26 @@ function publishAsset() {
             $("#menu div.main span").css("font-size", "16px");
             $("#menu div.main").css("padding-top", "40px");
             $("#menu_bar").css("left", "0px");
-            $("#pages *").css("font-size","0px");
-            $("#addPage").css("display","none");
-            $("#main h3:nth-child(3)").css("display","none");
-
+            $("#menu_bar").css("z-index", "1");
+            $("#pages *").css("font-size", "0px");
+            $("#addPage").css("display", "none");
+            $("#main h3:nth-child(3)").css("display", "none");
+            $("#scr").css("transform-origin", "right top");
+            $("#scr").css("transform", "scale(1)");
         } else {
-            $("#menu div.main").css("width", "210px");
-            $("#menu div.second").css("left", "210px");
-            $("#mn").css("width", "210px");
+            $("#menu div.main").css("width", "170px");
+            $("#menu div.second").css("left", "170px");
+            $("#mn").css("width", "170px");
             $("#menu div.main *").css("font-size", "16px");
             $("#menu div.main span").css("font-size", "16px");
             $("#menu div.main").css("padding-top", "20px");
             $("#menu_bar").css("left", "170px");
+            $("#menu_bar").css("z-index", "-2");
             $("#pages *").css("font-size", "16px");
-            $("#addPage").css("display","block");
-            $("#main h3:nth-child(3)").css("display","block");
+            $("#addPage").css("display", "block");
+            $("#main h3:nth-child(3)").css("display", "block");
+            $("#scr").css("transform-origin", "right top");
+            $("#scr").css("transform", "scale(0.91, 1)");
         }
     });
 
@@ -4238,6 +4261,7 @@ function publishAsset() {
 
 document.addEventListener("DOMContentLoaded", function(event) {
     $('#savePage').addClass('disabled');
+    $('.tempSavecls').addClass('disabled');
 });
 
 function deletectext(content_id) {

@@ -124,7 +124,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xs-12" style="padding: 0px;">
-                            <div class="col-sm-4 col-xs-5" style="padding: 0px;">
+                            <div class="col-sm-3 col-xs-4" style="padding: 0px;">
                                 <div class="modes">
                                     <b>Building mode:</b>
                                     <label class="radio primary first">
@@ -138,7 +138,14 @@
                                 </div>
                             </div>
                             <a id="options"><i class="fa fa-bars"></i></a>
-                            <div class="col-sm-8 col-xs-5 float-right" style="padding: 0px;">
+<!--                            <div class="col-sm-3 col-xs-4 " id="pdfs" style="padding: 0px;">
+                                <?php $pdf_path = userdata('pdf_path');
+                                if (isset($pdf_path) && !empty($pdf_path)) {
+                                    ?>
+                                    <a href="<?php echo site_url() . $pdf_path; ?>" id="pdf_path_flag" target="_blank">Click Here for Previous Content</a>
+<?php } ?>
+                            </div>-->
+                            <div class="col-sm-8 col-xs-4 float-right" style="padding: 0px;">
                                 <a href="#" id="savePage" class="btn btn-primary disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Nothing to save</span></a>
                                 <a href="#" id="publishPage" class="btn btn-primary disabled actionButtons" data-siteid="<?php echo $siteData['site']->sites_id; ?>" <?php if ($siteData['site']->domain_ok == 0): ?>data-toggle="tooltip"<?php endif; ?> data-placement="bottom" title="You can not publish your site right now. Please update your url details from settings menu." ><span class="fui-export"></span> <span> Publish</span> <span class="fui-alert text-danger" <?php if ($siteData['site']->domain_ok == 1): ?>style="display:none"<?php endif; ?>></span></a>
                                 <a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-primary disabled actionButtons" ><span class="fui-window"></span><span> Preview</span></a>
@@ -195,7 +202,7 @@
                                 </span>
                             </li>
 
-                            <?php if (count($siteData['pages']) == 0): ?>
+<?php if (count($siteData['pages']) == 0): ?>
                                 <li class="active">
                                     <a href="#page1">index</a>
                                     <span class="pageButtons">
@@ -206,22 +213,22 @@
 
                                 <?php $counter = 1; ?>
 
-                                <?php foreach ($siteData['pages'] as $page => $frames): ?>
+    <?php foreach ($siteData['pages'] as $page => $frames): ?>
                                     <li <?php if ($counter == 1): ?>class="active"<?php endif; ?>>
                                         <a href="#page<?php echo $counter; ?>"><?php echo $page; ?></a>
                                         <span class="pageButtons">
                                             <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
-                                            <?php if ($page !== 'index'): ?>
+        <?php if ($page !== 'index'): ?>
                                                 <a href="" class="fileEdit"><span class="fui-new"></span></a>
                                                 <a href="" class="fileDel"><span class="fui-cross"></span></a>
                                                 <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
-                                            <?php endif; ?>
+        <?php endif; ?>
                                         </span>
                                     </li>
                                     <?php $counter++; ?>
                                 <?php endforeach; ?>
 
-                            <?php endif; ?>
+<?php endif; ?>
                         </ul>
 
                         <div class="sideButtons clearfix">
@@ -245,7 +252,7 @@
                 </div><!-- /.menu -->
             </aside>
             <aside class="right-side" id="scr">
-                <?php echo $body; ?>
+<?php echo $body; ?>
                 <!-- Builder Body -->
             </aside>
         </div>
@@ -338,7 +345,7 @@
                 <!-- /tabs -->
                 <div class="tab-pane iconTab" id="icon_Tab">
                     <label>Choose an icon below: </label>
-                    <?php $this->load->view("partials/icon_dropdown.php"); ?>
+<?php $this->load->view("partials/icon_dropdown.php"); ?>
                 </div><!-- /.tab-pane -->
 
                 <!-- /tabs -->
@@ -368,10 +375,10 @@
         <!-- modals -->
 
         <!-- Site setting popup-->
-        <?php $this->load->view("shared/modal_sitesettings.php"); ?>
+<?php $this->load->view("shared/modal_sitesettings.php"); ?>
 
         <!-- Resume Password setting popup-->
-        <?php $this->load->view("shared/modal_shareprofile.php"); ?>		
+<?php $this->load->view("shared/modal_shareprofile.php"); ?>		
 
         <!-- preview HTML popup -->
         <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -471,7 +478,7 @@
                         Are you sure you want to delete this entire page?
                     </div><!-- /.modal-body -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default " data-dismiss="modal" id="deletePageCancel">Cancel & Close</button>
+                        <button type="button" class="btn btn-default " data-dismiss="modal" id="deletePageCancel" onclick="$('#deletePage').modal('hide');">Cancel & Close</button>
                         <button type="button" class="btn btn-primary " id="deletePageConfirm">Delete</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -517,7 +524,7 @@
                     <div class="modal-body">
                         <div class="loader" style="display: none;">
                             <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-                            <?php echo $this->lang->line('modal_pagesettings_loadertext') ?>
+<?php echo $this->lang->line('modal_pagesettings_loadertext') ?>
                         </div>
                         <div class="modal-alerts"></div>
                         <?php
@@ -547,7 +554,7 @@
                     <div class="modal-body">
                         <div class="loader" style="display: none;">
                             <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-                            <?php echo $this->lang->line('modal_pagesettings_loadertext') ?>
+<?php echo $this->lang->line('modal_pagesettings_loadertext') ?>
                         </div>
                         <div class="modal-alerts"></div>
                         <?php
@@ -575,11 +582,11 @@
                         <div class="modal-body">
                             <div class="loader" style="display: none;">
                                 <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-                                <?php echo $this->lang->line('loading_saving_data') ?> ...
+<?php echo $this->lang->line('loading_saving_data') ?> ...
                             </div>
                             <div class="alert alert-success">
                                 <h4><?php echo $this->lang->line('modalpublish_success_heading') ?></h4>
-                                <?php echo $this->lang->line('modalpublish_success_message') ?>
+<?php echo $this->lang->line('modalpublish_success_message') ?>
                             </div>
                             <div class="modal-alerts">
 
@@ -587,7 +594,7 @@
                             <div class="alert alert-info" style="display: none;" id="publishPendingChangesMessage">
                                 <h4><?php echo $this->lang->line('modalpublish_pendingchanges_heading') ?></h4>
                                 <p>
-                                    <?php echo $this->lang->line('modalpublish_pendingchanges_message') ?>
+<?php echo $this->lang->line('modalpublish_pendingchanges_message') ?>
                                 </p>
                                 <button type="button" class="btn btn-info btn-wide save"><?php echo $this->lang->line('modalpublish_pendingchanges_button_savechanges') ?></button>
                             </div>
@@ -624,7 +631,7 @@
         </div><!-- /.modal -->
 
         <!-- Image Gallery Modal -->
-        <?php $this->load->view("shared/modal_imagegallery.php", array('site' => $siteData['site'])); ?>
+<?php $this->load->view("shared/modal_imagegallery.php", array('site' => $siteData['site'])); ?>
 
         <!-- Video Gallery Modal -->
         <div class="modal fade " id="videoModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -637,7 +644,7 @@
                     <div class="modal-body">
                         <div class="loader" style="display: none;">
                             <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-                            <?php echo $this->lang->line('modal_videolibrary_loadertext') ?>
+<?php echo $this->lang->line('modal_videolibrary_loadertext') ?>
                         </div>
                         <div class="modal-alerts">
 
@@ -651,13 +658,13 @@
                                 <div class="tab-pane active" id="myVideosTab">
                                     <?php if (isset($userVideos)): ?>
                                         <?php $this->load->view("partials/myvideos.php", array('userVideos' => $userVideos, 'bucket' => $bucket)); ?>
-                                    <?php else: ?>
+<?php else: ?>
                                         <!-- Alert Info -->
                                         <div class="alert alert-info">
                                             <button type="button" class="close fui-cross" data-dismiss="alert"></button>
-                                            <?php echo $this->lang->line('modal_videolibrary_message_novideos'); ?>
+                                        <?php echo $this->lang->line('modal_videolibrary_message_novideos'); ?>
                                         </div>
-                                    <?php endif; ?>
+<?php endif; ?>
                                 </div><!-- /.tab-pane -->
                                 <div class="tab-pane" id="uploadVideoTab">
                                     <form id="videoUploadForm" action="<?php echo site_url('sites/amazon_services/videoUploadAjax/' . $siteData['site']->sites_id); ?>">
@@ -740,61 +747,64 @@
         <!-- End Student Resume JS -->
 
         <script>
-            var baseUrl = "<?php echo base_url(); ?>";
-            var siteUrl = "<?php echo site_url('/'); ?>";
+                            var baseUrl = "<?php echo base_url(); ?>";
+                            var siteUrl = "<?php echo site_url('/'); ?>";
 
 <?php if (isset($siteData)): ?>
-                var siteID = <?php echo $siteData['site']->sites_id; ?>;
+                                var siteID = <?php echo $siteData['site']->sites_id; ?>;
 <?php else: ?>
-                var siteID = 0;
+                                var siteID = 0;
 <?php endif; ?>
 
 <?php if (isset($pagesData)): ?>
-                var pagesData = <?php echo json_encode($pagesData); ?>;
+                                var pagesData = <?php echo json_encode($pagesData); ?>;
 <?php endif; ?>
-            var plan = '<?php echo userdata('plan_id') ?>';
-            var userImageLoaded = false;
-            var _HtmlElements = <?php echo $all_templates_data; ?>;
-            $(function() {
+                            var plan = '<?php echo userdata('plan_id') ?>';
+                            var pdf_flag = <?php $p_flag = userdata('pdf_path');
+if (!empty($p_flag)) echo 1;
+else echo 0; ?>;
+                            var userImageLoaded = false;
+                            var _HtmlElements = <?php echo $all_templates_data; ?>;
+                            $(function() {
 
-                var ua = window.navigator.userAgent;
-                var msie = ua.indexOf("MSIE ");
+                                var ua = window.navigator.userAgent;
+                                var msie = ua.indexOf("MSIE ");
 
 <?php if (isset($siteData)): ?>
 
-                    $('#pageList li > section').each(function() {
+                                    $('#pageList li > section').each(function() {
 
-                        theHeight = $(this).attr('data-height');
-                        //add height to frames array
-                        $(this).css('height', theHeight + "px");
+                                        theHeight = $(this).attr('data-height');
+                                        //add height to frames array
+                                        $(this).css('height', theHeight + "px");
 
-                        $(this).css('padding', '0px');
-                        $(this).css('z-index', '0');
-                        heightAdjustment($(this).attr('id'), true);
+                                        $(this).css('padding', '0px');
+                                        $(this).css('z-index', '0');
+                                        heightAdjustment($(this).attr('id'), true);
 
-                        //add a delete button
-                        delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> remove</button>');
-                        resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> reset</button>');
-                        htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> source</button>');
-                        cloneButton = $('<button type="button" class="btn btn-info cloneBlock"><i class="fa fa-copy"></i> Clone</button>');
-                        dragButton = $('<div type="button" class="btn btn-success dragBlock"><i class="fa fa-arrows"></i> Drag</div>');
+                                        //add a delete button
+                                        delButton = $('<button type="button" class="btn btn-danger deleteBlock"><span class="fui-trash"></span> remove</button>');
+                                        resetButton = $('<button type="button" class="btn btn-warning resetBlock"><i class="fa fa-refresh"></i> reset</button>');
+                                        htmlButton = $('<button type="button" class="btn btn-inverse htmlBlock"><i class="fa fa-code"></i> source</button>');
+                                        cloneButton = $('<button type="button" class="btn btn-info cloneBlock"><i class="fa fa-copy"></i> Clone</button>');
+                                        dragButton = $('<div type="button" class="btn btn-success dragBlock"><i class="fa fa-arrows"></i> Drag</div>');
 
-                        frameCover = $('<div class="frameCover"></div>');
+                                        frameCover = $('<div class="frameCover"></div>');
 
-                        frameCover.append(delButton);
-                        frameCover.append(resetButton);
-                        frameCover.append(htmlButton);
-                        frameCover.append(cloneButton);
-                        frameCover.append(dragButton);
+                                        frameCover.append(delButton);
+                                        frameCover.append(resetButton);
+                                        frameCover.append(htmlButton);
+                                        frameCover.append(cloneButton);
+                                        frameCover.append(dragButton);
 
-                        $(this).closest('li').append(frameCover);
+                                        $(this).closest('li').append(frameCover);
 
-                    });
+                                    });
 
-                    allEmpty();
+                                    allEmpty();
 <?php endif; ?>
 
-            });
+                            });
         </script>
         <!-- SITE PASSWORD SETTINGS FOR STUDENT RESUME PAGE -->
         <script>

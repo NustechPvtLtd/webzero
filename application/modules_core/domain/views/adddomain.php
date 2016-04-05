@@ -1,7 +1,7 @@
 <div class="box box-primary no-top-border">
     <form action="<?php echo $action; ?>" method="post" name="payuForm">
         <div class="box-header">
-            <h4><?php echo 'Please not your transaction ID: '.$txnid;?></h4>
+            <h4><?php echo 'Please note down your transaction ID: '.$txnid;?></h4>
         </div>
         <div class="box-body">
             <input type="hidden" name="key" value="<?php echo $key ?>" />

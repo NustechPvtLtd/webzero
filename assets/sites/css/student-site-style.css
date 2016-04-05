@@ -205,7 +205,7 @@ header .modes > label:last-child {
     font-size: 13px;
     float: left;
     width: 55%;
-	text-align:left;
+    text-align:left;
 }
 
 .styleEditor .form-group {
@@ -378,7 +378,7 @@ body .sp-input {
 
 .dropdown-inverse{
     background-color:#444;
-	left:-50px;
+    left:-50px;
 }
 .dropdown-arrow-inverse {
     border-bottom-color: #444 !important;
@@ -520,14 +520,14 @@ div.affix {
 .menu .second {
     background: #111;
     width: 0px;
-    height: 100%;
+    height: calc(100% - 56px);
     float: left;
     display: none;
     box-shadow: inset 2px 0px 5px rgba(0,0,0,0.3);
     z-index: -1;
     overflow-y: hidden;
     position: absolute;
-    left:210px;
+    left:170px;
 }
 
 .menu .second .hideSecond {
@@ -666,8 +666,10 @@ li.element {
     border: 0px;
 }
 .screen {
-    border: 1px solid #E1E0E0;
-	max-width: 100%;
+    border-width: 1px 1.6px;
+    border-color: #E1E0E0;
+    border-style: solid;
+    max-width: 100%;
 }
 .screen .zoomer-wrapper {
     background: #fff;
@@ -691,7 +693,7 @@ li.element {
     text-transform: uppercase;
     text-align: center;
     margin: 170px auto 0px;
-	border-radius: 3px;
+    border-radius: 3px;
 }
 
 .screen .toolbar {
@@ -794,7 +796,7 @@ li.element {
     position: absolute;
     top: 0px;
     right: 0px;
-	display: none;
+    display: block;   
 }
 
 .screen .frameCover button.btn-danger, .screen .frameCover button.btn-warning, .screen .frameCover button.btn-inverse, .screen .frameCover .btn-success, .screen .frameCover button.btn-info {
@@ -813,7 +815,7 @@ li.element {
 }*/
 
 .screen .frameCover:hover .btn-success {
-	cursor: move;
+    cursor: move;
 }
 
 .screen .aceEditor {
@@ -930,69 +932,69 @@ li.element {
 /* site settings */
 
 .optionPane {
-	background: #eee;
-	border: 2px dashed #ddd;
-	padding: 30px 20px;
-	margin-bottom: 15px;
+    background: #eee;
+    border: 2px dashed #ddd;
+    padding: 30px 20px;
+    margin-bottom: 15px;
 }
 
 .optionPane.export {
-	padding: 20px;
-	background: #fff;
+    padding: 20px;
+    background: #fff;
 }
 
 .optionPane h6 {
-	margin-top: 0px;
-	font-weight: bold;
-	font-size: 23px;
-	margin-bottom: 40px;
+    margin-top: 0px;
+    font-weight: bold;
+    font-size: 23px;
+    margin-bottom: 40px;
 }
 
 .optionPane.export h6 {
-	font-size: 18px;
-	margin-bottom: 20px;
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
 .optionPane .url {
-	line-height: 36px;
-	height: 36px;
-	text-overflow: ellipsis;
+    line-height: 36px;
+    height: 36px;
+    text-overflow: ellipsis;
 }
 
 .optionPane.export label.checkbox {
-	padding-top: 0px;
-	font-size: 20px;
-	font-size: 17px;
-	line-height: 20px;
-	min-height: 20px;
+    padding-top: 0px;
+    font-size: 20px;
+    font-size: 17px;
+    line-height: 20px;
+    min-height: 20px;
 }
 
 .optionPane.export .table {
-	table-layout: fixed;
-	margin-bottom: 0px;
+    table-layout: fixed;
+    margin-bottom: 0px;
 }
 
 .optionPane.export .table td span.publishing {
-	color: #000;
-	float: right;
-	font-size: 12px;
-	text-transform: uppercase;
-	display: none;
+    color: #000;
+    float: right;
+    font-size: 12px;
+    text-transform: uppercase;
+    display: none;
 }
 
 .optionPane.export .table td span.publishing .done {
-	font-weight: bold;
-	display: none;
+    font-weight: bold;
+    display: none;
 }
 
 .optionPane.export .table td span.publishing .done > span {
-	font-size: 16px;
+    font-size: 16px;
 }
 
 .btn-group .dropdown-inverse li  a{
-  border-radius: 2px;
-  padding-bottom: 7px;
-  padding-top: 5px;
+    border-radius: 2px;
+    padding-bottom: 7px;
+    padding-top: 5px;
 }
 
 
@@ -1004,38 +1006,38 @@ li.element {
     width: 100%;
 }
 .additionalskill{
-	margin-top:10px;
+    margin-top:10px;
 }
 .addskill{
-	cursor:pointer;
+    cursor:pointer;
 }
 .removeskill{
-	cursor:pointer;
+    cursor:pointer;
 }
 .additionlangs{
-	margin-top:10px
+    margin-top:10px
 }
 .addslang{
-	cursor:pointer;
+    cursor:pointer;
 }
 .removelang{
-	cursor:pointer;
+    cursor:pointer;
 }
 .student .studexpprime .padding4x {
     padding-bottom: 0;
 }
 .additionlangs{
-	margin-top:10px
+    margin-top:10px
 }
 .ui-resizable-handle.ui-resizable-se.ui-icon.ui-icon-gripsmall-diagonal-se {
     z-index: 20 !important;
 }
 
 .fileSave {
-	padding: 0px !important;
-	top: 0px !important;
+    padding: 0px !important;
+    top: 0px !important;
 }
 
 .redactor-toolbar {
-	z-index: 0 !important;
+    z-index: 0 !important;
 }

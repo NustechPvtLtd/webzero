@@ -150,7 +150,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xs-12" style="padding: 0px;">
-                            <div class="col-sm-4 col-xs-5" style="padding: 0px;">
+                            <div class="col-sm-3 col-xs-4" style="padding: 0px;">
                                 <div class="modes">
                                     <b>Building mode:</b>
                                     <label class="radio primary first">
@@ -168,7 +168,14 @@
                                 </div>
                             </div>
                             <a id="options"><i class="fa fa-bars"></i></a>
-                            <div class="col-sm-8 col-xs-5 float-right" style="padding: 0px;">
+<!--                            <div class="col-sm-4 col-xs-4 " id="pdfs" style="padding: 0px;">
+                                <?php $pdf_path = userdata('pdf_path');
+                                if (isset($pdf_path) && !empty($pdf_path)) {
+                                    ?>
+                                    <a href="<?php echo site_url() . $pdf_path; ?>" id="pdf_path_flag" target="_blank">Click Here for Previous Content</a>
+<?php } ?>
+                            </div>-->
+                            <div class="col-sm-8 col-xs-4 float-right" style="padding: 0px;">
                                 <a href="#" id="savePage" class="btn btn-primary disabled actionButtons"><span class="fui-check"></span> <span class="bLabel">Nothing to save</span></a>
                                 <a href="#" id="publishPage" class="btn btn-primary disabled actionButtons" data-siteid="<?php echo $siteData['site']->sites_id; ?>" <?php if ($siteData['site']->domain_ok == 0): ?>data-toggle="tooltip"<?php endif; ?> data-placement="bottom" title="You can not publish your site right now. Please update your url details from settings menu." ><span class="fui-export"></span> <span> Publish</span><span class="fui-alert text-danger" <?php if ($siteData['site']->domain_ok == 1): ?>style="display:none"<?php endif; ?>></span></a>
                                 <a href="#previewModal" id="preview" data-toggle="modal" class="btn btn-primary disabled actionButtons" ><span class="fui-window"></span><span> Preview</span></a>
@@ -223,7 +230,7 @@
                                 </span>
                             </li>
 
-                            <?php if (count($siteData['pages']) == 0): ?>
+<?php if (count($siteData['pages']) == 0): ?>
                                 <li class="active">
                                     <a href="#page1">index</a>
                                     <span class="pageButtons">
@@ -234,22 +241,22 @@
 
                                 <?php $counter = 1; ?>
 
-                                <?php foreach ($siteData['pages'] as $page => $frames): ?>
+    <?php foreach ($siteData['pages'] as $page => $frames): ?>
                                     <li <?php if ($counter == 1): ?>class="active"<?php endif; ?>>
                                         <a href="#page<?php echo $counter; ?>"><?php echo $page; ?></a>
                                         <span class="pageButtons">
                                             <a href="" class="fileCopy"><span class="fa fa-clipboard"></span></a>
-                                            <?php if ($page !== 'index'): ?>
+        <?php if ($page !== 'index'): ?>
                                                 <a href="" class="fileEdit"><span class="fui-new"></span></a>
                                                 <a href="" class="fileDel"><span class="fui-cross"></span></a>
                                                 <a class="btn btn-xs btn-primary fileSave" href="#"><span class="fui-check"></span></a>
-                                            <?php endif; ?>
+        <?php endif; ?>
                                         </span>
                                     </li>
                                     <?php $counter++; ?>
                                 <?php endforeach; ?>
 
-                            <?php endif; ?>
+<?php endif; ?>
                         </ul>
 
                         <div class="sideButtons clearfix">
@@ -270,7 +277,7 @@
                 </div><!-- /.menu -->
             </aside>
             <aside class="right-side" id="scr">
-                <?php echo $body; ?>
+<?php echo $body; ?>
                 <!-- Builder Body -->
             </aside>
 
@@ -380,7 +387,7 @@
                 <div class="tab-pane iconTab" id="icon_Tab">
 
                     <label>Choose an icon below: </label>
-                    <?php $this->load->view("partials/icon_dropdown.php"); ?>
+<?php $this->load->view("partials/icon_dropdown.php"); ?>
                 </div><!-- /.tab-pane -->
 
                 <!-- /tabs -->
@@ -425,7 +432,7 @@
         <!-- modals -->
 
         <!-- Site setting popup-->
-        <?php $this->load->view("shared/modal_sitesettings.php"); ?> 
+<?php $this->load->view("shared/modal_sitesettings.php"); ?> 
 
         <!-- preview HTML popup -->
         <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -591,7 +598,7 @@
                         <button type="button" class="btn btn-primary" id="updateContentInFrameSubmit">Insert Content</button>
                     </div>
                     <div id="load_content" style="max-height: 200px; overflow-y:auto; margin-top: 15px;">
-                        <?php echo $this->load->view('partials/loadcontent.php', $block_content); ?>
+<?php echo $this->load->view('partials/loadcontent.php', $block_content); ?>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -629,7 +636,7 @@
 
                         <div class="loader" style="display: none;">
                             <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-                            <?php echo $this->lang->line('modal_pagesettings_loadertext') ?>
+<?php echo $this->lang->line('modal_pagesettings_loadertext') ?>
                         </div>
 
                         <div class="modal-alerts"></div>
@@ -672,12 +679,12 @@
 
                             <div class="loader" style="display: none;">
                                 <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-                                <?php echo $this->lang->line('loading_saving_data') ?> ...
+<?php echo $this->lang->line('loading_saving_data') ?> ...
                             </div>
 
                             <div class="alert alert-success">
                                 <h4><?php echo $this->lang->line('modalpublish_success_heading') ?></h4>
-                                <?php echo $this->lang->line('modalpublish_success_message') ?>
+<?php echo $this->lang->line('modalpublish_success_message') ?>
                             </div>
 
                             <div class="modal-alerts">
@@ -687,7 +694,7 @@
                             <div class="alert alert-info" style="display: none;" id="publishPendingChangesMessage">
                                 <h4><?php echo $this->lang->line('modalpublish_pendingchanges_heading') ?></h4>
                                 <p>
-                                    <?php echo $this->lang->line('modalpublish_pendingchanges_message') ?>
+<?php echo $this->lang->line('modalpublish_pendingchanges_message') ?>
                                 </p>
                                 <button type="button" class="btn btn-info btn-wide save"><?php echo $this->lang->line('modalpublish_pendingchanges_button_savechanges') ?></button>
                             </div>
@@ -731,7 +738,7 @@
 
         </div><!-- /.modal -->
 
-        <?php $this->load->view("shared/modal_imagegallery.php"); ?>
+<?php $this->load->view("shared/modal_imagegallery.php"); ?>
 
         <!-- Video Gallery Modal -->
         <div class="modal fade " id="videoModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -745,7 +752,7 @@
 
                         <div class="loader" style="display: none;">
                             <img src="<?php echo base_url(); ?>assets/sites/images/loading.gif" alt="Loading...">
-                            <?php echo $this->lang->line('modal_videolibrary_loadertext') ?>
+<?php echo $this->lang->line('modal_videolibrary_loadertext'); ?>
                         </div>
 
                         <div class="modal-alerts">
@@ -767,15 +774,15 @@
 
                                         <?php $this->load->view("partials/myvideos.php", array('userVideos' => $userVideos, 'bucket' => $bucket)); ?>
 
-                                    <?php else: ?>
+<?php else: ?>
 
                                         <!-- Alert Info -->
                                         <div class="alert alert-info">
                                             <button type="button" class="close fui-cross" data-dismiss="alert"></button>
-                                            <?php echo $this->lang->line('modal_videolibrary_message_novideos'); ?>
+    <?php echo $this->lang->line('modal_videolibrary_message_novideos'); ?>
                                         </div>
 
-                                    <?php endif; ?>
+<?php endif; ?>
 
                                 </div><!-- /.tab-pane -->
 
@@ -851,7 +858,7 @@
             <script src="<?php echo base_url(); ?>elements.json"></script>
         <?php else: ?>
             <script src="<?php echo base_url(); ?>ecomelements.json"></script>
-        <?php endif; ?>
+<?php endif; ?>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.blockUI.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/builder.js"></script>
         <script src="<?php echo base_url('assets/sites'); ?>/js/jquery.form.min.js"></script>
@@ -877,13 +884,16 @@
         <script src="<?php echo base_url('elements/scripts/autoNumeric.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/readmore.min.js"></script>
         <script type="text/javascript" defer="defer" src="<?php echo base_url(); ?>assets/js/bootbox.min.js"></script>
-        <?php if (isset($js)) echo implode("\n", $js) . "\n"; ?>
+<?php if (isset($js)) echo implode("\n", $js) . "\n"; ?>
         <script>
             var baseUrl = "<?php echo base_url(); ?>";
             var siteUrl = "<?php echo site_url('/'); ?>";
             var domain_ok = "<?php echo ($siteData['site']->domain_ok == 1) ? 1 : 0; ?>";
             var display_ecom = '<?php echo (userdata('eccommerce') == 'inactive') ? 'no' : 'yes'; ?>';
             var plan = '<?php echo userdata('plan_id') ?>';
+            var pdf_flag = <?php $p_flag = userdata('pdf_path');
+if (!empty($p_flag)) echo 1;
+else echo 0; ?>;
 <?php if (isset($siteData)): ?>
                 var siteID = <?php echo $siteData['site']->sites_id; ?>;
 <?php else: ?>

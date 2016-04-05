@@ -3,6 +3,11 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
+//require_once APPPATH . 'third_party/pdfcrowd.php';
+require_once APPPATH . 'third_party/phpwkhtmltopdf-master/vendor/autoload.php';
+
+use mikehaertl\wkhtmlto\Pdf;
+
 class Sites extends MY_Controller {
 
     public $data = array();
@@ -18,6 +23,7 @@ class Sites extends MY_Controller {
         $this->load->model('sites/sitemodel');
         $this->load->model('sites/usermodel');
         $this->load->model('sites/pagemodel');
+        $this->load->model('templates/template_model');
         $this->load->model('sites/templatemodel');
         $this->load->model('domain/domainmodel');
         $this->load->model('domain/users_domains_model');
@@ -111,6 +117,104 @@ class Sites extends MY_Controller {
         redirect('sites/' . $newSiteID);
     }
 
+    public function createPdf($siteID, $htmldata)
+    {
+        if (empty($htmldata)) {
+            return false;
+        }
+        if ($this->ion_auth->in_group('students')) {
+            $pageHTML = '<!DOCTYPE html><html><head><link href="' . base_url() . 'studentelements/css/bootstrap.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/css/style.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/css/magnific-popup.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/css/iconfont-style.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/scripts/animations/animate.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/css/font-awesome.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/css/animsition.min.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/css/progress.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/css/student-style.css" rel="stylesheet">	
+            <link href="' . base_url() . 'studentelements/css/front-student-style.css" rel="stylesheet">
+            <link href="' . base_url() . 'studentelements/css/font-awesome.css" rel="stylesheet"> </head><body>';
+        } else {
+            $pageHTML = '<!DOCTYPE html><html><head><link href="' . base_url() . 'elements/css/bootstrap.css" rel="stylesheet">
+            <link href="' . base_url() . 'elements/css/style.css" rel="stylesheet">
+            <link href="' . base_url() . 'elements/css/magnific-popup.css" rel="stylesheet">
+            <link href="' . base_url() . 'elements/css/font-awesome.css" rel="stylesheet">
+            <link href="' . base_url() . 'elements/css/iconfont-style.css" rel="stylesheet">
+            <link href="' . base_url() . 'elements/scripts/animations/animate.css" rel="stylesheet">
+            <link href="' . base_url() . 'elements/css/bootstrap-datepicker3.min.css" rel="stylesheet">      
+            <link href="' . base_url() . 'elements/css/front-style.css" rel="stylesheet"> 
+            <link rel="icon" href="' . base_url() . 'elements/images/favicons/favicon.png">
+            <link rel="apple-touch-icon" href=' . base_url() . 'elements/images/favicons/apple-touch-icon.png">
+            <link rel="apple-touch-icon" sizes="72x72" href="' . base_url() . 'elements/images/favicons/apple-touch-icon-72x72.png">
+            <link rel="apple-touch-icon" sizes="114x114" href="' . base_url() . 'elements/images/favicons/apple-touch-icon-114x114.png"></head><body>';
+        }
+
+        foreach ($htmldata as $html) {
+            if (!empty($html)) {
+                foreach ($html as $htm_D) {
+                    if (preg_match('#<div class="drag propClone.*?-16by9">.*? data-type="video"></div>\s+</div>#ims', $htm_D['frameContent'])) {
+                        $htm_D['frameContent'] = preg_replace('#<div class="drag propClone.*?-16by9">.*? data-type="video"></div>\s+</div>#ims', '', $htm_D['frameContent']);
+                    } else if (preg_match('#<div class\=\"videoGallery.*?data-type="video"></div>#ims', $htm_D['frameContent'])) {
+                        $htm_D['frameContent'] = preg_replace('#<div class\=\"videoGallery.*?data-type="video"></div>#ims', '', $htm_D['frameContent']);
+                    }
+                    $pageHTML.=$htm_D['frameContent'];
+                    if (preg_match('#id=\"additional1\"\>#', $pageHTML)) {
+                        $pageHTML.="<div class='clearfix'></div>";
+                    }
+                }
+            }
+        }
+
+        $pageHTML.='</body></html>';
+
+        if (strstr($pageHTML, 'src="/studentelements')) {
+            $pageHTML = str_replace('src="/studentelements', 'src="' . base_url('studentelements'), $pageHTML);
+        }
+        if (strstr($pageHTML, 'src="/elements')) {
+            $pageHTML = str_replace('src="/elements', 'src="' . base_url('elements'), $pageHTML);
+        }
+        if (strstr($pageHTML, 'background-image: url(&quot;/elements')) {
+            $pageHTML = str_replace('background-image: url(&quot;/elements', 'background-image: url(&quot;' . base_url('elements'), $pageHTML);
+        }
+        if (strstr($pageHTML, 'style="background-image:url(/')) {
+            $pageHTML = str_replace('style="background-image:url(/', 'style="background-image:url(' . base_url(), $pageHTML);
+        }
+        if (strstr($pageHTML, 'style="background-image: url(/')) {
+            $pageHTML = str_replace('style="background-image: url(/', 'style="background-image: url(' . base_url(), $pageHTML);
+        }
+        if (strstr($pageHTML, '<span class="text-brand">')) {
+            $pageHTML = str_replace('<span class="text-brand">', '', $pageHTML);
+        }
+        if (preg_match('#<span .*?text-brand"(.*?)<\/span>#ims', $pageHTML)) {
+            $pageHTML = preg_replace('/<span .*?text-brand.*?>(.*?)<\/span>/', '$1', $pageHTML);
+        }
+
+        $current_timestamp = time();
+        $pdfFilePath = "./pdfs/site" . $siteID . "-" . $current_timestamp . ".pdf";
+
+        $pdf = new Pdf([
+            'commandOptions' => ['useExec' => true,],
+            'orientation' => 'landscape'
+        ]);
+        $pdf->binary = 'C:/"Program Files"/wkhtmltopdf/bin/wkhtmltopdf.exe';
+        $pdf->addPage($pageHTML);
+        $pdf->saveAs($pdfFilePath);
+        if (!$pdf->saveAs($pdfFilePath)) {
+            //$pdf->getError();
+            return false;
+        } else {
+            $pdf_present = userdata('pdf_path');
+            if (isset($pdf_present) && !empty($pdf_present)) {
+                unlink($pdf_present);
+            }
+            //set session new pdf
+            userdata('pdf_path', $pdfFilePath);
+            $this->sitemodel->update_pdf($siteID, $pdfFilePath);
+            return $pdfFilePath;
+        }
+    }
+
     /*
 
       Used to create new sites AND save existing ones
@@ -120,7 +224,7 @@ class Sites extends MY_Controller {
     public function save($forPublish = 0)
     {
         //do we have some frames to save?
-
+        $pdf_path = "";
         if (!isset($_POST['pageData']) || $_POST['pageData'] == '') {
 
             $return = array();
@@ -141,8 +245,8 @@ class Sites extends MY_Controller {
         if ($_POST['siteID'] == 0) {//no siteID provided, creste a new site
             //create the new site
             $siteID = $this->sitemodel->create($_POST['siteName'], $_POST['pageData']);
-
-
+            //create pdf 
+            $pdf_path = $this->createPdf($siteID, $_POST['pageData']);
             //all went well
             $return = array();
 
@@ -152,6 +256,11 @@ class Sites extends MY_Controller {
 
             $return['responseCode'] = 1;
             $return['siteID'] = $siteID;
+            if (isset($pdf_path) && $pdf_path != false) {
+                $return['path_pdf'] = site_url() . $pdf_path;
+            } else {
+                $return['path_pdf'] = "There is some error while conveting to Pdf.";
+            }
             $return['responseHTML'] = $this->load->view('partials/success', array('data' => $temp), true);
 
             die(json_encode($return));
@@ -165,7 +274,8 @@ class Sites extends MY_Controller {
 
                 $this->sitemodel->update($siteID, $_POST['pageData']);
             }
-
+            //create pdf 
+            $pdf_path = $this->createPdf($siteID, $_POST['pageData']);
             $return = array();
 
             if ($forPublish == 0) {//regular site save
@@ -180,6 +290,11 @@ class Sites extends MY_Controller {
 
             $return['responseCode'] = 1;
             $return['siteID'] = $siteID;
+            if (isset($pdf_path) && $pdf_path != false) {
+                $return['path_pdf'] = site_url() . $pdf_path;
+            } else {
+                $return['path_pdf'] = "There is some error while conveting to Pdf.";
+            }
             $return['responseHTML'] = $this->load->view('partials/success', array('data' => $temp), true);
 
             die(json_encode($return));
@@ -267,10 +382,20 @@ class Sites extends MY_Controller {
             imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $size[0], $size[1]);
             $image = imagepng($image_p, $uploadPath, 8);
         }
-        $templateID = $this->templatemodel->create($_POST['template_name'], $_POST['category_id'], $uploadPath, $profile);
+        if (isset($_POST['templateID']) && !empty($_POST['templateID'])) {
+            //update template element
+            $templateID = $_POST['templateID'];
+        } else {
+            //create new template
+            $templateID = $this->templatemodel->create($_POST['template_name'], $_POST['category_id'], $uploadPath, $profile);
+        }
         if ($templateID) {
+            //add  template element
             $this->templatemodel->delete_template_element($templateID);
             $this->templatemodel->create_template_element($templateID, $_POST['template_element']);
+            if (!empty($uploadPath)) {
+                $this->templatemodel->updateImg($templateID, $uploadPath);
+            }
         }
         //clear browser cache
         header("Cache-Control: no-cache, must-revalidate");
@@ -294,6 +419,19 @@ class Sites extends MY_Controller {
         if (!$this->ion_auth->in_group('designer')) {//access for designer only
             redirect('/sites');
         }
+
+        $this->data['siteData'] = '';
+        // echo"id". $this->uri->segment(4);
+        $templateID = $this->uri->segment(4);
+        if ($templateID) {
+            $templateID = $this->encrypt->decode($templateID);
+            $this->data['siteData'] = $this->templatemodel->getTemplate($templateID);
+//            echo "<pre>";
+//            print_r($this->data['siteData']);
+//            echo "</pre>";
+//            die();
+        }
+
         $userID = userdata('user_id');
         $bucket = $this->media_storage_model->getBucket($userID);
         if (!$bucket) {
@@ -372,7 +510,7 @@ class Sites extends MY_Controller {
 
             //get page data
             $pagesData = $this->pagemodel->getPageData($siteID);
-
+            userdata('pdf_path', $siteData['site']->pdf_path);
             if ($pagesData) {
 
                 $this->data['pagesData'] = $pagesData;
@@ -445,7 +583,7 @@ class Sites extends MY_Controller {
         } else {
 
             $this->data['siteData'] = $siteData;
-
+            userdata('pdf_path', $siteData['site']->pdf_path);
             //get page data
             $pagesData = $this->pagemodel->getPageData($siteID);
 
@@ -529,10 +667,7 @@ class Sites extends MY_Controller {
         }
 
         $siteData = $this->sitemodel->getSiteData($siteID);
-//        echo '<pre>';
-//        print_r($siteData);
-//        echo '</pre>';
-//        die();
+
         if ($siteData == false) {
 
             //all did not go well
@@ -668,9 +803,9 @@ class Sites extends MY_Controller {
     public function get_elements($elementsId)
     {
         $template = '<div class="">';
-        
+
         $template .= $this->templatemodel->getSingleElement($elementsId) . "\r\n";
-        
+
         $template .='</div>';
         $DOM = new DOMDocument();
         libxml_use_internal_errors(TRUE);

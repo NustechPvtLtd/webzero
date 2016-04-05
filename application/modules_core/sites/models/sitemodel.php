@@ -198,6 +198,16 @@ class Sitemodel extends CI_Model {
         return $siteID;
     }
 
+    public function update_pdf($siteID, $pdf_path)
+    {
+        $data = [
+            'pdf_path' => $pdf_path
+        ];
+
+        $this->db->where('sites_id', $siteID);
+        $this->db->update('sites', $data);
+    }
+
     /*
 
       updates an existing site item, including pages and frames

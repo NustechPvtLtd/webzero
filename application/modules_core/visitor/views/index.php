@@ -1,6 +1,5 @@
 <?php if ( !isset( $_GET['id'] ) ) {?><h5>Click on row to get detailed View</h5>
-    <table id="visitor-dataTable" class="table table-striped table-bordered  no-wrap" cellspacing="0" width="100%">
-        
+    <table id="visitor-dataTable" class="table table-striped table-bordered  no-wrap" cellspacing="0" width="100%">        
         <thead>
             <tr>
                 <th></th>
@@ -10,7 +9,6 @@
             </tr>
         </thead>
         <?php if(!empty($visitors)){?>
-
             <tbody>
                 <?php foreach ($visitors as $visitor):?>
                     <tr id="<?php echo htmlspecialchars($visitor['id'],ENT_QUOTES,'UTF-8');?>">
@@ -21,7 +19,6 @@
                     </tr>
                 <?php endforeach;?>
             <tbody>
-
         <?php }?>
         <tfoot>
             <tr>
@@ -181,7 +178,7 @@
         	jQuery(function($) {
 				// Asynchronously Load the map API 
 				var script = document.createElement('script');
-				script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize&key=AIzaSyDJHRiNcO4Yf5NinGfaX0YkapWr0TuzThA";
+				script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize&key=AIzaSyCNmk6kz_MqqUrpDelThbKRAnKS_JM3NDs";
 				document.body.appendChild(script);
 			});
 
